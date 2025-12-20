@@ -2,6 +2,13 @@ import { GlassCard } from "./GlassCard";
 import { FloatingBlob } from "./FloatingBlob";
 
 export const HeroSection = () => {
+  const smilies = [
+    "(ratmas)", "(rmblanket)", "(rmgift)", "(rmelf)", "(rmblanketop)", 
+    "(rmlightstop)", "(rmreindeertop)", "(rmornamentback)", "(rmlights)", 
+    "(rmornament)", "(rmbow)", "(rmantlers)", "(rmsanta)", "(rmstocking)", 
+    "(rmmtoe)", "(rmback)"
+  ];
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-20">
       {/* Floating Blobs */}
@@ -36,29 +43,71 @@ export const HeroSection = () => {
         animation="float-delayed"
       />
 
-      {/* Main Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto">
-        <GlassCard className="fade-in-up">
-          {/* Logo/Brand */}
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tight mb-6 text-gradient">
-            Labxat
-          </h1>
-
-          {/* Slogan */}
-          <p className="text-xl md:text-2xl lg:text-3xl font-light text-foreground/80 tracking-[0.2em] uppercase fade-in-up-delayed">
-            Experimente. Crie. Evolua.
-          </p>
-
-          {/* Decorative line */}
-          <div className="mt-8 mx-auto w-24 h-1 bg-gradient-to-r from-labxat-blue via-labxat-purple to-labxat-pink rounded-full fade-in-up-delayed-2" />
-        </GlassCard>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 fade-in-up-delayed-2">
-          <div className="w-6 h-10 rounded-full border-2 border-foreground/30 flex items-start justify-center p-2">
-            <div className="w-1.5 h-1.5 bg-foreground/50 rounded-full animate-bounce" />
+      {/* Main Content - News Block */}
+      <div className="relative z-10 w-full max-w-2xl mx-auto">
+        <GlassCard className="fade-in-up p-6 md:p-8">
+          {/* Header with Image and Title */}
+          <div className="flex items-start gap-4 mb-6">
+            <img 
+              src="https://xatimg.com/image/YuaLbdfuX4Q8.png" 
+              alt="Ratmas Power" 
+              className="w-20 h-20 rounded-xl object-cover shadow-lg"
+            />
+            <div className="flex-1">
+              <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
+                Ultimo Power
+              </p>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                Ratmas <span className="text-foreground/60 text-lg">(ID: 734)</span>
+              </h2>
+            </div>
           </div>
-        </div>
+
+          {/* Info Grid */}
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            <div className="bg-background/30 rounded-lg p-3">
+              <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">Status</p>
+              <p className="text-foreground font-medium">Unlimited</p>
+            </div>
+            <div className="bg-background/30 rounded-lg p-3">
+              <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">Group</p>
+              <p className="text-foreground font-medium">❌</p>
+            </div>
+            <div className="bg-background/30 rounded-lg p-3">
+              <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">Epic</p>
+              <p className="text-foreground font-medium">❌</p>
+            </div>
+            <div className="bg-background/30 rounded-lg p-3">
+              <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">Store Price</p>
+              <p className="text-foreground font-medium">Desconhecido</p>
+            </div>
+            <div className="bg-background/30 rounded-lg p-3">
+              <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">Trade Price</p>
+              <p className="text-foreground font-medium">0 - 0 xats</p>
+            </div>
+            <div className="bg-background/30 rounded-lg p-3">
+              <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">Trade Days</p>
+              <p className="text-foreground font-medium">0 - 0 days</p>
+            </div>
+          </div>
+
+          {/* Smilies Section */}
+          <div className="bg-background/20 rounded-xl p-4">
+            <p className="text-sm text-foreground/70 font-medium mb-3 uppercase tracking-wider">
+              Smilies of the power:
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {smilies.map((smiley, index) => (
+                <span 
+                  key={index}
+                  className="bg-labxat-purple/20 text-labxat-purple px-2 py-1 rounded-md text-sm font-mono"
+                >
+                  {smiley}
+                </span>
+              ))}
+            </div>
+          </div>
+        </GlassCard>
       </div>
 
       {/* Additional floating circles */}
