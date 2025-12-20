@@ -13,16 +13,19 @@ const Index = () => {
       name: "Nicks Personalizados",
       icon: Sparkles,
       onClick: () => navigate("/nicks"),
+      gradient: "blue" as const,
     },
     {
       name: "Gerador de Cores",
       icon: Palette,
       onClick: () => navigate("/cores"),
+      gradient: "purple" as const,
     },
     {
       name: "Bingo 1–90",
       icon: Dices,
       onClick: () => navigate("/bingo"),
+      gradient: "pink" as const,
     },
   ];
 
@@ -61,8 +64,8 @@ const Index = () => {
                 className="scale-in"
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
-                <ToolButton onClick={tool.onClick} className="w-full flex items-center justify-center gap-3">
-                  <tool.icon className="w-5 h-5" />
+                <ToolButton onClick={tool.onClick} gradient={tool.gradient} className="w-full flex items-center justify-center gap-2">
+                  <tool.icon className="w-4 h-4" />
                   <span>{tool.name}</span>
                 </ToolButton>
               </div>
