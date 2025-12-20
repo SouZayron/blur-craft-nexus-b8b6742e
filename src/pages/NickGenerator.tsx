@@ -6,7 +6,7 @@ import { fontStyles, transformText } from "@/data/fontStyles";
 import { Copy, Check, Sparkles, Search } from "lucide-react";
 import { toast } from "sonner";
 
-const NickGenerator = () => {
+export const NickGenerator = () => {
   const [inputName, setInputName] = useState("");
   const [generatedNicks, setGeneratedNicks] = useState<{ id: number; name: string; nick: string }[]>([]);
   const [copiedId, setCopiedId] = useState<number | null>(null);
