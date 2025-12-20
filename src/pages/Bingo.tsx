@@ -80,21 +80,26 @@ const smartRandomDraw = (available: number[], lastDrawn: number[]): number => {
   return available[Math.floor(Math.random() * available.length)];
 };
 
-// Animated ball inside globe
-const GlobeBall = ({ delay, color }: { delay: number; color: string }) => (
-  <div
-    className={cn(
-      "absolute w-4 h-4 rounded-full animate-bounce",
-      color
-    )}
-    style={{
-      animationDelay: `${delay}ms`,
-      animationDuration: `${1000 + Math.random() * 1000}ms`,
-      left: `${15 + Math.random() * 70}%`,
-      top: `${15 + Math.random() * 70}%`,
-    }}
-  />
-);
+// Animated ball inside globe - smooth floating animation
+const GlobeBall = ({ index, color }: { index: number; color: string }) => {
+  const size = 8 + (index % 3) * 2; // Varied sizes: 8, 10, 12px
+  const duration = 3 + (index % 4); // Varied durations: 3-6s
+  const delay = index * 0.3;
+  
+  return (
+    <div
+      className={cn("absolute rounded-full opacity-80", color)}
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        left: `${20 + (index * 7) % 60}%`,
+        top: `${20 + (index * 11) % 60}%`,
+        animation: `float-ball-${index % 4} ${duration}s ease-in-out infinite`,
+        animationDelay: `${delay}s`,
+      }}
+    />
+  );
+};
 
 export const Bingo = () => {
   const [drawnNumbers, setDrawnNumbers] = useState<number[]>([]);
@@ -279,41 +284,65 @@ export const Bingo = () => {
           <div className="glass-card p-4 md:p-6 w-full lg:w-96 flex flex-col items-center">
             {/* Bingo Globe */}
             <div className="relative mb-6">
-              <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-4 border-white/20 shadow-2xl relative overflow-hidden">
+              <style>{`
+                @keyframes float-ball-0 {
+                  0%, 100% { transform: translate(0, 0); }
+                  25% { transform: translate(10px, -8px); }
+                  50% { transform: translate(-5px, 5px); }
+                  75% { transform: translate(8px, 10px); }
+                }
+                @keyframes float-ball-1 {
+                  0%, 100% { transform: translate(0, 0); }
+                  25% { transform: translate(-12px, 6px); }
+                  50% { transform: translate(8px, -10px); }
+                  75% { transform: translate(-6px, 8px); }
+                }
+                @keyframes float-ball-2 {
+                  0%, 100% { transform: translate(0, 0); }
+                  25% { transform: translate(6px, 12px); }
+                  50% { transform: translate(-10px, -5px); }
+                  75% { transform: translate(5px, -8px); }
+                }
+                @keyframes float-ball-3 {
+                  0%, 100% { transform: translate(0, 0); }
+                  25% { transform: translate(-8px, -10px); }
+                  50% { transform: translate(12px, 8px); }
+                  75% { transform: translate(-5px, 6px); }
+                }
+              `}</style>
+              
+              <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-4 border-white/20 shadow-2xl relative overflow-hidden flex items-center justify-center">
                 {/* Animated balls inside globe */}
                 {globeColors.map((color, i) => (
-                  <GlobeBall key={i} delay={i * 200} color={color} />
+                  <GlobeBall key={i} index={i} color={color} />
                 ))}
-                {globeColors.map((color, i) => (
-                  <GlobeBall key={`extra-${i}`} delay={i * 150 + 100} color={color} />
+                {globeColors.slice(0, 5).map((color, i) => (
+                  <GlobeBall key={`extra-${i}`} index={i + 9} color={color} />
                 ))}
                 
                 {/* Glass reflection */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-full" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-full pointer-events-none" />
                 
                 {/* Center highlight */}
-                <div className="absolute top-4 left-4 w-8 h-8 bg-white/30 rounded-full blur-sm" />
+                <div className="absolute top-4 left-4 w-6 h-6 bg-white/20 rounded-full blur-sm" />
+
+                {/* Current Ball - centered in globe */}
+                {currentBall && (
+                  <div
+                    className={cn(
+                      "relative z-10 w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-2xl md:text-3xl font-black text-white shadow-2xl transition-all duration-500",
+                      `bg-gradient-to-br ${getBallColor(currentBall)}`,
+                      isAnimating ? "scale-110" : "scale-100"
+                    )}
+                    style={{
+                      boxShadow: "0 0 30px rgba(255,255,255,0.5), 0 10px 40px rgba(0,0,0,0.3)"
+                    }}
+                  >
+                    {currentBall}
+                  </div>
+                )}
               </div>
-
-              {/* Current Ball - exits from globe */}
-              {currentBall && (
-                <div
-                  className={cn(
-                    "absolute -bottom-4 left-1/2 -translate-x-1/2 w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-2xl md:text-3xl font-black text-white shadow-2xl transition-all duration-500",
-                    `bg-gradient-to-br ${getBallColor(currentBall)}`,
-                    isAnimating ? "scale-125 animate-bounce" : "scale-100"
-                  )}
-                  style={{
-                    boxShadow: "0 0 30px rgba(255,255,255,0.5), 0 10px 40px rgba(0,0,0,0.3)"
-                  }}
-                >
-                  {currentBall}
-                </div>
-              )}
             </div>
-
-            {/* Spacer for ball */}
-            <div className="h-12" />
 
             {/* History - Last 10 balls */}
             <div className="w-full mb-6">
