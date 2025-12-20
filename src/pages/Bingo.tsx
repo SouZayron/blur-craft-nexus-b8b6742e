@@ -6,7 +6,7 @@ import { FloatingBlob } from "@/components/FloatingBlob";
 import { cn } from "@/lib/utils";
 
 const TOTAL_BALLS = 90;
-const DRAW_INTERVAL = 3500; // 3.5 seconds
+const DRAW_INTERVAL = 4000; // 4 seconds
 
 // Generate vibrant colors for balls based on number ranges
 const getBallColor = (num: number): string => {
@@ -154,13 +154,23 @@ export const Bingo = () => {
   // Handle play/pause - only this effect manages the interval
   useEffect(() => {
     if (isPlaying) {
-      // Draw first ball immediately
-      drawBall();
-      
-      // Set interval for subsequent balls
-      intervalRef.current = window.setInterval(() => {
+      // Wait 4 seconds before drawing first ball
+      const initialTimeout = window.setTimeout(() => {
         drawBall();
+        
+        // Set interval for subsequent balls
+        intervalRef.current = window.setInterval(() => {
+          drawBall();
+        }, DRAW_INTERVAL);
       }, DRAW_INTERVAL);
+
+      return () => {
+        clearTimeout(initialTimeout);
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      };
     } else {
       // Clear interval when paused
       if (intervalRef.current) {
@@ -242,7 +252,7 @@ export const Bingo = () => {
             <h2 className="text-lg font-bold text-foreground mb-4 text-center">
               Painel de Conferência
             </h2>
-            <div className="grid grid-cols-9 md:grid-cols-10 gap-1.5 md:gap-2">
+            <div className="grid grid-cols-9 md:grid-cols-10 gap-2 md:gap-2.5">
               {Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1).map((num) => {
                 const isDrawn = drawnNumbers.includes(num);
                 const isJustDrawn = currentBall === num && isAnimating;
@@ -251,11 +261,11 @@ export const Bingo = () => {
                   <div
                     key={num}
                     className={cn(
-                      "w-7 h-7 md:w-9 md:h-9 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-all duration-300",
+                      "w-9 h-9 md:w-11 md:h-11 rounded-lg flex items-center justify-center text-sm md:text-base font-bold transition-all duration-300",
                       isDrawn
-                        ? `bg-gradient-to-br ${getBallColor(num)} text-white shadow-lg scale-110`
+                        ? "bg-red-500 text-white shadow-lg scale-105"
                         : "bg-muted/50 text-muted-foreground",
-                      isJustDrawn && "animate-pulse ring-4 ring-white/50"
+                      isJustDrawn && "animate-pulse ring-4 ring-red-300"
                     )}
                   >
                     {num}
