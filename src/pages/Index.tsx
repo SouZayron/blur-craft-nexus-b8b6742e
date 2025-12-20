@@ -49,7 +49,7 @@ const Index = () => {
               Labxat
             </h1>
             <p className="text-lg md:text-xl lg:text-2xl font-light text-foreground/80 tracking-[0.15em] uppercase">
-              Experimente. Crie. Evolua.
+              Experimente, Crie & Jogue!
             </p>
             <div className="mt-6 mx-auto w-20 h-1 bg-gradient-to-r from-labxat-blue via-labxat-purple to-labxat-pink rounded-full" />
           </GlassCard>
@@ -78,11 +78,11 @@ const Index = () => {
 
         {/* Footer inline */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
-          <p className="text-muted-foreground text-xs">Um laboratório criativo digital</p>
+          <p className="text-muted-foreground text-xs">Feito com amor Zayron - 2025</p>
           <div className="mt-2 flex justify-center gap-1">
-            <div className="w-6 h-0.5 rounded-full bg-labxat-blue/50" />
-            <div className="w-6 h-0.5 rounded-full bg-labxat-purple/50" />
-            <div className="w-6 h-0.5 rounded-full bg-labxat-pink/50" />
+            <div className="w-8 h-0.5 rounded-full bg-labxat-blue/50" />
+            <div className="w-8 h-0.5 rounded-full bg-labxat-purple/50" />
+            <div className="w-8 h-0.5 rounded-full bg-labxat-pink/50" />
           </div>
         </div>
       </main>
