@@ -102,53 +102,84 @@ export const Bingo = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(true);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<number | null>(null);
+  const drawnNumbersRef = useRef<number[]>([]);
+  const audioEnabledRef = useRef(true);
 
-  const availableNumbers = Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1).filter(
-    (n) => !drawnNumbers.includes(n)
-  );
+  // Keep refs in sync with state
+  useEffect(() => {
+    drawnNumbersRef.current = drawnNumbers;
+  }, [drawnNumbers]);
+
+  useEffect(() => {
+    audioEnabledRef.current = audioEnabled;
+  }, [audioEnabled]);
+
+  const getAvailableNumbers = useCallback(() => {
+    return Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1).filter(
+      (n) => !drawnNumbersRef.current.includes(n)
+    );
+  }, []);
 
   const lastTenBalls = drawnNumbers.slice(-10);
 
   const drawBall = useCallback(() => {
-    if (availableNumbers.length === 0) {
+    const available = getAvailableNumbers();
+    
+    if (available.length === 0) {
       setIsPlaying(false);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
       return;
     }
 
-    const newNumber = smartRandomDraw(availableNumbers, drawnNumbers);
+    const newNumber = smartRandomDraw(available, drawnNumbersRef.current);
     if (newNumber === -1) return;
 
     setIsAnimating(true);
     setCurrentBall(newNumber);
     
     // Speak the number
-    speakNumber(newNumber, audioEnabled);
+    speakNumber(newNumber, audioEnabledRef.current);
 
+    // Add to drawn numbers after animation
     setTimeout(() => {
       setDrawnNumbers((prev) => [...prev, newNumber]);
       setIsAnimating(false);
     }, 800);
-  }, [availableNumbers, drawnNumbers, audioEnabled]);
+  }, [getAvailableNumbers]);
 
+  // Handle play/pause - only this effect manages the interval
   useEffect(() => {
-    if (isPlaying && availableNumbers.length > 0) {
-      // Draw immediately when starting
-      if (drawnNumbers.length === 0 || !isAnimating) {
-        drawBall();
-      }
+    if (isPlaying) {
+      // Draw first ball immediately
+      drawBall();
       
-      intervalRef.current = setInterval(() => {
+      // Set interval for subsequent balls
+      intervalRef.current = window.setInterval(() => {
         drawBall();
       }, DRAW_INTERVAL);
+    } else {
+      // Clear interval when paused
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     }
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     };
-  }, [isPlaying, drawBall, availableNumbers.length, drawnNumbers.length, isAnimating]);
+  }, [isPlaying]); // Only depend on isPlaying!
+
+  const availableNumbers = Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1).filter(
+    (n) => !drawnNumbers.includes(n)
+  );
 
   const handlePlay = () => {
     if (availableNumbers.length > 0) {
@@ -162,7 +193,12 @@ export const Bingo = () => {
 
   const handleReset = () => {
     setIsPlaying(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
     setDrawnNumbers([]);
+    drawnNumbersRef.current = [];
     setCurrentBall(null);
     setIsAnimating(false);
     window.speechSynthesis?.cancel();
