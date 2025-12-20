@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Play, Pause, RotateCcw, Volume2, VolumeX } from "lucide-react";
+import { ArrowLeft, Play, Pause, RotateCcw, Volume2, VolumeX, Camera, Copy, ExternalLink, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FloatingBlob } from "@/components/FloatingBlob";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import html2canvas from "html2canvas";
 
 const TOTAL_BALLS = 90;
 const DRAW_INTERVAL = 4000;
@@ -109,9 +111,56 @@ export const Bingo = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const intervalRef = useRef<number | null>(null);
   const drawnNumbersRef = useRef<number[]>([]);
   const audioEnabledRef = useRef(true);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  const handlePrintPanel = async () => {
+    if (!panelRef.current) return;
+    
+    setIsUploading(true);
+    try {
+      // Capture the panel as canvas
+      const canvas = await html2canvas(panelRef.current, {
+        backgroundColor: '#1a1a2e',
+        scale: 2,
+      });
+      
+      // Convert to base64
+      const base64Image = canvas.toDataURL('image/png');
+      
+      // Upload to ImgBB via edge function
+      const { data, error } = await supabase.functions.invoke('upload-imgbb', {
+        body: { image: base64Image }
+      });
+      
+      if (error) {
+        throw new Error(error.message);
+      }
+      
+      if (data?.success && data?.url) {
+        setImageUrl(data.url);
+        toast({
+          title: "Print gerado!",
+          description: "Link da imagem disponível abaixo.",
+        });
+      } else {
+        throw new Error(data?.error || 'Erro ao fazer upload');
+      }
+    } catch (error) {
+      console.error('Error capturing panel:', error);
+      toast({
+        title: "Erro",
+        description: error instanceof Error ? error.message : "Falha ao gerar o print",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   // Keep refs in sync with state
   useEffect(() => {
@@ -257,6 +306,7 @@ export const Bingo = () => {
               Painel de Conferência
             </h2>
             <div 
+              ref={panelRef}
               className="grid grid-cols-9 md:grid-cols-10 gap-2 md:gap-2.5 bg-background p-4 rounded-lg"
             >
               {Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1).map((num) => {
@@ -278,6 +328,58 @@ export const Bingo = () => {
                   </div>
                 );
               })}
+            </div>
+            
+            {/* Print Button */}
+            <div className="mt-4 flex flex-col gap-3">
+              <Button
+                onClick={handlePrintPanel}
+                disabled={isUploading}
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold"
+              >
+                {isUploading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    <Camera className="w-5 h-5 mr-2" />
+                    Tirar Print
+                  </>
+                )}
+              </Button>
+              
+              {imageUrl && (
+                <div className="p-3 bg-muted/50 rounded-lg space-y-2">
+                  <p className="text-xs text-muted-foreground text-center">Link da imagem:</p>
+                  <div className="flex gap-2">
+                    <input 
+                      type="text" 
+                      value={imageUrl} 
+                      readOnly 
+                      className="flex-1 text-xs bg-background px-2 py-1.5 rounded border border-border truncate"
+                    />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        navigator.clipboard.writeText(imageUrl);
+                        toast({ title: "Link copiado!" });
+                      }}
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => window.open(imageUrl, '_blank')}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
