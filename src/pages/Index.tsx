@@ -64,10 +64,13 @@ const Index = () => {
                 className="scale-in"
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
-                <ToolButton onClick={tool.onClick} gradient={tool.gradient} className="w-full flex items-center justify-center gap-2">
-                  <tool.icon className="w-4 h-4" />
-                  <span>{tool.name}</span>
-                </ToolButton>
+                <ToolButton 
+                  onClick={tool.onClick} 
+                  gradient={tool.gradient} 
+                  icon={tool.icon}
+                  label={tool.name}
+                  className="w-full"
+                />
               </div>
             ))}
           </div>

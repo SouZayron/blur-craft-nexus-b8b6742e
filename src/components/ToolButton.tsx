@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { LucideIcon } from "lucide-react";
 
 interface ToolButtonProps {
-  children: ReactNode;
+  label: string;
+  icon: LucideIcon;
   onClick?: () => void;
   className?: string;
   gradient?: "blue" | "purple" | "pink";
@@ -14,24 +15,25 @@ const gradientStyles = {
   pink: "bg-gradient-to-r from-labxat-pink to-labxat-green",
 };
 
-export const ToolButton = ({ children, onClick, className, gradient = "blue" }: ToolButtonProps) => {
+export const ToolButton = ({ label, icon: Icon, onClick, className, gradient = "blue" }: ToolButtonProps) => {
   return (
     <button
       onClick={onClick}
       className={cn(
-        "relative group overflow-hidden",
-        "px-6 py-3",
+        "flex items-center justify-center gap-3",
+        "px-6 py-4",
         "rounded-xl",
         gradientStyles[gradient],
-        "text-primary-foreground font-semibold text-sm md:text-base",
-        "transform transition-all duration-300 ease-out",
+        "text-primary-foreground font-semibold text-base md:text-lg",
+        "transition-all duration-300 ease-out",
         "hover:scale-105 hover:brightness-110",
         "border border-white/20",
         "shadow-lg hover:shadow-xl",
         className
       )}
     >
-      <span className="relative z-10 tracking-wide">{children}</span>
+      <Icon className="w-5 h-5 flex-shrink-0" />
+      <span>{label}</span>
     </button>
   );
 };
