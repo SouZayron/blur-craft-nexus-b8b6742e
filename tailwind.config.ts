@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,43 +50,45 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        labxat: {
+          blue: "hsl(var(--labxat-blue))",
+          purple: "hsl(var(--labxat-purple))",
+          pink: "hsl(var(--labxat-pink))",
+          green: "hsl(var(--labxat-green))",
+          lilac: "hsl(var(--labxat-lilac))",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        "2xl": "1.5rem",
+        "3xl": "2rem",
+        "4xl": "2.5rem",
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      boxShadow: {
+        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+        'glass-lg': '0 12px 48px 0 rgba(31, 38, 135, 0.2)',
+        'glow': '0 0 40px rgba(139, 92, 246, 0.3)',
+        'glow-lg': '0 0 60px rgba(139, 92, 246, 0.4)',
+      },
+      backdropBlur: {
+        'xs': '2px',
+        '3xl': '64px',
       },
     },
   },
