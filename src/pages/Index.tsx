@@ -41,17 +41,71 @@ const Index = () => {
       <FloatingBlob color="lilac" size="md" position={{ top: "45%", left: "60%" }} animation="float-delayed" />
 
       {/* Main Content */}
-      <main className="relative z-10 h-full flex flex-col items-center justify-center px-4 pt-16">
-        {/* Hero Section */}
-        <div className="text-center mb-8 md:mb-12">
-          <GlassCard className="fade-in-up inline-block">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-4 text-gradient">
-              Labxat
-            </h1>
-            <p className="text-lg md:text-xl lg:text-2xl font-light text-foreground/80 tracking-[0.15em] uppercase">
-              Experimente, Crie & Jogue!
-            </p>
-            <div className="mt-6 mx-auto w-20 h-1 bg-gradient-to-r from-labxat-blue via-labxat-purple to-labxat-pink rounded-full" />
+      <main className="relative z-10 h-full flex flex-col items-center justify-center px-4 pt-16 overflow-y-auto">
+        {/* News Block - Ultimo Power */}
+        <div className="w-full max-w-2xl mb-8 md:mb-12">
+          <GlassCard className="fade-in-up p-5 md:p-6">
+            {/* Header with Image and Title */}
+            <div className="flex items-start gap-4 mb-5">
+              <img 
+                src="https://xatimg.com/image/YuaLbdfuX4Q8.png" 
+                alt="Ratmas Power" 
+                className="w-20 h-20 rounded-xl object-cover shadow-lg"
+              />
+              <div className="flex-1">
+                <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
+                  Ultimo Power
+                </p>
+                <h2 className="text-xl md:text-2xl font-bold text-foreground">
+                  Ratmas <span className="text-foreground/60 text-base">(ID: 734)</span>
+                </h2>
+              </div>
+            </div>
+
+            {/* Info Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-5">
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Status</p>
+                <p className="text-foreground font-medium text-sm">Unlimited</p>
+              </div>
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Group</p>
+                <p className="text-foreground font-medium text-sm">❌</p>
+              </div>
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Epic</p>
+                <p className="text-foreground font-medium text-sm">❌</p>
+              </div>
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Store Price</p>
+                <p className="text-foreground font-medium text-sm">Desconhecido</p>
+              </div>
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Trade Price</p>
+                <p className="text-foreground font-medium text-sm">0 - 0 xats</p>
+              </div>
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Trade Days</p>
+                <p className="text-foreground font-medium text-sm">0 - 0 days</p>
+              </div>
+            </div>
+
+            {/* Smilies Section */}
+            <div className="bg-background/20 rounded-xl p-3">
+              <p className="text-xs text-foreground/70 font-medium mb-2 uppercase tracking-wider">
+                Smilies of the power:
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {["(ratmas)", "(rmblanket)", "(rmgift)", "(rmelf)", "(rmblanketop)", "(rmlightstop)", "(rmreindeertop)", "(rmornamentback)", "(rmlights)", "(rmornament)", "(rmbow)", "(rmantlers)", "(rmsanta)", "(rmstocking)", "(rmmtoe)", "(rmback)"].map((smiley, index) => (
+                  <span 
+                    key={index}
+                    className="bg-labxat-purple/20 text-labxat-purple px-2 py-0.5 rounded-md text-xs font-mono"
+                  >
+                    {smiley}
+                  </span>
+                ))}
+              </div>
+            </div>
           </GlassCard>
         </div>
 
