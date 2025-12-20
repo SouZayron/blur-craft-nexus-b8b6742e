@@ -246,9 +246,6 @@ export const Bingo = () => {
           <h1 className="text-4xl md:text-5xl font-black text-gradient mb-2">
             Bingo 1-90
           </h1>
-          <p className="text-muted-foreground">
-            {drawnNumbers.length} de {TOTAL_BALLS} bolas sorteadas
-          </p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
@@ -426,6 +423,42 @@ export const Bingo = () => {
                 <p className="text-sm text-muted-foreground">Todas as bolas foram sorteadas</p>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Progress Block */}
+        <div className="glass-card p-4 md:p-6 max-w-7xl mx-auto mt-6">
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
+                <div className="absolute inset-0 w-3 h-3 rounded-full bg-primary/50 animate-ping" />
+              </div>
+              <p className="text-lg font-semibold text-foreground">
+                {drawnNumbers.length} de {TOTAL_BALLS} bolas sorteadas
+              </p>
+              {isPlaying && (
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              )}
+            </div>
+            
+            {/* Progress Bar */}
+            <div className="w-full max-w-md h-3 bg-muted/50 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full transition-all duration-500 ease-out relative"
+                style={{ width: `${(drawnNumbers.length / TOTAL_BALLS) * 100}%` }}
+              >
+                <div className="absolute inset-0 bg-white/20 animate-pulse" />
+              </div>
+            </div>
+            
+            <p className="text-sm text-muted-foreground">
+              {availableNumbers.length} bolas restantes
+            </p>
           </div>
         </div>
       </main>
