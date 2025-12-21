@@ -43,7 +43,7 @@ const Index = () => {
       <FloatingBlob color="lilac" size="md" position={{ top: "45%", left: "60%" }} animation="float-delayed" />
 
       {/* Main Content */}
-      <main className="relative z-10 h-full flex flex-col items-center justify-center px-4 pt-16 overflow-y-auto">
+      <main className="relative z-10 h-full flex flex-col items-center justify-start px-4 pt-20 pb-16 overflow-y-auto">
         {/* News Block - Ultimo Power */}
         <div className="w-full max-w-2xl mb-8 md:mb-12">
           <GlassCard className="fade-in-up p-5 md:p-6">
