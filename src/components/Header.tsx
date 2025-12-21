@@ -1,14 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
 import { Palette, Sparkles, Dices } from "lucide-react";
+import { LanguageSelector } from "./LanguageSelector";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Header = () => {
   const location = useLocation();
-  const isHome = location.pathname === "/";
+  const { t } = useLanguage();
 
   const tools = [
-    { name: "Nicks", icon: Sparkles, path: "/nicks" },
-    { name: "Cores", icon: Palette, path: "/cores" },
-    { name: "Bingo", icon: Dices, path: "/bingo" },
+    { name: t("nicks"), icon: Sparkles, path: "/nicks" },
+    { name: t("cores"), icon: Palette, path: "/cores" },
+    { name: t("bingo"), icon: Dices, path: "/bingo" },
   ];
 
   return (
@@ -37,6 +39,9 @@ export const Header = () => {
                 <span className="hidden sm:inline">{tool.name}</span>
               </Link>
             ))}
+            
+            {/* Language Selector */}
+            <LanguageSelector />
           </nav>
         </div>
       </div>
