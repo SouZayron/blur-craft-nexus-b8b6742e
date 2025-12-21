@@ -22,14 +22,15 @@ export const ToolButton = ({ label, icon: Icon, onClick, className, gradient = "
       onClick={onClick}
       className={cn(
         "flex items-center justify-center gap-3",
-        "px-6 py-4",
+        "px-4 py-4",
         "rounded-xl",
         gradientStyles[gradient],
-        "text-primary-foreground font-semibold text-base md:text-lg",
+        "text-primary-foreground font-semibold text-sm md:text-base",
         "transition-all duration-300 ease-out",
         "hover:scale-105 hover:brightness-110",
         "border border-white/20",
         "shadow-lg hover:shadow-xl",
+        "whitespace-nowrap",
         className
       )}
     >
