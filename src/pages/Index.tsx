@@ -80,15 +80,15 @@ const Index = () => {
               </div>
               <div className="bg-background/30 rounded-lg p-2.5">
                 <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("storePrice")}</p>
-                <p className="text-foreground font-medium text-sm">{t("unknown")}</p>
+                <p className="text-foreground font-medium text-sm">25 days</p>
               </div>
               <div className="bg-background/30 rounded-lg p-2.5">
                 <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradePrice")}</p>
-                <p className="text-foreground font-medium text-sm">0 - 0 xats</p>
+                <p className="text-foreground font-medium text-sm">300 - 375 xats</p>
               </div>
               <div className="bg-background/30 rounded-lg p-2.5">
                 <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradeDays")}</p>
-                <p className="text-foreground font-medium text-sm">0 - 0 days</p>
+                <p className="text-foreground font-medium text-sm">21 - 24 days</p>
               </div>
             </div>
 
