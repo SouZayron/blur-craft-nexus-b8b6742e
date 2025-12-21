@@ -9,9 +9,22 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const languages = [
   { code: "pt" as const, name: "Português", flag: "🇧🇷" },
+  { code: "pt-pt" as const, name: "Português-PT", flag: "🇵🇹" },
   { code: "en" as const, name: "English", flag: "🇺🇸" },
   { code: "es" as const, name: "Español", flag: "🇪🇸" },
+  { code: "fr" as const, name: "Français", flag: "🇫🇷" },
+  { code: "de" as const, name: "Deutsch", flag: "🇩🇪" },
+  { code: "it" as const, name: "Italiano", flag: "🇮🇹" },
+  { code: "nl" as const, name: "Nederlands", flag: "🇳🇱" },
+  { code: "pl" as const, name: "Polski", flag: "🇵🇱" },
+  { code: "ro" as const, name: "Română", flag: "🇷🇴" },
+  { code: "hu" as const, name: "Magyar", flag: "🇭🇺" },
+  { code: "tr" as const, name: "Türkçe", flag: "🇹🇷" },
+  { code: "bs" as const, name: "Bosanski", flag: "🇧🇦" },
+  { code: "sr" as const, name: "Srpski", flag: "🇷🇸" },
+  { code: "tl" as const, name: "Tagalog", flag: "🇵🇭" },
   { code: "ar" as const, name: "العربية", flag: "🇸🇦" },
+  { code: "th" as const, name: "ไทย", flag: "🇹🇭" },
 ];
 
 export const LanguageSelector = () => {
