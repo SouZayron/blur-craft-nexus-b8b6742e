@@ -25,6 +25,20 @@ interface Translations {
 }
 
 const translations: Translations = {
+  // Navigation
+  home: { 
+    pt: "Início", en: "Home", es: "Inicio", ar: "الرئيسية",
+    de: "Startseite", nl: "Home", tl: "Home", tr: "Ana Sayfa", bs: "Početna", fr: "Accueil", it: "Home", hu: "Kezdőlap", pl: "Strona główna", "pt-pt": "Início", ro: "Acasă", sr: "Početna", th: "หน้าแรก"
+  },
+  about: { 
+    pt: "Sobre", en: "About", es: "Acerca de", ar: "حول",
+    de: "Über uns", nl: "Over ons", tl: "Tungkol", tr: "Hakkında", bs: "O nama", fr: "À propos", it: "Chi siamo", hu: "Rólunk", pl: "O nas", "pt-pt": "Sobre", ro: "Despre", sr: "O nama", th: "เกี่ยวกับ"
+  },
+  privacyPolicy: { 
+    pt: "Privacidade", en: "Privacy", es: "Privacidad", ar: "الخصوصية",
+    de: "Datenschutz", nl: "Privacy", tl: "Privacy", tr: "Gizlilik", bs: "Privatnost", fr: "Confidentialité", it: "Privacy", hu: "Adatvédelem", pl: "Prywatność", "pt-pt": "Privacidade", ro: "Confidențialitate", sr: "Privatnost", th: "ความเป็นส่วนตัว"
+  },
+  
   // Header
   nicks: { 
     pt: "Nicks", en: "Nicks", es: "Nicks", ar: "الألقاب",
@@ -37,6 +51,253 @@ const translations: Translations = {
   bingo: { 
     pt: "Bingo", en: "Bingo", es: "Bingo", ar: "بينغو",
     de: "Bingo", nl: "Bingo", tl: "Bingo", tr: "Bingo", bs: "Bingo", fr: "Bingo", it: "Bingo", hu: "Bingó", pl: "Bingo", "pt-pt": "Bingo", ro: "Bingo", sr: "Bingo", th: "บิงโก"
+  },
+  
+  // About Page
+  aboutTitle: { 
+    pt: "Sobre o Labxat", en: "About Labxat", es: "Acerca de Labxat", ar: "حول Labxat",
+    de: "Über Labxat", nl: "Over Labxat", tl: "Tungkol sa Labxat", tr: "Labxat Hakkında", bs: "O Labxat-u", fr: "À propos de Labxat", it: "Chi è Labxat", hu: "A Labxat-ról", pl: "O Labxat", "pt-pt": "Sobre o Labxat", ro: "Despre Labxat", sr: "O Labxat-u", th: "เกี่ยวกับ Labxat"
+  },
+  aboutIntro: { 
+    pt: "O Labxat é um portal independente criado para reunir notícias, novidades, utilidades e ferramentas voltadas à comunidade do xat.com.", 
+    en: "Labxat is an independent portal created to gather news, updates, utilities and tools aimed at the xat.com community.", 
+    es: "Labxat es un portal independiente creado para reunir noticias, novedades, utilidades y herramientas dirigidas a la comunidad de xat.com.", 
+    ar: "Labxat هو بوابة مستقلة تم إنشاؤها لجمع الأخبار والتحديثات والأدوات المساعدة الموجهة لمجتمع xat.com.",
+    de: "Labxat ist ein unabhängiges Portal, das erstellt wurde, um Nachrichten, Updates, Dienstprogramme und Tools für die xat.com-Community zu sammeln.", 
+    nl: "Labxat is een onafhankelijk portaal gemaakt om nieuws, updates, hulpprogramma's en tools voor de xat.com-community te verzamelen.", 
+    tl: "Ang Labxat ay isang independenteng portal na nilikha upang magtipon ng balita, updates, utilities at tools para sa xat.com community.", 
+    tr: "Labxat, xat.com topluluğu için haberler, güncellemeler, yardımcı programlar ve araçlar toplamak için oluşturulmuş bağımsız bir portaldır.", 
+    bs: "Labxat je nezavisni portal kreiran za prikupljanje vijesti, novosti, alata i usluga namijenjenih xat.com zajednici.", 
+    fr: "Labxat est un portail indépendant créé pour rassembler des nouvelles, des mises à jour, des utilitaires et des outils destinés à la communauté xat.com.", 
+    it: "Labxat è un portale indipendente creato per raccogliere notizie, aggiornamenti, utility e strumenti per la community di xat.com.", 
+    hu: "A Labxat egy független portál, amelyet a xat.com közösség híreinek, frissítéseinek, segédprogramjainak és eszközeinek összegyűjtésére hoztak létre.", 
+    pl: "Labxat to niezależny portal stworzony w celu gromadzenia wiadomości, aktualizacji, narzędzi i usług dla społeczności xat.com.", 
+    "pt-pt": "O Labxat é um portal independente criado para reunir notícias, novidades, utilidades e ferramentas voltadas à comunidade do xat.com.", 
+    ro: "Labxat este un portal independent creat pentru a aduna știri, actualizări, utilități și instrumente pentru comunitatea xat.com.", 
+    sr: "Labxat je nezavisni portal kreiran za prikupljanje vesti, novosti, alata i usluga namenjenih xat.com zajednici.", 
+    th: "Labxat เป็นพอร์ทัลอิสระที่สร้างขึ้นเพื่อรวบรวมข่าวสาร อัปเดต ยูทิลิตี้ และเครื่องมือสำหรับชุมชน xat.com"
+  },
+  aboutObjective: { 
+    pt: "Nosso objetivo é facilitar a experiência dos usuários, oferecendo conteúdos atualizados e recursos práticos como gerador de nicks, gerador de cores, roleta de bingo, códigos, smilies, dicas e informações que ajudam tanto usuários iniciantes quanto os mais experientes.", 
+    en: "Our goal is to enhance the user experience by offering updated content and practical resources such as nick generator, color generator, bingo roulette, codes, smilies, tips and information that help both beginners and experienced users.", 
+    es: "Nuestro objetivo es facilitar la experiencia de los usuarios, ofreciendo contenido actualizado y recursos prácticos como generador de nicks, generador de colores, ruleta de bingo, códigos, smilies, consejos e información que ayudan tanto a usuarios principiantes como experimentados.", 
+    ar: "هدفنا هو تحسين تجربة المستخدم من خلال تقديم محتوى محدث وموارد عملية مثل مولد الألقاب ومولد الألوان وروليت البينغو والأكواد والسمايلات والنصائح والمعلومات التي تساعد المبتدئين والمستخدمين ذوي الخبرة.",
+    de: "Unser Ziel ist es, das Benutzererlebnis zu verbessern, indem wir aktualisierte Inhalte und praktische Ressourcen wie Nick-Generator, Farbgenerator, Bingo-Roulette, Codes, Smilies, Tipps und Informationen anbieten.", 
+    nl: "Ons doel is de gebruikerservaring te verbeteren door bijgewerkte content en praktische bronnen aan te bieden zoals nick generator, kleurengenerator, bingo roulette, codes, smilies, tips en informatie.", 
+    tl: "Ang aming layunin ay pahusayin ang karanasan ng user sa pamamagitan ng pag-aalok ng updated na content at praktikal na resources tulad ng nick generator, color generator, bingo roulette, codes, smilies, tips at impormasyon.", 
+    tr: "Amacımız, nick oluşturucu, renk oluşturucu, bingo rulet, kodlar, smilies, ipuçları ve bilgiler gibi güncellenmiş içerik ve pratik kaynaklar sunarak kullanıcı deneyimini geliştirmektir.", 
+    bs: "Naš cilj je poboljšati korisničko iskustvo nudeći ažurirani sadržaj i praktične resurse kao što su generator nadimaka, generator boja, bingo rulet, kodovi, smajlići, savjeti i informacije.", 
+    fr: "Notre objectif est d'améliorer l'expérience utilisateur en proposant du contenu à jour et des ressources pratiques comme le générateur de nicks, le générateur de couleurs, la roulette bingo, les codes, les smilies, les astuces et les informations.", 
+    it: "Il nostro obiettivo è migliorare l'esperienza utente offrendo contenuti aggiornati e risorse pratiche come generatore di nick, generatore di colori, roulette bingo, codici, smilies, suggerimenti e informazioni.", 
+    hu: "Célunk a felhasználói élmény javítása frissített tartalmak és praktikus erőforrások kínálásával, mint a nick generátor, színgenerátor, bingo rulett, kódok, smiliek, tippek és információk.", 
+    pl: "Naszym celem jest ulepszenie doświadczenia użytkowników poprzez oferowanie aktualnych treści i praktycznych zasobów, takich jak generator nicków, generator kolorów, ruletka bingo, kody, smilies, porady i informacje.", 
+    "pt-pt": "O nosso objetivo é facilitar a experiência dos utilizadores, oferecendo conteúdos atualizados e recursos práticos como gerador de nicks, gerador de cores, roleta de bingo, códigos, smilies, dicas e informações.", 
+    ro: "Obiectivul nostru este de a îmbunătăți experiența utilizatorilor oferind conținut actualizat și resurse practice precum generator de nickuri, generator de culori, ruletă bingo, coduri, smilies, sfaturi și informații.", 
+    sr: "Naš cilj je poboljšati korisničko iskustvo nudeći ažurirani sadržaj i praktične resurse kao što su generator nadimaka, generator boja, bingo rulet, kodovi, smajlići, saveti i informacije.", 
+    th: "เป้าหมายของเราคือการปรับปรุงประสบการณ์ผู้ใช้โดยนำเสนอเนื้อหาที่อัปเดตและทรัพยากรที่ใช้งานได้จริง เช่น เครื่องสร้างนิค เครื่องสร้างสี รูเล็ตบิงโก โค้ด สไมลี่ เคล็ดลับและข้อมูล"
+  },
+  aboutMission: { 
+    pt: "O Labxat nasce como um espaço de experimentação e apoio à comunidade, trazendo soluções simples, rápidas e acessíveis, sempre com foco em usabilidade, criatividade e praticidade.", 
+    en: "Labxat was born as a space for experimentation and community support, bringing simple, fast and accessible solutions, always focused on usability, creativity and practicality.", 
+    es: "Labxat nace como un espacio de experimentación y apoyo a la comunidad, trayendo soluciones simples, rápidas y accesibles, siempre con enfoque en usabilidad, creatividad y practicidad.", 
+    ar: "ولد Labxat كمساحة للتجريب ودعم المجتمع، مما يوفر حلولاً بسيطة وسريعة وسهلة الوصول، مع التركيز دائمًا على سهولة الاستخدام والإبداع والتطبيق العملي.",
+    de: "Labxat wurde als Raum für Experimente und Community-Unterstützung geboren, der einfache, schnelle und zugängliche Lösungen bietet, immer mit Fokus auf Benutzerfreundlichkeit, Kreativität und Praktikabilität.", 
+    nl: "Labxat is geboren als een ruimte voor experimentatie en community-ondersteuning, met eenvoudige, snelle en toegankelijke oplossingen, altijd gericht op bruikbaarheid, creativiteit en praktisch nut.", 
+    tl: "Ang Labxat ay ipinanganak bilang isang espasyo para sa eksperimento at suporta sa komunidad, na nagdadala ng simple, mabilis at accessible na solusyon, palaging nakatuon sa usability, creativity at practicality.", 
+    tr: "Labxat, kullanılabilirlik, yaratıcılık ve pratikliğe her zaman odaklanarak basit, hızlı ve erişilebilir çözümler sunan bir deneme ve topluluk destek alanı olarak doğdu.", 
+    bs: "Labxat je nastao kao prostor za eksperimentiranje i podršku zajednici, donoseći jednostavna, brza i pristupačna rješenja, uvijek s fokusom na upotrebljivost, kreativnost i praktičnost.", 
+    fr: "Labxat est né comme un espace d'expérimentation et de soutien communautaire, apportant des solutions simples, rapides et accessibles, toujours axées sur la convivialité, la créativité et la praticité.", 
+    it: "Labxat è nato come uno spazio di sperimentazione e supporto alla community, portando soluzioni semplici, veloci e accessibili, sempre focalizzate su usabilità, creatività e praticità.", 
+    hu: "A Labxat kísérletezési és közösségi támogatási térként született, egyszerű, gyors és hozzáférhető megoldásokat kínálva, mindig a használhatóságra, kreativitásra és praktikusságra összpontosítva.", 
+    pl: "Labxat powstał jako przestrzeń do eksperymentów i wsparcia społeczności, oferując proste, szybkie i dostępne rozwiązania, zawsze skupione na użyteczności, kreatywności i praktyczności.", 
+    "pt-pt": "O Labxat nasce como um espaço de experimentação e apoio à comunidade, trazendo soluções simples, rápidas e acessíveis, sempre com foco em usabilidade, criatividade e praticidade.", 
+    ro: "Labxat s-a născut ca un spațiu de experimentare și suport pentru comunitate, aducând soluții simple, rapide și accesibile, mereu concentrate pe utilizare, creativitate și practică.", 
+    sr: "Labxat je nastao kao prostor za eksperimentisanje i podršku zajednici, donoseći jednostavna, brza i pristupačna rešenja, uvijek s fokusom na upotrebljivost, kreativnost i praktičnost.", 
+    th: "Labxat เกิดขึ้นเพื่อเป็นพื้นที่สำหรับการทดลองและการสนับสนุนชุมชน นำเสนอโซลูชันที่เรียบง่าย รวดเร็ว และเข้าถึงได้ โดยเน้นที่ความสามารถในการใช้งาน ความคิดสร้างสรรค์ และความเป็นจริง"
+  },
+  aboutDisclaimer: { 
+    pt: "Não temos vínculo oficial com o xat.com. Todo o conteúdo disponibilizado aqui é de caráter informativo e educativo, criado para apoiar e fortalecer a comunidade.", 
+    en: "We have no official affiliation with xat.com. All content provided here is informational and educational, created to support and strengthen the community.", 
+    es: "No tenemos vínculo oficial con xat.com. Todo el contenido proporcionado aquí es de carácter informativo y educativo, creado para apoyar y fortalecer la comunidad.", 
+    ar: "ليس لدينا أي ارتباط رسمي مع xat.com. كل المحتوى المقدم هنا تعليمي وإعلامي، تم إنشاؤه لدعم وتقوية المجتمع.",
+    de: "Wir haben keine offizielle Verbindung zu xat.com. Alle hier bereitgestellten Inhalte sind informativer und bildender Natur, erstellt zur Unterstützung und Stärkung der Community.", 
+    nl: "We hebben geen officiële banden met xat.com. Alle hier verstrekte inhoud is informatief en educatief, gemaakt om de community te ondersteunen en te versterken.", 
+    tl: "Wala kaming opisyal na ugnayan sa xat.com. Lahat ng content dito ay informational at educational, nilikha upang suportahan at palakasin ang komunidad.", 
+    tr: "xat.com ile resmi bir bağlantımız yoktur. Burada sağlanan tüm içerik bilgilendirici ve eğitici niteliktedir, topluluğu desteklemek ve güçlendirmek için oluşturulmuştur.", 
+    bs: "Nemamo službenu povezanost s xat.com. Sav sadržaj ovdje je informativan i obrazovan, stvoren za podršku i jačanje zajednice.", 
+    fr: "Nous n'avons aucune affiliation officielle avec xat.com. Tout le contenu fourni ici est informatif et éducatif, créé pour soutenir et renforcer la communauté.", 
+    it: "Non abbiamo alcuna affiliazione ufficiale con xat.com. Tutto il contenuto fornito qui è informativo ed educativo, creato per supportare e rafforzare la community.", 
+    hu: "Nincs hivatalos kapcsolatunk a xat.com-mal. Az itt található összes tartalom tájékoztató és oktatási jellegű, a közösség támogatására és erősítésére készült.", 
+    pl: "Nie mamy oficjalnego powiązania z xat.com. Cała zawartość tutaj jest informacyjna i edukacyjna, stworzona w celu wspierania i wzmacniania społeczności.", 
+    "pt-pt": "Não temos vínculo oficial com o xat.com. Todo o conteúdo disponibilizado aqui é de caráter informativo e educativo, criado para apoiar e fortalecer a comunidade.", 
+    ro: "Nu avem nicio afiliere oficială cu xat.com. Tot conținutul furnizat aici este informativ și educativ, creat pentru a sprijini și consolida comunitatea.", 
+    sr: "Nemamo službenu povezanost s xat.com. Sav sadržaj ovde je informativan i obrazovan, stvoren za podršku i jačanje zajednice.", 
+    th: "เราไม่มีความเกี่ยวข้องอย่างเป็นทางการกับ xat.com เนื้อหาทั้งหมดที่ให้ไว้ที่นี่มีลักษณะให้ข้อมูลและการศึกษา สร้างขึ้นเพื่อสนับสนุนและเสริมสร้างชุมชน"
+  },
+  
+  // Privacy Policy Page
+  privacyTitle: { 
+    pt: "Política de Privacidade", en: "Privacy Policy", es: "Política de Privacidad", ar: "سياسة الخصوصية",
+    de: "Datenschutzrichtlinie", nl: "Privacybeleid", tl: "Patakaran sa Privacy", tr: "Gizlilik Politikası", bs: "Politika privatnosti", fr: "Politique de Confidentialité", it: "Informativa sulla Privacy", hu: "Adatvédelmi irányelvek", pl: "Polityka prywatności", "pt-pt": "Política de Privacidade", ro: "Politica de Confidențialitate", sr: "Politika privatnosti", th: "นโยบายความเป็นส่วนตัว"
+  },
+  privacyIntro: { 
+    pt: "A sua privacidade é importante para nós. No Labxat, respeitamos a privacidade dos usuários e estamos comprometidos em proteger as informações coletadas durante a navegação.", 
+    en: "Your privacy is important to us. At Labxat, we respect user privacy and are committed to protecting the information collected during browsing.", 
+    es: "Tu privacidad es importante para nosotros. En Labxat, respetamos la privacidad de los usuarios y estamos comprometidos a proteger la información recopilada durante la navegación.", 
+    ar: "خصوصيتك مهمة بالنسبة لنا. في Labxat، نحترم خصوصية المستخدمين ونلتزم بحماية المعلومات التي يتم جمعها أثناء التصفح.",
+    de: "Ihre Privatsphäre ist uns wichtig. Bei Labxat respektieren wir die Privatsphäre der Benutzer und verpflichten uns, die während des Surfens gesammelten Informationen zu schützen.", 
+    nl: "Uw privacy is belangrijk voor ons. Bij Labxat respecteren we de privacy van gebruikers en zijn we toegewijd aan het beschermen van de informatie die tijdens het browsen wordt verzameld.", 
+    tl: "Mahalaga sa amin ang iyong privacy. Sa Labxat, nirerespeto namin ang privacy ng mga user at nangangako kaming protektahan ang impormasyong nakolekta habang nagba-browse.", 
+    tr: "Gizliliğiniz bizim için önemlidir. Labxat'ta kullanıcı gizliliğine saygı duyuyor ve gezinme sırasında toplanan bilgileri korumaya kararlıyız.", 
+    bs: "Vaša privatnost nam je važna. U Labxat-u poštujemo privatnost korisnika i posvećeni smo zaštiti informacija prikupljenih tijekom pregledavanja.", 
+    fr: "Votre vie privée nous est importante. Chez Labxat, nous respectons la vie privée des utilisateurs et nous nous engageons à protéger les informations collectées lors de la navigation.", 
+    it: "La tua privacy è importante per noi. In Labxat, rispettiamo la privacy degli utenti e ci impegniamo a proteggere le informazioni raccolte durante la navigazione.", 
+    hu: "Az Ön adatvédelme fontos számunkra. A Labxat-nál tiszteletben tartjuk a felhasználók adatvédelmét, és elkötelezettek vagyunk a böngészés során gyűjtött információk védelme mellett.", 
+    pl: "Twoja prywatność jest dla nas ważna. W Labxat szanujemy prywatność użytkowników i zobowiązujemy się do ochrony informacji zebranych podczas przeglądania.", 
+    "pt-pt": "A sua privacidade é importante para nós. No Labxat, respeitamos a privacidade dos utilizadores e estamos comprometidos em proteger as informações recolhidas durante a navegação.", 
+    ro: "Confidențialitatea dvs. este importantă pentru noi. La Labxat, respectăm confidențialitatea utilizatorilor și ne angajăm să protejăm informațiile colectate în timpul navigării.", 
+    sr: "Vaša privatnost nam je važna. U Labxat-u poštujemo privatnost korisnika i posvećeni smo zaštiti informacija prikupljenih tokom pregledanja.", 
+    th: "ความเป็นส่วนตัวของคุณสำคัญสำหรับเรา ที่ Labxat เราเคารพความเป็นส่วนตัวของผู้ใช้และมุ่งมั่นที่จะปกป้องข้อมูลที่รวบรวมระหว่างการเรียกดู"
+  },
+  privacyCollectionTitle: { 
+    pt: "Coleta de Informações", en: "Information Collection", es: "Recopilación de Información", ar: "جمع المعلومات",
+    de: "Informationserfassung", nl: "Informatieverzameling", tl: "Koleksyon ng Impormasyon", tr: "Bilgi Toplama", bs: "Prikupljanje informacija", fr: "Collecte d'Informations", it: "Raccolta di Informazioni", hu: "Információgyűjtés", pl: "Zbieranie informacji", "pt-pt": "Recolha de Informações", ro: "Colectarea Informațiilor", sr: "Prikupljanje informacija", th: "การรวบรวมข้อมูล"
+  },
+  privacyCollectionContent: { 
+    pt: "Podemos coletar informações de forma automática, como:\n• Endereço IP\n• Tipo de navegador\n• Páginas acessadas\n• Tempo de navegação\n\nEsses dados são utilizados apenas para fins estatísticos, melhoria do site e experiência do usuário.", 
+    en: "We may automatically collect information such as:\n• IP Address\n• Browser type\n• Pages accessed\n• Browsing time\n\nThis data is used only for statistical purposes, site improvement and user experience.", 
+    es: "Podemos recopilar información de forma automática, como:\n• Dirección IP\n• Tipo de navegador\n• Páginas accedidas\n• Tiempo de navegación\n\nEstos datos se utilizan solo para fines estadísticos, mejora del sitio y experiencia del usuario.", 
+    ar: "قد نجمع المعلومات تلقائيًا مثل:\n• عنوان IP\n• نوع المتصفح\n• الصفحات التي تم الوصول إليها\n• وقت التصفح\n\nتُستخدم هذه البيانات فقط للأغراض الإحصائية وتحسين الموقع وتجربة المستخدم.",
+    de: "Wir können automatisch Informationen sammeln wie:\n• IP-Adresse\n• Browsertyp\n• Aufgerufene Seiten\n• Browsing-Zeit\n\nDiese Daten werden nur für statistische Zwecke, Website-Verbesserung und Benutzererfahrung verwendet.", 
+    nl: "We kunnen automatisch informatie verzamelen zoals:\n• IP-adres\n• Browsertype\n• Bezochte pagina's\n• Browsetijd\n\nDeze gegevens worden alleen gebruikt voor statistische doeleinden, siteverbetering en gebruikerservaring.", 
+    tl: "Maaaring automatic kaming mangolekta ng impormasyon tulad ng:\n• IP Address\n• Uri ng browser\n• Mga page na na-access\n• Oras ng pag-browse\n\nGinagamit lang ang data na ito para sa statistical purposes, pagpapabuti ng site at user experience.", 
+    tr: "Aşağıdaki bilgileri otomatik olarak toplayabiliriz:\n• IP Adresi\n• Tarayıcı türü\n• Erişilen sayfalar\n• Gezinme süresi\n\nBu veriler yalnızca istatistiksel amaçlar, site iyileştirme ve kullanıcı deneyimi için kullanılır.", 
+    bs: "Možemo automatski prikupljati informacije kao što su:\n• IP adresa\n• Vrsta preglednika\n• Pristupljene stranice\n• Vrijeme pregledavanja\n\nOvi podaci se koriste samo u statističke svrhe, poboljšanje stranice i korisničko iskustvo.", 
+    fr: "Nous pouvons collecter automatiquement des informations telles que:\n• Adresse IP\n• Type de navigateur\n• Pages consultées\n• Temps de navigation\n\nCes données sont utilisées uniquement à des fins statistiques, d'amélioration du site et d'expérience utilisateur.", 
+    it: "Potremmo raccogliere automaticamente informazioni come:\n• Indirizzo IP\n• Tipo di browser\n• Pagine visitate\n• Tempo di navigazione\n\nQuesti dati vengono utilizzati solo per scopi statistici, miglioramento del sito ed esperienza utente.", 
+    hu: "Automatikusan gyűjthetünk információkat, mint például:\n• IP-cím\n• Böngésző típusa\n• Meglátogatott oldalak\n• Böngészési idő\n\nEzeket az adatokat csak statisztikai célokra, a webhely fejlesztésére és a felhasználói élményre használjuk.", 
+    pl: "Możemy automatycznie zbierać informacje takie jak:\n• Adres IP\n• Typ przeglądarki\n• Odwiedzone strony\n• Czas przeglądania\n\nTe dane są wykorzystywane wyłącznie do celów statystycznych, ulepszania strony i doświadczeń użytkownika.", 
+    "pt-pt": "Podemos recolher informações de forma automática, como:\n• Endereço IP\n• Tipo de navegador\n• Páginas acedidas\n• Tempo de navegação\n\nEstes dados são utilizados apenas para fins estatísticos, melhoria do site e experiência do utilizador.", 
+    ro: "Putem colecta automat informații precum:\n• Adresă IP\n• Tip de browser\n• Pagini accesate\n• Timp de navigare\n\nAceste date sunt utilizate doar în scopuri statistice, îmbunătățirea site-ului și experiența utilizatorului.", 
+    sr: "Možemo automatski prikupljati informacije kao što su:\n• IP adresa\n• Vrsta pregledača\n• Pristupljene stranice\n• Vreme pregledanja\n\nOvi podaci se koriste samo u statističke svrhe, poboljšanje stranice i korisničko iskustvo.", 
+    th: "เราอาจรวบรวมข้อมูลโดยอัตโนมัติ เช่น:\n• ที่อยู่ IP\n• ประเภทเบราว์เซอร์\n• หน้าที่เข้าถึง\n• เวลาในการเรียกดู\n\nข้อมูลนี้ใช้เพื่อวัตถุประสงค์ทางสถิติ การปรับปรุงเว็บไซต์ และประสบการณ์ผู้ใช้เท่านั้น"
+  },
+  privacyCookiesTitle: { 
+    pt: "Uso de Cookies", en: "Use of Cookies", es: "Uso de Cookies", ar: "استخدام ملفات تعريف الارتباط",
+    de: "Verwendung von Cookies", nl: "Gebruik van Cookies", tl: "Paggamit ng Cookies", tr: "Çerez Kullanımı", bs: "Korištenje kolačića", fr: "Utilisation des Cookies", it: "Uso dei Cookie", hu: "Cookie-k használata", pl: "Użycie Cookies", "pt-pt": "Uso de Cookies", ro: "Utilizarea Cookie-urilor", sr: "Korišćenje kolačića", th: "การใช้คุกกี้"
+  },
+  privacyCookiesContent: { 
+    pt: "Utilizamos cookies para:\n• Melhorar a navegação\n• Analisar tráfego e desempenho do site\n• Salvar preferências do usuário\n\nVocê pode desativar os cookies a qualquer momento nas configurações do seu navegador.", 
+    en: "We use cookies to:\n• Improve navigation\n• Analyze traffic and site performance\n• Save user preferences\n\nYou can disable cookies at any time in your browser settings.", 
+    es: "Utilizamos cookies para:\n• Mejorar la navegación\n• Analizar el tráfico y rendimiento del sitio\n• Guardar preferencias del usuario\n\nPuedes desactivar las cookies en cualquier momento en la configuración de tu navegador.", 
+    ar: "نستخدم ملفات تعريف الارتباط من أجل:\n• تحسين التنقل\n• تحليل حركة المرور وأداء الموقع\n• حفظ تفضيلات المستخدم\n\nيمكنك تعطيل ملفات تعريف الارتباط في أي وقت في إعدادات متصفحك.",
+    de: "Wir verwenden Cookies um:\n• Die Navigation zu verbessern\n• Verkehr und Website-Leistung zu analysieren\n• Benutzereinstellungen zu speichern\n\nSie können Cookies jederzeit in Ihren Browsereinstellungen deaktivieren.", 
+    nl: "We gebruiken cookies om:\n• Navigatie te verbeteren\n• Verkeer en siteprestaties te analyseren\n• Gebruikersvoorkeuren op te slaan\n\nU kunt cookies op elk moment uitschakelen in uw browserinstellingen.", 
+    tl: "Gumagamit kami ng cookies para:\n• Mapabuti ang navigation\n• Suriin ang traffic at performance ng site\n• I-save ang mga preference ng user\n\nMaaari mong i-disable ang cookies anumang oras sa settings ng iyong browser.", 
+    tr: "Çerezleri şunlar için kullanıyoruz:\n• Gezinmeyi iyileştirmek\n• Trafik ve site performansını analiz etmek\n• Kullanıcı tercihlerini kaydetmek\n\nÇerezleri tarayıcı ayarlarınızdan istediğiniz zaman devre dışı bırakabilirsiniz.", 
+    bs: "Koristimo kolačiće za:\n• Poboljšanje navigacije\n• Analizu prometa i performansi stranice\n• Spremanje korisničkih preferencija\n\nMožete onemogućiti kolačiće u bilo kojem trenutku u postavkama preglednika.", 
+    fr: "Nous utilisons des cookies pour:\n• Améliorer la navigation\n• Analyser le trafic et les performances du site\n• Sauvegarder les préférences utilisateur\n\nVous pouvez désactiver les cookies à tout moment dans les paramètres de votre navigateur.", 
+    it: "Utilizziamo i cookie per:\n• Migliorare la navigazione\n• Analizzare il traffico e le prestazioni del sito\n• Salvare le preferenze utente\n\nPuoi disabilitare i cookie in qualsiasi momento nelle impostazioni del browser.", 
+    hu: "Cookie-kat használunk a következőkre:\n• Navigáció javítása\n• Forgalom és webhely teljesítmény elemzése\n• Felhasználói beállítások mentése\n\nA cookie-kat bármikor letilthatja a böngésző beállításaiban.", 
+    pl: "Używamy cookies do:\n• Poprawy nawigacji\n• Analizy ruchu i wydajności strony\n• Zapisywania preferencji użytkownika\n\nMożesz wyłączyć cookies w dowolnym momencie w ustawieniach przeglądarki.", 
+    "pt-pt": "Utilizamos cookies para:\n• Melhorar a navegação\n• Analisar tráfego e desempenho do site\n• Guardar preferências do utilizador\n\nPode desativar os cookies a qualquer momento nas definições do seu navegador.", 
+    ro: "Folosim cookie-uri pentru:\n• Îmbunătățirea navigării\n• Analiza traficului și performanței site-ului\n• Salvarea preferințelor utilizatorului\n\nPuteți dezactiva cookie-urile oricând din setările browserului.", 
+    sr: "Koristimo kolačiće za:\n• Poboljšanje navigacije\n• Analizu prometa i performansi stranice\n• Čuvanje korisničkih preferencija\n\nMožete onemogućiti kolačiće u bilo kom trenutku u postavkama pregledača.", 
+    th: "เราใช้คุกกี้เพื่อ:\n• ปรับปรุงการนำทาง\n• วิเคราะห์การเข้าชมและประสิทธิภาพของเว็บไซต์\n• บันทึกการตั้งค่าของผู้ใช้\n\nคุณสามารถปิดใช้งานคุกกี้ได้ตลอดเวลาในการตั้งค่าเบราว์เซอร์"
+  },
+  privacySharingTitle: { 
+    pt: "Compartilhamento de Dados", en: "Data Sharing", es: "Compartición de Datos", ar: "مشاركة البيانات",
+    de: "Datenweitergabe", nl: "Gegevensdeling", tl: "Pagbabahagi ng Data", tr: "Veri Paylaşımı", bs: "Dijeljenje podataka", fr: "Partage de Données", it: "Condivisione Dati", hu: "Adatmegosztás", pl: "Udostępnianie danych", "pt-pt": "Partilha de Dados", ro: "Partajarea Datelor", sr: "Deljenje podataka", th: "การแบ่งปันข้อมูล"
+  },
+  privacySharingContent: { 
+    pt: "O Labxat não vende, troca ou compartilha informações pessoais dos usuários com terceiros, exceto quando exigido por lei.", 
+    en: "Labxat does not sell, trade or share users' personal information with third parties, except when required by law.", 
+    es: "Labxat no vende, intercambia ni comparte información personal de los usuarios con terceros, excepto cuando lo exija la ley.", 
+    ar: "لا يقوم Labxat ببيع أو تبادل أو مشاركة المعلومات الشخصية للمستخدمين مع أطراف ثالثة، إلا عندما يقتضي القانون ذلك.",
+    de: "Labxat verkauft, handelt oder teilt keine persönlichen Informationen der Benutzer mit Dritten, außer wenn dies gesetzlich vorgeschrieben ist.", 
+    nl: "Labxat verkoopt, ruilt of deelt geen persoonlijke informatie van gebruikers met derden, behalve wanneer dit wettelijk vereist is.", 
+    tl: "Hindi ibinebenta, ipinagpapalit o ibinabahagi ng Labxat ang personal na impormasyon ng mga user sa third parties, maliban kung kinakailangan ng batas.", 
+    tr: "Labxat, kullanıcıların kişisel bilgilerini yasal olarak gerekli olmadıkça üçüncü taraflarla satmaz, takas etmez veya paylaşmaz.", 
+    bs: "Labxat ne prodaje, ne trguje niti dijeli osobne podatke korisnika s trećim stranama, osim kada to zahtijeva zakon.", 
+    fr: "Labxat ne vend, n'échange ni ne partage les informations personnelles des utilisateurs avec des tiers, sauf lorsque la loi l'exige.", 
+    it: "Labxat non vende, scambia o condivide le informazioni personali degli utenti con terze parti, salvo quando richiesto dalla legge.", 
+    hu: "A Labxat nem adja el, nem cseréli és nem osztja meg a felhasználók személyes adatait harmadik felekkel, kivéve, ha a törvény előírja.", 
+    pl: "Labxat nie sprzedaje, nie wymienia ani nie udostępnia danych osobowych użytkowników stronom trzecim, chyba że wymaga tego prawo.", 
+    "pt-pt": "O Labxat não vende, troca ou partilha informações pessoais dos utilizadores com terceiros, exceto quando exigido por lei.", 
+    ro: "Labxat nu vinde, nu schimbă și nu partajează informațiile personale ale utilizatorilor cu terți, cu excepția cazului în care legea o impune.", 
+    sr: "Labxat ne prodaje, ne trguje niti deli lične podatke korisnika sa trećim stranama, osim kada to zahteva zakon.", 
+    th: "Labxat ไม่ขาย แลกเปลี่ยน หรือแบ่งปันข้อมูลส่วนบุคคลของผู้ใช้กับบุคคลที่สาม ยกเว้นเมื่อกฎหมายกำหนด"
+  },
+  privacyLinksTitle: { 
+    pt: "Links Externos", en: "External Links", es: "Enlaces Externos", ar: "الروابط الخارجية",
+    de: "Externe Links", nl: "Externe Links", tl: "External Links", tr: "Harici Bağlantılar", bs: "Vanjski linkovi", fr: "Liens Externes", it: "Link Esterni", hu: "Külső linkek", pl: "Linki zewnętrzne", "pt-pt": "Links Externos", ro: "Linkuri Externe", sr: "Spoljni linkovi", th: "ลิงก์ภายนอก"
+  },
+  privacyLinksContent: { 
+    pt: "Nosso site pode conter links para sites externos. Não nos responsabilizamos pelas práticas de privacidade de sites de terceiros.", 
+    en: "Our site may contain links to external sites. We are not responsible for the privacy practices of third-party sites.", 
+    es: "Nuestro sitio puede contener enlaces a sitios externos. No nos responsabilizamos por las prácticas de privacidad de sitios de terceros.", 
+    ar: "قد يحتوي موقعنا على روابط لمواقع خارجية. نحن غير مسؤولين عن ممارسات الخصوصية لمواقع الطرف الثالث.",
+    de: "Unsere Website kann Links zu externen Websites enthalten. Wir sind nicht verantwortlich für die Datenschutzpraktiken von Drittanbieter-Websites.", 
+    nl: "Onze site kan links naar externe sites bevatten. Wij zijn niet verantwoordelijk voor het privacybeleid van sites van derden.", 
+    tl: "Ang aming site ay maaaring maglaman ng mga link sa external sites. Hindi kami responsable sa privacy practices ng third-party sites.", 
+    tr: "Sitemiz harici sitelere bağlantılar içerebilir. Üçüncü taraf sitelerin gizlilik uygulamalarından sorumlu değiliz.", 
+    bs: "Naša stranica može sadržavati linkove na vanjske stranice. Nismo odgovorni za prakse privatnosti stranica trećih strana.", 
+    fr: "Notre site peut contenir des liens vers des sites externes. Nous ne sommes pas responsables des pratiques de confidentialité des sites tiers.", 
+    it: "Il nostro sito potrebbe contenere link a siti esterni. Non siamo responsabili delle pratiche sulla privacy di siti di terze parti.", 
+    hu: "Weboldalunk tartalmazhat külső oldalakra mutató linkeket. Nem vállalunk felelősséget harmadik felek webhelyeinek adatvédelmi gyakorlatáért.", 
+    pl: "Nasza strona może zawierać linki do zewnętrznych stron. Nie ponosimy odpowiedzialności za praktyki prywatności stron trzecich.", 
+    "pt-pt": "O nosso site pode conter links para sites externos. Não nos responsabilizamos pelas práticas de privacidade de sites de terceiros.", 
+    ro: "Site-ul nostru poate conține linkuri către site-uri externe. Nu suntem responsabili pentru practicile de confidențialitate ale site-urilor terțe.", 
+    sr: "Naša stranica može sadržavati linkove na spoljne stranice. Nismo odgovorni za prakse privatnosti stranica trećih strana.", 
+    th: "เว็บไซต์ของเราอาจมีลิงก์ไปยังเว็บไซต์ภายนอก เราไม่รับผิดชอบต่อแนวปฏิบัติด้านความเป็นส่วนตัวของเว็บไซต์ของบุคคลที่สาม"
+  },
+  privacyConsentTitle: { 
+    pt: "Consentimento", en: "Consent", es: "Consentimiento", ar: "الموافقة",
+    de: "Einwilligung", nl: "Toestemming", tl: "Pahintulot", tr: "Onay", bs: "Pristanak", fr: "Consentement", it: "Consenso", hu: "Hozzájárulás", pl: "Zgoda", "pt-pt": "Consentimento", ro: "Consimțământ", sr: "Pristanak", th: "ความยินยอม"
+  },
+  privacyConsentContent: { 
+    pt: "Ao utilizar o Labxat, você concorda com esta Política de Privacidade.", 
+    en: "By using Labxat, you agree to this Privacy Policy.", 
+    es: "Al usar Labxat, aceptas esta Política de Privacidad.", 
+    ar: "باستخدام Labxat، فإنك توافق على سياسة الخصوصية هذه.",
+    de: "Durch die Nutzung von Labxat stimmen Sie dieser Datenschutzrichtlinie zu.", 
+    nl: "Door Labxat te gebruiken, gaat u akkoord met dit Privacybeleid.", 
+    tl: "Sa paggamit ng Labxat, sumasang-ayon ka sa Privacy Policy na ito.", 
+    tr: "Labxat'ı kullanarak bu Gizlilik Politikasını kabul etmiş olursunuz.", 
+    bs: "Korištenjem Labxat-a pristajete na ovu Politiku privatnosti.", 
+    fr: "En utilisant Labxat, vous acceptez cette Politique de Confidentialité.", 
+    it: "Utilizzando Labxat, accetti questa Informativa sulla Privacy.", 
+    hu: "A Labxat használatával elfogadja ezt az Adatvédelmi irányelvet.", 
+    pl: "Korzystając z Labxat, zgadzasz się z niniejszą Polityką prywatności.", 
+    "pt-pt": "Ao utilizar o Labxat, concorda com esta Política de Privacidade.", 
+    ro: "Prin utilizarea Labxat, sunteți de acord cu această Politică de Confidențialitate.", 
+    sr: "Korišćenjem Labxat-a pristajete na ovu Politiku privatnosti.", 
+    th: "การใช้ Labxat แสดงว่าคุณยอมรับนโยบายความเป็นส่วนตัวนี้"
+  },
+  
+  // Cookie Consent
+  cookieMessage: { 
+    pt: "Este site utiliza cookies para melhorar sua experiência de navegação, analisar o tráfego e personalizar conteúdos. Ao continuar navegando, você concorda com o uso de cookies conforme descrito em nossa", 
+    en: "This site uses cookies to improve your browsing experience, analyze traffic and personalize content. By continuing to browse, you agree to the use of cookies as described in our", 
+    es: "Este sitio utiliza cookies para mejorar su experiencia de navegación, analizar el tráfico y personalizar contenidos. Al continuar navegando, acepta el uso de cookies como se describe en nuestra", 
+    ar: "يستخدم هذا الموقع ملفات تعريف الارتباط لتحسين تجربة التصفح وتحليل حركة المرور وتخصيص المحتوى. من خلال الاستمرار في التصفح، فإنك توافق على استخدام ملفات تعريف الارتباط كما هو موضح في",
+    de: "Diese Website verwendet Cookies, um Ihr Browsererlebnis zu verbessern, den Datenverkehr zu analysieren und Inhalte zu personalisieren. Wenn Sie weiter surfen, stimmen Sie der Verwendung von Cookies gemäß unserer zu", 
+    nl: "Deze site gebruikt cookies om uw browse-ervaring te verbeteren, verkeer te analyseren en inhoud te personaliseren. Door verder te bladeren, gaat u akkoord met het gebruik van cookies zoals beschreven in ons", 
+    tl: "Ang site na ito ay gumagamit ng cookies upang mapabuti ang iyong karanasan sa pag-browse, suriin ang traffic at i-personalize ang content. Sa patuloy na pag-browse, sumasang-ayon ka sa paggamit ng cookies tulad ng inilarawan sa aming", 
+    tr: "Bu site, göz atma deneyiminizi geliştirmek, trafiği analiz etmek ve içeriği kişiselleştirmek için çerezler kullanır. Göz atmaya devam ederek, çerezlerin kullanımını kabul etmiş olursunuz", 
+    bs: "Ova stranica koristi kolačiće za poboljšanje vašeg iskustva pregledavanja, analizu prometa i personalizaciju sadržaja. Nastavkom pregledavanja pristajete na korištenje kolačića kako je opisano u našoj", 
+    fr: "Ce site utilise des cookies pour améliorer votre expérience de navigation, analyser le trafic et personnaliser le contenu. En continuant à naviguer, vous acceptez l'utilisation de cookies comme décrit dans notre", 
+    it: "Questo sito utilizza cookie per migliorare la tua esperienza di navigazione, analizzare il traffico e personalizzare i contenuti. Continuando a navigare, accetti l'uso dei cookie come descritto nella nostra", 
+    hu: "Ez a webhely sütiket használ a böngészési élmény javítására, a forgalom elemzésére és a tartalom személyre szabására. A böngészés folytatásával elfogadja a sütik használatát a mi leírásunk szerint", 
+    pl: "Ta strona używa plików cookie, aby poprawić wrażenia z przeglądania, analizować ruch i personalizować treści. Kontynuując przeglądanie, zgadzasz się na używanie plików cookie zgodnie z opisem w naszej", 
+    "pt-pt": "Este site utiliza cookies para melhorar a sua experiência de navegação, analisar o tráfego e personalizar conteúdos. Ao continuar a navegar, concorda com o uso de cookies conforme descrito na nossa", 
+    ro: "Acest site folosește cookie-uri pentru a îmbunătăți experiența de navigare, a analiza traficul și a personaliza conținutul. Continuând să navigați, sunteți de acord cu utilizarea cookie-urilor conform descrierii din", 
+    sr: "Ova stranica koristi kolačiće za poboljšanje vašeg iskustva pregledanja, analizu prometa i personalizaciju sadržaja. Nastavljanjem pregledanja pristajete na korišćenje kolačića kako je opisano u našoj", 
+    th: "เว็บไซต์นี้ใช้คุกกี้เพื่อปรับปรุงประสบการณ์การเรียกดูของคุณ วิเคราะห์การเข้าชม และปรับแต่งเนื้อหา การเรียกดูต่อไปแสดงว่าคุณยอมรับการใช้คุกกี้ตามที่อธิบายไว้ใน"
+  },
+  acceptCookies: { 
+    pt: "Aceitar cookies", en: "Accept cookies", es: "Aceptar cookies", ar: "قبول ملفات تعريف الارتباط",
+    de: "Cookies akzeptieren", nl: "Cookies accepteren", tl: "Tanggapin ang cookies", tr: "Çerezleri kabul et", bs: "Prihvati kolačiće", fr: "Accepter les cookies", it: "Accetta cookie", hu: "Sütik elfogadása", pl: "Akceptuj cookies", "pt-pt": "Aceitar cookies", ro: "Acceptă cookie-uri", sr: "Prihvati kolačiće", th: "ยอมรับคุกกี้"
   },
   
   // Power Card
