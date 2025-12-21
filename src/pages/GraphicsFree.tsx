@@ -16,10 +16,11 @@ interface GraphicPack {
   images: string[];
 }
 
-const graphicPacks: GraphicPack[] = [
+// Pack IDs for translation lookup
+const getGraphicPacks = (t: (key: string) => string): GraphicPack[] => [
   {
     id: "ano-novo",
-    title: "10 fundos de Ano Novo para o seu xat",
+    title: t("newYearBackgrounds"),
     thumbnail: "https://xatimg.com/image/DZ8hn01gLoPo.png",
     images: [
       "https://xatimg.com/image/DZ8hn01gLoPo.png",
@@ -39,6 +40,7 @@ const graphicPacks: GraphicPack[] = [
 export const GraphicsFree = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const graphicPacks = getGraphicPacks(t);
   const [selectedPack, setSelectedPack] = useState<GraphicPack | null>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
@@ -46,10 +48,10 @@ export const GraphicsFree = () => {
     try {
       await navigator.clipboard.writeText(url);
       setCopiedIndex(index);
-      toast.success(t("linkCopied") || "Link copiado!");
+      toast.success(t("linkCopied"));
       setTimeout(() => setCopiedIndex(null), 2000);
     } catch {
-      toast.error("Erro ao copiar link");
+      toast.error(t("copyLinkError"));
     }
   };
 
@@ -77,10 +79,10 @@ export const GraphicsFree = () => {
         {/* Title */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-            Graphics FREE
+            {t("graphicsFree")}
           </h1>
           <p className="text-foreground/60">
-            {t("graphicsFreeDesc") || "Packs gratuitos para baixar"}
+            {t("graphicsFreeDesc")}
           </p>
         </div>
 
@@ -105,7 +107,7 @@ export const GraphicsFree = () => {
                     {pack.title}
                   </p>
                   <p className="text-white/70 text-xs mt-1">
-                    {pack.images.length} {t("images") || "imagens"}
+                    {pack.images.length} {t("images")}
                   </p>
                 </div>
                 <div className="absolute top-3 right-3 p-2 rounded-xl bg-labxat-green/90 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -122,7 +124,7 @@ export const GraphicsFree = () => {
               >
                 <div className="text-center">
                   <span className="text-foreground/20 text-4xl block mb-2">+</span>
-                  <span className="text-foreground/30 text-xs">{t("comingSoon") || "Em breve"}</span>
+                  <span className="text-foreground/30 text-xs">{t("comingSoon")}</span>
                 </div>
               </div>
             ))}
@@ -172,12 +174,12 @@ export const GraphicsFree = () => {
                     {copiedIndex === index ? (
                       <>
                         <Check className="w-3.5 h-3.5" />
-                        <span className="text-xs">{t("copied") || "Copiado!"}</span>
+                        <span className="text-xs">{t("copied")}</span>
                       </>
                     ) : (
                       <>
                         <Copy className="w-3.5 h-3.5" />
-                        <span className="text-xs">{t("copyLink") || "Copiar"}</span>
+                        <span className="text-xs">{t("copyLink")}</span>
                       </>
                     )}
                   </Button>
