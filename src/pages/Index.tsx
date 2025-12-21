@@ -30,7 +30,7 @@ const Index = () => {
       gradient: "pink" as const,
     },
     {
-      name: "Graphics FREE",
+      name: t("graphicsFree"),
       icon: Download,
       onClick: () => navigate("/graphics"),
       gradient: "green" as const,

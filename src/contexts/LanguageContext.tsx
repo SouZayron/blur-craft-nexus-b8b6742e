@@ -85,10 +85,13 @@ const translations: Translations = {
   drawn: { pt: "Sorteadas", en: "Drawn", es: "Sorteadas", ar: "مسحوبة" },
   
   // Graphics FREE
+  graphicsFree: { pt: "Graphics FREE", en: "Graphics FREE", es: "Graphics FREE", ar: "جرافيكس مجاني" },
   graphicsFreeDesc: { pt: "Packs gratuitos para baixar", en: "Free packs to download", es: "Packs gratuitos para descargar", ar: "حزم مجانية للتحميل" },
   images: { pt: "imagens", en: "images", es: "imágenes", ar: "صور" },
   copyLink: { pt: "Copiar", en: "Copy", es: "Copiar", ar: "نسخ" },
   comingSoon: { pt: "Em breve", en: "Coming soon", es: "Próximamente", ar: "قريبًا" },
+  copyLinkError: { pt: "Erro ao copiar link", en: "Error copying link", es: "Error al copiar enlace", ar: "خطأ في نسخ الرابط" },
+  newYearBackgrounds: { pt: "10 fundos de Ano Novo para o seu xat", en: "10 New Year backgrounds for your xat", es: "10 fondos de Año Nuevo para tu xat", ar: "10 خلفيات رأس السنة لـ xat الخاص بك" },
 };
 
 interface LanguageContextType {
