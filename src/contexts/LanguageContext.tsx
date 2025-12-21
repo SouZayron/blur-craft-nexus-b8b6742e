@@ -39,7 +39,7 @@ const translations: Translations = {
   
   // Color Generator Page
   colorTitle: { pt: "Gerador de Cores", en: "Color Generator", es: "Generador de Colores", ar: "مولد الألوان" },
-  colorSubtitle: { pt: "Digite um tema e deixe a IA criar paletas de cores incríveis para você", en: "Enter a theme and let AI create amazing color palettes for you", es: "Escribe un tema y deja que la IA cree paletas de colores increíbles para ti", ar: "أدخل موضوعًا ودع الذكاء الاصطناعي يصنع لوحات ألوان مذهلة لك" },
+  colorSubtitle: { pt: "Digite um tema e deixe que a gente cria as paletas de cores incríveis para você!", en: "Enter a theme and let us create amazing color palettes for you!", es: "¡Escribe un tema y deja que creemos paletas de colores increíbles para ti!", ar: "أدخل موضوعًا ودعنا ننشئ لوحات ألوان مذهلة لك!" },
   colorPlaceholder: { pt: "Digite um tema (ex: praia, fogo, floresta...)", en: "Enter a theme (e.g., beach, fire, forest...)", es: "Escribe un tema (ej: playa, fuego, bosque...)", ar: "أدخل موضوعًا (مثال: شاطئ، نار، غابة...)" },
   generate: { pt: "Gerar", en: "Generate", es: "Generar", ar: "إنشاء" },
   copied: { pt: "Copiado!", en: "Copied!", es: "¡Copiado!", ar: "تم النسخ!" },
@@ -50,7 +50,7 @@ const translations: Translations = {
   processingErrorDesc: { pt: "Não foi possível processar as paletas. Tente novamente.", en: "Could not process palettes. Try again.", es: "No se pudieron procesar las paletas. Inténtalo de nuevo.", ar: "تعذرت معالجة اللوحات. حاول مرة أخرى." },
   error: { pt: "Erro", en: "Error", es: "Error", ar: "خطأ" },
   errorGenerating: { pt: "Erro ao gerar paletas. Tente novamente.", en: "Error generating palettes. Try again.", es: "Error al generar paletas. Inténtalo de nuevo.", ar: "خطأ في إنشاء اللوحات. حاول مرة أخرى." },
-  emptyStateColors: { pt: "Digite um tema acima para gerar paletas de cores personalizadas", en: "Enter a theme above to generate custom color palettes", es: "Escribe un tema arriba para generar paletas de colores personalizadas", ar: "أدخل موضوعًا أعلاه لإنشاء لوحات ألوان مخصصة" },
+  emptyStateColors: { pt: "Necessários os powers Namecolor + Namegrad/Namewave para funcionar.", en: "Requires Namecolor + Namegrad/Namewave powers to work.", es: "Requiere los powers Namecolor + Namegrad/Namewave para funcionar.", ar: "مطلوب باورات Namecolor + Namegrad/Namewave للعمل." },
   
   // Nick Generator Page
   nickTitle: { pt: "Gerador de Nicks", en: "Nick Generator", es: "Generador de Nicks", ar: "مولد الألقاب" },
