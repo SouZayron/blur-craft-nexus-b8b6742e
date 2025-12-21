@@ -83,6 +83,11 @@ const translations: Translations = {
   remaining: { pt: "Restam", en: "Remaining", es: "Quedan", ar: "متبقي" },
   balls: { pt: "bolas", en: "balls", es: "bolas", ar: "كرات" },
   drawn: { pt: "Sorteadas", en: "Drawn", es: "Sorteadas", ar: "مسحوبة" },
+  
+  // Graphics FREE
+  graphicsFreeDesc: { pt: "Packs gratuitos para baixar", en: "Free packs to download", es: "Packs gratuitos para descargar", ar: "حزم مجانية للتحميل" },
+  images: { pt: "imagens", en: "images", es: "imágenes", ar: "صور" },
+  copyLink: { pt: "Copiar", en: "Copy", es: "Copiar", ar: "نسخ" },
 };
 
 interface LanguageContextType {
