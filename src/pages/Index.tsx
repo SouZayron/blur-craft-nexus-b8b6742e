@@ -4,25 +4,27 @@ import { GlassCard } from "@/components/GlassCard";
 import { ToolButton } from "@/components/ToolButton";
 import { Palette, Sparkles, Dices } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const tools = [
     {
-      name: "Nicks Personalizados",
+      name: t("nickGenerator"),
       icon: Sparkles,
       onClick: () => navigate("/nicks"),
       gradient: "blue" as const,
     },
     {
-      name: "Gerador de Cores",
+      name: t("colorGenerator"),
       icon: Palette,
       onClick: () => navigate("/cores"),
       gradient: "purple" as const,
     },
     {
-      name: "Bingo 1–90",
+      name: t("bingoGame"),
       icon: Dices,
       onClick: () => navigate("/bingo"),
       gradient: "pink" as const,
@@ -54,7 +56,7 @@ const Index = () => {
               />
               <div className="flex-1">
                 <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
-                  Ultimo Power
+                  {t("ultimoPower")}
                 </p>
                 <h2 className="text-xl md:text-2xl font-bold text-foreground">
                   Ratmas <span className="text-foreground/60 text-base">(ID: 734)</span>
@@ -65,27 +67,27 @@ const Index = () => {
             {/* Info Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-5">
               <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Status</p>
-                <p className="text-foreground font-medium text-sm">Unlimited</p>
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("status")}</p>
+                <p className="text-foreground font-medium text-sm">{t("unlimited")}</p>
               </div>
               <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Group</p>
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("group")}</p>
                 <p className="text-foreground font-medium text-sm">❌</p>
               </div>
               <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Epic</p>
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("epic")}</p>
                 <p className="text-foreground font-medium text-sm">❌</p>
               </div>
               <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Store Price</p>
-                <p className="text-foreground font-medium text-sm">Desconhecido</p>
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("storePrice")}</p>
+                <p className="text-foreground font-medium text-sm">{t("unknown")}</p>
               </div>
               <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Trade Price</p>
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradePrice")}</p>
                 <p className="text-foreground font-medium text-sm">0 - 0 xats</p>
               </div>
               <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">Trade Days</p>
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradeDays")}</p>
                 <p className="text-foreground font-medium text-sm">0 - 0 days</p>
               </div>
             </div>
@@ -93,7 +95,7 @@ const Index = () => {
             {/* Smilies Section */}
             <div className="bg-background/20 rounded-xl p-3">
               <p className="text-xs text-foreground/70 font-medium mb-2 uppercase tracking-wider">
-                Smilies of the power:
+                {t("smiliesOfPower")}
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {["(ratmas)", "(rmblanket)", "(rmgift)", "(rmelf)", "(rmblanketop)", "(rmlightstop)", "(rmreindeertop)", "(rmornamentback)", "(rmlights)", "(rmornament)", "(rmbow)", "(rmantlers)", "(rmsanta)", "(rmstocking)", "(rmmtoe)", "(rmback)"].map((smiley, index) => (
@@ -132,7 +134,7 @@ const Index = () => {
 
         {/* Footer inline */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
-          <p className="text-muted-foreground text-xs">Feito com amor Zayron - 2025</p>
+          <p className="text-muted-foreground text-xs">Feito com amor Zayron - 2025 · {t("copyright")}</p>
           <div className="mt-2 flex justify-center gap-1">
             <div className="w-8 h-0.5 rounded-full bg-labxat-blue/50" />
             <div className="w-8 h-0.5 rounded-full bg-labxat-purple/50" />
