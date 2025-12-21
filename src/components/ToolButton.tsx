@@ -6,13 +6,14 @@ interface ToolButtonProps {
   icon: LucideIcon;
   onClick?: () => void;
   className?: string;
-  gradient?: "blue" | "purple" | "pink";
+  gradient?: "blue" | "purple" | "pink" | "green";
 }
 
 const gradientStyles = {
   blue: "bg-gradient-to-r from-labxat-blue to-labxat-purple",
   purple: "bg-gradient-to-r from-labxat-purple to-labxat-pink",
   pink: "bg-gradient-to-r from-labxat-pink to-labxat-green",
+  green: "bg-gradient-to-r from-labxat-green to-labxat-blue",
 };
 
 export const ToolButton = ({ label, icon: Icon, onClick, className, gradient = "blue" }: ToolButtonProps) => {

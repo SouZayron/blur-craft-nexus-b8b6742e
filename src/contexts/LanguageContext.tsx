@@ -88,6 +88,7 @@ const translations: Translations = {
   graphicsFreeDesc: { pt: "Packs gratuitos para baixar", en: "Free packs to download", es: "Packs gratuitos para descargar", ar: "حزم مجانية للتحميل" },
   images: { pt: "imagens", en: "images", es: "imágenes", ar: "صور" },
   copyLink: { pt: "Copiar", en: "Copy", es: "Copiar", ar: "نسخ" },
+  comingSoon: { pt: "Em breve", en: "Coming soon", es: "Próximamente", ar: "قريبًا" },
 };
 
 interface LanguageContextType {
