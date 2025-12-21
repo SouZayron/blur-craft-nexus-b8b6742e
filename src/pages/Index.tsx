@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { FloatingBlob } from "@/components/FloatingBlob";
 import { GlassCard } from "@/components/GlassCard";
 import { ToolButton } from "@/components/ToolButton";
+import { GraphicsFree } from "@/components/GraphicsFree";
 import { Palette, Sparkles, Dices } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -112,7 +113,7 @@ const Index = () => {
         </div>
 
         {/* Tools Section */}
-        <div className="w-full max-w-4xl fade-in-up-delayed">
+        <div className="w-full max-w-4xl fade-in-up-delayed mb-8 md:mb-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {tools.map((tool, index) => (
               <div
@@ -131,6 +132,9 @@ const Index = () => {
             ))}
           </div>
         </div>
+
+        {/* Graphics FREE Section */}
+        <GraphicsFree />
 
         {/* Footer inline */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
