@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import ColorGenerator from "./pages/ColorGenerator";
 import { NickGenerator } from "./pages/NickGenerator";
 import { Bingo } from "./pages/Bingo";
+import { GraphicsFree } from "./pages/GraphicsFree";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/cores" element={<ColorGenerator />} />
             <Route path="/nicks" element={<NickGenerator />} />
             <Route path="/bingo" element={<Bingo />} />
+            <Route path="/graphics" element={<GraphicsFree />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
