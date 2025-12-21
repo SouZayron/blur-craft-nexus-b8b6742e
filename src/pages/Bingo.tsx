@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import html2canvas from "html2canvas";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const TOTAL_BALLS = 90;
 const DRAW_INTERVAL = 4000;
@@ -106,6 +107,7 @@ const GlobeBall = ({ index, color }: { index: number; color: string }) => {
 
 export const Bingo = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [drawnNumbers, setDrawnNumbers] = useState<number[]>([]);
   const [currentBall, setCurrentBall] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -144,8 +146,8 @@ export const Bingo = () => {
       if (data?.success && data?.url) {
         setImageUrl(data.url);
         toast({
-          title: "Print gerado!",
-          description: "Link da imagem disponível abaixo.",
+          title: t("printGenerated"),
+          description: t("printGeneratedDesc"),
         });
       } else {
         throw new Error(data?.error || 'Erro ao fazer upload');
@@ -153,8 +155,8 @@ export const Bingo = () => {
     } catch (error) {
       console.error('Error capturing panel:', error);
       toast({
-        title: "Erro",
-        description: error instanceof Error ? error.message : "Falha ao gerar o print",
+        title: t("error"),
+        description: error instanceof Error ? error.message : t("printError"),
         variant: "destructive",
       });
     } finally {
@@ -287,7 +289,7 @@ export const Bingo = () => {
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>Voltar</span>
+          <span>{t("back")}</span>
         </Link>
       </header>
 
@@ -295,7 +297,7 @@ export const Bingo = () => {
       <main className="relative z-10 container mx-auto px-4 pb-12">
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-black text-gradient mb-2">
-            Bingo 1-90
+            {t("bingoTitle")}
           </h1>
         </div>
 
@@ -303,7 +305,7 @@ export const Bingo = () => {
           {/* Left Panel - Ball Grid */}
           <div className="glass-card p-4 md:p-6 flex-1">
             <h2 className="text-lg font-bold text-foreground mb-4 text-center">
-              Painel de Conferência
+              {t("verificationPanel")}
             </h2>
             <div 
               ref={panelRef}
@@ -340,19 +342,19 @@ export const Bingo = () => {
                 {isUploading ? (
                   <>
                     <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Enviando...
+                    {t("sending")}
                   </>
                 ) : (
                   <>
                     <Camera className="w-5 h-5 mr-2" />
-                    Tirar Print
+                    {t("takeScreenshot")}
                   </>
                 )}
               </Button>
               
               {imageUrl && (
                 <div className="p-3 bg-muted/50 rounded-lg space-y-2">
-                  <p className="text-xs text-muted-foreground text-center">Link da imagem:</p>
+                  <p className="text-xs text-muted-foreground text-center">{t("imageLink")}</p>
                   <div className="flex gap-2">
                     <input 
                       type="text" 
@@ -365,7 +367,7 @@ export const Bingo = () => {
                       variant="outline"
                       onClick={() => {
                         navigator.clipboard.writeText(imageUrl);
-                        toast({ title: "Link copiado!" });
+                        toast({ title: t("linkCopied") });
                       }}
                     >
                       <Copy className="w-4 h-4" />
@@ -450,7 +452,7 @@ export const Bingo = () => {
             {/* History - Last 10 balls */}
             <div className="w-full mb-6">
               <h3 className="text-sm font-semibold text-muted-foreground mb-3 text-center">
-                Últimas 10 Bolas
+                {t("last10Balls")}
               </h3>
               <div className="grid grid-cols-5 gap-2">
                 {[...Array(10)].map((_, i) => {
@@ -481,7 +483,7 @@ export const Bingo = () => {
                   className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-6"
                 >
                   <Play className="w-5 h-5 mr-2" />
-                  PLAY
+                  {t("play")}
                 </Button>
               ) : (
                 <Button
@@ -489,7 +491,7 @@ export const Bingo = () => {
                   className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-6"
                 >
                   <Pause className="w-5 h-5 mr-2" />
-                  PAUSE
+                  {t("pause")}
                 </Button>
               )}
               
@@ -541,7 +543,7 @@ export const Bingo = () => {
                 <div className="absolute inset-0 w-3 h-3 rounded-full bg-primary/50 animate-ping" />
               </div>
               <p className="text-lg font-semibold text-foreground">
-                {drawnNumbers.length} de {TOTAL_BALLS} bolas sorteadas
+                {t("drawn")} {drawnNumbers.length} {t("of")} {TOTAL_BALLS} {t("balls")}
               </p>
               {isPlaying && (
                 <div className="flex gap-1">
@@ -563,7 +565,7 @@ export const Bingo = () => {
             </div>
             
             <p className="text-sm text-muted-foreground">
-              {availableNumbers.length} bolas restantes
+              {t("remaining")} {availableNumbers.length} {t("balls")}
             </p>
           </div>
         </div>
