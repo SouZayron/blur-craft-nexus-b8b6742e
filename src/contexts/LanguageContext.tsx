@@ -36,6 +36,53 @@ const translations: Translations = {
   
   // Footer
   copyright: { pt: "Todos os direitos reservados.", en: "All rights reserved.", es: "Todos los derechos reservados.", ar: "جميع الحقوق محفوظة." },
+  
+  // Color Generator Page
+  colorTitle: { pt: "Gerador de Cores", en: "Color Generator", es: "Generador de Colores", ar: "مولد الألوان" },
+  colorSubtitle: { pt: "Digite um tema e deixe a IA criar paletas de cores incríveis para você", en: "Enter a theme and let AI create amazing color palettes for you", es: "Escribe un tema y deja que la IA cree paletas de colores increíbles para ti", ar: "أدخل موضوعًا ودع الذكاء الاصطناعي يصنع لوحات ألوان مذهلة لك" },
+  colorPlaceholder: { pt: "Digite um tema (ex: praia, fogo, floresta...)", en: "Enter a theme (e.g., beach, fire, forest...)", es: "Escribe un tema (ej: playa, fuego, bosque...)", ar: "أدخل موضوعًا (مثال: شاطئ، نار، غابة...)" },
+  generate: { pt: "Gerar", en: "Generate", es: "Generar", ar: "إنشاء" },
+  copied: { pt: "Copiado!", en: "Copied!", es: "¡Copiado!", ar: "تم النسخ!" },
+  copyCode: { pt: "Copiar código", en: "Copy code", es: "Copiar código", ar: "نسخ الكود" },
+  enterTheme: { pt: "Digite um tema", en: "Enter a theme", es: "Escribe un tema", ar: "أدخل موضوعًا" },
+  enterThemeDesc: { pt: "Por favor, insira um tema para gerar as paletas.", en: "Please enter a theme to generate palettes.", es: "Por favor, ingresa un tema para generar las paletas.", ar: "يرجى إدخال موضوع لإنشاء اللوحات." },
+  processingError: { pt: "Erro ao processar", en: "Processing error", es: "Error al procesar", ar: "خطأ في المعالجة" },
+  processingErrorDesc: { pt: "Não foi possível processar as paletas. Tente novamente.", en: "Could not process palettes. Try again.", es: "No se pudieron procesar las paletas. Inténtalo de nuevo.", ar: "تعذرت معالجة اللوحات. حاول مرة أخرى." },
+  error: { pt: "Erro", en: "Error", es: "Error", ar: "خطأ" },
+  errorGenerating: { pt: "Erro ao gerar paletas. Tente novamente.", en: "Error generating palettes. Try again.", es: "Error al generar paletas. Inténtalo de nuevo.", ar: "خطأ في إنشاء اللوحات. حاول مرة أخرى." },
+  emptyStateColors: { pt: "Digite um tema acima para gerar paletas de cores personalizadas", en: "Enter a theme above to generate custom color palettes", es: "Escribe un tema arriba para generar paletas de colores personalizadas", ar: "أدخل موضوعًا أعلاه لإنشاء لوحات ألوان مخصصة" },
+  
+  // Nick Generator Page
+  nickTitle: { pt: "Gerador de Nicks", en: "Nick Generator", es: "Generador de Nicks", ar: "مولد الألقاب" },
+  nickSubtitle: { pt: "Transforme seu nome em 139 estilos únicos", en: "Transform your name into 139 unique styles", es: "Transforma tu nombre en 139 estilos únicos", ar: "حوّل اسمك إلى 139 نمطًا فريدًا" },
+  nickPlaceholder: { pt: "Digite seu nome ou apelido...", en: "Enter your name or nickname...", es: "Escribe tu nombre o apodo...", ar: "أدخل اسمك أو لقبك..." },
+  filterStyles: { pt: "Filtrar estilos...", en: "Filter styles...", es: "Filtrar estilos...", ar: "تصفية الأنماط..." },
+  showingOf: { pt: "Mostrando", en: "Showing", es: "Mostrando", ar: "عرض" },
+  of: { pt: "de", en: "of", es: "de", ar: "من" },
+  styles: { pt: "estilos", en: "styles", es: "estilos", ar: "أنماط" },
+  nickCopied: { pt: "Nick copiado!", en: "Nick copied!", es: "¡Nick copiado!", ar: "تم نسخ اللقب!" },
+  copyError: { pt: "Erro ao copiar", en: "Copy error", es: "Error al copiar", ar: "خطأ في النسخ" },
+  enterName: { pt: "Digite um nome para gerar os nicks!", en: "Enter a name to generate nicks!", es: "¡Escribe un nombre para generar los nicks!", ar: "أدخل اسمًا لإنشاء الألقاب!" },
+  nicksGenerated: { pt: "nicks gerados com sucesso!", en: "nicks generated successfully!", es: "¡nicks generados con éxito!", ar: "تم إنشاء الألقاب بنجاح!" },
+  emptyStateNicks: { pt: "Digite um nome e clique em Gerar para ver a mágica acontecer!", en: "Enter a name and click Generate to see the magic happen!", es: "¡Escribe un nombre y haz clic en Generar para ver la magia!", ar: "أدخل اسمًا وانقر على إنشاء لترى السحر!" },
+  
+  // Bingo Page
+  bingoTitle: { pt: "Bingo 1-90", en: "Bingo 1-90", es: "Bingo 1-90", ar: "بينغو 1-90" },
+  back: { pt: "Voltar", en: "Back", es: "Volver", ar: "رجوع" },
+  verificationPanel: { pt: "Painel de Conferência", en: "Verification Panel", es: "Panel de Verificación", ar: "لوحة التحقق" },
+  takeScreenshot: { pt: "Tirar Print", en: "Take Screenshot", es: "Tomar Captura", ar: "أخذ لقطة" },
+  sending: { pt: "Enviando...", en: "Sending...", es: "Enviando...", ar: "جاري الإرسال..." },
+  imageLink: { pt: "Link da imagem:", en: "Image link:", es: "Enlace de la imagen:", ar: "رابط الصورة:" },
+  linkCopied: { pt: "Link copiado!", en: "Link copied!", es: "¡Enlace copiado!", ar: "تم نسخ الرابط!" },
+  printGenerated: { pt: "Print gerado!", en: "Screenshot generated!", es: "¡Captura generada!", ar: "تم إنشاء اللقطة!" },
+  printGeneratedDesc: { pt: "Link da imagem disponível abaixo.", en: "Image link available below.", es: "Enlace de imagen disponible abajo.", ar: "رابط الصورة متاح أدناه." },
+  printError: { pt: "Falha ao gerar o print", en: "Failed to generate screenshot", es: "Error al generar la captura", ar: "فشل في إنشاء اللقطة" },
+  last10Balls: { pt: "Últimas 10 Bolas", en: "Last 10 Balls", es: "Últimas 10 Bolas", ar: "آخر 10 كرات" },
+  play: { pt: "PLAY", en: "PLAY", es: "PLAY", ar: "تشغيل" },
+  pause: { pt: "PAUSA", en: "PAUSE", es: "PAUSA", ar: "إيقاف" },
+  remaining: { pt: "Restam", en: "Remaining", es: "Quedan", ar: "متبقي" },
+  balls: { pt: "bolas", en: "balls", es: "bolas", ar: "كرات" },
+  drawn: { pt: "Sorteadas", en: "Drawn", es: "Sorteadas", ar: "مسحوبة" },
 };
 
 interface LanguageContextType {

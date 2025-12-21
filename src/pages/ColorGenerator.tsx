@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2, Sparkles, Copy, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ParsedPalette {
   name: string;
@@ -64,6 +65,7 @@ const parsePaletteCode = (line: string): ParsedPalette | null => {
 
 const PalettePreview = ({ palette }: { palette: ParsedPalette }) => {
   const [copied, setCopied] = useState(false);
+  const { t } = useLanguage();
   
   const gradientStyle = {
     background: `linear-gradient(${palette.angle}deg, ${palette.colors.join(", ")})`,
@@ -113,12 +115,12 @@ const PalettePreview = ({ palette }: { palette: ParsedPalette }) => {
         {copied ? (
           <>
             <Check className="w-4 h-4 mr-2" />
-            Copiado!
+            {t("copied")}
           </>
         ) : (
           <>
             <Copy className="w-4 h-4 mr-2" />
-            Copiar código
+            {t("copyCode")}
           </>
         )}
       </Button>
@@ -131,12 +133,13 @@ const ColorGenerator = () => {
   const [palettes, setPalettes] = useState<ParsedPalette[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const generatePalettes = async () => {
     if (!theme.trim()) {
       toast({
-        title: "Digite um tema",
-        description: "Por favor, insira um tema para gerar as paletas.",
+        title: t("enterTheme"),
+        description: t("enterThemeDesc"),
         variant: "destructive",
       });
       return;
@@ -159,8 +162,8 @@ const ColorGenerator = () => {
 
       if (parsed.length === 0) {
         toast({
-          title: "Erro ao processar",
-          description: "Não foi possível processar as paletas. Tente novamente.",
+          title: t("processingError"),
+          description: t("processingErrorDesc"),
           variant: "destructive",
         });
         return;
@@ -170,8 +173,8 @@ const ColorGenerator = () => {
     } catch (error: any) {
       console.error("Error generating palettes:", error);
       toast({
-        title: "Erro",
-        description: error.message || "Erro ao gerar paletas. Tente novamente.",
+        title: t("error"),
+        description: error.message || t("errorGenerating"),
         variant: "destructive",
       });
     } finally {
@@ -193,10 +196,10 @@ const ColorGenerator = () => {
           {/* Title */}
           <div className="text-center mb-12 fade-in-up">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gradient mb-4">
-              Gerador de Cores
+              {t("colorTitle")}
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Digite um tema e deixe a IA criar paletas de cores incríveis para você
+              {t("colorSubtitle")}
             </p>
           </div>
 
@@ -205,7 +208,7 @@ const ColorGenerator = () => {
             <div className="flex gap-3">
               <Input
                 type="text"
-                placeholder="Digite um tema (ex: praia, fogo, floresta...)"
+                placeholder={t("colorPlaceholder")}
                 value={theme}
                 onChange={(e) => setTheme(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && generatePalettes()}
@@ -222,7 +225,7 @@ const ColorGenerator = () => {
                 ) : (
                   <>
                     <Sparkles className="w-5 h-5 mr-2" />
-                    Gerar
+                    {t("generate")}
                   </>
                 )}
               </Button>
@@ -248,7 +251,7 @@ const ColorGenerator = () => {
           {!isLoading && palettes.length === 0 && (
             <div className="text-center text-muted-foreground py-16">
               <Sparkles className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>Digite um tema acima para gerar paletas de cores personalizadas</p>
+              <p>{t("emptyStateColors")}</p>
             </div>
           )}
         </div>

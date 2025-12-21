@@ -5,16 +5,18 @@ import { GlassCard } from "@/components/GlassCard";
 import { fontStyles, transformText } from "@/data/fontStyles";
 import { Copy, Check, Sparkles, Search } from "lucide-react";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const NickGenerator = () => {
   const [inputName, setInputName] = useState("");
   const [generatedNicks, setGeneratedNicks] = useState<{ id: number; name: string; nick: string }[]>([]);
   const [copiedId, setCopiedId] = useState<number | null>(null);
   const [searchFilter, setSearchFilter] = useState("");
+  const { t } = useLanguage();
 
   const handleGenerate = () => {
     if (!inputName.trim()) {
-      toast.error("Digite um nome para gerar os nicks!");
+      toast.error(t("enterName"));
       return;
     }
 
@@ -25,17 +27,17 @@ export const NickGenerator = () => {
     }));
 
     setGeneratedNicks(nicks);
-    toast.success(`${nicks.length} nicks gerados com sucesso!`);
+    toast.success(`${nicks.length} ${t("nicksGenerated")}`);
   };
 
   const handleCopy = async (nick: string, id: number) => {
     try {
       await navigator.clipboard.writeText(nick);
       setCopiedId(id);
-      toast.success("Nick copiado!");
+      toast.success(t("nickCopied"));
       setTimeout(() => setCopiedId(null), 2000);
     } catch {
-      toast.error("Erro ao copiar");
+      toast.error(t("copyError"));
     }
   };
 
@@ -62,10 +64,10 @@ export const NickGenerator = () => {
           {/* Title */}
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-black text-gradient mb-3">
-              Gerador de Nicks
+              {t("nickTitle")}
             </h1>
             <p className="text-foreground/60 text-lg">
-              Transforme seu nome em 139 estilos únicos
+              {t("nickSubtitle")}
             </p>
           </div>
 
@@ -77,7 +79,7 @@ export const NickGenerator = () => {
                 value={inputName}
                 onChange={(e) => setInputName(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
-                placeholder="Digite seu nome ou apelido..."
+                placeholder={t("nickPlaceholder")}
                 className="flex-1 px-5 py-4 rounded-2xl bg-white/10 border border-white/20 text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 text-lg"
                 maxLength={30}
               />
@@ -86,7 +88,7 @@ export const NickGenerator = () => {
                 className="px-8 py-4 rounded-2xl gradient-btn shimmer text-primary-foreground font-semibold text-lg flex items-center justify-center gap-2 hover:scale-105 transition-transform"
               >
                 <Sparkles className="w-5 h-5" />
-                Gerar
+                {t("generate")}
               </button>
             </div>
           </GlassCard>
@@ -102,7 +104,7 @@ export const NickGenerator = () => {
                     type="text"
                     value={searchFilter}
                     onChange={(e) => setSearchFilter(e.target.value)}
-                    placeholder="Filtrar estilos..."
+                    placeholder={t("filterStyles")}
                     className="w-full pl-12 pr-5 py-3 rounded-xl bg-white/10 border border-white/20 text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
@@ -110,7 +112,7 @@ export const NickGenerator = () => {
 
               {/* Results Count */}
               <p className="text-center text-foreground/60 mb-6">
-                Mostrando {filteredNicks.length} de {generatedNicks.length} estilos
+                {t("showingOf")} {filteredNicks.length} {t("of")} {generatedNicks.length} {t("styles")}
               </p>
 
               {/* Nicks Grid */}
@@ -157,7 +159,7 @@ export const NickGenerator = () => {
                 <Sparkles className="w-12 h-12 text-primary/60" />
               </div>
               <p className="text-foreground/50 text-lg">
-                Digite um nome e clique em Gerar para ver a mágica acontecer!
+                {t("emptyStateNicks")}
               </p>
             </div>
           )}
