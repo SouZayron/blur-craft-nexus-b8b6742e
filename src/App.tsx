@@ -12,6 +12,7 @@ import { GraphicsFree } from "./pages/GraphicsFree";
 import { About } from "./pages/About";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { CookieConsent } from "./components/CookieConsent";
+import { FloatingRadio } from "./components/FloatingRadio";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
           <CookieConsent />
+          <FloatingRadio />
         </BrowserRouter>
       </TooltipProvider>
     </LanguageProvider>
