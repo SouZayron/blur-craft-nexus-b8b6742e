@@ -94,8 +94,8 @@ export const Emojis = () => {
           {t("back")}
         </button>
 
-        <h1 className="text-3xl font-bold text-foreground mb-2">Emojis</h1>
-        <p className="text-foreground/70 mb-8">50 Temas diversos para personalização | Clique em cima para copiar automaticamente</p>
+        <h1 className="text-3xl font-bold text-foreground mb-2 text-center">Emojis</h1>
+        <p className="text-foreground/70 mb-8 text-center">50 Temas diversos para personalização | Clique em cima para copiar automaticamente</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {emojiThemes.map((theme, index) => (
