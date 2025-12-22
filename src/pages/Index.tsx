@@ -50,81 +50,82 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="relative z-10 h-full flex flex-col items-center justify-start px-4 pt-28 pb-16 overflow-y-auto">
-        {/* News Block - Ultimo Power */}
-        <div className="w-full max-w-2xl mb-8 md:mb-12">
-          <GlassCard className="fade-in-up p-5 md:p-6">
-            {/* Header with Image and Title */}
-            <div className="flex items-start gap-4 mb-5">
-              <img 
-                src="https://xatimg.com/image/YuaLbdfuX4Q8.png" 
-                alt="Ratmas Power" 
-                className="w-20 h-20 rounded-xl object-cover shadow-lg"
-              />
-              <div className="flex-1">
-                <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
-                  {t("ultimoPower")}
+        {/* Two Column Layout */}
+        <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-[1fr,300px] gap-6">
+          {/* Left Column - News Block */}
+          <div className="fade-in-up">
+            <GlassCard className="p-5 md:p-6 h-full">
+              {/* Header with Image and Title */}
+              <div className="flex items-start gap-4 mb-5">
+                <img 
+                  src="https://xatimg.com/image/YuaLbdfuX4Q8.png" 
+                  alt="Ratmas Power" 
+                  className="w-20 h-20 rounded-xl object-cover shadow-lg"
+                />
+                <div className="flex-1">
+                  <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
+                    {t("ultimoPower")}
+                  </p>
+                  <h2 className="text-xl md:text-2xl font-bold text-foreground">
+                    Ratmas <span className="text-foreground/60 text-base">(ID: 734)</span>
+                  </h2>
+                </div>
+              </div>
+
+              {/* Info Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-5">
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("status")}</p>
+                  <p className="text-foreground font-medium text-sm">{t("unlimited")}</p>
+                </div>
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("group")}</p>
+                  <p className="text-foreground font-medium text-sm">❌</p>
+                </div>
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("epic")}</p>
+                  <p className="text-foreground font-medium text-sm">❌</p>
+                </div>
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("storePrice")}</p>
+                  <p className="text-foreground font-medium text-sm">25 days</p>
+                </div>
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradePrice")}</p>
+                  <p className="text-foreground font-medium text-sm">300 - 375 xats</p>
+                </div>
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradeDays")}</p>
+                  <p className="text-foreground font-medium text-sm">21 - 24 days</p>
+                </div>
+              </div>
+
+              {/* Smilies Section */}
+              <div className="bg-background/20 rounded-xl p-3">
+                <p className="text-xs text-foreground/70 font-medium mb-2 uppercase tracking-wider">
+                  {t("smiliesOfPower")}
                 </p>
-                <h2 className="text-xl md:text-2xl font-bold text-foreground">
-                  Ratmas <span className="text-foreground/60 text-base">(ID: 734)</span>
-                </h2>
+                <div className="flex flex-wrap gap-1.5">
+                  {["(ratmas)", "(rmblanket)", "(rmgift)", "(rmelf)", "(rmblanketop)", "(rmlightstop)", "(rmreindeertop)", "(rmornamentback)", "(rmlights)", "(rmornament)", "(rmbow)", "(rmantlers)", "(rmsanta)", "(rmstocking)", "(rmmtoe)", "(rmback)"].map((smiley, index) => (
+                    <span 
+                      key={index}
+                      className="bg-labxat-purple/20 text-labxat-purple px-2 py-0.5 rounded-md text-xs font-mono"
+                    >
+                      {smiley}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            </GlassCard>
+          </div>
 
-            {/* Info Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-5">
-              <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("status")}</p>
-                <p className="text-foreground font-medium text-sm">{t("unlimited")}</p>
-              </div>
-              <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("group")}</p>
-                <p className="text-foreground font-medium text-sm">❌</p>
-              </div>
-              <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("epic")}</p>
-                <p className="text-foreground font-medium text-sm">❌</p>
-              </div>
-              <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("storePrice")}</p>
-                <p className="text-foreground font-medium text-sm">25 days</p>
-              </div>
-              <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradePrice")}</p>
-                <p className="text-foreground font-medium text-sm">300 - 375 xats</p>
-              </div>
-              <div className="bg-background/30 rounded-lg p-2.5">
-                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradeDays")}</p>
-                <p className="text-foreground font-medium text-sm">21 - 24 days</p>
-              </div>
-            </div>
-
-            {/* Smilies Section */}
-            <div className="bg-background/20 rounded-xl p-3">
-              <p className="text-xs text-foreground/70 font-medium mb-2 uppercase tracking-wider">
-                {t("smiliesOfPower")}
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {["(ratmas)", "(rmblanket)", "(rmgift)", "(rmelf)", "(rmblanketop)", "(rmlightstop)", "(rmreindeertop)", "(rmornamentback)", "(rmlights)", "(rmornament)", "(rmbow)", "(rmantlers)", "(rmsanta)", "(rmstocking)", "(rmmtoe)", "(rmback)"].map((smiley, index) => (
-                  <span 
-                    key={index}
-                    className="bg-labxat-purple/20 text-labxat-purple px-2 py-0.5 rounded-md text-xs font-mono"
-                  >
-                    {smiley}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </GlassCard>
-        </div>
-
-        {/* Tools Section */}
-        <div className="w-full max-w-4xl fade-in-up-delayed mb-8 md:mb-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          {/* Right Column - Tools */}
+          <div className="fade-in-up-delayed flex flex-col gap-4">
             {tools.map((tool, index) => (
               <div
                 key={tool.name}
                 className="scale-in"
-                style={{ animationDelay: `${index * 0.15}s` }}
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <ToolButton 
                   onClick={tool.onClick} 
