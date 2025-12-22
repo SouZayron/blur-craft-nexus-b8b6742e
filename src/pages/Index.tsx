@@ -2,7 +2,7 @@ import { Header } from "@/components/Header";
 import { FloatingBlob } from "@/components/FloatingBlob";
 import { GlassCard } from "@/components/GlassCard";
 import { ToolButton } from "@/components/ToolButton";
-import { Palette, Sparkles, Dices, Download } from "lucide-react";
+import { Palette, Sparkles, Dices, Download, Smile } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -34,6 +34,12 @@ const Index = () => {
       icon: Download,
       onClick: () => navigate("/graphics"),
       gradient: "green" as const,
+    },
+    {
+      name: "Emojis",
+      icon: Smile,
+      onClick: () => navigate("/emojis"),
+      gradient: "blue" as const,
     },
   ];
 
