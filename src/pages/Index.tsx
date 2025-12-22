@@ -145,6 +145,37 @@ const Index = () => {
           </div>
         </div>
 
+        {/* ShopLAB Section */}
+        <div className="w-full max-w-6xl mt-6 fade-in-up">
+          <GlassCard className="p-5 md:p-6">
+            <h2 className="text-xl md:text-2xl font-bold text-foreground mb-5 text-center">
+              Shop<span className="text-labxat-purple">LAB</span>
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              {[
+                { name: "Fundos", price: "600 xats" },
+                { name: "Pcbacks", price: "400 xats" },
+                { name: "Xatspace", price: "1500 xats" },
+                { name: "Logotipo", price: "1500 xats" },
+                { name: "Pstyle", price: "350 xats" },
+                { name: "Xmoji", price: "400 xats" },
+              ].map((service, index) => (
+                <div
+                  key={service.name}
+                  className="bg-background/30 backdrop-blur-sm rounded-xl p-4 text-center border border-white/10 hover:border-labxat-purple/50 transition-all duration-300 hover:scale-105 cursor-pointer"
+                >
+                  <h3 className="text-foreground font-semibold text-sm md:text-base mb-1">
+                    {service.name}
+                  </h3>
+                  <p className="text-labxat-purple text-xs font-medium">
+                    {service.price}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </GlassCard>
+        </div>
+
         {/* Footer inline */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
           <p className="text-muted-foreground text-xs">Feito com amor Zayron - 2025 · {t("copyright")}</p>
