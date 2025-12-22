@@ -7,16 +7,13 @@ export const Header = () => {
   const location = useLocation();
   const { t } = useLanguage();
 
-  const mainLinks = [
+  const navLinks = [
     { name: t("home"), icon: Home, path: "/" },
     { name: t("about"), icon: Info, path: "/sobre" },
-    { name: t("privacyPolicy"), icon: Shield, path: "/privacidade" },
-  ];
-
-  const tools = [
     { name: t("nicks"), icon: Sparkles, path: "/nicks" },
     { name: t("cores"), icon: Palette, path: "/cores" },
     { name: t("bingo"), icon: Dices, path: "/bingo" },
+    { name: t("privacyPolicy"), icon: Shield, path: "/privacidade" },
   ];
 
   return (
@@ -31,8 +28,7 @@ export const Header = () => {
 
           {/* Navigation */}
           <nav className="flex items-center gap-1 md:gap-2">
-            {/* Main Links */}
-            {mainLinks.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
@@ -44,24 +40,6 @@ export const Header = () => {
               >
                 <link.icon className="w-4 h-4" />
                 <span className="hidden lg:inline">{link.name}</span>
-              </Link>
-            ))}
-            
-            <div className="w-px h-6 bg-foreground/20 mx-1 hidden md:block" />
-            
-            {/* Tools */}
-            {tools.map((tool) => (
-              <Link
-                key={tool.path}
-                to={tool.path}
-                className={`flex items-center gap-1 px-2 md:px-3 py-2 rounded-xl text-xs md:text-sm font-medium transition-all duration-300 ${
-                  location.pathname === tool.path
-                    ? "bg-primary/20 text-primary"
-                    : "hover:bg-white/20 text-foreground/70 hover:text-foreground"
-                }`}
-              >
-                <tool.icon className="w-4 h-4" />
-                <span className="hidden lg:inline">{tool.name}</span>
               </Link>
             ))}
             
