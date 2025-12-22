@@ -174,6 +174,18 @@ const Index = () => {
               ))}
             </div>
           </GlassCard>
+          
+          {/* Contact Button */}
+          <div className="mt-4 flex justify-center">
+            <a
+              href="https://xat.com/mixhits"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-labxat-purple hover:bg-labxat-purple/80 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-labxat-purple/30"
+            >
+              Contato
+            </a>
+          </div>
         </div>
 
         {/* Footer inline */}
