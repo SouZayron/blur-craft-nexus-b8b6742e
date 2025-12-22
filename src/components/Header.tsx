@@ -26,7 +26,17 @@ export const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <img src="/labxat-icon.gif" alt="Labxat" className="w-8 h-8" />
-            <span className="text-2xl font-black text-gradient">Labxat</span>
+            <span className="text-2xl font-black text-gradient flex">
+              {"Labxat".split("").map((letter, index) => (
+                <span
+                  key={index}
+                  className="inline-block animate-wave"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {letter}
+                </span>
+              ))}
+            </span>
           </Link>
 
           {/* Navigation */}
