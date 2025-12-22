@@ -9,6 +9,7 @@ import ColorGenerator from "./pages/ColorGenerator";
 import { NickGenerator } from "./pages/NickGenerator";
 import { Bingo } from "./pages/Bingo";
 import { GraphicsFree } from "./pages/GraphicsFree";
+import { Emojis } from "./pages/Emojis";
 import { About } from "./pages/About";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { CookieConsent } from "./components/CookieConsent";
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/nicks" element={<NickGenerator />} />
             <Route path="/bingo" element={<Bingo />} />
             <Route path="/graphics" element={<GraphicsFree />} />
+            <Route path="/emojis" element={<Emojis />} />
             <Route path="/sobre" element={<About />} />
             <Route path="/privacidade" element={<PrivacyPolicy />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
