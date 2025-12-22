@@ -147,6 +147,19 @@
     animation: gradient-shift 15s ease infinite;
   }
 
+  .dark .animated-gradient-bg {
+    background: linear-gradient(
+      -45deg,
+      hsl(240 15% 12%),
+      hsl(260 20% 15%),
+      hsl(280 15% 12%),
+      hsl(220 20% 10%),
+      hsl(250 15% 14%)
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+
   @keyframes gradient-shift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
