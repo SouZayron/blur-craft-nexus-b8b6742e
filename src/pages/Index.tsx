@@ -181,7 +181,7 @@ const Index = () => {
               href="https://xat.com/mixhits"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-labxat-purple hover:bg-labxat-purple/80 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-labxat-purple/30"
+              className="bg-labxat-purple hover:bg-labxat-purple/80 text-white font-bold text-lg px-12 py-4 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-labxat-purple/30 animate-pulse"
             >
               Contato
             </a>
