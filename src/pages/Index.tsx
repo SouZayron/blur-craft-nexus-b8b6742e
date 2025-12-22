@@ -51,7 +51,7 @@ const Index = () => {
       {/* Main Content */}
       <main className="relative z-10 h-full flex flex-col items-center justify-start px-4 pt-28 pb-16 overflow-y-auto">
         {/* Two Column Layout */}
-        <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-[1fr,300px] gap-6">
+        <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-6">
           {/* Left Column - News Block */}
           <div className="fade-in-up">
             <GlassCard className="p-5 md:p-6 h-full">
