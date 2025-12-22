@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import Index from "./pages/Index";
 import ColorGenerator from "./pages/ColorGenerator";
 import { NickGenerator } from "./pages/NickGenerator";
@@ -14,34 +15,38 @@ import { About } from "./pages/About";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { CookieConsent } from "./components/CookieConsent";
 import { FloatingRadio } from "./components/FloatingRadio";
+import { ThemeToggle } from "./components/ThemeToggle";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/cores" element={<ColorGenerator />} />
-            <Route path="/nicks" element={<NickGenerator />} />
-            <Route path="/bingo" element={<Bingo />} />
-            <Route path="/graphics" element={<GraphicsFree />} />
-            <Route path="/emojis" element={<Emojis />} />
-            <Route path="/sobre" element={<About />} />
-            <Route path="/privacidade" element={<PrivacyPolicy />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <CookieConsent />
-          <FloatingRadio />
-        </BrowserRouter>
-      </TooltipProvider>
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/cores" element={<ColorGenerator />} />
+              <Route path="/nicks" element={<NickGenerator />} />
+              <Route path="/bingo" element={<Bingo />} />
+              <Route path="/graphics" element={<GraphicsFree />} />
+              <Route path="/emojis" element={<Emojis />} />
+              <Route path="/sobre" element={<About />} />
+              <Route path="/privacidade" element={<PrivacyPolicy />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <CookieConsent />
+            <ThemeToggle />
+            <FloatingRadio />
+          </BrowserRouter>
+        </TooltipProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
