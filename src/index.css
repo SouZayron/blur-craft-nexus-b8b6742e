@@ -90,13 +90,21 @@
     @apply border-border;
   }
 
+  html, body {
+    @apply overflow-hidden;
+    height: 100%;
+    width: 100%;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', sans-serif;
   }
 
-  html {
-    scroll-behavior: smooth;
+  #root {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
   }
 }
 
