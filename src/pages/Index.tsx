@@ -153,19 +153,19 @@ const Index = () => {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               {[
-                { name: "Fundos", price: "600 xats" },
-                { name: "Pcbacks", price: "400 xats" },
-                { name: "Xatspace", price: "1500 xats" },
-                { name: "Logotipo", price: "1500 xats" },
-                { name: "Pstyle", price: "350 xats" },
-                { name: "Xmoji", price: "400 xats" },
+                { key: "fundos", price: "600 xats" },
+                { key: "pcbacks", price: "400 xats" },
+                { key: "xatspace", price: "1500 xats" },
+                { key: "logotipo", price: "1500 xats" },
+                { key: "pstyle", price: "350 xats" },
+                { key: "xmoji", price: "400 xats" },
               ].map((service, index) => (
                 <div
-                  key={service.name}
+                  key={service.key}
                   className="bg-background/30 backdrop-blur-sm rounded-xl p-4 text-center border border-white/10 hover:border-labxat-purple/50 transition-all duration-300 hover:scale-105 cursor-pointer"
                 >
                   <h3 className="text-foreground font-semibold text-sm md:text-base mb-1">
-                    {service.name}
+                    {t(service.key)}
                   </h3>
                   <p className="text-labxat-purple text-xs font-medium">
                     {service.price}
@@ -183,7 +183,7 @@ const Index = () => {
               rel="noopener noreferrer"
               className="bg-labxat-purple hover:bg-labxat-purple/80 text-white font-bold text-lg px-12 py-4 rounded-xl transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-labxat-purple/30 animate-pulse-scale"
             >
-              Contato
+              {t("contact")}
             </a>
           </div>
         </div>

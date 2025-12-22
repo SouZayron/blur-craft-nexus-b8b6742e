@@ -561,6 +561,40 @@ const translations: Translations = {
     pt: "10 fundos de Ano Novo para o seu xat", en: "10 New Year backgrounds for your xat", es: "10 fondos de Año Nuevo para tu xat", ar: "10 خلفيات رأس السنة لـ xat الخاص بك",
     de: "10 Neujahrs-Hintergründe für dein xat", nl: "10 Nieuwjaars achtergronden voor je xat", tl: "10 New Year backgrounds para sa iyong xat", tr: "xat'ınız için 10 Yeni Yıl arka planı", bs: "10 novogodišnjih pozadina za tvoj xat", fr: "10 fonds d'écran Nouvel An pour ton xat", it: "10 sfondi di Capodanno per il tuo xat", hu: "10 újévi háttér a xat-odhoz", pl: "10 noworocznych teł dla twojego xat", "pt-pt": "10 fundos de Ano Novo para o seu xat", ro: "10 fundaluri de Anul Nou pentru xat-ul tău", sr: "10 novogodišnjih pozadina za tvoj xat", th: "10 พื้นหลังปีใหม่สำหรับ xat ของคุณ"
   },
+  
+  // ShopLAB Section
+  shopLabTitle: {
+    pt: "ShopLAB", en: "ShopLAB", es: "ShopLAB", ar: "ShopLAB",
+    de: "ShopLAB", nl: "ShopLAB", tl: "ShopLAB", tr: "ShopLAB", bs: "ShopLAB", fr: "ShopLAB", it: "ShopLAB", hu: "ShopLAB", pl: "ShopLAB", "pt-pt": "ShopLAB", ro: "ShopLAB", sr: "ShopLAB", th: "ShopLAB"
+  },
+  contact: {
+    pt: "Contato", en: "Contact", es: "Contacto", ar: "اتصال",
+    de: "Kontakt", nl: "Contact", tl: "Makipag-ugnayan", tr: "İletişim", bs: "Kontakt", fr: "Contact", it: "Contatto", hu: "Kapcsolat", pl: "Kontakt", "pt-pt": "Contacto", ro: "Contact", sr: "Kontakt", th: "ติดต่อ"
+  },
+  fundos: {
+    pt: "Fundos", en: "Backgrounds", es: "Fondos", ar: "خلفيات",
+    de: "Hintergründe", nl: "Achtergronden", tl: "Mga Background", tr: "Arka Planlar", bs: "Pozadine", fr: "Fonds", it: "Sfondi", hu: "Hátterek", pl: "Tła", "pt-pt": "Fundos", ro: "Fundaluri", sr: "Pozadine", th: "พื้นหลัง"
+  },
+  pcbacks: {
+    pt: "Pcbacks", en: "Pcbacks", es: "Pcbacks", ar: "Pcbacks",
+    de: "Pcbacks", nl: "Pcbacks", tl: "Pcbacks", tr: "Pcbacks", bs: "Pcbacks", fr: "Pcbacks", it: "Pcbacks", hu: "Pcbacks", pl: "Pcbacks", "pt-pt": "Pcbacks", ro: "Pcbacks", sr: "Pcbacks", th: "Pcbacks"
+  },
+  xatspace: {
+    pt: "Xatspace", en: "Xatspace", es: "Xatspace", ar: "Xatspace",
+    de: "Xatspace", nl: "Xatspace", tl: "Xatspace", tr: "Xatspace", bs: "Xatspace", fr: "Xatspace", it: "Xatspace", hu: "Xatspace", pl: "Xatspace", "pt-pt": "Xatspace", ro: "Xatspace", sr: "Xatspace", th: "Xatspace"
+  },
+  logotipo: {
+    pt: "Logotipo", en: "Logo", es: "Logotipo", ar: "شعار",
+    de: "Logo", nl: "Logo", tl: "Logo", tr: "Logo", bs: "Logo", fr: "Logo", it: "Logo", hu: "Logó", pl: "Logo", "pt-pt": "Logótipo", ro: "Logo", sr: "Logo", th: "โลโก้"
+  },
+  pstyle: {
+    pt: "Pstyle", en: "Pstyle", es: "Pstyle", ar: "Pstyle",
+    de: "Pstyle", nl: "Pstyle", tl: "Pstyle", tr: "Pstyle", bs: "Pstyle", fr: "Pstyle", it: "Pstyle", hu: "Pstyle", pl: "Pstyle", "pt-pt": "Pstyle", ro: "Pstyle", sr: "Pstyle", th: "Pstyle"
+  },
+  xmoji: {
+    pt: "Xmoji", en: "Xmoji", es: "Xmoji", ar: "Xmoji",
+    de: "Xmoji", nl: "Xmoji", tl: "Xmoji", tr: "Xmoji", bs: "Xmoji", fr: "Xmoji", it: "Xmoji", hu: "Xmoji", pl: "Xmoji", "pt-pt": "Xmoji", ro: "Xmoji", sr: "Xmoji", th: "Xmoji"
+  },
 };
 
 interface LanguageContextType {
