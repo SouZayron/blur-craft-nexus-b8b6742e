@@ -91,8 +91,7 @@
   }
 
   html, body {
-    @apply overflow-hidden;
-    height: 100%;
+    min-height: 100%;
     width: 100%;
   }
 
@@ -102,9 +101,14 @@
   }
 
   #root {
-    height: 100%;
+    min-height: 100%;
     width: 100%;
+  }
+
+  /* No scroll only for home page */
+  .no-scroll {
     overflow: hidden;
+    height: 100vh;
   }
 }
 
