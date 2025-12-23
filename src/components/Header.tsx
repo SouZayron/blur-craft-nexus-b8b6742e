@@ -22,7 +22,7 @@ export const Header = () => {
         <div className="glass-card px-6 py-3 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <img src="/labxat-icon.gif" alt="Labxat" className="w-8 h-8" />
+            <img src="/labxat-logo.png" alt="Labxat" className="w-8 h-8" />
             <span className="text-2xl font-black text-gradient">Labxat</span>
           </Link>
 
