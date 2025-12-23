@@ -3,7 +3,7 @@ import { FloatingBlob } from "@/components/FloatingBlob";
 import { GlassCard } from "@/components/GlassCard";
 import { ToolButton } from "@/components/ToolButton";
 import { Palette, Sparkles, Dices, Download, Smile } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { memo, useMemo } from "react";
 
@@ -207,6 +207,14 @@ const Index = () => {
         {/* Footer inline */}
         <footer className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
           <p className="text-muted-foreground text-xs">Feito com amor Zayron - 2025 · {t("copyright")}</p>
+          <div className="mt-2 flex justify-center gap-4 text-xs">
+            <Link to="/privacidade" className="text-muted-foreground hover:text-labxat-purple transition-colors">
+              {t("privacyPolicy")}
+            </Link>
+            <Link to="/termos" className="text-muted-foreground hover:text-labxat-purple transition-colors">
+              {t("termsOfService")}
+            </Link>
+          </div>
           <div className="mt-2 flex justify-center gap-1" aria-hidden="true">
             <div className="w-8 h-0.5 rounded-full bg-labxat-blue/50" />
             <div className="w-8 h-0.5 rounded-full bg-labxat-purple/50" />

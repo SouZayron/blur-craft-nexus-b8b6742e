@@ -595,6 +595,127 @@ const translations: Translations = {
     pt: "Xmoji", en: "Xmoji", es: "Xmoji", ar: "Xmoji",
     de: "Xmoji", nl: "Xmoji", tl: "Xmoji", tr: "Xmoji", bs: "Xmoji", fr: "Xmoji", it: "Xmoji", hu: "Xmoji", pl: "Xmoji", "pt-pt": "Xmoji", ro: "Xmoji", sr: "Xmoji", th: "Xmoji"
   },
+  
+  // Terms of Service
+  termsTitle: {
+    pt: "Termos de Serviço", en: "Terms of Service", es: "Términos de Servicio", ar: "شروط الخدمة",
+    de: "Nutzungsbedingungen", nl: "Servicevoorwaarden", tl: "Mga Tuntunin ng Serbisyo", tr: "Hizmet Şartları", bs: "Uslovi korištenja", fr: "Conditions d'utilisation", it: "Termini di Servizio", hu: "Szolgáltatási feltételek", pl: "Warunki usługi", "pt-pt": "Termos de Serviço", ro: "Termeni și condiții", sr: "Uslovi korišćenja", th: "ข้อกำหนดในการให้บริการ"
+  },
+  termsIntro: {
+    pt: "Bem-vindo ao Labxat. Ao acessar e usar este site, você concorda com os seguintes termos e condições.",
+    en: "Welcome to Labxat. By accessing and using this website, you agree to the following terms and conditions.",
+    es: "Bienvenido a Labxat. Al acceder y usar este sitio web, usted acepta los siguientes términos y condiciones.",
+    ar: "مرحبًا بك في Labxat. من خلال الوصول إلى هذا الموقع واستخدامه، فإنك توافق على الشروط والأحكام التالية.",
+    de: "Willkommen bei Labxat. Durch den Zugriff auf und die Nutzung dieser Website stimmen Sie den folgenden Geschäftsbedingungen zu.",
+    nl: "Welkom bij Labxat. Door deze website te bezoeken en te gebruiken, gaat u akkoord met de volgende voorwaarden.",
+    tl: "Maligayang pagdating sa Labxat. Sa pag-access at paggamit ng website na ito, sumasang-ayon ka sa mga sumusunod na tuntunin at kundisyon.",
+    tr: "Labxat'a hoş geldiniz. Bu web sitesine erişerek ve kullanarak aşağıdaki şartları ve koşulları kabul etmiş olursunuz.",
+    bs: "Dobrodošli na Labxat. Pristupom i korištenjem ove web stranice prihvaćate sljedeće uvjete i odredbe.",
+    fr: "Bienvenue sur Labxat. En accédant et en utilisant ce site Web, vous acceptez les termes et conditions suivants.",
+    it: "Benvenuto su Labxat. Accedendo e utilizzando questo sito web, accetti i seguenti termini e condizioni.",
+    hu: "Üdvözöljük a Labxat-on. A weboldal elérésével és használatával elfogadja az alábbi feltételeket.",
+    pl: "Witamy w Labxat. Uzyskując dostęp i korzystając z tej strony internetowej, zgadzasz się na następujące warunki.",
+    "pt-pt": "Bem-vindo ao Labxat. Ao aceder e utilizar este site, concorda com os seguintes termos e condições.",
+    ro: "Bun venit la Labxat. Accesând și utilizând acest site web, sunteți de acord cu următorii termeni și condiții.",
+    sr: "Dobrodošli na Labxat. Pristupom i korišćenjem ove veb stranice prihvatate sledeće uslove i odredbe.",
+    th: "ยินดีต้อนรับสู่ Labxat เมื่อเข้าถึงและใช้เว็บไซต์นี้ คุณยอมรับข้อกำหนดและเงื่อนไขต่อไปนี้"
+  },
+  termsUseTitle: {
+    pt: "Uso do Site", en: "Website Use", es: "Uso del Sitio", ar: "استخدام الموقع",
+    de: "Nutzung der Website", nl: "Gebruik van de Website", tl: "Paggamit ng Website", tr: "Web Sitesi Kullanımı", bs: "Korištenje stranice", fr: "Utilisation du Site", it: "Uso del Sito", hu: "Weboldal használata", pl: "Korzystanie ze strony", "pt-pt": "Uso do Site", ro: "Utilizarea Site-ului", sr: "Korišćenje stranice", th: "การใช้เว็บไซต์"
+  },
+  termsUseContent: {
+    pt: "O conteúdo deste site é fornecido apenas para fins informativos e de entretenimento. Você concorda em usar o site de forma responsável e em conformidade com todas as leis aplicáveis. É proibido usar o site para atividades ilegais ou prejudiciais.",
+    en: "The content of this website is provided for informational and entertainment purposes only. You agree to use the site responsibly and in compliance with all applicable laws. Using the site for illegal or harmful activities is prohibited.",
+    es: "El contenido de este sitio web se proporciona solo con fines informativos y de entretenimiento. Usted acepta usar el sitio de manera responsable y de acuerdo con todas las leyes aplicables. Está prohibido usar el sitio para actividades ilegales o dañinas.",
+    ar: "يتم توفير محتوى هذا الموقع لأغراض إعلامية وترفيهية فقط. توافق على استخدام الموقع بمسؤولية وبما يتوافق مع جميع القوانين المعمول بها. يُحظر استخدام الموقع للأنشطة غير القانونية أو الضارة.",
+    de: "Der Inhalt dieser Website dient nur zu Informations- und Unterhaltungszwecken. Sie stimmen zu, die Website verantwortungsvoll und in Übereinstimmung mit allen geltenden Gesetzen zu nutzen.",
+    nl: "De inhoud van deze website is alleen bedoeld voor informatieve en entertainmentdoeleinden. U stemt ermee in de site verantwoordelijk te gebruiken en in overeenstemming met alle toepasselijke wetten.",
+    tl: "Ang nilalaman ng website na ito ay ibinibigay para sa impormasyon at entertainment lamang. Sumasang-ayon kang gamitin ang site nang responsable at ayon sa lahat ng naaangkop na batas.",
+    tr: "Bu web sitesinin içeriği yalnızca bilgilendirme ve eğlence amaçlı sunulmaktadır. Siteyi sorumlu bir şekilde ve geçerli tüm yasalara uygun olarak kullanmayı kabul ediyorsunuz.",
+    bs: "Sadržaj ove web stranice pružen je samo u informativne i zabavne svrhe. Slažete se da ćete stranicu koristiti odgovorno i u skladu sa svim primjenjivim zakonima.",
+    fr: "Le contenu de ce site Web est fourni à des fins d'information et de divertissement uniquement. Vous acceptez d'utiliser le site de manière responsable et conformément à toutes les lois applicables.",
+    it: "Il contenuto di questo sito web è fornito solo a scopo informativo e di intrattenimento. Accetti di utilizzare il sito in modo responsabile e nel rispetto di tutte le leggi applicabili.",
+    hu: "Ennek a weboldalnak a tartalma csak tájékoztatási és szórakoztatási célokra szolgál. Ön vállalja, hogy felelősségteljesen és a vonatkozó jogszabályoknak megfelelően használja az oldalt.",
+    pl: "Treść tej strony internetowej jest udostępniana wyłącznie w celach informacyjnych i rozrywkowych. Zgadzasz się korzystać ze strony w sposób odpowiedzialny i zgodny ze wszystkimi obowiązującymi przepisami.",
+    "pt-pt": "O conteúdo deste site é fornecido apenas para fins informativos e de entretenimento. Concorda em usar o site de forma responsável e em conformidade com todas as leis aplicáveis.",
+    ro: "Conținutul acestui site web este furnizat doar în scopuri informative și de divertisment. Sunteți de acord să utilizați site-ul în mod responsabil și în conformitate cu toate legile aplicabile.",
+    sr: "Sadržaj ove veb stranice pružen je samo u informativne i zabavne svrhe. Slažete se da ćete stranicu koristiti odgovorno i u skladu sa svim primenjivim zakonima.",
+    th: "เนื้อหาของเว็บไซต์นี้มีไว้เพื่อวัตถุประสงค์ด้านข้อมูลและความบันเทิงเท่านั้น คุณตกลงที่จะใช้เว็บไซต์อย่างรับผิดชอบและปฏิบัติตามกฎหมายที่เกี่ยวข้องทั้งหมด"
+  },
+  termsIntellectualTitle: {
+    pt: "Propriedade Intelectual", en: "Intellectual Property", es: "Propiedad Intelectual", ar: "الملكية الفكرية",
+    de: "Geistiges Eigentum", nl: "Intellectueel Eigendom", tl: "Intelektwal na Ari-arian", tr: "Fikri Mülkiyet", bs: "Intelektualno vlasništvo", fr: "Propriété Intellectuelle", it: "Proprietà Intellettuale", hu: "Szellemi tulajdon", pl: "Własność intelektualna", "pt-pt": "Propriedade Intelectual", ro: "Proprietate Intelectuală", sr: "Intelektualno vlasništvo", th: "ทรัพย์สินทางปัญญา"
+  },
+  termsIntellectualContent: {
+    pt: "Todo o conteúdo do Labxat, incluindo textos, gráficos, logos, ícones e software, é propriedade do Labxat ou de seus criadores de conteúdo e está protegido por leis de direitos autorais. É proibida a reprodução não autorizada.",
+    en: "All Labxat content, including texts, graphics, logos, icons and software, is the property of Labxat or its content creators and is protected by copyright laws. Unauthorized reproduction is prohibited.",
+    es: "Todo el contenido de Labxat, incluidos textos, gráficos, logotipos, iconos y software, es propiedad de Labxat o de sus creadores de contenido y está protegido por las leyes de derechos de autor. Se prohíbe la reproducción no autorizada.",
+    ar: "جميع محتويات Labxat، بما في ذلك النصوص والرسومات والشعارات والأيقونات والبرامج، هي ملك Labxat أو منشئي المحتوى التابعين له ومحمية بموجب قوانين حقوق النشر. النسخ غير المصرح به محظور.",
+    de: "Alle Labxat-Inhalte, einschließlich Texte, Grafiken, Logos, Icons und Software, sind Eigentum von Labxat oder seinen Inhaltserstellern und durch Urheberrechtsgesetze geschützt.",
+    nl: "Alle Labxat-inhoud, inclusief teksten, afbeeldingen, logo's, pictogrammen en software, is eigendom van Labxat of zijn contentmakers en wordt beschermd door auteursrechtwetten.",
+    tl: "Lahat ng nilalaman ng Labxat, kabilang ang mga teksto, graphics, logos, icons at software, ay pag-aari ng Labxat o ng mga tagalikha ng nilalaman nito at protektado ng mga batas sa copyright.",
+    tr: "Metinler, grafikler, logolar, simgeler ve yazılımlar dahil tüm Labxat içeriği, Labxat'a veya içerik oluşturucularına aittir ve telif hakkı yasalarıyla korunmaktadır.",
+    bs: "Sav sadržaj Labxat-a, uključujući tekstove, grafike, logotipe, ikone i softver, vlasništvo je Labxat-a ili njegovih kreatora sadržaja i zaštićen je zakonima o autorskim pravima.",
+    fr: "Tout le contenu de Labxat, y compris les textes, graphiques, logos, icônes et logiciels, est la propriété de Labxat ou de ses créateurs de contenu et est protégé par les lois sur le droit d'auteur.",
+    it: "Tutti i contenuti di Labxat, inclusi testi, grafica, loghi, icone e software, sono di proprietà di Labxat o dei suoi creatori di contenuti e sono protetti dalle leggi sul copyright.",
+    hu: "A Labxat minden tartalma, beleértve a szövegeket, grafikákat, logókat, ikonokat és szoftvereket, a Labxat vagy tartalomkészítőinek tulajdona, és szerzői jogi törvények védik.",
+    pl: "Cała zawartość Labxat, w tym teksty, grafiki, logo, ikony i oprogramowanie, jest własnością Labxat lub twórców treści i jest chroniona prawem autorskim.",
+    "pt-pt": "Todo o conteúdo do Labxat, incluindo textos, gráficos, logos, ícones e software, é propriedade do Labxat ou dos seus criadores de conteúdo e está protegido por leis de direitos de autor.",
+    ro: "Tot conținutul Labxat, inclusiv texte, grafică, logo-uri, pictograme și software, este proprietatea Labxat sau a creatorilor săi de conținut și este protejat de legile privind drepturile de autor.",
+    sr: "Sav sadržaj Labxat-a, uključujući tekstove, grafike, logotipe, ikone i softver, vlasništvo je Labxat-a ili njegovih kreatora sadržaja i zaštićen je zakonima o autorskim pravima.",
+    th: "เนื้อหาทั้งหมดของ Labxat รวมถึงข้อความ กราฟิก โลโก้ ไอคอน และซอฟต์แวร์ เป็นทรัพย์สินของ Labxat หรือผู้สร้างเนื้อหาและได้รับการคุ้มครองโดยกฎหมายลิขสิทธิ์"
+  },
+  termsLiabilityTitle: {
+    pt: "Limitação de Responsabilidade", en: "Limitation of Liability", es: "Limitación de Responsabilidad", ar: "تحديد المسؤولية",
+    de: "Haftungsbeschränkung", nl: "Beperking van Aansprakelijkheid", tl: "Limitasyon ng Pananagutan", tr: "Sorumluluk Sınırlaması", bs: "Ograničenje odgovornosti", fr: "Limitation de Responsabilité", it: "Limitazione di Responsabilità", hu: "Felelősség korlátozása", pl: "Ograniczenie odpowiedzialności", "pt-pt": "Limitação de Responsabilidade", ro: "Limitarea Răspunderii", sr: "Ograničenje odgovornosti", th: "ข้อจำกัดความรับผิดชอบ"
+  },
+  termsLiabilityContent: {
+    pt: "O Labxat não se responsabiliza por quaisquer danos diretos, indiretos, incidentais ou consequentes resultantes do uso ou incapacidade de usar este site. Usamos ferramentas de terceiros e não garantimos disponibilidade contínua.",
+    en: "Labxat is not liable for any direct, indirect, incidental or consequential damages resulting from the use or inability to use this website. We use third-party tools and do not guarantee continuous availability.",
+    es: "Labxat no es responsable de ningún daño directo, indirecto, incidental o consecuente resultante del uso o la incapacidad de usar este sitio web. Usamos herramientas de terceros y no garantizamos disponibilidad continua.",
+    ar: "Labxat غير مسؤول عن أي أضرار مباشرة أو غير مباشرة أو عرضية أو تبعية ناتجة عن استخدام هذا الموقع أو عدم القدرة على استخدامه. نستخدم أدوات طرف ثالث ولا نضمن التوفر المستمر.",
+    de: "Labxat haftet nicht für direkte, indirekte, zufällige oder Folgeschäden, die aus der Nutzung oder der Unfähigkeit zur Nutzung dieser Website entstehen.",
+    nl: "Labxat is niet aansprakelijk voor directe, indirecte, incidentele of gevolgschade als gevolg van het gebruik of het onvermogen om deze website te gebruiken.",
+    tl: "Ang Labxat ay hindi mananagot para sa anumang direkta, hindi direkta, insidental o consequential na pinsala na nagmumula sa paggamit o kawalan ng kakayahang gamitin ang website na ito.",
+    tr: "Labxat, bu web sitesinin kullanımından veya kullanılamamasından kaynaklanan doğrudan, dolaylı, arızi veya sonuç olarak ortaya çıkan zararlardan sorumlu değildir.",
+    bs: "Labxat nije odgovoran za bilo kakve direktne, indirektne, slučajne ili posljedične štete koje proizlaze iz korištenja ili nemogućnosti korištenja ove web stranice.",
+    fr: "Labxat n'est pas responsable des dommages directs, indirects, accessoires ou consécutifs résultant de l'utilisation ou de l'impossibilité d'utiliser ce site Web.",
+    it: "Labxat non è responsabile per eventuali danni diretti, indiretti, incidentali o consequenziali derivanti dall'uso o dall'impossibilità di utilizzare questo sito web.",
+    hu: "A Labxat nem vállal felelősséget a weboldal használatából vagy használhatatlanságából eredő közvetlen, közvetett, véletlen vagy következményes károkért.",
+    pl: "Labxat nie ponosi odpowiedzialności za jakiekolwiek bezpośrednie, pośrednie, przypadkowe lub wynikowe szkody wynikające z korzystania lub niemożności korzystania z tej strony internetowej.",
+    "pt-pt": "O Labxat não se responsabiliza por quaisquer danos diretos, indiretos, incidentais ou consequentes resultantes do uso ou incapacidade de usar este site.",
+    ro: "Labxat nu este răspunzător pentru daune directe, indirecte, incidentale sau consecutive care rezultă din utilizarea sau incapacitatea de a utiliza acest site web.",
+    sr: "Labxat nije odgovoran za bilo kakve direktne, indirektne, slučajne ili posledične štete koje proizlaze iz korišćenja ili nemogućnosti korišćenja ove veb stranice.",
+    th: "Labxat ไม่รับผิดชอบต่อความเสียหายโดยตรง โดยอ้อม โดยบังเอิญ หรือเป็นผลสืบเนื่องจากการใช้หรือไม่สามารถใช้เว็บไซต์นี้ได้"
+  },
+  termsAcceptTitle: {
+    pt: "Aceitação dos Termos", en: "Acceptance of Terms", es: "Aceptación de los Términos", ar: "قبول الشروط",
+    de: "Annahme der Bedingungen", nl: "Acceptatie van Voorwaarden", tl: "Pagtanggap ng mga Tuntunin", tr: "Şartların Kabulü", bs: "Prihvatanje uslova", fr: "Acceptation des Conditions", it: "Accettazione dei Termini", hu: "Feltételek elfogadása", pl: "Akceptacja warunków", "pt-pt": "Aceitação dos Termos", ro: "Acceptarea Termenilor", sr: "Prihvatanje uslova", th: "การยอมรับข้อกำหนด"
+  },
+  termsAcceptContent: {
+    pt: "Ao continuar a usar o Labxat, você confirma que leu, entendeu e concorda com estes Termos de Serviço. Reservamo-nos o direito de modificar estes termos a qualquer momento.",
+    en: "By continuing to use Labxat, you confirm that you have read, understood and agree to these Terms of Service. We reserve the right to modify these terms at any time.",
+    es: "Al continuar usando Labxat, confirma que ha leído, entendido y acepta estos Términos de Servicio. Nos reservamos el derecho de modificar estos términos en cualquier momento.",
+    ar: "من خلال الاستمرار في استخدام Labxat، فإنك تؤكد أنك قد قرأت وفهمت ووافقت على شروط الخدمة هذه. نحتفظ بالحق في تعديل هذه الشروط في أي وقت.",
+    de: "Durch die weitere Nutzung von Labxat bestätigen Sie, dass Sie diese Nutzungsbedingungen gelesen, verstanden und akzeptiert haben. Wir behalten uns das Recht vor, diese Bedingungen jederzeit zu ändern.",
+    nl: "Door Labxat te blijven gebruiken, bevestigt u dat u deze Servicevoorwaarden hebt gelezen, begrepen en ermee akkoord gaat. We behouden ons het recht voor om deze voorwaarden op elk moment te wijzigen.",
+    tl: "Sa patuloy na paggamit ng Labxat, kinukumpirma mo na nabasa, naunawaan at sumasang-ayon ka sa mga Tuntunin ng Serbisyong ito. Inilalaan namin ang karapatan na baguhin ang mga tuntuning ito anumang oras.",
+    tr: "Labxat'ı kullanmaya devam ederek bu Hizmet Şartlarını okuduğunuzu, anladığınızı ve kabul ettiğinizi onaylarsınız. Bu şartları herhangi bir zamanda değiştirme hakkını saklı tutarız.",
+    bs: "Nastavkom korištenja Labxat-a potvrđujete da ste pročitali, razumjeli i prihvatili ove Uvjete korištenja. Zadržavamo pravo izmjene ovih uvjeta u bilo kojem trenutku.",
+    fr: "En continuant à utiliser Labxat, vous confirmez avoir lu, compris et accepté ces Conditions d'utilisation. Nous nous réservons le droit de modifier ces conditions à tout moment.",
+    it: "Continuando a utilizzare Labxat, confermi di aver letto, compreso e accettato questi Termini di Servizio. Ci riserviamo il diritto di modificare questi termini in qualsiasi momento.",
+    hu: "A Labxat további használatával megerősíti, hogy elolvasta, megértette és elfogadja ezeket a Szolgáltatási feltételeket. Fenntartjuk a jogot, hogy bármikor módosítsuk ezeket a feltételeket.",
+    pl: "Kontynuując korzystanie z Labxat, potwierdzasz, że przeczytałeś, zrozumiałeś i zgadzasz się z niniejszymi Warunkami usługi. Zastrzegamy sobie prawo do zmiany tych warunków w dowolnym momencie.",
+    "pt-pt": "Ao continuar a usar o Labxat, confirma que leu, compreendeu e concorda com estes Termos de Serviço. Reservamo-nos o direito de modificar estes termos a qualquer momento.",
+    ro: "Continuând să utilizați Labxat, confirmați că ați citit, înțeles și sunteți de acord cu acești Termeni de Serviciu. Ne rezervăm dreptul de a modifica acești termeni în orice moment.",
+    sr: "Nastavljanjem korišćenja Labxat-a potvrđujete da ste pročitali, razumeli i prihvatili ove Uslove korišćenja. Zadržavamo pravo izmene ovih uslova u bilo kom trenutku.",
+    th: "เมื่อใช้ Labxat ต่อไป คุณยืนยันว่าคุณได้อ่าน เข้าใจ และยอมรับข้อกำหนดในการให้บริการเหล่านี้ เราขอสงวนสิทธิ์ในการแก้ไขข้อกำหนดเหล่านี้ได้ตลอดเวลา"
+  },
+  termsOfService: {
+    pt: "Termos", en: "Terms", es: "Términos", ar: "الشروط",
+    de: "AGB", nl: "Voorwaarden", tl: "Mga Tuntunin", tr: "Şartlar", bs: "Uslovi", fr: "Conditions", it: "Termini", hu: "Feltételek", pl: "Warunki", "pt-pt": "Termos", ro: "Termeni", sr: "Uslovi", th: "ข้อกำหนด"
+  },
 };
 
 interface LanguageContextType {

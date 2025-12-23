@@ -13,6 +13,7 @@ import { GraphicsFree } from "./pages/GraphicsFree";
 import { Emojis } from "./pages/Emojis";
 import { About } from "./pages/About";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
+import { TermsOfService } from "./pages/TermsOfService";
 import { CookieConsent } from "./components/CookieConsent";
 import { FloatingRadio } from "./components/FloatingRadio";
 import { ThemeToggle } from "./components/ThemeToggle";
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/emojis" element={<Emojis />} />
               <Route path="/sobre" element={<About />} />
               <Route path="/privacidade" element={<PrivacyPolicy />} />
+              <Route path="/termos" element={<TermsOfService />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
