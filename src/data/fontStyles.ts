@@ -6,7 +6,8 @@ export interface FontStyle {
   numbers: string;
 }
 
-const baseAlphabet = "abcdefghijklmnopqrstuvwxyz";
+const baseLowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
+const baseUpperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const baseNumbers = "1234567890";
 
 export const fontStyles: FontStyle[] = [
@@ -151,25 +152,24 @@ export const fontStyles: FontStyle[] = [
   { id: 139, name: "Africano Moderno", alphabet: "aɓcɖɛƒghijklmŋɔpqrstuʋwxɣz", numbers: "1234567890" },
 ];
 
-// Transform text using a specific font style
+// Transform text using a specific font style - preserving case
 export function transformText(text: string, style: FontStyle): string {
-  const lowerText = text.toLowerCase();
   let result = "";
+  const styleChars = [...style.alphabet];
+  const numChars = [...style.numbers];
   
-  for (const char of lowerText) {
-    const alphabetIndex = baseAlphabet.indexOf(char);
+  for (const char of text) {
+    const lowerChar = char.toLowerCase();
+    const isUpperCase = char !== lowerChar;
+    
+    const alphabetIndex = baseLowerAlphabet.indexOf(lowerChar);
     const numberIndex = baseNumbers.indexOf(char);
     
-    if (alphabetIndex !== -1 && alphabetIndex < style.alphabet.length) {
-      // Get the character at the correct position
-      const chars = [...style.alphabet];
-      if (alphabetIndex < chars.length) {
-        result += chars[alphabetIndex];
-      } else {
-        result += char;
-      }
+    if (alphabetIndex !== -1 && alphabetIndex < styleChars.length) {
+      const styledChar = styleChars[alphabetIndex];
+      // If original was uppercase, try to uppercase the styled char
+      result += isUpperCase ? styledChar.toUpperCase() : styledChar;
     } else if (numberIndex !== -1) {
-      const numChars = [...style.numbers];
       if (numberIndex < numChars.length) {
         result += numChars[numberIndex];
       } else {
