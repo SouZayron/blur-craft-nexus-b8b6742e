@@ -5,12 +5,30 @@ import { ToolButton } from "@/components/ToolButton";
 import { Palette, Sparkles, Dices, Download, Smile } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { memo, useMemo } from "react";
+
+// Memoized smilies component to prevent re-renders
+const SmiliesList = memo(({ smilies }: { smilies: string[] }) => (
+  <div className="flex flex-wrap gap-1.5">
+    {smilies.map((smiley, index) => (
+      <span 
+        key={index}
+        className="bg-labxat-purple/20 text-labxat-purple px-2 py-0.5 rounded-md text-xs font-mono"
+      >
+        {smiley}
+      </span>
+    ))}
+  </div>
+));
+SmiliesList.displayName = "SmiliesList";
+
+const SMILIES = ["(ratmas)", "(rmblanket)", "(rmgift)", "(rmelf)", "(rmblanketop)", "(rmlightstop)", "(rmreindeertop)", "(rmornamentback)", "(rmlights)", "(rmornament)", "(rmbow)", "(rmantlers)", "(rmsanta)", "(rmstocking)", "(rmmtoe)", "(rmback)"];
 
 const Index = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
 
-  const tools = [
+  const tools = useMemo(() => [
     {
       name: t("nickGenerator"),
       icon: Sparkles,
@@ -41,13 +59,22 @@ const Index = () => {
       onClick: () => navigate("/emojis"),
       gradient: "blue" as const,
     },
-  ];
+  ], [t, navigate]);
+
+  const shopServices = useMemo(() => [
+    { key: "fundos", price: "600 xats" },
+    { key: "pcbacks", price: "400 xats" },
+    { key: "xatspace", price: "1500 xats" },
+    { key: "logotipo", price: "1500 xats" },
+    { key: "pstyle", price: "350 xats" },
+    { key: "xmoji", price: "400 xats" },
+  ], []);
 
   return (
     <div className="h-screen overflow-hidden animated-gradient-bg">
       <Header />
 
-      {/* Floating Blobs */}
+      {/* Floating Blobs - decorative, lazy rendered */}
       <FloatingBlob color="blue" size="xl" position={{ top: "5%", left: "-5%" }} animation="float" />
       <FloatingBlob color="purple" size="lg" position={{ top: "15%", right: "5%" }} animation="float-delayed" />
       <FloatingBlob color="pink" size="md" position={{ bottom: "20%", left: "10%" }} animation="float-slow" />
@@ -63,18 +90,23 @@ const Index = () => {
             <GlassCard className="p-5 md:p-6 h-full">
               {/* Header with Image and Title */}
               <div className="flex items-start gap-4 mb-5">
+                {/* LCP Image - optimized with explicit dimensions and fetchpriority */}
                 <img 
                   src="https://xatimg.com/image/YuaLbdfuX4Q8.png" 
                   alt="Ratmas Power" 
+                  width={80}
+                  height={80}
                   className="w-20 h-20 rounded-xl object-cover shadow-lg"
+                  fetchPriority="high"
+                  decoding="async"
                 />
                 <div className="flex-1">
                   <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
                     {t("ultimoPower")}
                   </p>
-                  <h2 className="text-xl md:text-2xl font-bold text-foreground">
+                  <h1 className="text-xl md:text-2xl font-bold text-foreground">
                     Ratmas <span className="text-foreground/60 text-base">(ID: 734)</span>
-                  </h2>
+                  </h1>
                 </div>
               </div>
 
@@ -111,16 +143,7 @@ const Index = () => {
                 <p className="text-xs text-foreground/70 font-medium mb-2 uppercase tracking-wider">
                   {t("smiliesOfPower")}
                 </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {["(ratmas)", "(rmblanket)", "(rmgift)", "(rmelf)", "(rmblanketop)", "(rmlightstop)", "(rmreindeertop)", "(rmornamentback)", "(rmlights)", "(rmornament)", "(rmbow)", "(rmantlers)", "(rmsanta)", "(rmstocking)", "(rmmtoe)", "(rmback)"].map((smiley, index) => (
-                    <span 
-                      key={index}
-                      className="bg-labxat-purple/20 text-labxat-purple px-2 py-0.5 rounded-md text-xs font-mono"
-                    >
-                      {smiley}
-                    </span>
-                  ))}
-                </div>
+                <SmiliesList smilies={SMILIES} />
               </div>
             </GlassCard>
           </div>
@@ -146,20 +169,13 @@ const Index = () => {
         </div>
 
         {/* ShopLAB Section */}
-        <div className="w-full max-w-6xl mt-6 fade-in-up">
+        <section className="w-full max-w-6xl mt-6 fade-in-up" aria-labelledby="shoplab-title">
           <GlassCard className="p-5 md:p-6">
-            <h2 className="text-xl md:text-2xl font-bold text-foreground mb-5 text-center">
+            <h2 id="shoplab-title" className="text-xl md:text-2xl font-bold text-foreground mb-5 text-center">
               Shop<span className="text-labxat-purple">LAB</span>
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {[
-                { key: "fundos", price: "600 xats" },
-                { key: "pcbacks", price: "400 xats" },
-                { key: "xatspace", price: "1500 xats" },
-                { key: "logotipo", price: "1500 xats" },
-                { key: "pstyle", price: "350 xats" },
-                { key: "xmoji", price: "400 xats" },
-              ].map((service, index) => (
+              {shopServices.map((service) => (
                 <div
                   key={service.key}
                   className="bg-background/30 backdrop-blur-sm rounded-xl p-4 text-center border border-white/10 hover:border-labxat-purple/50 transition-all duration-300 hover:scale-105 cursor-pointer"
@@ -186,23 +202,23 @@ const Index = () => {
               {t("contact")}
             </a>
           </div>
-        </div>
+        </section>
 
         {/* Footer inline */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
+        <footer className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
           <p className="text-muted-foreground text-xs">Feito com amor Zayron - 2025 · {t("copyright")}</p>
-          <div className="mt-2 flex justify-center gap-1">
+          <div className="mt-2 flex justify-center gap-1" aria-hidden="true">
             <div className="w-8 h-0.5 rounded-full bg-labxat-blue/50" />
             <div className="w-8 h-0.5 rounded-full bg-labxat-purple/50" />
             <div className="w-8 h-0.5 rounded-full bg-labxat-pink/50" />
           </div>
-        </div>
+        </footer>
       </main>
 
-      {/* Decorative circles */}
-      <div className="absolute top-1/4 left-1/4 w-3 h-3 rounded-full bg-labxat-blue/50 float" />
-      <div className="absolute top-3/4 right-1/4 w-4 h-4 rounded-full bg-labxat-pink/50 float-delayed" />
-      <div className="absolute top-1/2 right-1/3 w-2 h-2 rounded-full bg-labxat-purple/50 float-slow" />
+      {/* Decorative circles - hidden from accessibility tree */}
+      <div className="absolute top-1/4 left-1/4 w-3 h-3 rounded-full bg-labxat-blue/50 float" aria-hidden="true" />
+      <div className="absolute top-3/4 right-1/4 w-4 h-4 rounded-full bg-labxat-pink/50 float-delayed" aria-hidden="true" />
+      <div className="absolute top-1/2 right-1/3 w-2 h-2 rounded-full bg-labxat-purple/50 float-slow" aria-hidden="true" />
     </div>
   );
 };

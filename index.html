@@ -16,9 +16,20 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Labxat - Experimente, Crie & Jogue!" />
 
+    <!-- Preconnect to critical origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://xatimg.com" crossorigin />
+    
+    <!-- Preload critical font with display=swap for non-blocking -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
+    
+    <!-- Preload LCP image -->
+    <link rel="preload" href="https://xatimg.com/image/YuaLbdfuX4Q8.png" as="image" fetchpriority="high" />
+
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://xat.com" />
   </head>
 
   <body>

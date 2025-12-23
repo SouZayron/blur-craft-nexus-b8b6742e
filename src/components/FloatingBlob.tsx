@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { memo } from "react";
 
 interface FloatingBlobProps {
   color: "blue" | "purple" | "pink" | "green" | "lilac";
@@ -23,7 +24,8 @@ const sizeClasses = {
   xl: "w-96 h-96",
 };
 
-export const FloatingBlob = ({
+// Memoized for performance - blobs don't change after initial render
+export const FloatingBlob = memo(({
   color,
   size,
   position,
@@ -42,7 +44,12 @@ export const FloatingBlob = ({
       style={{
         ...position,
         opacity: 0.6,
+        // GPU layer promotion
+        transform: 'translateZ(0)',
       }}
+      aria-hidden="true"
     />
   );
-};
+});
+
+FloatingBlob.displayName = "FloatingBlob";
