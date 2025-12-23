@@ -71,7 +71,7 @@ const Index = () => {
   ], []);
 
   return (
-    <div className="h-screen overflow-hidden animated-gradient-bg">
+    <div className="no-scroll animated-gradient-bg">
       <Header />
 
       {/* Floating Blobs - decorative, lazy rendered */}
