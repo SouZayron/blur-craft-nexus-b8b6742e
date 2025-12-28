@@ -16,68 +16,60 @@ interface CardData {
   id: number;
 }
 
-// Decode card data from URL
-function decodeCardData(encoded: string): CardData | null {
-  try {
-    const decoded = JSON.parse(atob(encoded));
-    return {
-      numbers: decoded.n,
-      userName: decoded.u,
-      title: decoded.t,
-      subtitle: decoded.s,
-      id: decoded.i,
-    };
-  } catch {
-    return null;
-  }
+// Get storage key for card data
+function getCardStorageKey(userName: string, cardId: string): string {
+  return `bingo-cartela-${userName}-${cardId}`;
 }
 
-// Get storage key for this card
-function getStorageKey(encoded: string): string {
-  return `bingo-card-${encoded}`;
+// Get storage key for marked numbers
+function getMarksStorageKey(userName: string, cardId: string): string {
+  return `bingo-marks-${userName}-${cardId}`;
 }
 
 export function BingoCardView() {
-  const { encoded } = useParams<{ encoded: string }>();
+  const { userName, cardId } = useParams<{ userName: string; cardId: string }>();
   const navigate = useNavigate();
   const [cardData, setCardData] = useState<CardData | null>(null);
   const [markedNumbers, setMarkedNumbers] = useState<Set<number>>(new Set());
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    if (!encoded) {
+    if (!userName || !cardId) {
       navigate("/cartelas");
       return;
     }
 
-    const data = decodeCardData(encoded);
-    if (!data) {
-      toast.error("Cartela inválida");
-      navigate("/cartelas");
+    // Load card data from localStorage
+    const cardKey = getCardStorageKey(userName, cardId);
+    const savedCard = localStorage.getItem(cardKey);
+    
+    if (!savedCard) {
+      setNotFound(true);
       return;
     }
 
-    setCardData(data);
+    try {
+      const data = JSON.parse(savedCard) as CardData;
+      setCardData(data);
 
-    // Load saved marks from localStorage
-    const storageKey = getStorageKey(encoded);
-    const saved = localStorage.getItem(storageKey);
-    if (saved) {
-      try {
-        const savedMarks = JSON.parse(saved);
-        setMarkedNumbers(new Set(savedMarks));
-      } catch {
-        // Ignore invalid saved data
+      // Load saved marks
+      const marksKey = getMarksStorageKey(userName, cardId);
+      const savedMarks = localStorage.getItem(marksKey);
+      if (savedMarks) {
+        setMarkedNumbers(new Set(JSON.parse(savedMarks)));
       }
+    } catch {
+      setNotFound(true);
     }
-  }, [encoded, navigate]);
+  }, [userName, cardId, navigate]);
 
   // Save marks to localStorage whenever they change
   useEffect(() => {
-    if (encoded && markedNumbers.size > 0) {
-      const storageKey = getStorageKey(encoded);
-      localStorage.setItem(storageKey, JSON.stringify([...markedNumbers]));
+    if (userName && cardId && markedNumbers.size > 0) {
+      const marksKey = getMarksStorageKey(userName, cardId);
+      localStorage.setItem(marksKey, JSON.stringify([...markedNumbers]));
     }
-  }, [markedNumbers, encoded]);
+  }, [markedNumbers, userName, cardId]);
 
   const toggleNumber = (num: number) => {
     setMarkedNumbers((prev) => {
@@ -93,9 +85,9 @@ export function BingoCardView() {
 
   const resetCard = () => {
     setMarkedNumbers(new Set());
-    if (encoded) {
-      const storageKey = getStorageKey(encoded);
-      localStorage.removeItem(storageKey);
+    if (userName && cardId) {
+      const marksKey = getMarksStorageKey(userName, cardId);
+      localStorage.removeItem(marksKey);
     }
     toast.success("Cartela resetada!");
   };
@@ -117,6 +109,30 @@ export function BingoCardView() {
       toast.success("Link copiado!");
     }
   };
+
+  if (notFound) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden">
+        <FloatingBlob color="blue" size="lg" position={{ top: "-10%", left: "-5%" }} animation="float" />
+        <FloatingBlob color="purple" size="md" position={{ top: "30%", right: "-10%" }} animation="float-delayed" />
+        
+        <div className="relative z-10 container mx-auto px-4 py-8 max-w-lg">
+          <Header />
+          
+          <div className="text-center mt-20">
+            <h1 className="text-2xl font-bold text-foreground mb-4">Cartela não encontrada</h1>
+            <p className="text-muted-foreground mb-6">
+              Esta cartela não existe ou foi gerada em outro dispositivo.
+            </p>
+            <Button onClick={() => navigate("/cartelas")}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Ir para o gerador
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!cardData) {
     return (
@@ -158,7 +174,7 @@ export function BingoCardView() {
         </div>
 
         {/* Bingo Card Grid */}
-        <GlassCard className="p-4 mb-6">
+        <GlassCard className="p-4 mb-6 bg-gradient-to-br from-labxat-purple/10 via-labxat-pink/10 to-labxat-blue/10">
           <div className="grid grid-cols-5 gap-2">
             {cardData.numbers.map((num, index) => {
               const isMarked = markedNumbers.has(num);
@@ -170,13 +186,13 @@ export function BingoCardView() {
                     "aspect-square rounded-lg flex items-center justify-center text-lg font-bold transition-all duration-300 relative overflow-hidden",
                     "backdrop-blur-sm border",
                     isMarked
-                      ? "bg-gradient-to-br from-labxat-purple to-labxat-pink text-white border-white/30 scale-95"
-                      : "bg-background/30 text-foreground border-border/50 hover:bg-background/50 hover:scale-105"
+                      ? "bg-gradient-to-br from-labxat-purple/80 to-labxat-pink/80 text-white border-white/30 scale-95"
+                      : "bg-gradient-to-br from-labxat-blue/20 to-labxat-purple/20 text-foreground border-white/20 hover:from-labxat-blue/30 hover:to-labxat-purple/30 hover:scale-105"
                   )}
                 >
-                  <span className={cn(isMarked && "opacity-30")}>{num}</span>
+                  <span className={cn(isMarked && "opacity-50")}>{num}</span>
                   {isMarked && (
-                    <span className="absolute inset-0 flex items-center justify-center text-3xl font-black text-white animate-scale-in">
+                    <span className="absolute inset-0 flex items-center justify-center text-3xl font-black text-white/50 animate-scale-in">
                       ✕
                     </span>
                   )}
