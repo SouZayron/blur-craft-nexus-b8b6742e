@@ -8,6 +8,7 @@ import { ArrowLeft, RotateCcw, Share2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { cardThemes, ThemeKey } from "./BingoCards";
 
 interface CardData {
   id: string;
@@ -17,6 +18,7 @@ interface CardData {
   subtitle: string;
   cardNumber: number;
   markedNumbers: number[];
+  theme: ThemeKey;
 }
 
 export function BingoCardView() {
@@ -66,6 +68,7 @@ export function BingoCardView() {
         subtitle: data.subtitle,
         cardNumber: data.card_number,
         markedNumbers: data.marked_numbers || [],
+        theme: (data.theme as ThemeKey) || "purple",
       });
 
       setMarkedNumbers(new Set(data.marked_numbers || []));
@@ -86,7 +89,6 @@ export function BingoCardView() {
     }
     setMarkedNumbers(newMarked);
 
-    // Save to database
     if (cardData) {
       const { error } = await supabase
         .from("bingo_cards")
@@ -126,7 +128,7 @@ export function BingoCardView() {
           url,
         });
       } catch {
-        // User cancelled or error
+        // User cancelled
       }
     } else {
       await navigator.clipboard.writeText(url);
@@ -170,9 +172,10 @@ export function BingoCardView() {
     return null;
   }
 
+  const theme = cardThemes[cardData.theme] || cardThemes.purple;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden">
-      {/* Background Effects */}
       <FloatingBlob color="blue" size="lg" position={{ top: "-10%", left: "-5%" }} animation="float" />
       <FloatingBlob color="purple" size="md" position={{ top: "30%", right: "-10%" }} animation="float-delayed" />
       <FloatingBlob color="pink" size="sm" position={{ bottom: "20%", left: "10%" }} animation="float-slow" />
@@ -180,7 +183,6 @@ export function BingoCardView() {
       <div className="relative z-10 container mx-auto px-4 py-8 max-w-lg">
         <Header />
 
-        {/* Back Button */}
         <Button
           variant="ghost"
           onClick={() => navigate("/cartelas")}
@@ -190,19 +192,18 @@ export function BingoCardView() {
           Voltar
         </Button>
 
-        {/* Card Header */}
         <div className="text-center mb-6">
-          <p className="text-sm text-labxat-purple font-medium mb-1">
+          <p className={cn("text-sm font-medium mb-1 bg-gradient-to-r bg-clip-text text-transparent", theme.preview)}>
             Cartela #{cardData.cardNumber} • {cardData.userName}
           </p>
-          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-labxat-blue via-labxat-purple to-labxat-pink bg-clip-text text-transparent">
+          <h1 className={cn("text-2xl md:text-3xl font-bold bg-gradient-to-r bg-clip-text text-transparent", theme.preview)}>
             {cardData.title}
           </h1>
           <p className="text-muted-foreground mt-1">{cardData.subtitle}</p>
         </div>
 
         {/* Bingo Card Grid */}
-        <GlassCard className="p-4 mb-6 bg-gradient-to-br from-labxat-purple/10 via-labxat-pink/10 to-labxat-blue/10">
+        <GlassCard className={cn("p-4 mb-6 bg-gradient-to-br", theme.cardBg)}>
           <div className="grid grid-cols-5 gap-2">
             {cardData.numbers.map((num, index) => {
               const isMarked = markedNumbers.has(num);
@@ -214,8 +215,8 @@ export function BingoCardView() {
                     "aspect-square rounded-lg flex items-center justify-center text-lg font-bold transition-all duration-300 relative overflow-hidden",
                     "backdrop-blur-sm border",
                     isMarked
-                      ? "bg-gradient-to-br from-labxat-purple/80 to-labxat-pink/80 text-white border-white/30 scale-95"
-                      : "bg-gradient-to-br from-labxat-blue/20 to-labxat-purple/20 text-foreground border-white/20 hover:from-labxat-blue/30 hover:to-labxat-purple/30 hover:scale-105"
+                      ? cn("bg-gradient-to-br text-white border-white/30 scale-95", theme.markedBg)
+                      : cn("bg-gradient-to-br text-foreground border-white/20 hover:scale-105", theme.numberBg, theme.numberHover)
                   )}
                 >
                   <span className={cn(isMarked && "opacity-50")}>{num}</span>
@@ -242,7 +243,7 @@ export function BingoCardView() {
           </Button>
           <Button
             onClick={shareCard}
-            className="flex-1 bg-gradient-to-r from-labxat-blue to-labxat-purple text-white"
+            className={cn("flex-1 bg-gradient-to-r text-white", theme.preview)}
           >
             <Share2 className="w-4 h-4 mr-2" />
             Compartilhar
@@ -252,7 +253,7 @@ export function BingoCardView() {
         {/* Progress */}
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground">
-            Números marcados: <span className="font-bold text-labxat-purple">{markedNumbers.size}</span> / 25
+            Números marcados: <span className={cn("font-bold bg-gradient-to-r bg-clip-text text-transparent", theme.preview)}>{markedNumbers.size}</span> / 25
           </p>
         </div>
       </div>

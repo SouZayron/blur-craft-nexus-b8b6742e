@@ -22,6 +22,7 @@ export type Database = {
           marked_numbers: number[] | null
           numbers: number[]
           subtitle: string
+          theme: string
           title: string
           user_name: string
         }
@@ -32,6 +33,7 @@ export type Database = {
           marked_numbers?: number[] | null
           numbers: number[]
           subtitle?: string
+          theme?: string
           title?: string
           user_name: string
         }
@@ -42,6 +44,7 @@ export type Database = {
           marked_numbers?: number[] | null
           numbers?: number[]
           subtitle?: string
+          theme?: string
           title?: string
           user_name?: string
         }
