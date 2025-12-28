@@ -25,6 +25,7 @@ export type Database = {
           theme: string
           title: string
           user_name: string
+          user_password: string | null
         }
         Insert: {
           card_number: number
@@ -36,6 +37,7 @@ export type Database = {
           theme?: string
           title?: string
           user_name: string
+          user_password?: string | null
         }
         Update: {
           card_number?: number
@@ -47,6 +49,7 @@ export type Database = {
           theme?: string
           title?: string
           user_name?: string
+          user_password?: string | null
         }
         Relationships: []
       }

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { LayoutGrid, Shuffle, Link2, Copy, Check, ArrowLeft, Loader2, Palette } from "lucide-react";
+import { LayoutGrid, Shuffle, Link2, Copy, Check, ArrowLeft, Loader2, Palette, Lock, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -139,6 +139,8 @@ function getCardPath(userName: string, cardNumber: number): string {
 export function BingoCards() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [title, setTitle] = useState("Bingo xat");
   const [subtitle, setSubtitle] = useState("Boa sorte!");
   const [quantity, setQuantity] = useState(1);
@@ -150,6 +152,11 @@ export function BingoCards() {
   const handleGenerate = async () => {
     if (!userName.trim()) {
       toast.error("Digite o nome do usuário");
+      return;
+    }
+
+    if (!userPassword.trim()) {
+      toast.error("Digite uma senha para acessar suas cartelas depois");
       return;
     }
 
@@ -169,6 +176,7 @@ export function BingoCards() {
           numbers: generateCardNumbers(),
           marked_numbers: [],
           theme: selectedTheme,
+          user_password: userPassword.trim(),
         });
       }
 
@@ -201,7 +209,7 @@ export function BingoCards() {
       }));
 
       setGeneratedCards(cards);
-      toast.success(`${quantity} cartela${quantity > 1 ? "s" : ""} gerada${quantity > 1 ? "s" : ""} com tema ${cardThemes[selectedTheme].name}!`);
+      toast.success(`${quantity} cartela${quantity > 1 ? "s" : ""} gerada${quantity > 1 ? "s" : ""}! Acesse depois em /cartelas/${normalizedName}`);
     } catch (err) {
       console.error("Error generating cards:", err);
       toast.error("Erro ao gerar cartelas");
@@ -253,17 +261,82 @@ export function BingoCards() {
           </p>
         </div>
 
+        {/* Access existing cards */}
+        <GlassCard className="p-4 mb-6 bg-gradient-to-r from-labxat-purple/5 to-labxat-pink/5">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Lock className="w-4 h-4" />
+              <span>Já tem cartelas criadas?</span>
+            </div>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Input
+                placeholder="Digite seu nome..."
+                className="bg-background/50 border-border/50 text-sm h-9 sm:w-40"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    const input = e.target as HTMLInputElement;
+                    const name = input.value.trim().toLowerCase()
+                      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                      .replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+                    if (name) navigate(`/cartelas/${name}`);
+                  }
+                }}
+              />
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  const input = document.querySelector('input[placeholder="Digite seu nome..."]') as HTMLInputElement;
+                  const name = input?.value.trim().toLowerCase()
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+                  if (name) navigate(`/cartelas/${name}`);
+                }}
+              >
+                Acessar
+              </Button>
+            </div>
+          </div>
+        </GlassCard>
+
         <GlassCard className="p-6 mb-8">
           <div className="grid gap-6">
-            <div className="grid gap-2">
-              <Label htmlFor="userName" className="text-foreground">Nome do usuário</Label>
-              <Input
-                id="userName"
-                placeholder="Digite seu nome..."
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                className="bg-background/50 border-border/50"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="userName" className="text-foreground">Nome do usuário</Label>
+                <Input
+                  id="userName"
+                  placeholder="Digite seu nome..."
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  className="bg-background/50 border-border/50"
+                />
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="userPassword" className="text-foreground flex items-center gap-2">
+                  <Lock className="w-4 h-4" />
+                  Senha de acesso
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="userPassword"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Crie uma senha..."
+                    value={userPassword}
+                    onChange={(e) => setUserPassword(e.target.value)}
+                    className="bg-background/50 border-border/50 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground">Use essa senha para acessar suas cartelas depois</p>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
