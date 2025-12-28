@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { GlassCard } from "@/components/GlassCard";
 import { FloatingBlob } from "@/components/FloatingBlob";
 import { Button } from "@/components/ui/button";
-import { RotateCcw, Share2, Loader2 } from "lucide-react";
+import { RotateCcw, Share2, Loader2, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,6 +27,7 @@ export function BingoCardView() {
   const [markedNumbers, setMarkedNumbers] = useState<Set<number>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {
     if (!userName || !cardId) {
@@ -56,6 +57,12 @@ export function BingoCardView() {
 
       if (!data) {
         setNotFound(true);
+        return;
+      }
+
+      // Check if expired
+      if (new Date(data.expires_at) < new Date()) {
+        setIsExpired(true);
         return;
       }
 
@@ -143,17 +150,31 @@ export function BingoCardView() {
     );
   }
 
-  if (notFound) {
+  if (notFound || isExpired) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden flex items-center justify-center">
         <FloatingBlob color="blue" size="lg" position={{ top: "-10%", left: "-5%" }} animation="float" />
         <FloatingBlob color="purple" size="md" position={{ top: "30%", right: "-10%" }} animation="float-delayed" />
         
         <div className="relative z-10 text-center px-4">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Cartela não encontrada</h1>
-          <p className="text-muted-foreground mb-6">
-            Esta cartela não existe ou ainda não foi gerada.
-          </p>
+          {isExpired ? (
+            <>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-500/20 flex items-center justify-center">
+                <AlertTriangle className="w-8 h-8 text-amber-500" />
+              </div>
+              <h1 className="text-2xl font-bold text-foreground mb-4">Cartela expirada</h1>
+              <p className="text-muted-foreground mb-6">
+                Esta cartela expirou após 30 dias. Crie novas cartelas no gerador.
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="text-2xl font-bold text-foreground mb-4">Cartela não encontrada</h1>
+              <p className="text-muted-foreground mb-6">
+                Esta cartela não existe ou ainda não foi gerada.
+              </p>
+            </>
+          )}
           <Button onClick={() => navigate("/cartelas")}>
             Ir para o gerador
           </Button>

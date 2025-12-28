@@ -6,7 +6,7 @@ import { FloatingBlob } from "@/components/FloatingBlob";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Lock, LayoutGrid, Link2, Copy, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, Lock, LayoutGrid, Link2, Copy, Check, Loader2, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -19,6 +19,16 @@ interface UserCard {
   title: string;
   subtitle: string;
   theme: string;
+  expiresAt: string;
+}
+
+// Calculate days remaining
+function getDaysRemaining(expiresAt: string): number {
+  const now = new Date();
+  const expires = new Date(expiresAt);
+  const diffTime = expires.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return Math.max(0, diffDays);
 }
 
 export function BingoCardsAccess() {
@@ -40,12 +50,13 @@ export function BingoCardsAccess() {
     setIsLoading(true);
 
     try {
-      // Check if password matches for this user
+      // Check if password matches for this user (only non-expired cards)
       const { data, error } = await supabase
         .from("bingo_cards")
         .select("*")
         .eq("user_name", userName)
-        .eq("user_password", password.trim());
+        .eq("user_password", password.trim())
+        .gt("expires_at", new Date().toISOString());
 
       if (error) {
         console.error("Error checking password:", error);
@@ -54,7 +65,7 @@ export function BingoCardsAccess() {
       }
 
       if (!data || data.length === 0) {
-        toast.error("Senha incorreta ou usuário não encontrado");
+        toast.error("Senha incorreta, usuário não encontrado ou cartelas expiradas");
         return;
       }
 
@@ -66,6 +77,7 @@ export function BingoCardsAccess() {
         title: card.title,
         subtitle: card.subtitle,
         theme: card.theme,
+        expiresAt: card.expires_at,
       })));
 
       setUserDisplayName(userName || "");
@@ -181,6 +193,12 @@ export function BingoCardsAccess() {
               <p className="text-muted-foreground">
                 Usuário: <span className="font-semibold text-foreground">{userDisplayName}</span> • {cards.length} cartela{cards.length !== 1 ? "s" : ""}
               </p>
+              {cards.length > 0 && (
+                <p className="text-xs text-amber-500 flex items-center justify-center gap-1 mt-2">
+                  <Clock className="w-3 h-3" />
+                  Expira em {getDaysRemaining(cards[0].expiresAt)} dias
+                </p>
+              )}
             </div>
 
             <div className="grid gap-4">
