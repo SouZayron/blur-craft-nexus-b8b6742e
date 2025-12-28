@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           card_number: number
           created_at: string
+          expires_at: string
           id: string
           marked_numbers: number[] | null
           numbers: number[]
@@ -30,6 +31,7 @@ export type Database = {
         Insert: {
           card_number: number
           created_at?: string
+          expires_at?: string
           id?: string
           marked_numbers?: number[] | null
           numbers: number[]
@@ -42,6 +44,7 @@ export type Database = {
         Update: {
           card_number?: number
           created_at?: string
+          expires_at?: string
           id?: string
           marked_numbers?: number[] | null
           numbers?: number[]
@@ -58,7 +61,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      cleanup_expired_bingo_cards: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
