@@ -4,26 +4,19 @@ import { Header } from "@/components/Header";
 import { GlassCard } from "@/components/GlassCard";
 import { FloatingBlob } from "@/components/FloatingBlob";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, RotateCcw, Share2 } from "lucide-react";
+import { ArrowLeft, RotateCcw, Share2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CardData {
+  id: string;
   numbers: number[];
   userName: string;
   title: string;
   subtitle: string;
-  id: number;
-}
-
-// Get storage key for card data
-function getCardStorageKey(userName: string, cardId: string): string {
-  return `bingo-cartela-${userName}-${cardId}`;
-}
-
-// Get storage key for marked numbers
-function getMarksStorageKey(userName: string, cardId: string): string {
-  return `bingo-marks-${userName}-${cardId}`;
+  cardNumber: number;
+  markedNumbers: number[];
 }
 
 export function BingoCardView() {
@@ -31,6 +24,7 @@ export function BingoCardView() {
   const navigate = useNavigate();
   const [cardData, setCardData] = useState<CardData | null>(null);
   const [markedNumbers, setMarkedNumbers] = useState<Set<number>>(new Set());
+  const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
@@ -39,56 +33,86 @@ export function BingoCardView() {
       return;
     }
 
-    // Load card data from localStorage
-    const cardKey = getCardStorageKey(userName, cardId);
-    const savedCard = localStorage.getItem(cardKey);
-    
-    if (!savedCard) {
-      setNotFound(true);
-      return;
-    }
-
-    try {
-      const data = JSON.parse(savedCard) as CardData;
-      setCardData(data);
-
-      // Load saved marks
-      const marksKey = getMarksStorageKey(userName, cardId);
-      const savedMarks = localStorage.getItem(marksKey);
-      if (savedMarks) {
-        setMarkedNumbers(new Set(JSON.parse(savedMarks)));
-      }
-    } catch {
-      setNotFound(true);
-    }
+    loadCard();
   }, [userName, cardId, navigate]);
 
-  // Save marks to localStorage whenever they change
-  useEffect(() => {
-    if (userName && cardId && markedNumbers.size > 0) {
-      const marksKey = getMarksStorageKey(userName, cardId);
-      localStorage.setItem(marksKey, JSON.stringify([...markedNumbers]));
-    }
-  }, [markedNumbers, userName, cardId]);
+  const loadCard = async () => {
+    if (!userName || !cardId) return;
 
-  const toggleNumber = (num: number) => {
-    setMarkedNumbers((prev) => {
-      const next = new Set(prev);
-      if (next.has(num)) {
-        next.delete(num);
-      } else {
-        next.add(num);
+    try {
+      const { data, error } = await supabase
+        .from("bingo_cards")
+        .select("*")
+        .eq("user_name", userName)
+        .eq("card_number", parseInt(cardId))
+        .maybeSingle();
+
+      if (error) {
+        console.error("Error loading card:", error);
+        setNotFound(true);
+        return;
       }
-      return next;
-    });
+
+      if (!data) {
+        setNotFound(true);
+        return;
+      }
+
+      setCardData({
+        id: data.id,
+        numbers: data.numbers,
+        userName: data.user_name,
+        title: data.title,
+        subtitle: data.subtitle,
+        cardNumber: data.card_number,
+        markedNumbers: data.marked_numbers || [],
+      });
+
+      setMarkedNumbers(new Set(data.marked_numbers || []));
+    } catch (err) {
+      console.error("Error loading card:", err);
+      setNotFound(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const resetCard = () => {
-    setMarkedNumbers(new Set());
-    if (userName && cardId) {
-      const marksKey = getMarksStorageKey(userName, cardId);
-      localStorage.removeItem(marksKey);
+  const toggleNumber = async (num: number) => {
+    const newMarked = new Set(markedNumbers);
+    if (newMarked.has(num)) {
+      newMarked.delete(num);
+    } else {
+      newMarked.add(num);
     }
+    setMarkedNumbers(newMarked);
+
+    // Save to database
+    if (cardData) {
+      const { error } = await supabase
+        .from("bingo_cards")
+        .update({ marked_numbers: [...newMarked] })
+        .eq("id", cardData.id);
+
+      if (error) {
+        console.error("Error saving marks:", error);
+      }
+    }
+  };
+
+  const resetCard = async () => {
+    setMarkedNumbers(new Set());
+    
+    if (cardData) {
+      const { error } = await supabase
+        .from("bingo_cards")
+        .update({ marked_numbers: [] })
+        .eq("id", cardData.id);
+
+      if (error) {
+        console.error("Error resetting card:", error);
+      }
+    }
+    
     toast.success("Cartela resetada!");
   };
 
@@ -110,6 +134,14 @@ export function BingoCardView() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-labxat-purple" />
+      </div>
+    );
+  }
+
   if (notFound) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden">
@@ -122,7 +154,7 @@ export function BingoCardView() {
           <div className="text-center mt-20">
             <h1 className="text-2xl font-bold text-foreground mb-4">Cartela não encontrada</h1>
             <p className="text-muted-foreground mb-6">
-              Esta cartela não existe ou foi gerada em outro dispositivo.
+              Esta cartela não existe ou ainda não foi gerada.
             </p>
             <Button onClick={() => navigate("/cartelas")}>
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -135,11 +167,7 @@ export function BingoCardView() {
   }
 
   if (!cardData) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 flex items-center justify-center">
-        <p className="text-muted-foreground">Carregando...</p>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -165,7 +193,7 @@ export function BingoCardView() {
         {/* Card Header */}
         <div className="text-center mb-6">
           <p className="text-sm text-labxat-purple font-medium mb-1">
-            Cartela #{cardData.id} • {cardData.userName}
+            Cartela #{cardData.cardNumber} • {cardData.userName}
           </p>
           <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-labxat-blue via-labxat-purple to-labxat-pink bg-clip-text text-transparent">
             {cardData.title}
