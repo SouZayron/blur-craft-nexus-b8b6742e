@@ -14,7 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bingo_cards: {
+        Row: {
+          card_number: number
+          created_at: string
+          id: string
+          marked_numbers: number[] | null
+          numbers: number[]
+          subtitle: string
+          title: string
+          user_name: string
+        }
+        Insert: {
+          card_number: number
+          created_at?: string
+          id?: string
+          marked_numbers?: number[] | null
+          numbers: number[]
+          subtitle?: string
+          title?: string
+          user_name: string
+        }
+        Update: {
+          card_number?: number
+          created_at?: string
+          id?: string
+          marked_numbers?: number[] | null
+          numbers?: number[]
+          subtitle?: string
+          title?: string
+          user_name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

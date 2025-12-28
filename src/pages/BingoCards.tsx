@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { LayoutGrid, Shuffle, Link2, Copy, Check, ArrowLeft } from "lucide-react";
+import { LayoutGrid, Shuffle, Link2, Copy, Check, ArrowLeft, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface GeneratedCard {
-  id: number;
+  id: string;
+  cardNumber: number;
   numbers: number[];
   userName: string;
   title: string;
@@ -41,15 +43,9 @@ function normalizeUserName(name: string): string {
     .replace(/^-|-$/g, ""); // Remove leading/trailing dashes
 }
 
-// Save card data to localStorage
-function saveCardToStorage(userName: string, cardId: number, card: GeneratedCard): void {
-  const key = `bingo-cartela-${normalizeUserName(userName)}-${cardId}`;
-  localStorage.setItem(key, JSON.stringify(card));
-}
-
 // Get card URL
-function getCardPath(userName: string, cardId: number): string {
-  return `/bingo/cartela/${normalizeUserName(userName)}/${cardId}`;
+function getCardPath(userName: string, cardNumber: number): string {
+  return `/bingo/cartela/${normalizeUserName(userName)}/${cardNumber}`;
 }
 
 export function BingoCards() {
@@ -59,33 +55,74 @@ export function BingoCards() {
   const [subtitle, setSubtitle] = useState("Boa sorte!");
   const [quantity, setQuantity] = useState(1);
   const [generatedCards, setGeneratedCards] = useState<GeneratedCard[]>([]);
-  const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!userName.trim()) {
       toast.error("Digite o nome do usuário");
       return;
     }
 
-    const cards: GeneratedCard[] = [];
-    for (let i = 0; i < quantity; i++) {
-      const card: GeneratedCard = {
-        id: i + 1,
-        numbers: generateCardNumbers(),
-        userName: userName.trim(),
-        title: title.trim() || "Bingo xat",
-        subtitle: subtitle.trim() || "Boa sorte!",
-      };
-      cards.push(card);
-      // Save each card to localStorage
-      saveCardToStorage(userName.trim(), card.id, card);
+    setIsGenerating(true);
+    const normalizedName = normalizeUserName(userName.trim());
+    const cardTitle = title.trim() || "Bingo xat";
+    const cardSubtitle = subtitle.trim() || "Boa sorte!";
+
+    try {
+      // Generate cards and save to database
+      const cardsToInsert = [];
+      for (let i = 0; i < quantity; i++) {
+        cardsToInsert.push({
+          user_name: normalizedName,
+          card_number: i + 1,
+          title: cardTitle,
+          subtitle: cardSubtitle,
+          numbers: generateCardNumbers(),
+          marked_numbers: [],
+        });
+      }
+
+      // First, delete existing cards for this user (to regenerate)
+      await supabase
+        .from("bingo_cards")
+        .delete()
+        .eq("user_name", normalizedName);
+
+      // Insert new cards
+      const { data, error } = await supabase
+        .from("bingo_cards")
+        .insert(cardsToInsert)
+        .select();
+
+      if (error) {
+        console.error("Error saving cards:", error);
+        toast.error("Erro ao salvar cartelas");
+        return;
+      }
+
+      // Map to our interface
+      const cards: GeneratedCard[] = (data || []).map((card) => ({
+        id: card.id,
+        cardNumber: card.card_number,
+        numbers: card.numbers,
+        userName: card.user_name,
+        title: card.title,
+        subtitle: card.subtitle,
+      }));
+
+      setGeneratedCards(cards);
+      toast.success(`${quantity} cartela${quantity > 1 ? "s" : ""} gerada${quantity > 1 ? "s" : ""} e salva${quantity > 1 ? "s" : ""} online!`);
+    } catch (err) {
+      console.error("Error generating cards:", err);
+      toast.error("Erro ao gerar cartelas");
+    } finally {
+      setIsGenerating(false);
     }
-    setGeneratedCards(cards);
-    toast.success(`${quantity} cartela${quantity > 1 ? "s" : ""} gerada${quantity > 1 ? "s" : ""} com sucesso!`);
   };
 
   const getCardUrl = (card: GeneratedCard) => {
-    return `${window.location.origin}${getCardPath(card.userName, card.id)}`;
+    return `${window.location.origin}${getCardPath(card.userName, card.cardNumber)}`;
   };
 
   const copyLink = async (card: GeneratedCard) => {
@@ -97,7 +134,7 @@ export function BingoCards() {
   };
 
   const openCard = (card: GeneratedCard) => {
-    navigate(getCardPath(card.userName, card.id));
+    navigate(getCardPath(card.userName, card.cardNumber));
   };
 
   return (
@@ -189,10 +226,20 @@ export function BingoCards() {
 
             <Button
               onClick={handleGenerate}
+              disabled={isGenerating}
               className="w-full bg-gradient-to-r from-labxat-blue to-labxat-purple hover:brightness-110 text-white font-semibold py-6"
             >
-              <Shuffle className="w-5 h-5 mr-2" />
-              Gerar Cartelas
+              {isGenerating ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Gerando...
+                </>
+              ) : (
+                <>
+                  <Shuffle className="w-5 h-5 mr-2" />
+                  Gerar Cartelas
+                </>
+              )}
             </Button>
           </div>
         </GlassCard>
@@ -211,7 +258,7 @@ export function BingoCards() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-labxat-purple to-labxat-pink flex items-center justify-center text-white font-bold">
-                        #{card.id}
+                        #{card.cardNumber}
                       </div>
                       <div>
                         <p className="font-semibold text-foreground">{card.title}</p>
