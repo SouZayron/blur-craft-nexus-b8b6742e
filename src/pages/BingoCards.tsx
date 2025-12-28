@@ -30,16 +30,26 @@ function generateCardNumbers(): number[] {
   return numbers.sort((a, b) => a - b);
 }
 
-// Encode card data to URL-safe string
-function encodeCardData(card: GeneratedCard): string {
-  const data = {
-    n: card.numbers,
-    u: card.userName,
-    t: card.title,
-    s: card.subtitle,
-    i: card.id,
-  };
-  return btoa(JSON.stringify(data));
+// Normalize username for URL (remove special chars, lowercase)
+function normalizeUserName(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Remove accents
+    .replace(/[^a-z0-9]/g, "-") // Replace special chars with dash
+    .replace(/-+/g, "-") // Remove multiple dashes
+    .replace(/^-|-$/g, ""); // Remove leading/trailing dashes
+}
+
+// Save card data to localStorage
+function saveCardToStorage(userName: string, cardId: number, card: GeneratedCard): void {
+  const key = `bingo-cartela-${normalizeUserName(userName)}-${cardId}`;
+  localStorage.setItem(key, JSON.stringify(card));
+}
+
+// Get card URL
+function getCardPath(userName: string, cardId: number): string {
+  return `/bingo/cartela/${normalizeUserName(userName)}/${cardId}`;
 }
 
 export function BingoCards() {
@@ -59,21 +69,23 @@ export function BingoCards() {
 
     const cards: GeneratedCard[] = [];
     for (let i = 0; i < quantity; i++) {
-      cards.push({
+      const card: GeneratedCard = {
         id: i + 1,
         numbers: generateCardNumbers(),
         userName: userName.trim(),
         title: title.trim() || "Bingo xat",
         subtitle: subtitle.trim() || "Boa sorte!",
-      });
+      };
+      cards.push(card);
+      // Save each card to localStorage
+      saveCardToStorage(userName.trim(), card.id, card);
     }
     setGeneratedCards(cards);
     toast.success(`${quantity} cartela${quantity > 1 ? "s" : ""} gerada${quantity > 1 ? "s" : ""} com sucesso!`);
   };
 
   const getCardUrl = (card: GeneratedCard) => {
-    const encoded = encodeCardData(card);
-    return `${window.location.origin}/bingo/cartela/${encoded}`;
+    return `${window.location.origin}${getCardPath(card.userName, card.id)}`;
   };
 
   const copyLink = async (card: GeneratedCard) => {
@@ -85,8 +97,7 @@ export function BingoCards() {
   };
 
   const openCard = (card: GeneratedCard) => {
-    const encoded = encodeCardData(card);
-    navigate(`/bingo/cartela/${encoded}`);
+    navigate(getCardPath(card.userName, card.id));
   };
 
   return (
@@ -238,12 +249,12 @@ export function BingoCards() {
                     {card.numbers.slice(0, 10).map((num) => (
                       <span
                         key={num}
-                        className="w-8 h-8 rounded bg-background/50 flex items-center justify-center text-xs font-medium text-muted-foreground"
+                        className="w-8 h-8 rounded bg-gradient-to-br from-labxat-purple/20 to-labxat-pink/20 flex items-center justify-center text-xs font-medium text-foreground"
                       >
                         {num}
                       </span>
                     ))}
-                    <span className="w-8 h-8 rounded bg-background/50 flex items-center justify-center text-xs font-medium text-muted-foreground">
+                    <span className="w-8 h-8 rounded bg-gradient-to-br from-labxat-purple/20 to-labxat-pink/20 flex items-center justify-center text-xs font-medium text-foreground">
                       ...
                     </span>
                   </div>

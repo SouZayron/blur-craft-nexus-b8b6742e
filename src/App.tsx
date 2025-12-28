@@ -39,7 +39,7 @@ const App = () => (
               <Route path="/graphics" element={<GraphicsFree />} />
               <Route path="/emojis" element={<Emojis />} />
               <Route path="/cartelas" element={<BingoCards />} />
-              <Route path="/bingo/cartela/:encoded" element={<BingoCardView />} />
+              <Route path="/bingo/cartela/:userName/:cardId" element={<BingoCardView />} />
               <Route path="/sobre" element={<About />} />
               <Route path="/privacidade" element={<PrivacyPolicy />} />
               <Route path="/termos" element={<TermsOfService />} />
