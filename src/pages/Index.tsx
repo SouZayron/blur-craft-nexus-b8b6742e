@@ -2,7 +2,7 @@ import { Header } from "@/components/Header";
 import { FloatingBlob } from "@/components/FloatingBlob";
 import { GlassCard } from "@/components/GlassCard";
 import { ToolButton } from "@/components/ToolButton";
-import { Palette, Sparkles, Dices, Download, Smile } from "lucide-react";
+import { Palette, Sparkles, Dices, Download, Smile, LayoutGrid } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { memo, useMemo } from "react";
@@ -58,6 +58,12 @@ const Index = () => {
       icon: Smile,
       onClick: () => navigate("/emojis"),
       gradient: "blue" as const,
+    },
+    {
+      name: "Gerador de Cartelas",
+      icon: LayoutGrid,
+      onClick: () => navigate("/cartelas"),
+      gradient: "purple" as const,
     },
   ], [t, navigate]);
 
