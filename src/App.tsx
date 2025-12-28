@@ -11,6 +11,8 @@ import { NickGenerator } from "./pages/NickGenerator";
 import { Bingo } from "./pages/Bingo";
 import { GraphicsFree } from "./pages/GraphicsFree";
 import { Emojis } from "./pages/Emojis";
+import { BingoCards } from "./pages/BingoCards";
+import { BingoCardView } from "./pages/BingoCardView";
 import { About } from "./pages/About";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { TermsOfService } from "./pages/TermsOfService";
@@ -36,6 +38,8 @@ const App = () => (
               <Route path="/bingo" element={<Bingo />} />
               <Route path="/graphics" element={<GraphicsFree />} />
               <Route path="/emojis" element={<Emojis />} />
+              <Route path="/cartelas" element={<BingoCards />} />
+              <Route path="/bingo/cartela/:encoded" element={<BingoCardView />} />
               <Route path="/sobre" element={<About />} />
               <Route path="/privacidade" element={<PrivacyPolicy />} />
               <Route path="/termos" element={<TermsOfService />} />
