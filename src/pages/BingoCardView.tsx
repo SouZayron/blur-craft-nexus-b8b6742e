@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Header } from "@/components/Header";
 import { GlassCard } from "@/components/GlassCard";
 import { FloatingBlob } from "@/components/FloatingBlob";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, RotateCcw, Share2, Loader2 } from "lucide-react";
+import { RotateCcw, Share2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -146,23 +145,18 @@ export function BingoCardView() {
 
   if (notFound) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden flex items-center justify-center">
         <FloatingBlob color="blue" size="lg" position={{ top: "-10%", left: "-5%" }} animation="float" />
         <FloatingBlob color="purple" size="md" position={{ top: "30%", right: "-10%" }} animation="float-delayed" />
         
-        <div className="relative z-10 container mx-auto px-4 py-8 max-w-lg">
-          <Header />
-          
-          <div className="text-center mt-20">
-            <h1 className="text-2xl font-bold text-foreground mb-4">Cartela não encontrada</h1>
-            <p className="text-muted-foreground mb-6">
-              Esta cartela não existe ou ainda não foi gerada.
-            </p>
-            <Button onClick={() => navigate("/cartelas")}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Ir para o gerador
-            </Button>
-          </div>
+        <div className="relative z-10 text-center px-4">
+          <h1 className="text-2xl font-bold text-foreground mb-4">Cartela não encontrada</h1>
+          <p className="text-muted-foreground mb-6">
+            Esta cartela não existe ou ainda não foi gerada.
+          </p>
+          <Button onClick={() => navigate("/cartelas")}>
+            Ir para o gerador
+          </Button>
         </div>
       </div>
     );
@@ -175,36 +169,36 @@ export function BingoCardView() {
   const theme = cardThemes[cardData.theme] || cardThemes.purple;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden flex flex-col items-center justify-center p-4">
       <FloatingBlob color="blue" size="lg" position={{ top: "-10%", left: "-5%" }} animation="float" />
       <FloatingBlob color="purple" size="md" position={{ top: "30%", right: "-10%" }} animation="float-delayed" />
       <FloatingBlob color="pink" size="sm" position={{ bottom: "20%", left: "10%" }} animation="float-slow" />
 
-      <div className="relative z-10 container mx-auto px-4 py-8 max-w-lg">
-        <Header />
-
-        <Button
-          variant="ghost"
-          onClick={() => navigate("/cartelas")}
-          className="mb-6 text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Voltar
-        </Button>
-
-        <div className="text-center mb-6">
-          <p className={cn("text-sm font-medium mb-1 bg-gradient-to-r bg-clip-text text-transparent", theme.preview)}>
-            Cartela #{cardData.cardNumber} • {cardData.userName}
-          </p>
-          <h1 className={cn("text-2xl md:text-3xl font-bold bg-gradient-to-r bg-clip-text text-transparent", theme.preview)}>
+      <div className="relative z-10 w-full max-w-sm">
+        {/* Card Number */}
+        <div className="text-center mb-4">
+          <span className={cn(
+            "inline-block px-4 py-1 rounded-full text-sm font-medium bg-gradient-to-r text-white mb-3",
+            theme.preview
+          )}>
+            Cartela #{cardData.cardNumber}
+          </span>
+          
+          {/* Title with gradient */}
+          <h1 className={cn(
+            "text-3xl md:text-4xl font-bold bg-gradient-to-r bg-clip-text text-transparent",
+            theme.preview
+          )}>
             {cardData.title}
           </h1>
-          <p className="text-muted-foreground mt-1">{cardData.subtitle}</p>
+          
+          {/* Subtitle */}
+          <p className="text-muted-foreground mt-2 text-lg">{cardData.subtitle}</p>
         </div>
 
         {/* Bingo Card Grid */}
-        <GlassCard className={cn("p-4 mb-6 bg-gradient-to-br", theme.cardBg)}>
-          <div className="grid grid-cols-5 gap-2">
+        <GlassCard className={cn("p-3 mb-4 bg-gradient-to-br", theme.cardBg)}>
+          <div className="grid grid-cols-5 gap-1.5">
             {cardData.numbers.map((num, index) => {
               const isMarked = markedNumbers.has(num);
               return (
@@ -212,16 +206,16 @@ export function BingoCardView() {
                   key={`${num}-${index}`}
                   onClick={() => toggleNumber(num)}
                   className={cn(
-                    "aspect-square rounded-lg flex items-center justify-center text-lg font-bold transition-all duration-300 relative overflow-hidden",
+                    "aspect-square rounded-lg flex items-center justify-center text-base sm:text-lg font-bold transition-all duration-300 relative overflow-hidden",
                     "backdrop-blur-sm border",
                     isMarked
                       ? cn("bg-gradient-to-br text-white border-white/30 scale-95", theme.markedBg)
-                      : cn("bg-gradient-to-br text-foreground border-white/20 hover:scale-105", theme.numberBg, theme.numberHover)
+                      : cn("bg-gradient-to-br text-foreground border-white/20 hover:scale-105 active:scale-95", theme.numberBg, theme.numberHover)
                   )}
                 >
                   <span className={cn(isMarked && "opacity-50")}>{num}</span>
                   {isMarked && (
-                    <span className="absolute inset-0 flex items-center justify-center text-3xl font-black text-white/50 animate-scale-in">
+                    <span className="absolute inset-0 flex items-center justify-center text-2xl sm:text-3xl font-black text-white/50 animate-scale-in">
                       ✕
                     </span>
                   )}
@@ -236,14 +230,14 @@ export function BingoCardView() {
           <Button
             variant="outline"
             onClick={resetCard}
-            className="flex-1"
+            className="flex-1 py-5"
           >
             <RotateCcw className="w-4 h-4 mr-2" />
             Resetar
           </Button>
           <Button
             onClick={shareCard}
-            className={cn("flex-1 bg-gradient-to-r text-white", theme.preview)}
+            className={cn("flex-1 py-5 bg-gradient-to-r text-white", theme.preview)}
           >
             <Share2 className="w-4 h-4 mr-2" />
             Compartilhar
@@ -251,9 +245,9 @@ export function BingoCardView() {
         </div>
 
         {/* Progress */}
-        <div className="mt-6 text-center">
+        <div className="mt-4 text-center">
           <p className="text-sm text-muted-foreground">
-            Números marcados: <span className={cn("font-bold bg-gradient-to-r bg-clip-text text-transparent", theme.preview)}>{markedNumbers.size}</span> / 25
+            Marcados: <span className={cn("font-bold bg-gradient-to-r bg-clip-text text-transparent", theme.preview)}>{markedNumbers.size}</span> / 25
           </p>
         </div>
       </div>
