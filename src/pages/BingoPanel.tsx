@@ -104,19 +104,36 @@ export const BingoPanel = () => {
     if (isLoggedIn) {
       fetchData();
 
-      // Setup realtime subscriptions
+      // Setup realtime subscriptions with unique channel name
       const channel = supabase
-        .channel('bingo-admin-channel')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'bingo_games' }, () => {
-          fetchData();
-        })
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'bingo_selections' }, () => {
-          fetchData();
-        })
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'bingo_players' }, () => {
-          fetchData();
-        })
-        .subscribe();
+        .channel('bingo-admin-realtime')
+        .on(
+          'postgres_changes', 
+          { event: '*', schema: 'public', table: 'bingo_games' }, 
+          (payload) => {
+            console.log('Game update:', payload);
+            fetchData();
+          }
+        )
+        .on(
+          'postgres_changes', 
+          { event: '*', schema: 'public', table: 'bingo_selections' }, 
+          (payload) => {
+            console.log('Selection update:', payload);
+            fetchData();
+          }
+        )
+        .on(
+          'postgres_changes', 
+          { event: '*', schema: 'public', table: 'bingo_players' }, 
+          (payload) => {
+            console.log('Player update:', payload);
+            fetchData();
+          }
+        )
+        .subscribe((status) => {
+          console.log('Admin channel status:', status);
+        });
 
       return () => {
         supabase.removeChannel(channel);
