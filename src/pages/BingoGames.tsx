@@ -309,6 +309,8 @@ export const BingoGames = () => {
     );
   }
 
+  const hasPlayerSelected = currentPlayer ? selections.some(s => s.player_id === currentPlayer.id) : false;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-labxat-purple/10 p-4">
       <div className="max-w-6xl mx-auto">
@@ -318,8 +320,14 @@ export const BingoGames = () => {
             {game?.game_type === 'sequences' ? 'Bingo das Sequências' : 'Bingo 2 Números'}
           </h1>
           <p className="text-muted-foreground">
-            Olá, <span className="text-labxat-purple font-semibold">{currentPlayer?.username}</span>! Selecione seu bloco.
+            Olá, <span className="text-labxat-purple font-semibold">{currentPlayer?.username}</span>! 
+            {hasPlayerSelected 
+              ? ' Você já selecionou seu bloco.' 
+              : ' Selecione seu bloco.'}
           </p>
+          {hasPlayerSelected && (
+            <p className="text-green-500 text-sm mt-1">✓ Bloco selecionado com sucesso!</p>
+          )}
         </div>
 
         {/* Blocks Grid */}
@@ -328,41 +336,29 @@ export const BingoGames = () => {
             const owner = getBlockOwner(index);
             const isMine = isMyBlock(index);
             const isAvailable = !owner;
+            const canSelect = isAvailable && !hasPlayerSelected;
 
             return (
               <button
                 key={index}
-                onClick={() => isAvailable && handleSelectBlock(index)}
-                disabled={!isAvailable}
+                onClick={() => canSelect && handleSelectBlock(index)}
+                disabled={!canSelect}
                 className={`
                   relative p-3 rounded-xl transition-all duration-300 min-h-[80px] flex flex-col items-center justify-center
-                  ${isAvailable 
-                    ? 'bg-gradient-to-br from-labxat-purple/20 to-labxat-pink/20 hover:from-labxat-purple/40 hover:to-labxat-pink/40 cursor-pointer hover:scale-105' 
-                    : isMine 
-                      ? 'bg-gradient-to-br from-green-500/30 to-emerald-500/30 border-2 border-green-500'
-                      : 'bg-gradient-to-br from-red-500/20 to-orange-500/20 cursor-not-allowed opacity-70'
+                  ${isMine 
+                    ? 'bg-gradient-to-br from-green-500/30 to-emerald-500/30 border-2 border-green-500'
+                    : owner
+                      ? 'bg-gradient-to-br from-red-500/20 to-orange-500/20 cursor-not-allowed opacity-70'
+                      : hasPlayerSelected
+                        ? 'bg-gradient-to-br from-labxat-purple/10 to-labxat-pink/10 cursor-not-allowed opacity-50'
+                        : 'bg-gradient-to-br from-labxat-purple/20 to-labxat-pink/20 hover:from-labxat-purple/40 hover:to-labxat-pink/40 cursor-pointer hover:scale-105'
                   }
-                  ${isAvailable ? 'animate-border-glow' : ''}
+                  ${canSelect ? 'animate-border-glow' : ''}
                 `}
-                style={isAvailable ? {
-                  background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2))',
-                  position: 'relative',
-                } : undefined}
               >
-                {isAvailable && (
-                  <div className="absolute inset-0 rounded-xl overflow-hidden">
-                    <div className="absolute inset-0 border-2 border-transparent rounded-xl animate-border-run" 
-                         style={{
-                           background: 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.8), transparent) border-box',
-                           mask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
-                           maskComposite: 'exclude',
-                         }}
-                    />
-                  </div>
-                )}
                 <span className="text-lg font-bold text-foreground">{block}</span>
                 {owner && (
-                  <span className={`text-xs mt-1 truncate max-w-full ${isMine ? 'text-green-400' : 'text-red-400'}`}>
+                  <span className={`text-xs mt-1 truncate max-w-full font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
                     {owner}
                   </span>
                 )}
