@@ -64,6 +64,8 @@ export const BingoGames = () => {
 
   // Fetch game and selections
   const fetchData = async () => {
+    console.log('BingoGames: Fetching data...');
+    
     const { data: gameData } = await supabase
       .from('bingo_games')
       .select('*')
@@ -71,6 +73,7 @@ export const BingoGames = () => {
       .maybeSingle();
     
     if (gameData) {
+      console.log('BingoGames: Game data:', gameData);
       setGame(gameData as Game);
       
       const { data: selectionsData } = await supabase
@@ -78,6 +81,7 @@ export const BingoGames = () => {
         .select('*, player:bingo_players(*)')
         .eq('game_id', gameData.id);
       
+      console.log('BingoGames: Selections data:', selectionsData);
       if (selectionsData) {
         setSelections(selectionsData as any);
       }
@@ -218,8 +222,8 @@ export const BingoGames = () => {
     const selection = selections.find(s => s.block_index === blockIndex);
     if (selection) {
       // First try to get from nested player object
-      if ((selection as any).player?.username) {
-        return (selection as any).player.username;
+      if (selection.player?.username) {
+        return selection.player.username;
       }
       // Fallback to players array
       const player = players.find(p => p.id === selection.player_id);

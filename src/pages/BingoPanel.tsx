@@ -51,6 +51,7 @@ interface Selection {
   id: string;
   player_id: string;
   block_index: number;
+  player?: Player;
 }
 
 interface Game {
@@ -71,6 +72,8 @@ export const BingoPanel = () => {
 
   // Fetch game and selections
   const fetchData = async () => {
+    console.log('Fetching data...');
+    
     const { data: gameData } = await supabase
       .from('bingo_games')
       .select('*')
@@ -78,15 +81,17 @@ export const BingoPanel = () => {
       .maybeSingle();
     
     if (gameData) {
+      console.log('Game data:', gameData);
       setGame(gameData as Game);
       
       const { data: selectionsData } = await supabase
         .from('bingo_selections')
-        .select('*')
+        .select('*, player:bingo_players(*)')
         .eq('game_id', gameData.id);
       
+      console.log('Selections data:', selectionsData);
       if (selectionsData) {
-        setSelections(selectionsData);
+        setSelections(selectionsData as any);
       }
     }
 
@@ -243,7 +248,8 @@ export const BingoPanel = () => {
   const getBlockOwner = (blockIndex: number) => {
     const selection = selections.find(s => s.block_index === blockIndex);
     if (selection) {
-      const player = players.find(p => p.id === selection.player_id);
+      // Try nested player first, then fallback to players array
+      const player = selection.player || players.find(p => p.id === selection.player_id);
       return { player, selectionId: selection.id };
     }
     return null;
