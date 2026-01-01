@@ -14,6 +14,8 @@ import { Emojis } from "./pages/Emojis";
 import { BingoCards } from "./pages/BingoCards";
 import { BingoCardView } from "./pages/BingoCardView";
 import { BingoCardsAccess } from "./pages/BingoCardsAccess";
+import { BingoGames } from "./pages/BingoGames";
+import { BingoPanel } from "./pages/BingoPanel";
 import { About } from "./pages/About";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { TermsOfService } from "./pages/TermsOfService";
@@ -42,6 +44,8 @@ const App = () => (
               <Route path="/cartelas" element={<BingoCards />} />
               <Route path="/cartelas/:userName" element={<BingoCardsAccess />} />
               <Route path="/bingo/cartela/:userName/:cardId" element={<BingoCardView />} />
+              <Route path="/Games" element={<BingoGames />} />
+              <Route path="/Painel" element={<BingoPanel />} />
               <Route path="/sobre" element={<About />} />
               <Route path="/privacidade" element={<PrivacyPolicy />} />
               <Route path="/termos" element={<TermsOfService />} />

@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      bingo_admins: {
+        Row: {
+          created_at: string
+          id: string
+          password: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          password: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          password?: string
+          username?: string
+        }
+        Relationships: []
+      }
       bingo_cards: {
         Row: {
           card_number: number
@@ -56,6 +77,90 @@ export type Database = {
         }
         Relationships: []
       }
+      bingo_games: {
+        Row: {
+          created_at: string
+          game_type: Database["public"]["Enums"]["bingo_game_type"]
+          id: string
+          is_open: boolean
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          game_type?: Database["public"]["Enums"]["bingo_game_type"]
+          id?: string
+          is_open?: boolean
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          game_type?: Database["public"]["Enums"]["bingo_game_type"]
+          id?: string
+          is_open?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      bingo_players: {
+        Row: {
+          created_at: string
+          id: string
+          password: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          password: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          password?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      bingo_selections: {
+        Row: {
+          block_index: number
+          created_at: string
+          game_id: string
+          id: string
+          player_id: string
+        }
+        Insert: {
+          block_index: number
+          created_at?: string
+          game_id: string
+          id?: string
+          player_id: string
+        }
+        Update: {
+          block_index?: number
+          created_at?: string
+          game_id?: string
+          id?: string
+          player_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bingo_selections_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "bingo_games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bingo_selections_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "bingo_players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -64,7 +169,7 @@ export type Database = {
       cleanup_expired_bingo_cards: { Args: never; Returns: undefined }
     }
     Enums: {
-      [_ in never]: never
+      bingo_game_type: "pairs" | "sequences"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -191,6 +296,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      bingo_game_type: ["pairs", "sequences"],
+    },
   },
 } as const
