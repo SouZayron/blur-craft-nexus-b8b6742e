@@ -7,10 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { LayoutGrid, Shuffle, Link2, Copy, Check, ArrowLeft, Loader2, Palette, Lock, Eye, EyeOff } from "lucide-react";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import { LayoutGrid, Shuffle, Link2, Copy, Check, ArrowLeft, Loader2, Palette, Lock, Eye, EyeOff, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
+
+const UNLOCK_PASSWORD = "9988";
 
 interface GeneratedCard {
   id: string;
@@ -138,6 +141,8 @@ function getCardPath(userName: string, cardNumber: number): string {
 
 export function BingoCards() {
   const navigate = useNavigate();
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [unlockCode, setUnlockCode] = useState("");
   const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -148,6 +153,17 @@ export function BingoCards() {
   const [generatedCards, setGeneratedCards] = useState<GeneratedCard[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  const handleUnlockCodeChange = (value: string) => {
+    setUnlockCode(value);
+    if (value === UNLOCK_PASSWORD) {
+      setIsUnlocked(true);
+      toast.success("Acesso liberado!");
+    } else if (value.length === 4) {
+      toast.error("Senha incorreta");
+      setUnlockCode("");
+    }
+  };
 
   const handleGenerate = async () => {
     if (!userName.trim()) {
@@ -233,6 +249,77 @@ export function BingoCards() {
   const openCard = (card: GeneratedCard) => {
     navigate(getCardPath(card.userName, card.cardNumber));
   };
+
+  // Lock screen
+  if (!isUnlocked) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden">
+        <FloatingBlob color="blue" size="lg" position={{ top: "-10%", left: "-5%" }} animation="float" />
+        <FloatingBlob color="purple" size="md" position={{ top: "30%", right: "-10%" }} animation="float-delayed" />
+        <FloatingBlob color="pink" size="sm" position={{ bottom: "20%", left: "10%" }} animation="float-slow" />
+
+        <div className="relative z-10 container mx-auto px-4 py-8 max-w-md">
+          <Header />
+
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/")}
+            className="mb-6 text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Voltar
+          </Button>
+
+          <GlassCard className="p-8 text-center">
+            <div className="mb-6">
+              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-labxat-purple/20 to-labxat-pink/20 flex items-center justify-center">
+                <Lock className="w-10 h-10 text-labxat-purple" />
+              </div>
+              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-labxat-blue via-labxat-purple to-labxat-pink bg-clip-text text-transparent mb-2">
+                Gerador de Cartelas Online
+              </h1>
+              <p className="text-xl font-semibold text-foreground mb-4">
+                Valor: 1000x
+              </p>
+              <p className="text-muted-foreground mb-6">
+                Para comprar o Gerador entre em contato com{" "}
+                <span className="font-semibold text-labxat-purple">Zayron (208112318)</span>
+              </p>
+              <a
+                href="https://xat.com/mixhits"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-labxat-blue to-labxat-purple text-white font-semibold hover:brightness-110 transition-all"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Ir para xat.com/mixhits
+              </a>
+            </div>
+
+            <div className="border-t border-border/50 pt-6 mt-6">
+              <p className="text-sm text-muted-foreground mb-4">
+                Já possui acesso? Digite a senha:
+              </p>
+              <div className="flex justify-center">
+                <InputOTP
+                  maxLength={4}
+                  value={unlockCode}
+                  onChange={handleUnlockCodeChange}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} className="w-12 h-12 text-lg" />
+                    <InputOTPSlot index={1} className="w-12 h-12 text-lg" />
+                    <InputOTPSlot index={2} className="w-12 h-12 text-lg" />
+                    <InputOTPSlot index={3} className="w-12 h-12 text-lg" />
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+            </div>
+          </GlassCard>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden">
