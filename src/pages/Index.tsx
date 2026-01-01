@@ -211,7 +211,7 @@ const Index = () => {
         </section>
 
         {/* Footer inline */}
-        <footer className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
+        <footer className="mt-12 text-center pb-6">
           <p className="text-muted-foreground text-xs">Feito com amor Zayron - 2025 · {t("copyright")}</p>
           <div className="mt-2 flex justify-center gap-4 text-xs">
             <Link to="/privacidade" className="text-muted-foreground hover:text-labxat-purple transition-colors">
