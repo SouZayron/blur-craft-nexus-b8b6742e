@@ -329,6 +329,53 @@
     100% { transform: translate3d(200%, 0, 0); }
   }
 
+  /* Border running animation for bingo blocks */
+  @keyframes border-run {
+    0% {
+      background-position: 0% 0%;
+    }
+    25% {
+      background-position: 100% 0%;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+    75% {
+      background-position: 0% 100%;
+    }
+    100% {
+      background-position: 0% 0%;
+    }
+  }
+
+  .animate-border-glow {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .animate-border-glow::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--labxat-purple)),
+      hsl(var(--labxat-pink)),
+      transparent
+    );
+    background-size: 400% 400%;
+    animation: border-run 3s linear infinite;
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
   /* Reduce motion for accessibility */
   @media (prefers-reduced-motion: reduce) {
     .float,
@@ -341,7 +388,8 @@
     .scale-in,
     .gradient-btn,
     .shimmer::after,
-    .animated-gradient-bg {
+    .animated-gradient-bg,
+    .animate-border-glow::before {
       animation: none;
       will-change: auto;
     }
