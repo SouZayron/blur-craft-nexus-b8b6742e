@@ -163,9 +163,16 @@ export const BingoPanel = () => {
     
     const newType = game.game_type === 'pairs' ? 'sequences' : 'pairs';
     
+    // First, delete all selections when switching game type
+    await supabase
+      .from('bingo_selections')
+      .delete()
+      .eq('game_id', game.id);
+    
+    // Then update game type
     await supabase
       .from('bingo_games')
-      .update({ game_type: newType })
+      .update({ game_type: newType, updated_at: new Date().toISOString() })
       .eq('id', game.id);
     
     toast({ title: `Jogo alterado para: ${newType === 'pairs' ? 'Bingo 2 Números' : 'Bingo das Sequências'}` });
