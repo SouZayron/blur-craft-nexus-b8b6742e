@@ -95,19 +95,36 @@ export const BingoGames = () => {
   useEffect(() => {
     fetchData();
 
-    // Setup realtime subscriptions
+    // Setup realtime subscriptions with unique channel name
     const channel = supabase
-      .channel('bingo-games-channel')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'bingo_games' }, () => {
-        fetchData();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'bingo_selections' }, () => {
-        fetchData();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'bingo_players' }, () => {
-        fetchData();
-      })
-      .subscribe();
+      .channel('bingo-user-realtime')
+      .on(
+        'postgres_changes', 
+        { event: '*', schema: 'public', table: 'bingo_games' }, 
+        (payload) => {
+          console.log('Game update:', payload);
+          fetchData();
+        }
+      )
+      .on(
+        'postgres_changes', 
+        { event: '*', schema: 'public', table: 'bingo_selections' }, 
+        (payload) => {
+          console.log('Selection update:', payload);
+          fetchData();
+        }
+      )
+      .on(
+        'postgres_changes', 
+        { event: '*', schema: 'public', table: 'bingo_players' }, 
+        (payload) => {
+          console.log('Player update:', payload);
+          fetchData();
+        }
+      )
+      .subscribe((status) => {
+        console.log('User channel status:', status);
+      });
 
     return () => {
       supabase.removeChannel(channel);
@@ -200,6 +217,11 @@ export const BingoGames = () => {
   const getBlockOwner = (blockIndex: number) => {
     const selection = selections.find(s => s.block_index === blockIndex);
     if (selection) {
+      // First try to get from nested player object
+      if ((selection as any).player?.username) {
+        return (selection as any).player.username;
+      }
+      // Fallback to players array
       const player = players.find(p => p.id === selection.player_id);
       return player?.username || "Ocupado";
     }
