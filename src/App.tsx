@@ -41,9 +41,11 @@ const App = () => (
               <Route path="/bingo" element={<Bingo />} />
               <Route path="/graphics" element={<GraphicsFree />} />
               <Route path="/emojis" element={<Emojis />} />
+              {/* TEMPORARIAMENTE DESATIVADO - Gerador de Cartelas
               <Route path="/cartelas" element={<BingoCards />} />
               <Route path="/cartelas/:userName" element={<BingoCardsAccess />} />
               <Route path="/bingo/cartela/:userName/:cardId" element={<BingoCardView />} />
+              */}
               <Route path="/Games" element={<BingoGames />} />
               <Route path="/Painel" element={<BingoPanel />} />
               <Route path="/sobre" element={<About />} />
