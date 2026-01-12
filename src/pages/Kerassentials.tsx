@@ -92,16 +92,16 @@ export const Kerassentials = () => {
         </h2>
         
         {/* Benefits Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-2 lg:gap-3 max-h-[220px] lg:max-h-[200px]">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-1.5 lg:gap-2 max-h-[220px] lg:max-h-[120px] max-w-5xl mx-auto">
           {benefits.map((benefit, index) => (
             <div 
               key={index}
-              className="bg-white/40 backdrop-blur-md rounded-xl p-2 lg:p-3 border border-white/50 shadow-lg transition-all duration-300 hover:bg-white/70 hover:scale-105 hover:shadow-2xl hover:border-tiffany-300 cursor-default group"
+              className="bg-white/40 backdrop-blur-md rounded-lg p-1.5 lg:p-2 border border-white/50 shadow-lg transition-all duration-300 hover:bg-white/70 hover:scale-105 hover:shadow-2xl hover:border-tiffany-300 cursor-default group"
             >
-              <h3 className="text-[10px] lg:text-xs font-bold text-tiffany-700 mb-1 group-hover:text-tiffany-800 transition-colors">{benefit.title}</h3>
-              <ul className="space-y-0.5">
+              <h3 className="text-[9px] lg:text-[10px] font-bold text-tiffany-700 mb-0.5 group-hover:text-tiffany-800 transition-colors">{benefit.title}</h3>
+              <ul className="space-y-0">
                 {benefit.items.map((item, itemIndex) => (
-                  <li key={itemIndex} className="text-[9px] lg:text-[10px] text-tiffany-600 flex items-start gap-1 group-hover:text-tiffany-700 transition-colors">
+                  <li key={itemIndex} className="text-[8px] lg:text-[9px] text-tiffany-600 flex items-start gap-0.5 group-hover:text-tiffany-700 transition-colors">
                     <span className="text-tiffany-500 mt-0.5 group-hover:text-tiffany-600">•</span>
                     <span>{item}</span>
                   </li>
