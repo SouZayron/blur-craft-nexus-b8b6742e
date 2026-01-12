@@ -57,6 +57,18 @@ export default {
           green: "hsl(var(--labxat-green))",
           lilac: "hsl(var(--labxat-lilac))",
         },
+        tiffany: {
+          50: "hsl(174, 60%, 96%)",
+          100: "hsl(174, 55%, 90%)",
+          200: "hsl(174, 50%, 80%)",
+          300: "hsl(174, 48%, 65%)",
+          400: "hsl(174, 45%, 55%)",
+          500: "hsl(174, 42%, 45%)",
+          600: "hsl(174, 45%, 38%)",
+          700: "hsl(174, 50%, 30%)",
+          800: "hsl(174, 55%, 22%)",
+          900: "hsl(174, 60%, 15%)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -79,11 +91,16 @@ export default {
           "0%, 100%": { transform: "scale(1)" },
           "50%": { transform: "scale(1.05)" },
         },
+        "pulse-slow": {
+          "0%, 100%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(0, 166, 147, 0.4)" },
+          "50%": { transform: "scale(1.03)", boxShadow: "0 0 20px 5px rgba(0, 166, 147, 0.3)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-scale": "pulse-scale 2s ease-in-out infinite",
+        "pulse-slow": "pulse-slow 2.5s ease-in-out infinite",
       },
       boxShadow: {
         'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.15)',

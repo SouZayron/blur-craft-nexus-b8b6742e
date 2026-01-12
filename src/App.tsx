@@ -19,6 +19,7 @@ import { BingoPanel } from "./pages/BingoPanel";
 import { About } from "./pages/About";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { TermsOfService } from "./pages/TermsOfService";
+import { Kerassentials } from "./pages/Kerassentials";
 import { CookieConsent } from "./components/CookieConsent";
 import { FloatingRadio } from "./components/FloatingRadio";
 import { ThemeToggle } from "./components/ThemeToggle";
@@ -51,6 +52,7 @@ const App = () => (
               <Route path="/sobre" element={<About />} />
               <Route path="/privacidade" element={<PrivacyPolicy />} />
               <Route path="/termos" element={<TermsOfService />} />
+              <Route path="/kerassentials" element={<Kerassentials />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
