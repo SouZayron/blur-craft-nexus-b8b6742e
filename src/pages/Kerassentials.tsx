@@ -67,7 +67,7 @@ export const Kerassentials = () => {
         </div>
 
         {/* CTA Button */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 flex flex-col items-center">
           <a 
             href="https://www.checkout-ds24.com/redir/533765/Adrielnobre88/"
             target="_blank"
@@ -75,32 +75,33 @@ export const Kerassentials = () => {
           >
             <Button 
               size="lg"
-              className="bg-tiffany-500 hover:bg-tiffany-600 text-white font-bold text-base lg:text-xl px-8 lg:px-12 py-4 lg:py-6 rounded-full shadow-xl animate-pulse-slow transition-all duration-300 hover:scale-105"
+              className="bg-tiffany-500 hover:bg-tiffany-600 text-white font-bold text-lg lg:text-2xl px-10 lg:px-16 py-5 lg:py-8 rounded-full shadow-xl animate-pulse-slow transition-all duration-300 hover:scale-105"
             >
               Order Now
             </Button>
           </a>
+          <span className="text-tiffany-700 font-bold text-sm lg:text-base mt-2">You Save $200</span>
         </div>
       </div>
 
       {/* Benefits Section */}
-      <div className="flex-1 px-4 lg:px-12 py-3 overflow-hidden flex flex-col">
+      <div className="flex-1 px-4 lg:px-12 py-2 overflow-hidden flex flex-col">
         {/* Benefits Title */}
-        <h2 className="text-xl lg:text-2xl font-bold text-tiffany-700 text-center mb-3">
+        <h2 className="text-lg lg:text-xl font-bold text-tiffany-700 text-center mb-2">
           BENEFITS
         </h2>
         
         {/* Benefits Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-2 lg:gap-3 flex-1 max-h-[280px] lg:max-h-[240px]">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-2 lg:gap-3 max-h-[220px] lg:max-h-[200px]">
           {benefits.map((benefit, index) => (
             <div 
               key={index}
-              className="bg-white/40 backdrop-blur-md rounded-xl p-3 lg:p-4 border border-white/50 shadow-lg transition-all duration-300 hover:bg-white/70 hover:scale-105 hover:shadow-2xl hover:border-tiffany-300 cursor-default group"
+              className="bg-white/40 backdrop-blur-md rounded-xl p-2 lg:p-3 border border-white/50 shadow-lg transition-all duration-300 hover:bg-white/70 hover:scale-105 hover:shadow-2xl hover:border-tiffany-300 cursor-default group"
             >
-              <h3 className="text-xs lg:text-sm font-bold text-tiffany-700 mb-1 lg:mb-2 group-hover:text-tiffany-800 transition-colors">{benefit.title}</h3>
+              <h3 className="text-[10px] lg:text-xs font-bold text-tiffany-700 mb-1 group-hover:text-tiffany-800 transition-colors">{benefit.title}</h3>
               <ul className="space-y-0.5">
                 {benefit.items.map((item, itemIndex) => (
-                  <li key={itemIndex} className="text-[10px] lg:text-xs text-tiffany-600 flex items-start gap-1 group-hover:text-tiffany-700 transition-colors">
+                  <li key={itemIndex} className="text-[9px] lg:text-[10px] text-tiffany-600 flex items-start gap-1 group-hover:text-tiffany-700 transition-colors">
                     <span className="text-tiffany-500 mt-0.5 group-hover:text-tiffany-600">•</span>
                     <span>{item}</span>
                   </li>
@@ -108,6 +109,29 @@ export const Kerassentials = () => {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* Guarantee Section */}
+        <div className="flex items-center justify-center gap-4 lg:gap-8 mt-3 bg-white/30 backdrop-blur-md rounded-xl p-3 lg:p-4 border border-white/50">
+          <a 
+            href="https://www.checkout-ds24.com/redir/533765/Adrielnobre88/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0"
+          >
+            <img 
+              src="https://xatimg.com/image/RKfVH1cPO9za.png" 
+              alt="60-Day Money Back Guarantee" 
+              className="w-16 lg:w-24 h-auto cursor-pointer hover:scale-105 transition-transform"
+            />
+          </a>
+          <div className="text-left">
+            <h3 className="text-sm lg:text-lg font-bold text-tiffany-700">100% Satisfaction</h3>
+            <h4 className="text-xs lg:text-base font-semibold text-tiffany-600 mb-1">60-Day Money Back Guarantee</h4>
+            <p className="text-[10px] lg:text-xs text-tiffany-600 max-w-md">
+              Your order today is covered by our iron-clad 60-day 100% money-back guarantee. If you are not impressed with the results, then just write to us and we'll refund every single cent.
+            </p>
+          </div>
         </div>
       </div>
 
