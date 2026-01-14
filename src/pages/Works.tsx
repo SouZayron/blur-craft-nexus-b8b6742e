@@ -17,6 +17,12 @@ const works = [
   { client: "Italia", image: "https://xatimg.com/image/DXBt64jJ6rLE.png" },
   { client: "Turma do Careca", image: "https://xatimg.com/image/NHEaPGuQiJRT.png" },
   { client: "Rádio Boa Onda", image: "https://xatimg.com/image/n1koySspWPea.png" },
+  { client: "Sociale", image: "https://xatimg.com/image/Jliu70y1wr9s.png" },
+  { client: "Reven", image: "https://xatimg.com/image/371VpYkL8HGI.png" },
+  { client: "Morgan", image: "https://xatimg.com/image/jzeAaM5euuWa.png" },
+  { client: "Pythbots", image: "https://xatimg.com/image/EgtY9RfyPyUI.png" },
+  { client: "Wrs", image: "https://xatimg.com/image/qCaF8e1oBThV.png" },
+  { client: "Verão Mix Hits", image: "https://xatimg.com/image/eAwPS6OQi5Qb.png" },
 ];
 
 export const Works = () => {
@@ -50,6 +56,12 @@ export const Works = () => {
                 className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
               />
+              {/* Watermark */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <span className="text-white/20 font-bold text-4xl md:text-5xl rotate-[-25deg] select-none tracking-widest">
+                  LABXAT
+                </span>
+              </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4">
                 <h3 className="text-white font-semibold text-lg drop-shadow-lg">
                   {work.client}
