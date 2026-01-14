@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { X } from "lucide-react";
 
 const works = [
   { client: "NitroHITS", image: "https://xatimg.com/image/AivQhlTOmd7f.png" },
@@ -18,6 +20,8 @@ const works = [
 ];
 
 export const Works = () => {
+  const [selectedWork, setSelectedWork] = useState<{ client: string; image: string } | null>(null);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <Header />
@@ -32,21 +36,20 @@ export const Works = () => {
           </p>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {/* Gallery Grid - Masonry style */}
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 max-w-6xl mx-auto">
           {works.map((work, index) => (
             <div 
               key={index}
-              className="group relative bg-card rounded-xl overflow-hidden shadow-lg border border-border/50 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:border-primary/30"
+              onClick={() => setSelectedWork(work)}
+              className="group relative bg-card rounded-xl overflow-hidden shadow-lg border border-border/50 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:border-primary/30 cursor-pointer mb-4 break-inside-avoid"
             >
-              <div className="aspect-video overflow-hidden">
-                <img 
-                  src={work.image} 
-                  alt={`Trabalho para ${work.client}`}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
-                />
-              </div>
+              <img 
+                src={work.image} 
+                alt={`Trabalho para ${work.client}`}
+                className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4">
                 <h3 className="text-white font-semibold text-lg drop-shadow-lg">
                   {work.client}
@@ -58,6 +61,37 @@ export const Works = () => {
       </main>
 
       <Footer />
+
+      {/* Lightbox Modal */}
+      {selectedWork && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 animate-fade-in"
+          onClick={() => setSelectedWork(null)}
+        >
+          <button 
+            onClick={() => setSelectedWork(null)}
+            className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors z-10"
+          >
+            <X className="w-8 h-8" />
+          </button>
+          
+          <div 
+            className="relative max-w-5xl max-h-[90vh] animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img 
+              src={selectedWork.image} 
+              alt={`Trabalho para ${selectedWork.client}`}
+              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 rounded-b-lg">
+              <h3 className="text-white font-semibold text-xl text-center">
+                {selectedWork.client}
+              </h3>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
