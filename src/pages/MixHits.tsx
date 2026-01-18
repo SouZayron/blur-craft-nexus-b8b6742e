@@ -96,7 +96,11 @@ export const MixHits = () => {
               <img 
                 src="https://xatimg.com/image/ch0vUciFYIgI.png" 
                 alt="Mix Hits" 
-                className="h-32 md:h-40 mx-auto mb-4"
+                className="h-48 md:h-64 lg:h-72 mx-auto mb-6 animate-float drop-shadow-2xl"
+                style={{
+                  animation: "float 3s ease-in-out infinite",
+                  filter: "drop-shadow(0 0 30px rgba(168, 85, 247, 0.4))"
+                }}
               />
               <p className="text-purple-200/70">
                 Escolha seu nome para a festa!
