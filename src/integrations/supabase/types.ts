@@ -161,6 +161,30 @@ export type Database = {
           },
         ]
       }
+      mixhits_selections: {
+        Row: {
+          app_name: string
+          created_at: string
+          id: string
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          app_name: string
+          created_at?: string
+          id?: string
+          user_id: string
+          user_name: string
+        }
+        Update: {
+          app_name?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
