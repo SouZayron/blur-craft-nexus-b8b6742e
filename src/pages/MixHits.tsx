@@ -93,9 +93,11 @@ export const MixHits = () => {
         {step === "form" ? (
           <div className="max-w-md mx-auto">
             <div className="text-center mb-8">
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent mb-4">
-                Mix Hits
-              </h1>
+              <img 
+                src="https://xatimg.com/image/ch0vUciFYIgI.png" 
+                alt="Mix Hits" 
+                className="h-32 md:h-40 mx-auto mb-4"
+              />
               <p className="text-purple-200/70">
                 Escolha seu nome para a festa!
               </p>
