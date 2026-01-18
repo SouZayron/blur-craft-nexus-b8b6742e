@@ -68,9 +68,30 @@ export const MixHits = () => {
   const [confirmedUserId, setConfirmedUserId] = useState("");
   const { toast } = useToast();
 
-  // Fetch existing selections
+  // Fetch existing selections and subscribe to realtime updates
   useEffect(() => {
     fetchSelections();
+
+    // Subscribe to realtime changes
+    const channel = supabase
+      .channel('mixhits_realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'mixhits_selections'
+        },
+        () => {
+          // Refetch selections when any change occurs
+          fetchSelections();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const fetchSelections = async () => {
