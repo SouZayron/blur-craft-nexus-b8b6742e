@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Copy, Check, ArrowLeft } from "lucide-react";
+import { Copy, Check, X, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AppOption {
   name: string;
   image: string;
   colorCode: string;
+}
+
+interface Selection {
+  app_name: string;
+  user_name: string;
+  user_id: string;
 }
 
 const appOptions: AppOption[] = [
@@ -48,24 +55,102 @@ const appOptions: AppOption[] = [
 ];
 
 export const MixHits = () => {
+  const [selections, setSelections] = useState<Selection[]>([]);
+  const [selectedAppForForm, setSelectedAppForForm] = useState<AppOption | null>(null);
+  const [formDialogOpen, setFormDialogOpen] = useState(false);
   const [userName, setUserName] = useState("");
   const [userId, setUserId] = useState("");
-  const [step, setStep] = useState<"form" | "selection">("form");
   const [selectedApp, setSelectedApp] = useState<AppOption | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [resultDialogOpen, setResultDialogOpen] = useState(false);
   const [copiedColor, setCopiedColor] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmedUserName, setConfirmedUserName] = useState("");
+  const [confirmedUserId, setConfirmedUserId] = useState("");
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (userName.trim() && userId.trim()) {
-      setStep("selection");
+  // Fetch existing selections
+  useEffect(() => {
+    fetchSelections();
+  }, []);
+
+  const fetchSelections = async () => {
+    const { data, error } = await supabase
+      .from("mixhits_selections")
+      .select("app_name, user_name, user_id");
+    
+    if (!error && data) {
+      setSelections(data);
     }
   };
 
-  const handleAppSelect = (app: AppOption) => {
-    setSelectedApp(app);
-    setDialogOpen(true);
+  const getSelectionForApp = (appName: string): Selection | undefined => {
+    return selections.find(s => s.app_name === appName);
+  };
+
+  const handleSelectClick = (app: AppOption) => {
+    const existingSelection = getSelectionForApp(app.name);
+    if (existingSelection) {
+      toast({
+        title: "Fantasia já escolhida!",
+        description: `${existingSelection.user_name} #${existingSelection.user_id} já escolheu ${app.name}`,
+        variant: "destructive",
+      });
+      return;
+    }
+    setSelectedAppForForm(app);
+    setUserName("");
+    setUserId("");
+    setFormDialogOpen(true);
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedAppForForm || !userName.trim() || !userId.trim()) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from("mixhits_selections")
+        .insert({
+          app_name: selectedAppForForm.name,
+          user_name: userName.trim(),
+          user_id: userId.trim(),
+        });
+
+      if (error) {
+        if (error.code === "23505") {
+          toast({
+            title: "Fantasia já escolhida!",
+            description: "Alguém acabou de escolher essa fantasia. Tente outra!",
+            variant: "destructive",
+          });
+          await fetchSelections();
+        } else {
+          throw error;
+        }
+      } else {
+        // Success - show result popup
+        setConfirmedUserName(userName.trim());
+        setConfirmedUserId(userId.trim());
+        setSelectedApp(selectedAppForForm);
+        setFormDialogOpen(false);
+        setResultDialogOpen(true);
+        await fetchSelections();
+        toast({
+          title: "Fantasia reservada!",
+          description: `Você escolheu ${selectedAppForForm.name}!`,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Não foi possível reservar a fantasia. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCopyColor = async () => {
@@ -80,127 +165,155 @@ export const MixHits = () => {
     }
   };
 
-  const handleBack = () => {
-    setStep("form");
-    setSelectedApp(null);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a0a2e] to-[#0f0a1a]">
       <Header />
       
       <main className="container mx-auto px-4 py-12 pt-24 min-h-[calc(100vh-200px)]">
-        {step === "form" ? (
-          <div className="max-w-md mx-auto">
-            <div className="text-center mb-8">
-              <img 
-                src="https://xatimg.com/image/ch0vUciFYIgI.png" 
-                alt="Mix Hits" 
-                className="h-48 md:h-64 lg:h-72 mx-auto mb-6 animate-float drop-shadow-2xl"
-                style={{
-                  animation: "float 3s ease-in-out infinite",
-                  filter: "drop-shadow(0 0 30px rgba(168, 85, 247, 0.4))"
-                }}
-              />
-              <p className="text-purple-200/70">
-                Escolha seu nome para a festa!
-              </p>
-            </div>
+        <div className="text-center mb-12">
+          <img 
+            src="https://xatimg.com/image/ch0vUciFYIgI.png" 
+            alt="Mix Hits" 
+            className="h-48 md:h-64 lg:h-72 mx-auto mb-6 drop-shadow-2xl"
+            style={{
+              animation: "float 3s ease-in-out infinite",
+              filter: "drop-shadow(0 0 30px rgba(168, 85, 247, 0.4))"
+            }}
+          />
+          <p className="text-purple-200/70 text-lg">
+            Escolha sua fantasia para a festa! Clique em "Selecionar" para reservar.
+          </p>
+        </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="backdrop-blur-xl bg-purple-900/20 border border-purple-500/30 rounded-2xl p-6 shadow-2xl shadow-purple-500/10">
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-purple-200 text-sm font-medium mb-2">
-                      Seu Nome
-                    </label>
-                    <Input
-                      type="text"
-                      value={userName}
-                      onChange={(e) => setUserName(e.target.value)}
-                      placeholder="Digite seu nome"
-                      className="bg-purple-950/50 border-purple-500/40 text-white placeholder:text-purple-300/50 focus:border-purple-400"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-purple-200 text-sm font-medium mb-2">
-                      Seu ID (número)
-                    </label>
-                    <Input
-                      type="text"
-                      value={userId}
-                      onChange={(e) => setUserId(e.target.value)}
-                      placeholder="Digite seu ID"
-                      className="bg-purple-950/50 border-purple-500/40 text-white placeholder:text-purple-300/50 focus:border-purple-400"
-                      required
-                    />
-                  </div>
-                </div>
-                <Button
-                  type="submit"
-                  className="w-full mt-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30"
-                >
-                  Continuar
-                </Button>
-              </div>
-            </form>
-          </div>
-        ) : (
-          <div className="space-y-8">
-            <div className="flex items-center justify-between">
-              <Button
-                variant="ghost"
-                onClick={handleBack}
-                className="text-purple-300 hover:text-white hover:bg-purple-800/30"
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          {appOptions.map((app) => {
+            const selection = getSelectionForApp(app.name);
+            const isTaken = !!selection;
+
+            return (
+              <div
+                key={app.name}
+                className={`relative backdrop-blur-xl bg-purple-900/20 border rounded-2xl overflow-hidden transition-all duration-300 ${
+                  isTaken 
+                    ? "border-red-500/50 opacity-75" 
+                    : "border-purple-500/20 hover:border-purple-400/50 hover:shadow-xl hover:shadow-purple-500/20"
+                }`}
               >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Voltar
-              </Button>
-              <div className="backdrop-blur-xl bg-purple-900/30 border border-purple-500/30 rounded-full px-6 py-2">
-                <span className="text-purple-200 font-medium">
-                  {userName} <span className="text-purple-400">#{userId}</span>
-                </span>
+                <div className="aspect-square relative overflow-hidden">
+                  <img
+                    src={app.image}
+                    alt={app.name}
+                    className={`w-full h-full object-cover transition-all duration-300 ${
+                      isTaken ? "grayscale" : ""
+                    }`}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                  
+                  {isTaken && (
+                    <div className="absolute top-2 right-2 bg-red-500/90 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                      Reservado
+                    </div>
+                  )}
+                </div>
+                
+                <div className="p-3 space-y-2">
+                  <p className="text-white font-semibold text-sm text-center truncate">
+                    {app.name}
+                  </p>
+                  
+                  {isTaken ? (
+                    <div className="text-center">
+                      <p className="text-red-300 text-xs truncate">
+                        {selection.user_name} #{selection.user_id}
+                      </p>
+                    </div>
+                  ) : (
+                    <Button
+                      onClick={() => handleSelectClick(app)}
+                      size="sm"
+                      className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xs font-semibold"
+                    >
+                      Selecionar
+                    </Button>
+                  )}
+                </div>
               </div>
-            </div>
-
-            <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                Escolha seu App para a Festa
-              </h2>
-              <p className="text-purple-200/70">
-                Selecione qual rede social você quer "vestir"
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {appOptions.map((app) => (
-                <button
-                  key={app.name}
-                  onClick={() => handleAppSelect(app)}
-                  className="group relative backdrop-blur-xl bg-purple-900/20 border border-purple-500/20 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 hover:border-purple-400/50 hover:shadow-xl hover:shadow-purple-500/20"
-                >
-                  <div className="aspect-square relative overflow-hidden">
-                    <img
-                      src={app.image}
-                      alt={app.name}
-                      className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <p className="text-white font-semibold text-sm text-center truncate">
-                      {app.name}
-                    </p>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+            );
+          })}
+        </div>
       </main>
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      {/* Form Dialog - Enter Name and ID */}
+      <Dialog open={formDialogOpen} onOpenChange={setFormDialogOpen}>
+        <DialogContent className="bg-gradient-to-br from-[#1a0a2e] to-[#0f0a1a] border-purple-500/30 max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center text-white text-xl">
+              Reservar: <span className="text-purple-400">{selectedAppForForm?.name}</span>
+            </DialogTitle>
+          </DialogHeader>
+          
+          {selectedAppForForm && (
+            <form onSubmit={handleFormSubmit} className="space-y-6">
+              <div className="rounded-2xl overflow-hidden border border-purple-500/30 shadow-2xl shadow-purple-500/20">
+                <img
+                  src={selectedAppForForm.image}
+                  alt={selectedAppForForm.name}
+                  className="w-full h-40 object-cover"
+                />
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-purple-200 text-sm font-medium mb-2">
+                    Seu Nome
+                  </label>
+                  <Input
+                    type="text"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    placeholder="Digite seu nome"
+                    className="bg-purple-950/50 border-purple-500/40 text-white placeholder:text-purple-300/50 focus:border-purple-400"
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <label className="block text-purple-200 text-sm font-medium mb-2">
+                    Seu ID (número)
+                  </label>
+                  <Input
+                    type="text"
+                    value={userId}
+                    onChange={(e) => setUserId(e.target.value)}
+                    placeholder="Digite seu ID"
+                    className="bg-purple-950/50 border-purple-500/40 text-white placeholder:text-purple-300/50 focus:border-purple-400"
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Reservando...
+                  </>
+                ) : (
+                  "Confirmar Reserva"
+                )}
+              </Button>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Result Dialog - Show photo and color */}
+      <Dialog open={resultDialogOpen} onOpenChange={setResultDialogOpen}>
         <DialogContent className="bg-gradient-to-br from-[#1a0a2e] to-[#0f0a1a] border-purple-500/30 max-w-md">
           <DialogHeader>
             <DialogTitle className="text-center text-white text-xl">
@@ -213,7 +326,7 @@ export const MixHits = () => {
               <div className="text-center">
                 <div className="backdrop-blur-xl bg-purple-900/30 border border-purple-500/30 rounded-full px-4 py-2 inline-block mb-4">
                   <span className="text-purple-200 font-medium">
-                    {userName} <span className="text-purple-400">#{userId}</span>
+                    {confirmedUserName} <span className="text-purple-400">#{confirmedUserId}</span>
                   </span>
                 </div>
               </div>
