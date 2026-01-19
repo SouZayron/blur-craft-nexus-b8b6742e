@@ -52,6 +52,7 @@ const appOptions: AppOption[] = [
   { name: "Xat.com", image: "https://xatimg.com/image/olkxB0e7oPsq.jpg", colorCode: "(glow#007BFF#grad#r45#007BFF#0056B3#003366#f6)" },
   { name: "Olx", image: "https://xatimg.com/image/mEbJEVxJoG9u.jpg", colorCode: "(glow#9900FF#grad#r40#CC66FF#9900FF#6600CC#f10)" },
   { name: "Mercado Livre", image: "https://xatimg.com/image/5Sum8Srj1TON.jpg", colorCode: "(glow#3483FA#grad#r75#FFE600#FFD700#3483FA#2968C8#o3)" },
+  { name: "MSN", image: "https://xatimg.com/image/zgys0yERpPJI.png", colorCode: "(glow#77CEDA#grad#r30#C0E0E0#AEEEEE#7ACABB#5F9EA0#o2)" },
 ];
 
 export const MixHits = () => {
