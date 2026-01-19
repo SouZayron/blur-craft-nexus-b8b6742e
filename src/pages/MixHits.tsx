@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Copy, Check, X, Loader2 } from "lucide-react";
+import { Copy, Check, X, Loader2, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -12,6 +12,7 @@ interface AppOption {
   name: string;
   image: string;
   colorCode: string;
+  bingoLink: string;
 }
 
 interface Selection {
@@ -21,36 +22,36 @@ interface Selection {
 }
 
 const appOptions: AppOption[] = [
-  { name: "Instagram", image: "https://xatimg.com/image/0W9nJzIdugiw.jpg", colorCode: "(glow#E1306C#grad#r45#FCAF45#F77737#E1306C#C13584#833AB4#o3)" },
-  { name: "TikTok", image: "https://xatimg.com/image/95sosAIYhpaH.jpg", colorCode: "(glow#66BFBF#grad#r45#69C9D0#EE1D52#BB1D52#f6)" },
-  { name: "Facebook", image: "https://xatimg.com/image/v05Hi24iXwuf.jpg", colorCode: "(glow#1877F2#grad#r45#ADD8E6#1877F2#0A66C2#0047AB#o3)" },
-  { name: "X (Twitter)", image: "https://xatimg.com/image/PrAjoG38l2Zr.jpg", colorCode: "(glow#1a1d20#grad#r60#52575c#282c30#0f1113#o3)" },
-  { name: "Pinterest", image: "https://xatimg.com/image/Pby7duiydGXu.jpg", colorCode: "(glow#DC143C#grad#r55#FF6347#FF0000#CD5C5C#o3)" },
-  { name: "Kwai", image: "https://xatimg.com/image/3j6AWUmb9xPM.jpg", colorCode: "(glow#FF5733#grad#r60#FF5733#FFC300#FF5733#o2)" },
-  { name: "Spotify", image: "https://xatimg.com/image/bGUNRoMIRpWy.jpg", colorCode: "(glow#1DB954#grad#r60#1ED760#1DB954#0F7D2B#0A5B1D#o2)" },
-  { name: "YouTube", image: "https://xatimg.com/image/3h12TlElzICD.jpg", colorCode: "(glow#FF0000#grad#r0#FF0000#E60000#FFFFFF#CCCCCC#o3)" },
-  { name: "Netflix", image: "https://xatimg.com/image/ILoK9jHwXb44.jpg", colorCode: "(glow#E50914#grad#r45#B20710#E50914#221F1F#f6)" },
-  { name: "WhatsApp", image: "https://xatimg.com/image/Kdr5NgqLHD5G.jpg", colorCode: "(glow#25D366#grad#r45#25D366#128C7E#075E54#o3)" },
-  { name: "Telegram", image: "https://xatimg.com/image/NKx8vRw9zZpq.jpg", colorCode: "(glow#36AEE2#grad#r45#2AABEE#5FB0DA#C0DAED#o3)" },
-  { name: "Discord", image: "https://xatimg.com/image/JbnPA2kNVjnj.jpg", colorCode: "(glow#7289DA#grad#r45#7289DA#99AAB5#424549#2C2F33#o3)" },
-  { name: "Uber", image: "https://xatimg.com/image/YGW4PCbJZMdG.jpg", colorCode: "(glow#1C1C1C#grad#r60#1C1C1C#3C3C3C#666666#A0A0A0#o3)" },
-  { name: "99", image: "https://xatimg.com/image/bPS7IOW6eDcZ.jpg", colorCode: "(glow#FFD700#grad#r45#000000#36454F#FFD700#FFFF00#o2)" },
-  { name: "iFood", image: "https://xatimg.com/image/dTJGzyZ52uw1.jpg", colorCode: "(glow#FF0000#grad#r45#FF0000#FFFFFF#o3)" },
-  { name: "Tinder", image: "https://xatimg.com/image/HnYcSEZdV1yN.jpg", colorCode: "(glow#FF4500#grad#r80#FFDAB9#FF4500#FF6347#CD5C5C#f6)" },
-  { name: "Nubank", image: "https://xatimg.com/image/i1Ejz7s4tyW3.jpg", colorCode: "(glow#8A2BE2#grad#r70#E6E6FA#8A2BE2#9370DB#6A5ACD#o3)" },
-  { name: "PicPay", image: "https://xatimg.com/image/qefmPFIQR1Ly.jpg", colorCode: "(glow#DCF8C6#grad#r45#FFFFFF#E0FFE0#90EE90#3CB371#o3)" },
-  { name: "Shopee", image: "https://xatimg.com/image/WrBzmqzNKM5x.jpg", colorCode: "(glow#FFA500#grad#r30#F8F8FF#FFBF00#FF8C00#FF4500#f8)" },
-  { name: "AliExpress", image: "https://xatimg.com/image/p9dRqazYXJ0x.jpg", colorCode: "(glow#FFCC00#grad#r60#FFCC00#FF9933#FF6600#161616#f6)" },
-  { name: "Shein", image: "https://xatimg.com/image/vSREvpQe1gAs.jpg", colorCode: "(glow#333333#grad#r30#000000#222222#444444#666666#888888#f8)" },
-  { name: "Canva", image: "https://xatimg.com/image/YAYJMnoxXVlf.jpg", colorCode: "(glow#FF00FF#grad#r30#FF1493#DA70D6#9932CC#8A2BE2#o3)" },
-  { name: "Waze", image: "https://xatimg.com/image/0Ts8ogCtVAS5.jpg", colorCode: "(glow#ADD8E6#grad#r60#E0FFFF#B0E0E6#87CEEB#b#o2)" },
-  { name: "Duolingo", image: "https://xatimg.com/image/R7tUQROxHZdL.jpg", colorCode: "(glow#58CC02#grad#r30#A4FF00#58CC02#2ECC71#27AE60#o3)" },
-  { name: "Airbnb", image: "https://xatimg.com/image/5cuxR47zCvqr.jpg", colorCode: "(glow#FF5A5F#grad#r70#FFC0CB#FF5A5F#o3)" },
-  { name: "Orkut", image: "https://xatimg.com/image/6roomDYZhJ0L.jpg", colorCode: "(glow#FF69B4#grad#r80#FFC0CB#FFB6C1#FF69B4#C71585#o3)" },
-  { name: "Xat.com", image: "https://xatimg.com/image/olkxB0e7oPsq.jpg", colorCode: "(glow#007BFF#grad#r45#007BFF#0056B3#003366#f6)" },
-  { name: "Olx", image: "https://xatimg.com/image/mEbJEVxJoG9u.jpg", colorCode: "(glow#9900FF#grad#r40#CC66FF#9900FF#6600CC#f10)" },
-  { name: "Mercado Livre", image: "https://xatimg.com/image/5Sum8Srj1TON.jpg", colorCode: "(glow#3483FA#grad#r75#FFE600#FFD700#3483FA#2968C8#o3)" },
-  { name: "MSN", image: "https://xatimg.com/image/zgys0yERpPJI.png", colorCode: "(glow#77CEDA#grad#r30#C0E0E0#AEEEEE#7ACABB#5F9EA0#o2)" },
+  { name: "Instagram", image: "https://xatimg.com/image/0W9nJzIdugiw.jpg", colorCode: "(glow#E1306C#grad#r45#FCAF45#F77737#E1306C#C13584#833AB4#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/1" },
+  { name: "TikTok", image: "https://xatimg.com/image/95sosAIYhpaH.jpg", colorCode: "(glow#66BFBF#grad#r45#69C9D0#EE1D52#BB1D52#f6)", bingoLink: "https://mfbc.us/m/p4wmmc5/2" },
+  { name: "Facebook", image: "https://xatimg.com/image/v05Hi24iXwuf.jpg", colorCode: "(glow#1877F2#grad#r45#ADD8E6#1877F2#0A66C2#0047AB#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/3" },
+  { name: "X (Twitter)", image: "https://xatimg.com/image/PrAjoG38l2Zr.jpg", colorCode: "(glow#1a1d20#grad#r60#52575c#282c30#0f1113#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/4" },
+  { name: "Pinterest", image: "https://xatimg.com/image/Pby7duiydGXu.jpg", colorCode: "(glow#DC143C#grad#r55#FF6347#FF0000#CD5C5C#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/5" },
+  { name: "Kwai", image: "https://xatimg.com/image/3j6AWUmb9xPM.jpg", colorCode: "(glow#FF5733#grad#r60#FF5733#FFC300#FF5733#o2)", bingoLink: "https://mfbc.us/m/p4wmmc5/6" },
+  { name: "Spotify", image: "https://xatimg.com/image/bGUNRoMIRpWy.jpg", colorCode: "(glow#1DB954#grad#r60#1ED760#1DB954#0F7D2B#0A5B1D#o2)", bingoLink: "https://mfbc.us/m/p4wmmc5/7" },
+  { name: "YouTube", image: "https://xatimg.com/image/3h12TlElzICD.jpg", colorCode: "(glow#FF0000#grad#r0#FF0000#E60000#FFFFFF#CCCCCC#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/8" },
+  { name: "Netflix", image: "https://xatimg.com/image/ILoK9jHwXb44.jpg", colorCode: "(glow#E50914#grad#r45#B20710#E50914#221F1F#f6)", bingoLink: "https://mfbc.us/m/p4wmmc5/9" },
+  { name: "WhatsApp", image: "https://xatimg.com/image/Kdr5NgqLHD5G.jpg", colorCode: "(glow#25D366#grad#r45#25D366#128C7E#075E54#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/10" },
+  { name: "Telegram", image: "https://xatimg.com/image/NKx8vRw9zZpq.jpg", colorCode: "(glow#36AEE2#grad#r45#2AABEE#5FB0DA#C0DAED#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/11" },
+  { name: "Discord", image: "https://xatimg.com/image/JbnPA2kNVjnj.jpg", colorCode: "(glow#7289DA#grad#r45#7289DA#99AAB5#424549#2C2F33#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/12" },
+  { name: "Uber", image: "https://xatimg.com/image/YGW4PCbJZMdG.jpg", colorCode: "(glow#1C1C1C#grad#r60#1C1C1C#3C3C3C#666666#A0A0A0#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/13" },
+  { name: "99", image: "https://xatimg.com/image/bPS7IOW6eDcZ.jpg", colorCode: "(glow#FFD700#grad#r45#000000#36454F#FFD700#FFFF00#o2)", bingoLink: "https://mfbc.us/m/p4wmmc5/14" },
+  { name: "iFood", image: "https://xatimg.com/image/dTJGzyZ52uw1.jpg", colorCode: "(glow#FF0000#grad#r45#FF0000#FFFFFF#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/15" },
+  { name: "Tinder", image: "https://xatimg.com/image/HnYcSEZdV1yN.jpg", colorCode: "(glow#FF4500#grad#r80#FFDAB9#FF4500#FF6347#CD5C5C#f6)", bingoLink: "https://mfbc.us/m/p4wmmc5/16" },
+  { name: "Nubank", image: "https://xatimg.com/image/i1Ejz7s4tyW3.jpg", colorCode: "(glow#8A2BE2#grad#r70#E6E6FA#8A2BE2#9370DB#6A5ACD#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/17" },
+  { name: "PicPay", image: "https://xatimg.com/image/qefmPFIQR1Ly.jpg", colorCode: "(glow#DCF8C6#grad#r45#FFFFFF#E0FFE0#90EE90#3CB371#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/18" },
+  { name: "Shopee", image: "https://xatimg.com/image/WrBzmqzNKM5x.jpg", colorCode: "(glow#FFA500#grad#r30#F8F8FF#FFBF00#FF8C00#FF4500#f8)", bingoLink: "https://mfbc.us/m/p4wmmc5/19" },
+  { name: "AliExpress", image: "https://xatimg.com/image/p9dRqazYXJ0x.jpg", colorCode: "(glow#FFCC00#grad#r60#FFCC00#FF9933#FF6600#161616#f6)", bingoLink: "https://mfbc.us/m/p4wmmc5/20" },
+  { name: "Shein", image: "https://xatimg.com/image/vSREvpQe1gAs.jpg", colorCode: "(glow#333333#grad#r30#000000#222222#444444#666666#888888#f8)", bingoLink: "https://mfbc.us/m/p4wmmc5/21" },
+  { name: "Canva", image: "https://xatimg.com/image/YAYJMnoxXVlf.jpg", colorCode: "(glow#FF00FF#grad#r30#FF1493#DA70D6#9932CC#8A2BE2#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/22" },
+  { name: "Waze", image: "https://xatimg.com/image/0Ts8ogCtVAS5.jpg", colorCode: "(glow#ADD8E6#grad#r60#E0FFFF#B0E0E6#87CEEB#b#o2)", bingoLink: "https://mfbc.us/m/p4wmmc5/23" },
+  { name: "Duolingo", image: "https://xatimg.com/image/R7tUQROxHZdL.jpg", colorCode: "(glow#58CC02#grad#r30#A4FF00#58CC02#2ECC71#27AE60#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/24" },
+  { name: "Airbnb", image: "https://xatimg.com/image/5cuxR47zCvqr.jpg", colorCode: "(glow#FF5A5F#grad#r70#FFC0CB#FF5A5F#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/25" },
+  { name: "Orkut", image: "https://xatimg.com/image/6roomDYZhJ0L.jpg", colorCode: "(glow#FF69B4#grad#r80#FFC0CB#FFB6C1#FF69B4#C71585#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/26" },
+  { name: "Xat.com", image: "https://xatimg.com/image/olkxB0e7oPsq.jpg", colorCode: "(glow#007BFF#grad#r45#007BFF#0056B3#003366#f6)", bingoLink: "https://mfbc.us/m/p4wmmc5/27" },
+  { name: "Olx", image: "https://xatimg.com/image/mEbJEVxJoG9u.jpg", colorCode: "(glow#9900FF#grad#r40#CC66FF#9900FF#6600CC#f10)", bingoLink: "https://mfbc.us/m/p4wmmc5/28" },
+  { name: "Mercado Livre", image: "https://xatimg.com/image/5Sum8Srj1TON.jpg", colorCode: "(glow#3483FA#grad#r75#FFE600#FFD700#3483FA#2968C8#o3)", bingoLink: "https://mfbc.us/m/p4wmmc5/29" },
+  { name: "MSN", image: "https://xatimg.com/image/zgys0yERpPJI.png", colorCode: "(glow#77CEDA#grad#r30#C0E0E0#AEEEEE#7ACABB#5F9EA0#o2)", bingoLink: "https://mfbc.us/m/p4wmmc5/30" },
 ];
 
 export const MixHits = () => {
@@ -357,6 +358,21 @@ export const MixHits = () => {
                   alt={selectedApp.name}
                   className="w-full h-auto"
                 />
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-purple-200 text-sm font-medium text-center">
+                  Sua Cartela:
+                </p>
+                <a
+                  href={selectedApp.bingoLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Abrir Cartela do Bingo
+                </a>
               </div>
 
               <div className="space-y-3">
