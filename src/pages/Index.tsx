@@ -22,7 +22,7 @@ const SmiliesList = memo(({ smilies }: { smilies: string[] }) => (
 ));
 SmiliesList.displayName = "SmiliesList";
 
-const SMILIES = ["(ratmas)", "(rmblanket)", "(rmgift)", "(rmelf)", "(rmblanketop)", "(rmlightstop)", "(rmreindeertop)", "(rmornamentback)", "(rmlights)", "(rmornament)", "(rmbow)", "(rmantlers)", "(rmsanta)", "(rmstocking)", "(rmmtoe)", "(rmback)"];
+const SMILIES = ["(kitsune)", "(kitchat)", "(kitdance)", "(kitheaven)", "(kitwind)", "(kitstorm)", "(kitnight)", "(kitcool)", "(kitaqua)", "(kitfire)", "(kitice)", "(kitlove)", "(kitnature)", "(kithalo)", "(kitmask)", "(kitraio)", "(kitread)", "(kitninja)", "(kitpirate)", "(kitcowboy)"];
 
 const Index = () => {
   const navigate = useNavigate();
@@ -90,53 +90,53 @@ const Index = () => {
             <GlassCard className="p-5 md:p-6 h-full">
               {/* Header with Image and Title */}
               <div className="flex items-start gap-4 mb-5">
-                {/* LCP Image - optimized with explicit dimensions and fetchpriority */}
-                <img 
-                  src="https://xatimg.com/image/YuaLbdfuX4Q8.png" 
-                  alt="Ratmas Power" 
-                  width={80}
-                  height={80}
-                  className="w-20 h-20 rounded-xl object-cover shadow-lg"
-                  fetchPriority="high"
-                  decoding="async"
-                />
-                <div className="flex-1">
-                  <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
-                    {t("ultimoPower")}
-                  </p>
-                  <h1 className="text-xl md:text-2xl font-bold text-foreground">
-                    Ratmas <span className="text-foreground/60 text-base">(ID: 734)</span>
-                  </h1>
-                </div>
+              {/* LCP Image - optimized with explicit dimensions and fetchpriority */}
+              <img 
+                src="https://xatimg.com/image/jgvHDBjhBNhQ.gif" 
+                alt="Kitsune Power" 
+                width={80}
+                height={80}
+                className="w-20 h-20 rounded-xl object-cover shadow-lg"
+                fetchPriority="high"
+                decoding="async"
+              />
+              <div className="flex-1">
+                <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
+                  {t("ultimoPower")}
+                </p>
+                <h1 className="text-xl md:text-2xl font-bold text-foreground">
+                  Kitsune <span className="text-foreground/60 text-base">(ID: 737)</span>
+                </h1>
+              </div>
               </div>
 
               {/* Info Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-5">
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("status")}</p>
-                  <p className="text-foreground font-medium text-sm">{t("unlimited")}</p>
-                </div>
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("group")}</p>
-                  <p className="text-foreground font-medium text-sm">❌</p>
-                </div>
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("epic")}</p>
-                  <p className="text-foreground font-medium text-sm">❌</p>
-                </div>
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("storePrice")}</p>
-                  <p className="text-foreground font-medium text-sm">25 days</p>
-                </div>
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradePrice")}</p>
-                  <p className="text-foreground font-medium text-sm">300 - 375 xats</p>
-                </div>
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradeDays")}</p>
-                  <p className="text-foreground font-medium text-sm">21 - 24 days</p>
-                </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-5">
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("status")}</p>
+                <p className="text-foreground font-medium text-sm">Limited</p>
               </div>
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("group")}</p>
+                <p className="text-foreground font-medium text-sm">❌</p>
+              </div>
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("epic")}</p>
+                <p className="text-foreground font-medium text-sm">❌</p>
+              </div>
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("storePrice")}</p>
+                <p className="text-foreground font-medium text-sm">333 xats</p>
+              </div>
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradePrice")}</p>
+                <p className="text-foreground font-medium text-sm">1,500 - 2,500 xats</p>
+              </div>
+              <div className="bg-background/30 rounded-lg p-2.5">
+                <p className="text-xs text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradeDays")}</p>
+                <p className="text-foreground font-medium text-sm">111 - 185 days</p>
+              </div>
+            </div>
 
               {/* Smilies Section */}
               <div className="bg-background/20 rounded-xl p-3">
