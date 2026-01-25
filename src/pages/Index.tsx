@@ -62,7 +62,7 @@ const Index = () => {
   ], [t, navigate]);
 
   const shopServices = useMemo(() => [
-    { key: "fundos", price: "600 xats" },
+    { key: "fundos", price: "1000 xats" },
     { key: "pcbacks", price: "400 xats" },
     { key: "xatspace", price: "1500 xats" },
     { key: "logotipo", price: "1500 xats" },
