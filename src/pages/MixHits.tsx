@@ -204,6 +204,14 @@ export const MixHits = () => {
           <p className="text-purple-200/70 text-lg">
             Escolha sua fantasia para a festa! Clique em "Selecionar" para reservar.
           </p>
+          <div className="mt-4 backdrop-blur-xl bg-purple-900/30 border border-purple-500/30 rounded-xl p-4 max-w-2xl mx-auto">
+            <p className="text-purple-300 font-semibold mb-2">Regras:</p>
+            <ul className="text-purple-200/80 text-sm space-y-1 text-left list-disc list-inside">
+              <li>Usar fantasia a partir do dia 01/02</li>
+              <li>Ser frequente/ativo na sala</li>
+              <li>Obrigatoriamente deve ter o nome da fantasia</li>
+            </ul>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
