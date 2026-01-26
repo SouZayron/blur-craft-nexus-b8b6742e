@@ -251,10 +251,23 @@ export const MixHits = () => {
                   </p>
                   
                   {isTaken ? (
-                    <div className="text-center">
+                    <div className="text-center space-y-2">
                       <p className="text-red-300 text-xs truncate">
                         {selection.user_name} #{selection.user_id}
                       </p>
+                      <Button
+                        onClick={() => {
+                          setConfirmedUserName(selection.user_name);
+                          setConfirmedUserId(selection.user_id);
+                          setSelectedApp(app);
+                          setResultDialogOpen(true);
+                        }}
+                        size="sm"
+                        variant="outline"
+                        className="w-full border-purple-500/50 text-purple-300 hover:bg-purple-500/20 text-xs"
+                      >
+                        Ver Info
+                      </Button>
                     </div>
                   ) : (
                     <Button
