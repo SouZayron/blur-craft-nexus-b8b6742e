@@ -59,6 +59,8 @@ const App = () => (
               <Route path="/kerassentials" element={<Kerassentials />} />
               <Route path="/works" element={<Works />} />
               <Route path="/mixhits" element={<MixHits />} />
+              <Route path="/games" element={<Games />} />
+              <Route path="/control" element={<Control />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
