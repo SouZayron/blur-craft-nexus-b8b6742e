@@ -22,6 +22,8 @@ import { TermsOfService } from "./pages/TermsOfService";
 import { Kerassentials } from "./pages/Kerassentials";
 import { Works } from "./pages/Works";
 import { MixHits } from "./pages/MixHits";
+import { Games } from "./pages/Games";
+import { Control } from "./pages/Control";
 import { CookieConsent } from "./components/CookieConsent";
 import { FloatingRadio } from "./components/FloatingRadio";
 import { ThemeToggle } from "./components/ThemeToggle";
