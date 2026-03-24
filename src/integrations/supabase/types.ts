@@ -161,6 +161,90 @@ export type Database = {
           },
         ]
       }
+      game_picks: {
+        Row: {
+          created_at: string
+          id: string
+          pick_value: string
+          player_id: string
+          room_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pick_value: string
+          player_id: string
+          room_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pick_value?: string
+          player_id?: string
+          room_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_picks_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "game_players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_picks_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "game_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      game_players: {
+        Row: {
+          created_at: string
+          id: string
+          is_approved: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
+      game_rooms: {
+        Row: {
+          created_at: string
+          game_type: Database["public"]["Enums"]["game_room_type"]
+          id: string
+          is_open: boolean
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          game_type: Database["public"]["Enums"]["game_room_type"]
+          id?: string
+          is_open?: boolean
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          game_type?: Database["public"]["Enums"]["game_room_type"]
+          id?: string
+          is_open?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       mixhits_selections: {
         Row: {
           app_name: string
@@ -194,6 +278,7 @@ export type Database = {
     }
     Enums: {
       bingo_game_type: "pairs" | "sequences"
+      game_room_type: "animals" | "invertidos" | "sequences"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -322,6 +407,7 @@ export const Constants = {
   public: {
     Enums: {
       bingo_game_type: ["pairs", "sequences"],
+      game_room_type: ["animals", "invertidos", "sequences"],
     },
   },
 } as const
