@@ -22,6 +22,8 @@ import { TermsOfService } from "./pages/TermsOfService";
 import { Kerassentials } from "./pages/Kerassentials";
 import { Works } from "./pages/Works";
 import { MixHits } from "./pages/MixHits";
+import { Games } from "./pages/Games";
+import { Control } from "./pages/Control";
 import { CookieConsent } from "./components/CookieConsent";
 import { FloatingRadio } from "./components/FloatingRadio";
 import { ThemeToggle } from "./components/ThemeToggle";
@@ -57,6 +59,8 @@ const App = () => (
               <Route path="/kerassentials" element={<Kerassentials />} />
               <Route path="/works" element={<Works />} />
               <Route path="/mixhits" element={<MixHits />} />
+              <Route path="/games" element={<Games />} />
+              <Route path="/control" element={<Control />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
