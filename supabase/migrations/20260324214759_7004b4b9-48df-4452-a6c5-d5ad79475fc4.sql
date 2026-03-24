@@ -1,0 +1,4 @@
+
+ALTER TABLE public.game_rooms REPLICA IDENTITY FULL;
+ALTER TABLE public.game_players REPLICA IDENTITY FULL;
+ALTER TABLE public.game_picks REPLICA IDENTITY FULL;
