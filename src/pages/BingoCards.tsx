@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
-const UNLOCK_PASSWORD = "9988";
+const UNLOCK_PASSWORD = "7845";
 
 interface GeneratedCard {
   id: string;
