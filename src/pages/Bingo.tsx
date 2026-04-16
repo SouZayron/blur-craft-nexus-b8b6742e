@@ -10,7 +10,7 @@ import html2canvas from "html2canvas";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const TOTAL_BALLS = 90;
-const DRAW_INTERVAL = 4000;
+const DRAW_INTERVAL = 4500;
 
 // Generate vibrant colors for balls based on number ranges
 const getBallColor = (num: number): string => {
