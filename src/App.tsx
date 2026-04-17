@@ -49,7 +49,7 @@ const App = () => (
               <Route path="/cartelas" element={<BingoCards />} />
               <Route path="/cartelas/:userName" element={<BingoCardsAccess />} />
               <Route path="/bingo/cartela/:userName/:cardId" element={<BingoCardView />} />
-              <Route path="/Games" element={<BingoGames />} />
+              <Route path="/bingo-games" element={<BingoGames />} />
               <Route path="/Painel" element={<BingoPanel />} />
               <Route path="/sobre" element={<About />} />
               <Route path="/privacidade" element={<PrivacyPolicy />} />
