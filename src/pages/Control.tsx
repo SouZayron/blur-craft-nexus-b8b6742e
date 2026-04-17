@@ -16,6 +16,7 @@ interface GameRoom {
 interface GamePlayer {
   id: string;
   name: string;
+  xat_id: string | null;
   is_approved: boolean;
 }
 
@@ -120,15 +121,13 @@ export const Control = () => {
   };
 
   const handleResetAll = async () => {
+    // Apenas limpa picks e fecha jogos. Mantém jogadores aprovados registrados.
     await Promise.all(rooms.map(room =>
       supabase.from("game_picks").delete().eq("room_id", room.id)
     ));
-    await Promise.all(players.map(p =>
-      supabase.from("game_players").delete().eq("id", p.id)
-    ));
     await supabase.from("game_rooms").update({ is_open: false }).eq("is_open", true);
     await fetchData();
-    toast({ title: "Tudo resetado!" });
+    toast({ title: "Picks resetadas e jogos fechados! Jogadores mantidos." });
   };
 
   if (!isAuthenticated) {
