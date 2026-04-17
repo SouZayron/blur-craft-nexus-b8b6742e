@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import ColorGenerator from "./pages/ColorGenerator";
 import { NickGenerator } from "./pages/NickGenerator";
 import { Bingo } from "./pages/Bingo";
+import { BingoAnimais } from "./pages/BingoAnimais";
 import { GraphicsFree } from "./pages/GraphicsFree";
 import { Emojis } from "./pages/Emojis";
 import { BingoCards } from "./pages/BingoCards";
