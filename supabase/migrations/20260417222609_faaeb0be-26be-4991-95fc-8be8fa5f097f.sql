@@ -1,0 +1,1 @@
+ALTER TABLE public.game_players ADD COLUMN IF NOT EXISTS xat_id TEXT;

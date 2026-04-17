@@ -16,6 +16,7 @@ interface GameRoom {
 interface GamePlayer {
   id: string;
   name: string;
+  xat_id: string | null;
   is_approved: boolean;
 }
 
@@ -28,6 +29,7 @@ interface GamePick {
 
 export const Games = () => {
   const [playerName, setPlayerName] = useState("");
+  const [xatId, setXatId] = useState("");
   const [currentPlayer, setCurrentPlayer] = useState<GamePlayer | null>(null);
   const [activeRoom, setActiveRoom] = useState<GameRoom | null>(null);
   const [picks, setPicks] = useState<GamePick[]>([]);
@@ -84,14 +86,33 @@ export const Games = () => {
   });
 
   const handleJoin = async () => {
-    if (!playerName.trim()) {
-      toast({ title: "Digite seu nome", variant: "destructive" });
+    if (!playerName.trim() || !xatId.trim()) {
+      toast({ title: "Digite seu nome e ID do xat", variant: "destructive" });
       return;
     }
     setLoading(true);
+
+    // Verifica se já existe um jogador com mesmo nome+ID (já aprovado anteriormente)
+    const { data: existing } = await supabase
+      .from("game_players")
+      .select("*")
+      .eq("name", playerName.trim())
+      .eq("xat_id", xatId.trim())
+      .maybeSingle();
+
+    if (existing) {
+      localStorage.setItem("game_player_id", existing.id);
+      setCurrentPlayer(existing as GamePlayer);
+      toast({
+        title: existing.is_approved ? `Bem-vindo de volta, ${existing.name}!` : "Aguardando aprovação..."
+      });
+      setLoading(false);
+      return;
+    }
+
     const { data, error } = await supabase
       .from("game_players")
-      .insert({ name: playerName.trim() })
+      .insert({ name: playerName.trim(), xat_id: xatId.trim() })
       .select()
       .single();
 
@@ -172,13 +193,20 @@ export const Games = () => {
             <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               Games
             </h1>
-            <p className="text-muted-foreground text-sm mt-2">Entre com seu nome para jogar</p>
+            <p className="text-muted-foreground text-sm mt-2">Entre com seu nome e ID do xat</p>
           </div>
           <div className="space-y-4">
             <Input
               placeholder="Seu nome"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleJoin()}
+              className="bg-white/5 border-white/10"
+            />
+            <Input
+              placeholder="ID do xat"
+              value={xatId}
+              onChange={(e) => setXatId(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleJoin()}
               className="bg-white/5 border-white/10"
             />
