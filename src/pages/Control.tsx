@@ -100,6 +100,18 @@ export const Control = () => {
     toast({ title: "Seleções resetadas!" });
   };
 
+  const handleRemovePick = async (pickId: string) => {
+    await supabase.from("game_picks").delete().eq("id", pickId);
+    await fetchData();
+    toast({ title: "Bloco removido!" });
+  };
+
+  const handleRemovePlayerPicksInRoom = async (playerId: string, roomId: string) => {
+    await supabase.from("game_picks").delete().eq("player_id", playerId).eq("room_id", roomId);
+    await fetchData();
+    toast({ title: "Seleções removidas!" });
+  };
+
   const handleRemovePlayer = async (playerId: string) => {
     await supabase.from("game_picks").delete().eq("player_id", playerId);
     await supabase.from("game_players").delete().eq("id", playerId);
