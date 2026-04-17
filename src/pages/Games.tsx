@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { useRealtimeTables } from "@/hooks/useRealtimeTables";
 import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
 import { Copy, Check, Clock, Gamepad2, LogIn } from "lucide-react";
 
@@ -76,16 +77,11 @@ export const Games = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchData();
-    const channel = supabase
-      .channel("games-page-realtime")
-      .on("postgres_changes", { event: "*", schema: "public", table: "game_rooms" }, () => fetchData())
-      .on("postgres_changes", { event: "*", schema: "public", table: "game_picks" }, () => fetchData())
-      .on("postgres_changes", { event: "*", schema: "public", table: "game_players" }, () => fetchData())
-      .subscribe();
-    return () => { supabase.removeChannel(channel); };
-  }, [fetchData]);
+  useRealtimeTables({
+    channelName: "games-page-realtime",
+    onSync: fetchData,
+    tables: ["game_rooms", "game_picks", "game_players"],
+  });
 
   const handleJoin = async () => {
     if (!playerName.trim()) {

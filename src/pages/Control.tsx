@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { useRealtimeTables } from "@/hooks/useRealtimeTables";
 import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
 import { Lock, Power, PowerOff, UserCheck, Trash2, Users, RefreshCw } from "lucide-react";
 
@@ -44,17 +45,12 @@ export const Control = () => {
     setPicks((picksRes.data || []) as GamePick[]);
   }, []);
 
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    fetchData();
-    const channel = supabase
-      .channel("control-realtime")
-      .on("postgres_changes", { event: "*", schema: "public", table: "game_rooms" }, () => fetchData())
-      .on("postgres_changes", { event: "*", schema: "public", table: "game_picks" }, () => fetchData())
-      .on("postgres_changes", { event: "*", schema: "public", table: "game_players" }, () => fetchData())
-      .subscribe();
-    return () => { supabase.removeChannel(channel); };
-  }, [isAuthenticated, fetchData]);
+  useRealtimeTables({
+    channelName: "control-realtime",
+    enabled: isAuthenticated,
+    onSync: fetchData,
+    tables: ["game_rooms", "game_picks", "game_players"],
+  });
 
   const handleLogin = () => {
     if (password === "7845") {
