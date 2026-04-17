@@ -29,7 +29,6 @@ interface GamePick {
 
 export const Games = () => {
   const [playerName, setPlayerName] = useState("");
-  const [xatId, setXatId] = useState("");
   const [currentPlayer, setCurrentPlayer] = useState<GamePlayer | null>(null);
   const [activeRoom, setActiveRoom] = useState<GameRoom | null>(null);
   const [picks, setPicks] = useState<GamePick[]>([]);
