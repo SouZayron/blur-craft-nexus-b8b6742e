@@ -206,18 +206,21 @@ export type Database = {
           id: string
           is_approved: boolean
           name: string
+          xat_id: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           is_approved?: boolean
           name: string
+          xat_id?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           is_approved?: boolean
           name?: string
+          xat_id?: string | null
         }
         Relationships: []
       }
