@@ -329,7 +329,7 @@ export const Games = () => {
                         ? 'bg-red-500/10 opacity-70 cursor-not-allowed border border-transparent'
                         : reachedLimit
                           ? 'backdrop-blur-md bg-white/5 border border-white/5 opacity-50 cursor-not-allowed'
-                          : 'backdrop-blur-md bg-white/5 border border-white/10 hover:border-purple-500/50 hover:scale-105 cursor-pointer'
+                          : 'neon-snake backdrop-blur-md bg-white/5 border border-white/10 hover:border-purple-500/50 hover:scale-105 cursor-pointer'
                     }
                   `}
                 >
