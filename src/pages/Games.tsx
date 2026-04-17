@@ -32,7 +32,7 @@ export const Games = () => {
   const [activeRoom, setActiveRoom] = useState<GameRoom | null>(null);
   const [picks, setPicks] = useState<GamePick[]>([]);
   const [allPlayers, setAllPlayers] = useState<GamePlayer[]>([]);
-  const [copied, setCopied] = useState(false);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -107,10 +107,11 @@ export const Games = () => {
   };
 
   const myPicks = currentPlayer ? picks.filter(p => p.player_id === currentPlayer.id) : [];
-  const hasSelected = myPicks.length > 0;
+  const maxPicks = activeRoom?.game_type === 'animals' ? 2 : 1;
+  const reachedLimit = myPicks.length >= maxPicks;
 
   const handleSelectBlock = async (block: string) => {
-    if (!currentPlayer || !activeRoom || hasSelected) return;
+    if (!currentPlayer || !activeRoom || reachedLimit) return;
     const taken = picks.map(p => p.pick_value);
     if (taken.includes(block)) return;
 
@@ -132,21 +133,18 @@ export const Games = () => {
     const pick = picks.find(p => p.pick_value === value);
     if (!pick) return null;
     const player = allPlayers.find(pl => pl.id === pick.player_id);
-    return player?.name || "Ocupado";
+    return { name: player?.name || "Ocupado", playerId: pick.player_id };
   };
 
-  const handleCopy = () => {
-    if (!activeRoom || myPicks.length === 0) return;
-    const value = myPicks[0].pick_value;
-    let text = "";
-    if (activeRoom.game_type === 'animals') {
-      text = `${ANIMAL_EMOJIS[value] || ''} ${value}`;
-    } else {
-      text = value;
-    }
+  const handleCopyBlock = (e: React.MouseEvent, value: string) => {
+    e.stopPropagation();
+    if (!activeRoom) return;
+    const text = activeRoom.game_type === 'animals'
+      ? `${ANIMAL_EMOJIS[value] || ''} ${value}`
+      : value;
     navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setCopiedKey(value);
+    setTimeout(() => setCopiedKey(null), 2000);
     toast({ title: "Copiado!" });
   };
 
@@ -156,8 +154,6 @@ export const Games = () => {
     if (activeRoom.game_type === 'invertidos') return INVERTIDOS_BLOCKS.length;
     return SEQUENCES_BLOCKS.length;
   };
-
-  const allSlotsFull = activeRoom ? picks.length >= getMaxSlots() : false;
 
   // --- RENDER STATES ---
 
@@ -227,58 +223,6 @@ export const Games = () => {
     );
   }
 
-  if (hasSelected) {
-    const gameName = GAME_NAMES[activeRoom.game_type] || activeRoom.game_type;
-    const gameIcon = GAME_ICONS[activeRoom.game_type] || "🎮";
-    const value = myPicks[0].pick_value;
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 flex items-center justify-center p-4">
-        <div className="w-full max-w-md backdrop-blur-xl bg-white/5 border border-green-500/30 rounded-2xl p-8 shadow-2xl text-center">
-          <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-4 shadow-lg shadow-green-500/25">
-            <Check className="w-8 h-8 text-white" />
-          </div>
-          <h2 className="text-xl font-bold text-green-400 mb-4">Seleção Confirmada!</h2>
-
-          <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-4 mb-4 text-left space-y-2">
-            <p className="text-sm text-muted-foreground">
-              <span className="text-foreground font-semibold">{gameIcon} {gameName}</span>
-            </p>
-            <p className="text-sm text-muted-foreground">
-              👤 <span className="text-foreground">{currentPlayer.name}</span>
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {activeRoom.game_type === 'animals' ? '🐾 Animal: ' : '📋 Bloco: '}
-              <span className="text-foreground font-mono text-lg">
-                {activeRoom.game_type === 'animals' ? `${ANIMAL_EMOJIS[value] || ''} ${value}` : value}
-              </span>
-            </p>
-          </div>
-
-          <Button
-            onClick={handleCopy}
-            className={`w-full ${copied
-              ? 'bg-green-500 hover:bg-green-600'
-              : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'}`}
-          >
-            {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
-            {copied ? "Copiado!" : "Copiar"}
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  if (allSlotsFull) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 flex items-center justify-center p-4">
-        <div className="w-full max-w-md backdrop-blur-xl bg-white/5 border border-yellow-500/30 rounded-2xl p-8 shadow-2xl text-center">
-          <h2 className="text-xl font-bold text-yellow-400 mb-2">Todas as opções preenchidas!</h2>
-          <p className="text-muted-foreground text-sm">Aguarde a próxima rodada.</p>
-        </div>
-      </div>
-    );
-  }
-
   // --- GAME BOARD ---
   const gameName = GAME_NAMES[activeRoom.game_type] || activeRoom.game_type;
   const gameIcon = GAME_ICONS[activeRoom.game_type] || "🎮";
@@ -298,10 +242,13 @@ export const Games = () => {
             {gameIcon} {gameName}
           </h1>
           <p className="text-muted-foreground text-sm">
-            Olá, <span className="text-purple-400 font-semibold">{currentPlayer.name}</span>! Selecione 1 {activeRoom.game_type === 'animals' ? 'animal' : 'bloco'}.
+            Olá, <span className="text-purple-400 font-semibold">{currentPlayer.name}</span>!{" "}
+            {reachedLimit
+              ? `Você já selecionou ${myPicks.length}/${maxPicks}. Clique em copiar.`
+              : `Selecione ${maxPicks} ${activeRoom.game_type === 'animals' ? 'animais' : 'bloco'} (${myPicks.length}/${maxPicks}).`}
           </p>
           <p className="text-muted-foreground text-xs mt-1">
-            {picks.length}/{getMaxSlots()} selecionados
+            {picks.length}/{getMaxSlots()} ocupados no total
           </p>
         </div>
 
@@ -309,16 +256,22 @@ export const Games = () => {
           {renderItems.map(item => {
             const taken = takenValues.includes(item);
             const owner = getPickOwner(item);
+            const isMine = owner?.playerId === currentPlayer.id;
+            const isCopied = copiedKey === item;
             return (
               <button
                 key={item}
                 onClick={() => handleSelectBlock(item)}
-                disabled={taken || loading}
+                disabled={taken || loading || reachedLimit}
                 className={`
-                  p-3 rounded-xl transition-all duration-300 min-h-[70px] flex flex-col items-center justify-center
-                  ${taken
-                    ? 'bg-red-500/10 opacity-70 cursor-not-allowed'
-                    : 'backdrop-blur-md bg-white/5 border border-white/10 hover:border-purple-500/50 hover:scale-105 cursor-pointer'
+                  relative p-3 rounded-xl transition-all duration-300 min-h-[90px] flex flex-col items-center justify-center
+                  ${isMine
+                    ? 'bg-green-500/15 border border-green-500/50 cursor-default'
+                    : taken
+                      ? 'bg-red-500/10 opacity-70 cursor-not-allowed border border-transparent'
+                      : reachedLimit
+                        ? 'backdrop-blur-md bg-white/5 border border-white/5 opacity-50 cursor-not-allowed'
+                        : 'backdrop-blur-md bg-white/5 border border-white/10 hover:border-purple-500/50 hover:scale-105 cursor-pointer'
                   }
                 `}
               >
@@ -330,7 +283,25 @@ export const Games = () => {
                 ) : (
                   <span className="text-base font-bold font-mono text-foreground">{item}</span>
                 )}
-                {owner && <span className="text-[10px] text-red-400 truncate max-w-full mt-1 font-semibold">{owner}</span>}
+                {owner && (
+                  <span className={`text-[10px] truncate max-w-full mt-1 font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
+                    {owner.name}
+                  </span>
+                )}
+                {isMine && (
+                  <span
+                    role="button"
+                    onClick={(e) => handleCopyBlock(e, item)}
+                    className={`mt-1.5 inline-flex items-center justify-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md cursor-pointer transition-colors ${
+                      isCopied
+                        ? 'bg-green-500 text-white'
+                        : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'
+                    }`}
+                  >
+                    {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                    {isCopied ? 'Copiado' : 'Copiar'}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -340,6 +311,10 @@ export const Games = () => {
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded backdrop-blur-md bg-white/5 border border-white/10" />
             <span className="text-muted-foreground">Disponível</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-green-500/15 border border-green-500/50" />
+            <span className="text-muted-foreground">Sua seleção</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded bg-red-500/10" />
