@@ -193,13 +193,20 @@ export const Games = () => {
             <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               Games
             </h1>
-            <p className="text-muted-foreground text-sm mt-2">Entre com seu nome para jogar</p>
+            <p className="text-muted-foreground text-sm mt-2">Entre com seu nome e ID do xat</p>
           </div>
           <div className="space-y-4">
             <Input
               placeholder="Seu nome"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleJoin()}
+              className="bg-white/5 border-white/10"
+            />
+            <Input
+              placeholder="ID do xat"
+              value={xatId}
+              onChange={(e) => setXatId(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleJoin()}
               className="bg-white/5 border-white/10"
             />
