@@ -85,18 +85,17 @@ export const Games = () => {
   });
 
   const handleJoin = async () => {
-    if (!playerName.trim() || !xatId.trim()) {
-      toast({ title: "Digite seu nome e ID do xat", variant: "destructive" });
+    if (!playerName.trim()) {
+      toast({ title: "Digite seu nome", variant: "destructive" });
       return;
     }
     setLoading(true);
 
-    // Verifica se já existe um jogador com mesmo nome+ID (já aprovado anteriormente)
+    // Verifica se já existe um jogador com mesmo nome (case-insensitive)
     const { data: existing } = await supabase
       .from("game_players")
       .select("*")
-      .eq("name", playerName.trim())
-      .eq("xat_id", xatId.trim())
+      .ilike("name", playerName.trim())
       .maybeSingle();
 
     if (existing) {
@@ -111,7 +110,7 @@ export const Games = () => {
 
     const { data, error } = await supabase
       .from("game_players")
-      .insert({ name: playerName.trim(), xat_id: xatId.trim() })
+      .insert({ name: playerName.trim() })
       .select()
       .single();
 
