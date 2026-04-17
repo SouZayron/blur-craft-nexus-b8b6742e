@@ -18,6 +18,7 @@ export const useRealtimeTables = ({
   tables,
 }: UseRealtimeTablesOptions) => {
   const onSyncRef = useRef(onSync);
+  const tablesKey = tables.join("|");
 
   useEffect(() => {
     onSyncRef.current = onSync;
@@ -64,5 +65,5 @@ export const useRealtimeTables = ({
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       void supabase.removeChannel(channel);
     };
-  }, [channelName, enabled, fallbackMs, tables]);
+  }, [channelName, enabled, fallbackMs, tablesKey]);
 };
