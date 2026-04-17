@@ -16,6 +16,7 @@ interface GameRoom {
 interface GamePlayer {
   id: string;
   name: string;
+  xat_id: string | null;
   is_approved: boolean;
 }
 
@@ -28,6 +29,7 @@ interface GamePick {
 
 export const Games = () => {
   const [playerName, setPlayerName] = useState("");
+  const [xatId, setXatId] = useState("");
   const [currentPlayer, setCurrentPlayer] = useState<GamePlayer | null>(null);
   const [activeRoom, setActiveRoom] = useState<GameRoom | null>(null);
   const [picks, setPicks] = useState<GamePick[]>([]);
@@ -84,14 +86,33 @@ export const Games = () => {
   });
 
   const handleJoin = async () => {
-    if (!playerName.trim()) {
-      toast({ title: "Digite seu nome", variant: "destructive" });
+    if (!playerName.trim() || !xatId.trim()) {
+      toast({ title: "Digite seu nome e ID do xat", variant: "destructive" });
       return;
     }
     setLoading(true);
+
+    // Verifica se já existe um jogador com mesmo nome+ID (já aprovado anteriormente)
+    const { data: existing } = await supabase
+      .from("game_players")
+      .select("*")
+      .eq("name", playerName.trim())
+      .eq("xat_id", xatId.trim())
+      .maybeSingle();
+
+    if (existing) {
+      localStorage.setItem("game_player_id", existing.id);
+      setCurrentPlayer(existing as GamePlayer);
+      toast({
+        title: existing.is_approved ? `Bem-vindo de volta, ${existing.name}!` : "Aguardando aprovação..."
+      });
+      setLoading(false);
+      return;
+    }
+
     const { data, error } = await supabase
       .from("game_players")
-      .insert({ name: playerName.trim() })
+      .insert({ name: playerName.trim(), xat_id: xatId.trim() })
       .select()
       .single();
 
