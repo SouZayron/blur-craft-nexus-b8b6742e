@@ -67,51 +67,59 @@ export const Control = () => {
   const handleOpenGame = async (roomId: string) => {
     await supabase.from("game_rooms").update({ is_open: false }).eq("is_open", true);
     await supabase.from("game_rooms").update({ is_open: true }).eq("id", roomId);
+    await fetchData();
     toast({ title: "Jogo aberto!" });
   };
 
   const handleCloseGame = async (roomId: string) => {
     await supabase.from("game_rooms").update({ is_open: false }).eq("id", roomId);
+    await fetchData();
     toast({ title: "Jogo fechado!" });
   };
 
   const handleCloseAll = async () => {
     await supabase.from("game_rooms").update({ is_open: false }).eq("is_open", true);
+    await fetchData();
     toast({ title: "Todos os jogos fechados!" });
   };
 
   const handleApprovePlayer = async (playerId: string) => {
     await supabase.from("game_players").update({ is_approved: true }).eq("id", playerId);
+    await fetchData();
     toast({ title: "Jogador aprovado!" });
   };
 
   const handleApproveAll = async () => {
     const pending = players.filter(p => !p.is_approved);
-    for (const p of pending) {
-      await supabase.from("game_players").update({ is_approved: true }).eq("id", p.id);
-    }
+    await Promise.all(pending.map(p =>
+      supabase.from("game_players").update({ is_approved: true }).eq("id", p.id)
+    ));
+    await fetchData();
     toast({ title: "Todos aprovados!" });
   };
 
   const handleResetPicks = async (roomId: string) => {
     await supabase.from("game_picks").delete().eq("room_id", roomId);
+    await fetchData();
     toast({ title: "Seleções resetadas!" });
   };
 
   const handleRemovePlayer = async (playerId: string) => {
     await supabase.from("game_picks").delete().eq("player_id", playerId);
     await supabase.from("game_players").delete().eq("id", playerId);
+    await fetchData();
     toast({ title: "Jogador removido!" });
   };
 
   const handleResetAll = async () => {
-    for (const room of rooms) {
-      await supabase.from("game_picks").delete().eq("room_id", room.id);
-    }
-    for (const p of players) {
-      await supabase.from("game_players").delete().eq("id", p.id);
-    }
+    await Promise.all(rooms.map(room =>
+      supabase.from("game_picks").delete().eq("room_id", room.id)
+    ));
+    await Promise.all(players.map(p =>
+      supabase.from("game_players").delete().eq("id", p.id)
+    ));
     await supabase.from("game_rooms").update({ is_open: false }).eq("is_open", true);
+    await fetchData();
     toast({ title: "Tudo resetado!" });
   };
 
