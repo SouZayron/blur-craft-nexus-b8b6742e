@@ -138,12 +138,16 @@ export const Games = () => {
 
   const handleCopyBlock = (e: React.MouseEvent, value: string) => {
     e.stopPropagation();
-    if (!activeRoom) return;
-    const text = activeRoom.game_type === 'animals'
-      ? `${ANIMAL_EMOJIS[value] || ''} ${value}`
-      : value;
-    navigator.clipboard.writeText(text);
+    navigator.clipboard.writeText(value);
     setCopiedKey(value);
+    setTimeout(() => setCopiedKey(null), 2000);
+    toast({ title: "Copiado!" });
+  };
+
+  const handleCopyAnimalsCombo = () => {
+    const text = myPicks.map(p => p.pick_value).join(' - ');
+    navigator.clipboard.writeText(text);
+    setCopiedKey('combo');
     setTimeout(() => setCopiedKey(null), 2000);
     toast({ title: "Copiado!" });
   };
