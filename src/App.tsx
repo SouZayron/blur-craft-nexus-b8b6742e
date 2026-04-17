@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import ColorGenerator from "./pages/ColorGenerator";
 import { NickGenerator } from "./pages/NickGenerator";
 import { Bingo } from "./pages/Bingo";
+import { BingoAnimais } from "./pages/BingoAnimais";
 import { GraphicsFree } from "./pages/GraphicsFree";
 import { Emojis } from "./pages/Emojis";
 import { BingoCards } from "./pages/BingoCards";
@@ -44,6 +45,7 @@ const App = () => (
               <Route path="/cores" element={<ColorGenerator />} />
               <Route path="/nicks" element={<NickGenerator />} />
               <Route path="/bingo" element={<Bingo />} />
+              <Route path="/bingoanimais" element={<BingoAnimais />} />
               <Route path="/graphics" element={<GraphicsFree />} />
               <Route path="/emojis" element={<Emojis />} />
               <Route path="/cartelas" element={<BingoCards />} />
