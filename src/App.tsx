@@ -45,6 +45,7 @@ const App = () => (
               <Route path="/cores" element={<ColorGenerator />} />
               <Route path="/nicks" element={<NickGenerator />} />
               <Route path="/bingo" element={<Bingo />} />
+              <Route path="/bingoanimais" element={<BingoAnimais />} />
               <Route path="/graphics" element={<GraphicsFree />} />
               <Route path="/emojis" element={<Emojis />} />
               <Route path="/cartelas" element={<BingoCards />} />
