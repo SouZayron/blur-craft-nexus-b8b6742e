@@ -29,7 +29,6 @@ interface GamePick {
 
 export const Games = () => {
   const [playerName, setPlayerName] = useState("");
-  const [xatId, setXatId] = useState("");
   const [currentPlayer, setCurrentPlayer] = useState<GamePlayer | null>(null);
   const [activeRoom, setActiveRoom] = useState<GameRoom | null>(null);
   const [picks, setPicks] = useState<GamePick[]>([]);
@@ -86,18 +85,17 @@ export const Games = () => {
   });
 
   const handleJoin = async () => {
-    if (!playerName.trim() || !xatId.trim()) {
-      toast({ title: "Digite seu nome e ID do xat", variant: "destructive" });
+    if (!playerName.trim()) {
+      toast({ title: "Digite seu nome", variant: "destructive" });
       return;
     }
     setLoading(true);
 
-    // Verifica se já existe um jogador com mesmo nome+ID (já aprovado anteriormente)
+    // Verifica se já existe um jogador com mesmo nome (case-insensitive)
     const { data: existing } = await supabase
       .from("game_players")
       .select("*")
-      .eq("name", playerName.trim())
-      .eq("xat_id", xatId.trim())
+      .ilike("name", playerName.trim())
       .maybeSingle();
 
     if (existing) {
@@ -112,7 +110,7 @@ export const Games = () => {
 
     const { data, error } = await supabase
       .from("game_players")
-      .insert({ name: playerName.trim(), xat_id: xatId.trim() })
+      .insert({ name: playerName.trim() })
       .select()
       .single();
 
@@ -215,20 +213,13 @@ export const Games = () => {
             <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               Games
             </h1>
-            <p className="text-muted-foreground text-sm mt-2">Entre com seu nome e ID do xat</p>
+            <p className="text-muted-foreground text-sm mt-2">Entre com seu nome</p>
           </div>
           <div className="space-y-4">
             <Input
               placeholder="Seu nome"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleJoin()}
-              className="bg-white/5 border-white/10"
-            />
-            <Input
-              placeholder="ID do xat"
-              value={xatId}
-              onChange={(e) => setXatId(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleJoin()}
               className="bg-white/5 border-white/10"
             />
