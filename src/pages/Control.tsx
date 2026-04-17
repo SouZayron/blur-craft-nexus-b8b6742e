@@ -247,6 +247,38 @@ export const Control = () => {
           })}
         </div>
 
+        {/* Players who picked (across rooms) */}
+        {picks.length > 0 && (
+          <div className="backdrop-blur-xl bg-white/5 border border-purple-500/30 rounded-2xl p-6 shadow-xl">
+            <h2 className="text-lg font-bold text-purple-400 mb-3 flex items-center gap-2">
+              🎯 Jogadores que Selecionaram ({picks.length})
+            </h2>
+            <div className="space-y-2">
+              {rooms.filter(r => picks.some(p => p.room_id === r.id)).map(room => {
+                const roomPicks = picks.filter(p => p.room_id === room.id);
+                const gameName = GAME_NAMES[room.game_type] || room.game_type;
+                const gameIcon = GAME_ICONS[room.game_type] || "🎮";
+                return (
+                  <div key={room.id} className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-3">
+                    <p className="text-sm font-semibold text-foreground mb-2">{gameIcon} {gameName} <span className="text-muted-foreground font-normal">({roomPicks.length})</span></p>
+                    <div className="flex flex-wrap gap-2">
+                      {roomPicks.map(pick => {
+                        const player = players.find(pl => pl.id === pick.player_id);
+                        return (
+                          <div key={pick.id} className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-lg text-xs">
+                            <span className="text-foreground font-semibold">{player?.name || '?'}</span>
+                            <span className="text-purple-300 font-mono">→ {room.game_type === 'animals' ? `${ANIMAL_EMOJIS[pick.pick_value] || ''} ${pick.pick_value}` : pick.pick_value}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Approved Players */}
         {approvedPlayers.length > 0 && (
           <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 shadow-xl">
