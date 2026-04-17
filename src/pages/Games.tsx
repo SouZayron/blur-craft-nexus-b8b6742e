@@ -317,13 +317,21 @@ export const Games = () => {
               const owner = getPickOwner(item);
               const isMine = owner?.playerId === currentPlayer.id;
               const isCopied = copiedKey === item;
+              const isDisabled = taken || loading || reachedLimit;
+              const handleClick = () => {
+                if (isDisabled || isMine) return;
+                handleSelectBlock(item);
+              };
               return (
-                <button
+                <div
                   key={item}
-                  onClick={() => handleSelectBlock(item)}
-                  disabled={taken || loading || reachedLimit}
+                  role="button"
+                  tabIndex={isDisabled ? -1 : 0}
+                  onClick={handleClick}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } }}
+                  aria-disabled={isDisabled}
                   className={`
-                    relative p-3 rounded-xl transition-all duration-300 min-h-[80px] flex flex-col items-center justify-center
+                    relative p-3 rounded-xl transition-all duration-300 min-h-[80px] flex flex-col items-center justify-center select-none
                     ${isMine
                       ? 'bg-green-500/15 border border-green-500/50 cursor-default'
                       : taken
@@ -345,8 +353,8 @@ export const Games = () => {
                     </span>
                   )}
                   {isMine && activeRoom.game_type !== 'animals' && (
-                    <span
-                      role="button"
+                    <button
+                      type="button"
                       onClick={(e) => handleCopyBlock(e, item)}
                       className={`mt-1.5 inline-flex items-center justify-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md cursor-pointer transition-colors ${
                         isCopied
@@ -356,9 +364,9 @@ export const Games = () => {
                     >
                       {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                       {isCopied ? 'Copiado' : 'Copiar'}
-                    </span>
+                    </button>
                   )}
-                </button>
+                </div>
               );
             })}
           </div>
