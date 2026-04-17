@@ -247,68 +247,95 @@ export const Games = () => {
           </h1>
           <p className="text-muted-foreground text-sm">
             Olá, <span className="text-purple-400 font-semibold">{currentPlayer.name}</span>!{" "}
-            {reachedLimit
-              ? `Você já selecionou ${myPicks.length}/${maxPicks}. Clique em copiar.`
-              : `Selecione ${maxPicks} ${activeRoom.game_type === 'animals' ? 'animais' : 'bloco'} (${myPicks.length}/${maxPicks}).`}
+            {activeRoom.game_type === 'animals'
+              ? (reachedLimit
+                  ? `Você selecionou seus 2 animais (${myPicks.length}/2). Copie a combinação ao lado.`
+                  : `Você precisa selecionar 2 animais (${myPicks.length}/2).`)
+              : (reachedLimit
+                  ? `Você já selecionou ${myPicks.length}/${maxPicks}. Clique em copiar.`
+                  : `Selecione ${maxPicks} bloco (${myPicks.length}/${maxPicks}).`)}
           </p>
           <p className="text-muted-foreground text-xs mt-1">
             {picks.length}/{getMaxSlots()} ocupados no total
           </p>
         </div>
 
-        <div className={`grid gap-3 ${activeRoom.game_type === 'animals' ? 'grid-cols-3 sm:grid-cols-5 md:grid-cols-7' : 'grid-cols-3 sm:grid-cols-5 md:grid-cols-6'}`}>
-          {renderItems.map(item => {
-            const taken = takenValues.includes(item);
-            const owner = getPickOwner(item);
-            const isMine = owner?.playerId === currentPlayer.id;
-            const isCopied = copiedKey === item;
-            return (
-              <button
-                key={item}
-                onClick={() => handleSelectBlock(item)}
-                disabled={taken || loading || reachedLimit}
-                className={`
-                  relative p-3 rounded-xl transition-all duration-300 min-h-[90px] flex flex-col items-center justify-center
-                  ${isMine
-                    ? 'bg-green-500/15 border border-green-500/50 cursor-default'
-                    : taken
-                      ? 'bg-red-500/10 opacity-70 cursor-not-allowed border border-transparent'
-                      : reachedLimit
-                        ? 'backdrop-blur-md bg-white/5 border border-white/5 opacity-50 cursor-not-allowed'
-                        : 'backdrop-blur-md bg-white/5 border border-white/10 hover:border-purple-500/50 hover:scale-105 cursor-pointer'
-                  }
-                `}
+        <div className={activeRoom.game_type === 'animals' ? 'grid gap-4 lg:grid-cols-[1fr_300px] items-start' : ''}>
+          <div className={`grid gap-3 ${activeRoom.game_type === 'animals' ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4' : 'grid-cols-3 sm:grid-cols-5 md:grid-cols-6'}`}>
+            {renderItems.map(item => {
+              const taken = takenValues.includes(item);
+              const owner = getPickOwner(item);
+              const isMine = owner?.playerId === currentPlayer.id;
+              const isCopied = copiedKey === item;
+              return (
+                <button
+                  key={item}
+                  onClick={() => handleSelectBlock(item)}
+                  disabled={taken || loading || reachedLimit}
+                  className={`
+                    relative p-3 rounded-xl transition-all duration-300 min-h-[80px] flex flex-col items-center justify-center
+                    ${isMine
+                      ? 'bg-green-500/15 border border-green-500/50 cursor-default'
+                      : taken
+                        ? 'bg-red-500/10 opacity-70 cursor-not-allowed border border-transparent'
+                        : reachedLimit
+                          ? 'backdrop-blur-md bg-white/5 border border-white/5 opacity-50 cursor-not-allowed'
+                          : 'backdrop-blur-md bg-white/5 border border-white/10 hover:border-purple-500/50 hover:scale-105 cursor-pointer'
+                    }
+                  `}
+                >
+                  {activeRoom.game_type === 'animals' ? (
+                    <span className="text-base font-semibold text-foreground text-center leading-tight">{item}</span>
+                  ) : (
+                    <span className="text-base font-bold font-mono text-foreground">{item}</span>
+                  )}
+                  {owner && (
+                    <span className={`text-[10px] truncate max-w-full mt-1 font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
+                      {owner.name}
+                    </span>
+                  )}
+                  {isMine && activeRoom.game_type !== 'animals' && (
+                    <span
+                      role="button"
+                      onClick={(e) => handleCopyBlock(e, item)}
+                      className={`mt-1.5 inline-flex items-center justify-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md cursor-pointer transition-colors ${
+                        isCopied
+                          ? 'bg-green-500 text-white'
+                          : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'
+                      }`}
+                    >
+                      {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      {isCopied ? 'Copiado' : 'Copiar'}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {activeRoom.game_type === 'animals' && myPicks.length > 0 && (
+            <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-5 lg:sticky lg:top-4">
+              <h3 className="text-sm font-semibold text-foreground mb-3">Sua combinação</h3>
+              <div className="bg-background/40 border border-white/10 rounded-lg p-4 mb-3 text-center">
+                <span className="text-lg font-bold text-foreground break-words">
+                  {myPicks.map(p => p.pick_value).join(' - ')}
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground mb-3">
+                {myPicks.length < 2
+                  ? `Falta selecionar ${2 - myPicks.length} animal.`
+                  : 'Pronto! Copie e envie.'}
+              </p>
+              <Button
+                onClick={handleCopyAnimalsCombo}
+                disabled={myPicks.length === 0}
+                className={`w-full ${copiedKey === 'combo' ? 'bg-green-500 hover:bg-green-500' : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'}`}
               >
-                {activeRoom.game_type === 'animals' ? (
-                  <>
-                    <span className="text-2xl">{ANIMAL_EMOJIS[item] || '🐾'}</span>
-                    <span className="text-xs mt-1 text-foreground truncate max-w-full">{item}</span>
-                  </>
-                ) : (
-                  <span className="text-base font-bold font-mono text-foreground">{item}</span>
-                )}
-                {owner && (
-                  <span className={`text-[10px] truncate max-w-full mt-1 font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
-                    {owner.name}
-                  </span>
-                )}
-                {isMine && (
-                  <span
-                    role="button"
-                    onClick={(e) => handleCopyBlock(e, item)}
-                    className={`mt-1.5 inline-flex items-center justify-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md cursor-pointer transition-colors ${
-                      isCopied
-                        ? 'bg-green-500 text-white'
-                        : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'
-                    }`}
-                  >
-                    {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                    {isCopied ? 'Copiado' : 'Copiar'}
-                  </span>
-                )}
-              </button>
-            );
-          })}
+                {copiedKey === 'combo' ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
+                {copiedKey === 'combo' ? 'Copiado!' : 'Copiar combinação'}
+              </Button>
+            </div>
+          )}
         </div>
 
         <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
