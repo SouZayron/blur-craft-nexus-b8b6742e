@@ -157,20 +157,42 @@ export const Games = () => {
     return { name: player?.name || "Ocupado", playerId: pick.player_id };
   };
 
-  const handleCopyBlock = (e: React.MouseEvent, value: string) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(value);
-    setCopiedKey(value);
-    setTimeout(() => setCopiedKey(null), 2000);
-    toast({ title: "Copiado!" });
+  const copyText = async (text: string) => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      return true;
+    } catch {
+      return false;
+    }
   };
 
-  const handleCopyAnimalsCombo = () => {
+  const handleCopyBlock = async (e: React.MouseEvent | React.TouchEvent, value: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const ok = await copyText(value);
+    setCopiedKey(value);
+    setTimeout(() => setCopiedKey(null), 2000);
+    toast({ title: ok ? "Copiado!" : "Erro ao copiar", variant: ok ? "default" : "destructive" });
+  };
+
+  const handleCopyAnimalsCombo = async () => {
     const text = myPicks.map(p => p.pick_value).join(' - ');
-    navigator.clipboard.writeText(text);
+    const ok = await copyText(text);
     setCopiedKey('combo');
     setTimeout(() => setCopiedKey(null), 2000);
-    toast({ title: "Copiado!" });
+    toast({ title: ok ? "Copiado!" : "Erro ao copiar", variant: ok ? "default" : "destructive" });
   };
 
   const getMaxSlots = () => {
