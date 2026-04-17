@@ -296,15 +296,35 @@ export const Control = () => {
                   <div key={room.id} className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-3">
                     <p className="text-sm font-semibold text-foreground mb-2">{gameIcon} {gameName} <span className="text-muted-foreground font-normal">({roomPicks.length})</span></p>
                     <div className="flex flex-wrap gap-2">
-                      {roomPicks.map(pick => {
-                        const player = players.find(pl => pl.id === pick.player_id);
-                        return (
-                          <div key={pick.id} className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-lg text-xs">
-                            <span className="text-foreground font-semibold">{player?.name || '?'}</span>
-                            <span className="text-purple-300 font-mono">→ {room.game_type === 'animals' ? `${ANIMAL_EMOJIS[pick.pick_value] || ''} ${pick.pick_value}` : pick.pick_value}</span>
-                          </div>
-                        );
-                      })}
+                      {room.game_type === 'animals' ? (
+                        Array.from(new Set(roomPicks.map(p => p.player_id))).map(playerId => {
+                          const player = players.find(pl => pl.id === playerId);
+                          const playerPicks = roomPicks.filter(p => p.player_id === playerId);
+                          const combo = playerPicks.map(p => p.pick_value).join(' - ');
+                          return (
+                            <div key={playerId} className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-lg text-xs">
+                              <span className="text-foreground font-semibold">{player?.name || '?'}</span>
+                              <span className="text-purple-300">→ {combo}</span>
+                              <Button onClick={() => handleRemovePlayerPicksInRoom(playerId, room.id)} size="sm" variant="ghost" className="h-5 w-5 p-0 text-red-400 hover:text-red-300">
+                                <Trash2 className="w-3 h-3" />
+                              </Button>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        roomPicks.map(pick => {
+                          const player = players.find(pl => pl.id === pick.player_id);
+                          return (
+                            <div key={pick.id} className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-lg text-xs">
+                              <span className="text-foreground font-semibold">{player?.name || '?'}</span>
+                              <span className="text-purple-300 font-mono">→ {pick.pick_value}</span>
+                              <Button onClick={() => handleRemovePick(pick.id)} size="sm" variant="ghost" className="h-5 w-5 p-0 text-red-400 hover:text-red-300">
+                                <Trash2 className="w-3 h-3" />
+                              </Button>
+                            </div>
+                          );
+                        })
+                      )}
                     </div>
                   </div>
                 );
