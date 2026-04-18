@@ -189,7 +189,7 @@ const Index = () => {
               href="https://xat.com/mixhits"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-labxat-purple hover:bg-labxat-purple/80 text-white font-bold text-lg px-12 py-4 rounded-xl transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-labxat-purple/30 animate-pulse-scale"
+              className="bg-labxat-purple hover:bg-labxat-purple/80 text-white font-bold text-lg px-12 py-4 rounded-xl transition-colors duration-300 shadow-lg"
             >
               {t("contact")}
             </a>
