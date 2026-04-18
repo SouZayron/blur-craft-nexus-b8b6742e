@@ -10,7 +10,6 @@ import { ANIMALS, ANIMAL_EMOJIS } from "@/data/gameData";
 const DRAW_INTERVAL = 5000;
 const TOTAL_ANIMALS = ANIMALS.length;
 
-// Color palette cycling for animals
 const ANIMAL_COLORS = [
   "from-red-500 to-red-600",
   "from-orange-500 to-orange-600",
@@ -31,11 +30,6 @@ const ANIMAL_SOLID_COLORS = [
 const getAnimalColor = (animal: string): string => {
   const idx = ANIMALS.indexOf(animal);
   return ANIMAL_COLORS[idx % ANIMAL_COLORS.length];
-};
-
-const getAnimalSolidColor = (animal: string): string => {
-  const idx = ANIMALS.indexOf(animal);
-  return ANIMAL_SOLID_COLORS[idx % ANIMAL_SOLID_COLORS.length];
 };
 
 const speakAnimal = (name: string, enabled: boolean) => {
@@ -130,11 +124,9 @@ export const BingoAnimais = () => {
   }, [isPlaying]);
 
   const availableAnimals = ANIMALS.filter(a => !drawnAnimals.includes(a));
-  const lastTen = drawnAnimals.slice(-10);
+  const lastFive = drawnAnimals.slice(-5);
 
-  const handlePlay = () => {
-    if (availableAnimals.length > 0) setIsPlaying(true);
-  };
+  const handlePlay = () => { if (availableAnimals.length > 0) setIsPlaying(true); };
   const handlePause = () => setIsPlaying(false);
   const handleReset = () => {
     setIsPlaying(false);
@@ -170,32 +162,30 @@ export const BingoAnimais = () => {
   };
 
   return (
-    <div className="min-h-screen animated-gradient-bg relative overflow-hidden">
+    <div className="h-screen animated-gradient-bg relative overflow-hidden flex flex-col">
       <FloatingBlob color="purple" size="xl" position={{ top: "10%", left: "-10%" }} />
       <FloatingBlob color="blue" size="lg" position={{ bottom: "20%", right: "-5%" }} animation="float-delayed" />
 
-      <header className="relative z-10 p-6">
-        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="w-5 h-5" />
+      <header className="relative z-10 px-4 py-2 flex items-center justify-between flex-shrink-0">
+        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm">
+          <ArrowLeft className="w-4 h-4" />
           <span>Voltar</span>
         </Link>
+        <h1 className="text-xl md:text-2xl font-black text-gradient">🐾 Bingo dos Animais</h1>
+        <div className="text-xs text-muted-foreground hidden sm:block">5s/sorteio</div>
       </header>
 
-      <main className="relative z-10 container mx-auto px-4 pb-12">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-black text-gradient mb-2">
-            🐾 Bingo dos Animais
-          </h1>
-          <p className="text-muted-foreground">Sorteio a cada 5 segundos</p>
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
+      <main className="relative z-10 flex-1 min-h-0 px-3 pb-3 overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-3 h-full max-w-[1600px] mx-auto">
           {/* Left Panel - Animals Grid */}
-          <div className="glass-card p-4 md:p-6 flex-1">
-            <h2 className="text-lg font-bold text-foreground mb-4 text-center">
-              Painel de Verificação ({drawnAnimals.length}/{TOTAL_ANIMALS})
-            </h2>
-            <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 bg-background p-4 rounded-lg max-h-[60vh] overflow-y-auto">
+          <div className="glass-card p-3 flex-1 min-h-0 flex flex-col">
+            <div className="flex items-center justify-between mb-2 flex-shrink-0">
+              <h2 className="text-sm font-bold text-foreground">
+                Painel ({drawnAnimals.length}/{TOTAL_ANIMALS})
+              </h2>
+              <span className="text-xs text-muted-foreground">Restam {availableAnimals.length}</span>
+            </div>
+            <div className="grid grid-cols-7 sm:grid-cols-8 md:grid-cols-10 gap-1 bg-background/50 p-2 rounded-lg flex-1 min-h-0 overflow-hidden auto-rows-min content-start">
               {ANIMALS.map((animal) => {
                 const isDrawn = drawnAnimals.includes(animal);
                 const isJustDrawn = currentAnimal === animal && isAnimating;
@@ -203,11 +193,9 @@ export const BingoAnimais = () => {
                   <div
                     key={animal}
                     className={cn(
-                      "px-2 py-2 rounded-lg flex items-center justify-center text-xs md:text-sm font-bold text-center transition-all duration-300 min-h-[44px]",
-                      isDrawn
-                        ? "bg-red-500 text-white shadow-lg scale-105"
-                        : "bg-muted/50 text-muted-foreground",
-                      isJustDrawn && "animate-pulse ring-4 ring-red-300"
+                      "px-1 py-1 rounded flex items-center justify-center text-[10px] md:text-xs font-bold text-center transition-all duration-300 min-h-[28px] leading-tight",
+                      isDrawn ? "bg-red-500 text-white shadow" : "bg-muted/40 text-muted-foreground",
+                      isJustDrawn && "animate-pulse ring-2 ring-red-300"
                     )}
                   >
                     {animal}
@@ -215,11 +203,17 @@ export const BingoAnimais = () => {
                 );
               })}
             </div>
+            <div className="mt-2 h-2 bg-muted/50 rounded-full overflow-hidden flex-shrink-0">
+              <div
+                className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full transition-all duration-500"
+                style={{ width: `${(drawnAnimals.length / TOTAL_ANIMALS) * 100}%` }}
+              />
+            </div>
           </div>
 
           {/* Right Panel - Globe and Controls */}
-          <div className="glass-card p-4 md:p-6 w-full lg:w-96 flex flex-col items-center">
-            <div className="relative mb-6">
+          <div className="glass-card p-3 w-full lg:w-80 flex flex-col items-center min-h-0 overflow-y-auto">
+            <div className="relative mb-2 flex-shrink-0">
               <style>{`
                 @keyframes float-ball-0 { 0%,100%{transform:translate(0,0);} 25%{transform:translate(10px,-8px);} 50%{transform:translate(-5px,5px);} 75%{transform:translate(8px,10px);} }
                 @keyframes float-ball-1 { 0%,100%{transform:translate(0,0);} 25%{transform:translate(-12px,6px);} 50%{transform:translate(8px,-10px);} 75%{transform:translate(-6px,8px);} }
@@ -227,28 +221,24 @@ export const BingoAnimais = () => {
                 @keyframes float-ball-3 { 0%,100%{transform:translate(0,0);} 25%{transform:translate(-8px,-10px);} 50%{transform:translate(12px,8px);} 75%{transform:translate(-5px,6px);} }
               `}</style>
 
-              <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-4 border-white/20 shadow-2xl relative overflow-hidden flex items-center justify-center">
+              <div className="w-36 h-36 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-4 border-white/20 shadow-2xl relative overflow-hidden flex items-center justify-center">
                 {ANIMAL_SOLID_COLORS.map((color, i) => (
                   <GlobeBall key={i} index={i} color={color} />
                 ))}
-                {ANIMAL_SOLID_COLORS.slice(0, 5).map((color, i) => (
-                  <GlobeBall key={`extra-${i}`} index={i + 9} color={color} />
-                ))}
-
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-full pointer-events-none" />
-                <div className="absolute top-4 left-4 w-6 h-6 bg-white/20 rounded-full blur-sm" />
+                <div className="absolute top-3 left-3 w-4 h-4 bg-white/20 rounded-full blur-sm" />
 
                 {currentAnimal && (
                   <div
                     className={cn(
-                      "relative z-10 w-32 h-32 md:w-36 md:h-36 rounded-full flex flex-col items-center justify-center text-white shadow-2xl transition-all duration-500 px-2",
+                      "relative z-10 w-24 h-24 md:w-28 md:h-28 rounded-full flex flex-col items-center justify-center text-white shadow-2xl transition-all duration-500 px-2",
                       `bg-gradient-to-br ${getAnimalColor(currentAnimal)}`,
                       isAnimating ? "scale-110" : "scale-100"
                     )}
                     style={{ boxShadow: "0 0 30px rgba(255,255,255,0.5), 0 10px 40px rgba(0,0,0,0.3)" }}
                   >
-                    <div className="text-3xl md:text-4xl">{ANIMAL_EMOJIS[currentAnimal] || "🐾"}</div>
-                    <div className="text-sm md:text-base font-black text-center leading-tight mt-1">
+                    <div className="text-2xl md:text-3xl">{ANIMAL_EMOJIS[currentAnimal] || "🐾"}</div>
+                    <div className="text-[11px] md:text-xs font-black text-center leading-tight mt-0.5">
                       {currentAnimal}
                     </div>
                   </div>
@@ -256,41 +246,31 @@ export const BingoAnimais = () => {
               </div>
             </div>
 
-            {/* Copy current animal */}
             {currentAnimal && (
               <Button
                 onClick={() => copyText(currentAnimal)}
-                className="w-full mb-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold"
+                className="w-full mb-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold h-9 text-sm flex-shrink-0"
               >
-                <Copy className="w-4 h-4 mr-2" />
+                <Copy className="w-3.5 h-3.5 mr-2" />
                 Copiar: {currentAnimal}
               </Button>
             )}
 
-            {/* History - Last 10 */}
-            <div className="w-full mb-6">
-              <h3 className="text-sm font-semibold text-muted-foreground mb-3 text-center">
-                Últimos 10 sorteados
-              </h3>
-              <div className="grid grid-cols-2 gap-2">
-                {[...Array(10)].map((_, i) => {
-                  const animal = lastTen[lastTen.length - 1 - i];
+            {/* History - Last 5 */}
+            <div className="w-full mb-2 flex-shrink-0">
+              <h3 className="text-[11px] font-semibold text-muted-foreground mb-1 text-center">Últimos 5</h3>
+              <div className="grid grid-cols-5 gap-1">
+                {[...Array(5)].map((_, i) => {
+                  const animal = lastFive[lastFive.length - 1 - i];
                   return (
                     <div
                       key={i}
                       className={cn(
-                        "px-2 py-2 rounded-lg flex items-center justify-center gap-1 text-xs font-bold text-center transition-all min-h-[36px]",
-                        animal
-                          ? `bg-gradient-to-br ${getAnimalColor(animal)} text-white shadow-md`
-                          : "bg-muted/30 text-muted-foreground/50"
+                        "px-1 py-1 rounded flex items-center justify-center text-[9px] font-bold text-center min-h-[28px]",
+                        animal ? `bg-gradient-to-br ${getAnimalColor(animal)} text-white shadow` : "bg-muted/30 text-muted-foreground/50"
                       )}
                     >
-                      {animal ? (
-                        <>
-                          <span>{ANIMAL_EMOJIS[animal]}</span>
-                          <span className="truncate">{animal}</span>
-                        </>
-                      ) : "-"}
+                      {animal ? <span className="truncate">{ANIMAL_EMOJIS[animal]}</span> : "-"}
                     </div>
                   );
                 })}
@@ -298,83 +278,46 @@ export const BingoAnimais = () => {
             </div>
 
             {/* Controls */}
-            <div className="flex gap-3 w-full">
+            <div className="flex gap-2 w-full flex-shrink-0">
               {!isPlaying ? (
                 <Button
                   onClick={handlePlay}
                   disabled={availableAnimals.length === 0}
-                  className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-6"
+                  className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold h-10"
                 >
-                  <Play className="w-5 h-5 mr-2" />
-                  Iniciar
+                  <Play className="w-4 h-4 mr-1" />Iniciar
                 </Button>
               ) : (
                 <Button
                   onClick={handlePause}
-                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-6"
+                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold h-10"
                 >
-                  <Pause className="w-5 h-5 mr-2" />
-                  Pausar
+                  <Pause className="w-4 h-4 mr-1" />Pausar
                 </Button>
               )}
-
-              <Button onClick={handleReset} variant="outline" className="flex-1 border-2 font-bold py-6">
-                <RotateCcw className="w-5 h-5 mr-2" />
-                REINICIAR
+              <Button onClick={handleReset} variant="outline" className="flex-1 border-2 font-bold h-10">
+                <RotateCcw className="w-4 h-4 mr-1" />Reiniciar
               </Button>
             </div>
 
             <Button
               onClick={() => setAudioEnabled(!audioEnabled)}
               variant="ghost"
-              className="mt-4 text-muted-foreground hover:text-foreground"
+              size="sm"
+              className="mt-2 text-xs text-muted-foreground hover:text-foreground flex-shrink-0"
             >
               {audioEnabled ? (
-                <><Volume2 className="w-5 h-5 mr-2" />Áudio Ligado</>
+                <><Volume2 className="w-3.5 h-3.5 mr-1" />Áudio Ligado</>
               ) : (
-                <><VolumeX className="w-5 h-5 mr-2" />Áudio Desligado</>
+                <><VolumeX className="w-3.5 h-3.5 mr-1" />Áudio Desligado</>
               )}
             </Button>
 
             {availableAnimals.length === 0 && (
-              <div className="mt-4 text-center p-4 bg-green-500/20 rounded-lg border border-green-500/30">
-                <p className="text-green-400 font-bold">🎉 Bingo Completo!</p>
-                <p className="text-sm text-muted-foreground">Todos os animais foram sorteados</p>
+              <div className="mt-2 text-center p-2 bg-green-500/20 rounded-lg border border-green-500/30 flex-shrink-0">
+                <p className="text-green-400 font-bold text-sm">🎉 Bingo Completo!</p>
               </div>
             )}
-          </div>
-        </div>
-
-        {/* Progress */}
-        <div className="glass-card p-4 md:p-6 max-w-7xl mx-auto mt-6">
-          <div className="flex flex-col items-center gap-3">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
-                <div className="absolute inset-0 w-3 h-3 rounded-full bg-primary/50 animate-ping" />
-              </div>
-              <p className="text-lg font-semibold text-foreground">
-                Sorteados {drawnAnimals.length} de {TOTAL_ANIMALS} animais
-              </p>
-              {isPlaying && (
-                <div className="flex gap-1">
-                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '300ms' }} />
-                </div>
-              )}
-            </div>
-            <div className="w-full max-w-md h-3 bg-muted/50 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full transition-all duration-500 ease-out relative"
-                style={{ width: `${(drawnAnimals.length / TOTAL_ANIMALS) * 100}%` }}
-              >
-                <div className="absolute inset-0 bg-white/20 animate-pulse" />
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Restam {availableAnimals.length} animais
-            </p>
           </div>
         </div>
       </main>
