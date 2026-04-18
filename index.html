@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Labxat - Experimente, Crie & Jogue!</title>
-    <link rel="icon" href="/labxat-logo.png" type="image/png" />
+    <link rel="icon" href="/labxat-logo-64.png" type="image/png" sizes="64x64" />
     <meta name="description" content="Labxat é um laboratório criativo digital. Explore ferramentas únicas como gerador de nicks personalizados, gerador de cores e bingo interativo." />
     <meta name="author" content="Labxat" />
     <meta name="keywords" content="Labxat, ferramentas criativas, gerador de nicks, gerador de cores, bingo online" />
@@ -31,17 +31,17 @@
     <!-- Preconnect to critical origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://gs.xat.com" crossorigin />
 
     <!-- Load font non-blocking -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
 
-    <!-- Preload LCP image (Stella power on the homepage hero card) -->
-    <link rel="preload" as="image" href="https://gs.xat.com/a_(stella)_40" fetchpriority="high" />
+    <!-- Preload local LCP logo (served from same origin, instant) -->
+    <link rel="preload" as="image" href="/labxat-logo-64.webp" type="image/webp" fetchpriority="high" />
 
     <!-- DNS prefetch for non-critical external resources -->
     <link rel="dns-prefetch" href="https://xat.com" />
+    <link rel="dns-prefetch" href="https://gs.xat.com" />
     <link rel="dns-prefetch" href="https://xatimg.com" />
     <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
 

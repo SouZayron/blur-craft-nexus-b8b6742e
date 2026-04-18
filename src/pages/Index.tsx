@@ -86,8 +86,8 @@ const Index = () => {
                   width={80}
                   height={80}
                   className="w-20 h-20 rounded-xl object-contain bg-background/30 shadow-lg p-2"
-                  referrerPolicy="no-referrer"
-                  fetchPriority="high"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  loading="lazy"
                   decoding="async"
                 />
                 <div className="flex-1">
@@ -189,7 +189,8 @@ const Index = () => {
               href="https://xat.com/mixhits"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-labxat-purple hover:bg-labxat-purple/80 text-white font-bold text-lg px-12 py-4 rounded-xl transition-colors duration-300 shadow-lg"
+              aria-label="Fale comigo no xat.com/mixhits (abre em nova aba)"
+              className="bg-[hsl(280_85%_42%)] hover:bg-[hsl(280_85%_36%)] text-white font-bold text-lg px-12 py-4 rounded-xl transition-colors duration-300 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-labxat-pink focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {t("contact")}
             </a>

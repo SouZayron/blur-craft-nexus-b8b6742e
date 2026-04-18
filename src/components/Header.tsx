@@ -22,13 +22,13 @@ export const Header = () => {
           {/* Logo */}
           <Link to="/" aria-label="Labxat - Página inicial" className="flex items-center gap-2 group">
             <picture>
-              <source srcSet="/labxat-logo.webp" type="image/webp" />
+              <source srcSet="/labxat-logo-64.webp" type="image/webp" />
               <img
-                src="/labxat-logo.png"
+                src="/labxat-logo-64.png"
                 alt="Logotipo Labxat"
                 width={32}
                 height={32}
-                className="w-8 h-8"
+                className="block w-8 h-8"
                 fetchPriority="high"
                 decoding="async"
               />
