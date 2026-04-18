@@ -30,8 +30,8 @@
 /*.ttf
   Cache-Control: public, max-age=31536000, immutable
 
-# HTML always revalidated to pick up new deploys
+# HTML revalidated but allowed brief cache for repeat-view speed
 /*.html
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: public, max-age=600, must-revalidate
 /
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: public, max-age=600, must-revalidate
