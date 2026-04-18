@@ -84,16 +84,15 @@ const Index = () => {
                   xat.com/MixHits →
                 </a>
               </div>
-              <div className="flex-1 rounded-xl overflow-hidden bg-background/30 flex items-center justify-center">
+              <div className="flex-1 rounded-xl overflow-hidden bg-background/30 min-h-[486px]">
                 <iframe
                   src="https://xat.com/embed/chat.php#id=67226000&gn=MixHits"
                   allow="clipboard-write"
-                  width={650}
-                  height={486}
                   frameBorder={0}
                   scrolling="no"
                   title="MixHits Chat"
-                  className="max-w-full"
+                  className="w-full h-full block"
+                  style={{ minHeight: 486 }}
                 />
               </div>
             </GlassCard>
