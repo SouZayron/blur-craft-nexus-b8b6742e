@@ -170,12 +170,12 @@ const Index = () => {
               {shopServices.map((service) => (
                 <div
                   key={service.key}
-                  className="bg-background/30 backdrop-blur-sm rounded-xl p-4 text-center border border-white/10 hover:border-labxat-purple/50 transition-all duration-300 hover:scale-105 cursor-pointer"
+                  className="bg-background/30 backdrop-blur-sm rounded-xl p-4 text-center border border-white/10 hover:border-labxat-purple/50 transition-all duration-300"
                 >
                   <h3 className="text-foreground font-semibold text-sm md:text-base mb-1">
                     {t(service.key)}
                   </h3>
-                  <p className="text-labxat-purple text-xs font-medium">
+                  <p className="text-labxat-purple text-xs font-semibold">
                     {service.price}
                   </p>
                 </div>
@@ -198,23 +198,24 @@ const Index = () => {
 
         {/* Footer inline */}
         <footer className="mt-12 text-center pb-6">
-          <p className="text-muted-foreground text-xs">
+          <p className="text-foreground/70 text-xs">
             Feito por{" "}
             <a
               href="https://xat.com/mixhits"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-labxat-purple hover:underline font-medium"
+              aria-label="Perfil de Zaru no xat (abre em nova aba)"
+              className="text-labxat-purple hover:underline font-semibold"
             >
               Zaru
             </a>{" "}
             - 2025 · {t("copyright")}
           </p>
           <div className="mt-2 flex justify-center gap-4 text-xs">
-            <Link to="/privacidade" className="text-muted-foreground hover:text-labxat-purple transition-colors">
+            <Link to="/privacidade" className="text-foreground/70 hover:text-labxat-purple transition-colors">
               {t("privacyPolicy")}
             </Link>
-            <Link to="/termos" className="text-muted-foreground hover:text-labxat-purple transition-colors">
+            <Link to="/termos" className="text-foreground/70 hover:text-labxat-purple transition-colors">
               {t("termsOfService")}
             </Link>
           </div>
