@@ -108,10 +108,15 @@
     width: 100%;
   }
 
-  /* No scroll only for home page */
+  /* No scroll utility (kept for legacy pages; home is now scrollable one-page) */
   .no-scroll {
     overflow: hidden;
     height: 100vh;
+  }
+
+  /* Smooth scroll for one-page experience and AdSense inline ads */
+  html {
+    scroll-behavior: smooth;
   }
 }
 

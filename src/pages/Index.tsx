@@ -60,18 +60,20 @@ const Index = () => {
   ], []);
 
   return (
-    <div className="no-scroll animated-gradient-bg">
+    <div className="animated-gradient-bg min-h-screen relative">
       <Header />
 
-      {/* Floating Blobs - decorative, lazy rendered */}
-      <FloatingBlob color="blue" size="xl" position={{ top: "5%", left: "-5%" }} animation="float" />
-      <FloatingBlob color="purple" size="lg" position={{ top: "15%", right: "5%" }} animation="float-delayed" />
-      <FloatingBlob color="pink" size="md" position={{ bottom: "20%", left: "10%" }} animation="float-slow" />
-      <FloatingBlob color="green" size="lg" position={{ bottom: "15%", right: "-5%" }} animation="float" />
-      <FloatingBlob color="lilac" size="md" position={{ top: "45%", left: "60%" }} animation="float-delayed" />
+      {/* Floating Blobs - decorative, lazy rendered. Fixed so they stay in viewport while scrolling */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <FloatingBlob color="blue" size="xl" position={{ top: "5%", left: "-5%" }} animation="float" />
+        <FloatingBlob color="purple" size="lg" position={{ top: "15%", right: "5%" }} animation="float-delayed" />
+        <FloatingBlob color="pink" size="md" position={{ bottom: "20%", left: "10%" }} animation="float-slow" />
+        <FloatingBlob color="green" size="lg" position={{ bottom: "15%", right: "-5%" }} animation="float" />
+        <FloatingBlob color="lilac" size="md" position={{ top: "45%", left: "60%" }} animation="float-delayed" />
+      </div>
 
-      {/* Main Content */}
-      <main className="relative z-10 h-full flex flex-col items-center justify-start px-4 pt-28 pb-16 overflow-y-auto">
+      {/* Main Content - flows naturally, AdSense ads can be placed inline */}
+      <main className="relative z-10 flex flex-col items-center px-4 pt-28 pb-16">
         {/* Two Column Layout */}
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-6">
           {/* Left Column - MixHits Chat */}
