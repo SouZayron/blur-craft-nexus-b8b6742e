@@ -6,58 +6,56 @@
 
 @layer base {
   :root {
-    /* Dark + Neon Pink/Purple/Magenta palette */
-    --background: 250 40% 6%;
-    --foreground: 0 0% 100%;
+    /* LIGHT mode — soft white with pink/purple accents */
+    --background: 270 50% 98%;
+    --foreground: 260 35% 12%;
 
-    --card: 250 35% 10%;
-    --card-foreground: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 260 35% 12%;
 
-    --popover: 250 35% 10%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 260 35% 12%;
 
-    /* Primary = vibrant purple */
-    --primary: 262 100% 62%;
+    --primary: 262 85% 55%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary = neon pink */
-    --secondary: 326 100% 59%;
+    --secondary: 326 90% 55%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 250 25% 14%;
-    --muted-foreground: 0 0% 75%;
+    --muted: 270 30% 94%;
+    --muted-foreground: 260 15% 40%;
 
-    --accent: 326 100% 59%;
+    --accent: 326 90% 55%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 40% 28%;
-    --input: 250 30% 14%;
-    --ring: 326 100% 59%;
+    --border: 270 30% 88%;
+    --input: 270 30% 92%;
+    --ring: 326 90% 55%;
 
     --radius: 1.25rem;
 
-    /* Brand tokens — remapped to pink/purple/magenta */
-    --labxat-blue: 262 100% 62%;     /* purple */
-    --labxat-purple: 326 100% 59%;   /* neon pink (primary accent) */
-    --labxat-pink: 326 100% 59%;     /* magenta pink */
-    --labxat-green: 290 100% 65%;    /* magenta */
-    --labxat-lilac: 280 100% 75%;    /* light purple */
+    /* Brand tokens */
+    --labxat-blue: 262 85% 55%;
+    --labxat-purple: 326 90% 55%;
+    --labxat-pink: 326 90% 60%;
+    --labxat-green: 290 80% 55%;
+    --labxat-lilac: 280 80% 70%;
 
-    /* Glassmorphism — dark translucent with pink/purple tint */
-    --glass-bg: 260 40% 10% / 0.5;
-    --glass-border: 326 100% 60% / 0.25;
-    --glass-shadow: 326 100% 60% / 0.18;
+    /* Glassmorphism — light translucent */
+    --glass-bg: 0 0% 100% / 0.55;
+    --glass-border: 326 90% 55% / 0.20;
+    --glass-shadow: 326 90% 55% / 0.12;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(326 100% 59%), hsl(262 100% 62%));
-    --gradient-secondary: linear-gradient(135deg, hsl(290 100% 65%), hsl(262 100% 62%));
-    --gradient-accent: linear-gradient(135deg, hsl(326 100% 59%), hsl(290 100% 65%));
+    --gradient-primary: linear-gradient(135deg, hsl(326 90% 55%), hsl(262 85% 55%));
+    --gradient-secondary: linear-gradient(135deg, hsl(290 80% 60%), hsl(262 85% 55%));
+    --gradient-accent: linear-gradient(135deg, hsl(326 90% 55%), hsl(290 80% 60%));
   }
 
   .dark {
+    /* DARK mode — neon pink/purple/magenta on near-black */
     --background: 250 40% 5%;
     --foreground: 0 0% 100%;
 
@@ -85,6 +83,20 @@
     --border: 270 40% 25%;
     --input: 250 30% 12%;
     --ring: 326 100% 59%;
+
+    --labxat-blue: 262 100% 62%;
+    --labxat-purple: 326 100% 59%;
+    --labxat-pink: 326 100% 59%;
+    --labxat-green: 290 100% 65%;
+    --labxat-lilac: 280 100% 75%;
+
+    --glass-bg: 260 40% 10% / 0.5;
+    --glass-border: 326 100% 60% / 0.25;
+    --glass-shadow: 326 100% 60% / 0.18;
+
+    --gradient-primary: linear-gradient(135deg, hsl(326 100% 59%), hsl(262 100% 62%));
+    --gradient-secondary: linear-gradient(135deg, hsl(290 100% 65%), hsl(262 100% 62%));
+    --gradient-accent: linear-gradient(135deg, hsl(326 100% 59%), hsl(290 100% 65%));
   }
 }
 
