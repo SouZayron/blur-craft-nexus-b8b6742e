@@ -41,19 +41,35 @@
 
     <!-- DNS prefetch for non-critical external resources -->
     <link rel="dns-prefetch" href="https://xat.com" />
-    <link rel="dns-prefetch" href="https://gs.xat.com" />
     <link rel="dns-prefetch" href="https://xatimg.com" />
     <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
 
-    <!-- AdSense: load after page is interactive to avoid blocking LCP -->
+    <!-- AdSense: defer until browser idle to minimize main-thread work and avoid deprecated API warnings during LCP -->
     <script>
-      window.addEventListener('load', function () {
-        var s = document.createElement('script');
-        s.async = true;
-        s.crossOrigin = 'anonymous';
-        s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9503578701144532';
-        document.head.appendChild(s);
-      });
+      (function () {
+        var loaded = false;
+        function loadAds() {
+          if (loaded) return;
+          loaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.crossOrigin = 'anonymous';
+          s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9503578701144532';
+          document.head.appendChild(s);
+        }
+        function schedule() {
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(loadAds, { timeout: 5000 });
+          } else {
+            setTimeout(loadAds, 3000);
+          }
+        }
+        if (document.readyState === 'complete') {
+          schedule();
+        } else {
+          window.addEventListener('load', schedule, { once: true });
+        }
+      })();
     </script>
   </head>
 

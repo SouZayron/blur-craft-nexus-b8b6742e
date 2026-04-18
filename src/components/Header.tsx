@@ -28,7 +28,8 @@ export const Header = () => {
                 alt="Logotipo Labxat"
                 width={32}
                 height={32}
-                className="block w-8 h-8"
+                className="block shrink-0"
+                style={{ width: 32, height: 32, aspectRatio: "1 / 1" }}
                 fetchPriority="high"
                 decoding="async"
               />
