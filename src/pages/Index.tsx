@@ -81,7 +81,7 @@ const Index = () => {
             <GlassCard className="p-5 md:p-6 h-full flex flex-col">
               <div className="flex items-start gap-4 mb-5">
                 <img
-                  src="/labxat-logo-64.webp"
+                  src="https://gs.xat.com/a_(stella)_40"
                   alt="Power Stella do xat"
                   width={80}
                   height={80}
@@ -89,6 +89,7 @@ const Index = () => {
                   style={{ width: 80, height: 80, aspectRatio: "1 / 1" }}
                   loading="lazy"
                   decoding="async"
+                  referrerPolicy="no-referrer"
                 />
                 <div className="flex-1">
                   <p className="text-xs uppercase tracking-wider text-labxat-purple font-semibold mb-1">
