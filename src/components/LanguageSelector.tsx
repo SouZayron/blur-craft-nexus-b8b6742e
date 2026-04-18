@@ -33,9 +33,12 @@ export const LanguageSelector = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/20 text-foreground/70 hover:text-foreground outline-none">
-        <Globe className="w-4 h-4" />
-        <span className="hidden sm:inline">{currentLang?.flag}</span>
+      <DropdownMenuTrigger
+        aria-label={`Selecionar idioma. Idioma atual: ${currentLang?.name ?? "Português"}`}
+        className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/20 text-foreground/70 hover:text-foreground outline-none"
+      >
+        <Globe className="w-4 h-4" aria-hidden="true" />
+        <span className="hidden sm:inline" aria-hidden="true">{currentLang?.flag}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="glass-card border-white/20">
         {languages.map((lang) => (

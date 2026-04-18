@@ -31,6 +31,9 @@ export const FloatingRadio = () => {
   return (
     <button
       onClick={togglePlay}
+      type="button"
+      aria-label={isPlaying ? "Pausar rádio Labxat" : "Tocar rádio Labxat"}
+      aria-pressed={isPlaying}
       className={`fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110 ${
         isPlaying
           ? "bg-gradient-to-r from-labxat-purple to-labxat-pink text-white"
@@ -39,14 +42,13 @@ export const FloatingRadio = () => {
       title={isPlaying ? "Pausar rádio" : "Tocar rádio"}
     >
       {isPlaying ? (
-        <Pause className="w-5 h-5" />
+        <Pause className="w-5 h-5" aria-hidden="true" />
       ) : (
-        <Music className="w-5 h-5" />
+        <Music className="w-5 h-5" aria-hidden="true" />
       )}
-      
-      {/* Pulse animation when playing */}
+
       {isPlaying && (
-        <span className="absolute inset-0 rounded-full bg-labxat-purple/30 animate-ping" />
+        <span aria-hidden="true" className="absolute inset-0 rounded-full bg-labxat-purple/30 animate-ping" />
       )}
     </button>
   );
