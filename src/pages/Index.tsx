@@ -81,21 +81,14 @@ const Index = () => {
             <GlassCard className="p-5 md:p-6 h-full flex flex-col">
               <div className="flex items-start gap-4 mb-5">
                 <img
-                  src="https://xatimg.com/image/a_stella_40.png"
+                  src="/labxat-logo-64.webp"
                   alt="Power Stella do xat"
                   width={80}
                   height={80}
                   className="rounded-xl object-contain bg-background/30 shadow-lg p-2 shrink-0"
                   style={{ width: 80, height: 80, aspectRatio: "1 / 1" }}
-                  referrerPolicy="no-referrer"
                   loading="lazy"
                   decoding="async"
-                  onError={(e) => {
-                    const img = e.currentTarget;
-                    if (img.src.includes("xatimg.com")) {
-                      img.src = "/labxat-logo-64.png";
-                    }
-                  }}
                 />
                 <div className="flex-1">
                   <p className="text-xs uppercase tracking-wider text-labxat-purple font-semibold mb-1">
