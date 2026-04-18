@@ -18,6 +18,7 @@ import { BingoCardsAccess } from "./pages/BingoCardsAccess";
 import { BingoGames } from "./pages/BingoGames";
 import { BingoPanel } from "./pages/BingoPanel";
 import { About } from "./pages/About";
+import { UltimoPower } from "./pages/UltimoPower";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { TermsOfService } from "./pages/TermsOfService";
 import { Kerassentials } from "./pages/Kerassentials";
@@ -54,6 +55,7 @@ const App = () => (
               <Route path="/bingo-games" element={<BingoGames />} />
               <Route path="/Painel" element={<BingoPanel />} />
               <Route path="/sobre" element={<About />} />
+              <Route path="/ultimo-power" element={<UltimoPower />} />
               <Route path="/privacidade" element={<PrivacyPolicy />} />
               <Route path="/termos" element={<TermsOfService />} />
               <Route path="/kerassentials" element={<Kerassentials />} />
