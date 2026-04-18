@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Palette, Sparkles, Dices, Home, Info, Zap } from "lucide-react";
+import { Palette, Sparkles, Dices, Home, Info } from "lucide-react";
 import { LanguageSelector } from "./LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 
