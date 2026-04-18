@@ -376,52 +376,86 @@
     pointer-events: none;
   }
 
-  /* Neon snake border - light wire traveling around block edges */
-  @keyframes neon-snake-spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  /* Neon wire traveling along block perimeter */
+  @property --neon-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
   }
 
-  @keyframes neon-snake-pulse {
-    0%, 100% { opacity: 0.85; filter: blur(6px) brightness(1); }
-    50% { opacity: 1; filter: blur(9px) brightness(1.3); }
+  @keyframes neon-wire-travel {
+    0% { --neon-angle: 0deg; }
+    100% { --neon-angle: 360deg; }
+  }
+
+  @keyframes neon-wire-spin-fallback {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
   .neon-snake {
     position: relative;
     isolation: isolate;
+    border-radius: inherit;
   }
 
-  .neon-snake::before,
-  .neon-snake::after {
+  /* The visible thin wire (sharp light dot trailing along the border) */
+  .neon-snake::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
     padding: 2px;
     background: conic-gradient(
-      from 0deg,
+      from var(--neon-angle, 0deg),
       transparent 0deg,
-      hsl(var(--labxat-pink)) 25deg,
-      hsl(var(--labxat-purple)) 55deg,
-      hsl(var(--labxat-blue)) 85deg,
-      transparent 120deg,
-      transparent 360deg
+      transparent 280deg,
+      hsl(var(--labxat-blue)) 320deg,
+      hsl(var(--labxat-pink)) 350deg,
+      #ffffff 360deg
     );
     -webkit-mask:
       linear-gradient(#fff 0 0) content-box,
       linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
             mask-composite: exclude;
-    animation: neon-snake-spin 3s linear infinite;
+    animation: neon-wire-travel 2.5s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* The glow halo that follows the wire */
+  .neon-snake::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 4px;
+    background: conic-gradient(
+      from var(--neon-angle, 0deg),
+      transparent 0deg,
+      transparent 290deg,
+      hsl(var(--labxat-pink) / 0.9) 335deg,
+      #ffffff 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    filter: blur(8px) brightness(1.4);
+    opacity: 0.95;
+    animation: neon-wire-travel 2.5s linear infinite;
     pointer-events: none;
     z-index: 1;
   }
 
-  .neon-snake::after {
-    filter: blur(6px) brightness(1.3);
-    opacity: 0.9;
-    animation: neon-snake-spin 3s linear infinite, neon-snake-pulse 2s ease-in-out infinite;
+  /* Fallback for browsers without @property support */
+  @supports not (background: conic-gradient(from var(--x, 0deg), red, blue)) {
+    .neon-snake::before,
+    .neon-snake::after {
+      animation: neon-wire-spin-fallback 2.5s linear infinite;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
