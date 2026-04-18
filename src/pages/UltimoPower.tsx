@@ -22,11 +22,12 @@ export const UltimoPower = () => {
           <GlassCard className="p-6 md:p-8">
             <div className="flex items-start gap-4 mb-6">
               <img
-                src="https://gs.xat.com/a_(stella)_20"
+                src="https://gs.xat.com/a_(stella)_40"
                 alt="Stella Power"
                 width={96}
                 height={96}
                 className="w-24 h-24 rounded-xl object-contain bg-background/30 shadow-lg p-2"
+                referrerPolicy="no-referrer"
               />
               <div className="flex-1">
                 <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
