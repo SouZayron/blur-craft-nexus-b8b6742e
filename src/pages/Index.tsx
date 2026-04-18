@@ -42,6 +42,12 @@ const Index = () => {
       onClick: () => navigate("/emojis"),
       gradient: "blue" as const,
     },
+    {
+      name: "Editor de Avatar",
+      icon: UserCircle,
+      onClick: () => navigate("/avatar-editor"),
+      gradient: "purple" as const,
+    },
   ], [t, navigate]);
 
   const shopServices = useMemo(() => [
