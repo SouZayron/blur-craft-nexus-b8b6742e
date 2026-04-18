@@ -5,24 +5,7 @@ import { ToolButton } from "@/components/ToolButton";
 import { Palette, Sparkles, Dices, Download, Smile } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { memo, useMemo } from "react";
-
-// Memoized smilies component to prevent re-renders
-const SmiliesList = memo(({ smilies }: { smilies: string[] }) => (
-  <div className="flex flex-wrap gap-1.5">
-    {smilies.map((smiley, index) => (
-      <span 
-        key={index}
-        className="bg-labxat-purple/20 text-labxat-purple px-2 py-0.5 rounded-md text-xs font-mono"
-      >
-        {smiley}
-      </span>
-    ))}
-  </div>
-));
-SmiliesList.displayName = "SmiliesList";
-
-const SMILIES = ["(kitsune)", "(kitchat)", "(kitdance)", "(kitheaven)", "(kitwind)", "(kitstorm)", "(kitnight)", "(kitcool)", "(kitaqua)", "(kitfire)", "(kitice)", "(kitlove)", "(kitnature)", "(kithalo)", "(kitmask)", "(kitraio)", "(kitread)", "(kitninja)", "(kitpirate)", "(kitcowboy)"];
+import { useMemo } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
