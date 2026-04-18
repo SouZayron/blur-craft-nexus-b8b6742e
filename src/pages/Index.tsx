@@ -76,32 +76,65 @@ const Index = () => {
       <main className="relative z-10 flex flex-col items-center px-4 pt-28 pb-16">
         {/* Two Column Layout */}
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-6">
-          {/* Left Column - MixHits Chat */}
+          {/* Left Column - Último Power */}
           <div className="fade-in-up">
-            <GlassCard className="p-4 md:p-5 h-full flex flex-col">
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="text-lg font-bold text-foreground">
-                  MixHits <span className="text-labxat-purple text-sm font-medium">Chat</span>
-                </h2>
-                <a
-                  href="https://xat.com/MixHits"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-labxat-purple hover:underline"
-                >
-                  xat.com/MixHits →
-                </a>
-              </div>
-              <div className="flex-1 rounded-xl overflow-hidden bg-background/30 min-h-[486px]">
-                <iframe
-                  src="https://xat.com/embed/chat.php#id=67226000&gn=MixHits"
-                  allow="clipboard-write"
-                  frameBorder={0}
-                  scrolling="no"
-                  title="MixHits Chat"
-                  className="w-full h-full block"
-                  style={{ minHeight: 486 }}
+            <GlassCard className="p-5 md:p-6 h-full flex flex-col">
+              <div className="flex items-start gap-4 mb-5">
+                <img
+                  src="https://gs.xat.com/a_(stella)_40"
+                  alt="Stella Power"
+                  width={80}
+                  height={80}
+                  className="w-20 h-20 rounded-xl object-contain bg-background/30 shadow-lg p-2"
+                  referrerPolicy="no-referrer"
+                  loading="lazy"
                 />
+                <div className="flex-1">
+                  <p className="text-xs uppercase tracking-wider text-labxat-purple font-semibold mb-1">
+                    {t("ultimoPower")}
+                  </p>
+                  <h2 className="text-2xl md:text-3xl font-bold text-foreground">Stella</h2>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("status")}</p>
+                  <p className="text-foreground text-sm font-medium">Ilimitado</p>
+                </div>
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("group")}</p>
+                  <p className="text-foreground text-sm font-medium">❌</p>
+                </div>
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("epic")}</p>
+                  <p className="text-foreground text-sm font-medium">❌</p>
+                </div>
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("storePrice")}</p>
+                  <p className="text-foreground text-sm font-medium">220 xats</p>
+                </div>
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradePrice")}</p>
+                  <p className="text-foreground text-sm font-medium">180 - 200 xats</p>
+                </div>
+                <div className="bg-background/30 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradeDays")}</p>
+                  <p className="text-foreground text-sm font-medium">12 - 15 days</p>
+                </div>
+              </div>
+
+              <div className="bg-background/20 rounded-xl p-3 mt-auto">
+                <p className="text-xs text-foreground/70 font-medium mb-2 uppercase tracking-wider">
+                  {t("smiliesOfPower")}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {["(stella)", "(stellacb)", "(stellahair)", "(stellamb)", "(stelladt)"].map((s) => (
+                    <span key={s} className="bg-labxat-purple/20 text-labxat-purple px-2 py-0.5 rounded-md text-xs font-mono">
+                      {s}
+                    </span>
+                  ))}
+                </div>
               </div>
             </GlassCard>
           </div>
