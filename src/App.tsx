@@ -32,6 +32,7 @@ const Works = lazy(() => import("./pages/Works").then(m => ({ default: m.Works }
 const MixHits = lazy(() => import("./pages/MixHits").then(m => ({ default: m.MixHits })));
 const Games = lazy(() => import("./pages/Games").then(m => ({ default: m.Games })));
 const Control = lazy(() => import("./pages/Control").then(m => ({ default: m.Control })));
+const Auto = lazy(() => import("./pages/Auto"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Non-critical UI: defer until after first paint.
@@ -75,6 +76,7 @@ const App = () => (
               <Route path="/mixhits" element={<MixHits />} />
               <Route path="/games" element={<Games />} />
               <Route path="/control" element={<Control />} />
+              <Route path="/auto" element={<Auto />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
