@@ -2,7 +2,7 @@ import { Header } from "@/components/Header";
 import { FloatingBlob } from "@/components/FloatingBlob";
 import { GlassCard } from "@/components/GlassCard";
 import { ToolButton } from "@/components/ToolButton";
-import { Palette, Sparkles, Dices, Download, Smile } from "lucide-react";
+import { Palette, Sparkles, Dices, Download, Smile, UserCircle } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useMemo } from "react";

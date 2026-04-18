@@ -13,6 +13,7 @@ import { BingoAnimais } from "./pages/BingoAnimais";
 import { GraphicsFree } from "./pages/GraphicsFree";
 import { Emojis } from "./pages/Emojis";
 import { BingoCards } from "./pages/BingoCards";
+import { AvatarEditor } from "./pages/AvatarEditor";
 import { BingoCardView } from "./pages/BingoCardView";
 import { BingoCardsAccess } from "./pages/BingoCardsAccess";
 import { BingoGames } from "./pages/BingoGames";
@@ -49,6 +50,7 @@ const App = () => (
               <Route path="/bingoanimais" element={<BingoAnimais />} />
               <Route path="/graphics" element={<GraphicsFree />} />
               <Route path="/emojis" element={<Emojis />} />
+              <Route path="/avatar-editor" element={<AvatarEditor />} />
               <Route path="/cartelas" element={<BingoCards />} />
               <Route path="/cartelas/:userName" element={<BingoCardsAccess />} />
               <Route path="/bingo/cartela/:userName/:cardId" element={<BingoCardView />} />
