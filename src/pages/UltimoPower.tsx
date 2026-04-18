@@ -4,7 +4,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Link } from "react-router-dom";
 
-const SMILIES = ["(kitsune)", "(kitchat)", "(kitdance)", "(kitheaven)", "(kitwind)", "(kitstorm)", "(kitnight)", "(kitcool)", "(kitaqua)", "(kitfire)", "(kitice)", "(kitlove)", "(kitnature)", "(kithalo)", "(kitmask)", "(kitraio)", "(kitread)", "(kitninja)", "(kitpirate)", "(kitcowboy)"];
+const SMILIES = ["(stella)", "(stellacb)", "(stellahair)", "(stellamb)", "(stelladt)"];
 
 export const UltimoPower = () => {
   const { t } = useLanguage();
@@ -22,18 +22,18 @@ export const UltimoPower = () => {
           <GlassCard className="p-6 md:p-8">
             <div className="flex items-start gap-4 mb-6">
               <img
-                src="https://xatimg.com/image/jgvHDBjhBNhQ.gif"
-                alt="Kitsune Power"
+                src="https://gs.xat.com/a_(stella)_20"
+                alt="Stella Power"
                 width={96}
                 height={96}
-                className="w-24 h-24 rounded-xl object-cover shadow-lg"
+                className="w-24 h-24 rounded-xl object-contain bg-background/30 shadow-lg p-2"
               />
               <div className="flex-1">
                 <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
                   {t("ultimoPower")}
                 </p>
                 <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                  Kitsune <span className="text-foreground/60 text-xl">(ID: 737)</span>
+                  Stella
                 </h1>
               </div>
             </div>
@@ -41,7 +41,7 @@ export const UltimoPower = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
               <div className="bg-background/30 rounded-lg p-3">
                 <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">{t("status")}</p>
-                <p className="text-foreground font-medium">Limited</p>
+                <p className="text-foreground font-medium">Ilimitado</p>
               </div>
               <div className="bg-background/30 rounded-lg p-3">
                 <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">{t("group")}</p>
@@ -53,15 +53,15 @@ export const UltimoPower = () => {
               </div>
               <div className="bg-background/30 rounded-lg p-3">
                 <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">{t("storePrice")}</p>
-                <p className="text-foreground font-medium">333 xats</p>
+                <p className="text-foreground font-medium">220 xats</p>
               </div>
               <div className="bg-background/30 rounded-lg p-3">
                 <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">{t("tradePrice")}</p>
-                <p className="text-foreground font-medium">1,500 - 2,500 xats</p>
+                <p className="text-foreground font-medium">180 - 200 xats</p>
               </div>
               <div className="bg-background/30 rounded-lg p-3">
                 <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">{t("tradeDays")}</p>
-                <p className="text-foreground font-medium">111 - 185 days</p>
+                <p className="text-foreground font-medium">12 - 15 days</p>
               </div>
             </div>
 
