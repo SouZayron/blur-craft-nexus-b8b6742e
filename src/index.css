@@ -419,7 +419,7 @@
       linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
             mask-composite: exclude;
-    animation: neon-wire-travel 2.5s linear infinite;
+    animation: neon-wire-travel 6s linear infinite;
     pointer-events: none;
     z-index: 2;
   }
