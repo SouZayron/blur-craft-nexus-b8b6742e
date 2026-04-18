@@ -341,7 +341,7 @@ export const Games = () => {
                     <span className="text-base font-bold font-mono text-foreground">{item}</span>
                   )}
                   {owner && (
-                    <span className={`text-[10px] truncate max-w-full mt-1 font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
+                    <span className={`${isAnimalsGame ? 'text-[8px] mt-0.5' : 'text-[10px] mt-1'} truncate max-w-full font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
                       {owner.name}
                     </span>
                   )}
