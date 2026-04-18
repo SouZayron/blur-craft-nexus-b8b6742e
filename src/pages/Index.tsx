@@ -82,12 +82,13 @@ const Index = () => {
               <div className="flex items-start gap-4 mb-5">
                 <img
                   src="https://gs.xat.com/a_(stella)_40"
-                  alt="Stella Power"
+                  alt="Power Stella do xat"
                   width={80}
                   height={80}
                   className="w-20 h-20 rounded-xl object-contain bg-background/30 shadow-lg p-2"
                   referrerPolicy="no-referrer"
-                  loading="lazy"
+                  fetchPriority="high"
+                  decoding="async"
                 />
                 <div className="flex-1">
                   <p className="text-xs uppercase tracking-wider text-labxat-purple font-semibold mb-1">
