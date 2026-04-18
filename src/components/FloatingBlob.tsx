@@ -24,32 +24,8 @@ const sizeClasses = {
   xl: "w-96 h-96",
 };
 
-// Memoized for performance - blobs don't change after initial render
-export const FloatingBlob = memo(({
-  color,
-  size,
-  position,
-  animation = "float",
-  className,
-}: FloatingBlobProps) => {
-  return (
-    <div
-      className={cn(
-        "blob pulse-glow",
-        colorClasses[color],
-        sizeClasses[size],
-        animation,
-        className
-      )}
-      style={{
-        ...position,
-        opacity: 0.35,
-        // GPU layer promotion
-        transform: 'translateZ(0)',
-      }}
-      aria-hidden="true"
-    />
-  );
-});
+// Disabled per design request — no decorative floating blobs in the background.
+// Kept as a no-op component so existing imports/usages keep working.
+export const FloatingBlob = memo((_props: FloatingBlobProps) => null);
 
 FloatingBlob.displayName = "FloatingBlob";
