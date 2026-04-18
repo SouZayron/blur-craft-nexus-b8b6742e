@@ -12,7 +12,6 @@ export const Header = () => {
     { name: t("nicks"), icon: Sparkles, path: "/nicks" },
     { name: t("cores"), icon: Palette, path: "/cores" },
     { name: t("bingo"), icon: Dices, path: "/bingo" },
-    { name: t("ultimoPower"), icon: Zap, path: "/ultimo-power" },
     { name: t("about"), icon: Info, path: "/sobre" },
   ];
 
