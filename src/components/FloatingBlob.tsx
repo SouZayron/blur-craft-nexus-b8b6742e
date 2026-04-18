@@ -43,7 +43,7 @@ export const FloatingBlob = memo(({
       )}
       style={{
         ...position,
-        opacity: 0.6,
+        opacity: 0.35,
         // GPU layer promotion
         transform: 'translateZ(0)',
       }}
