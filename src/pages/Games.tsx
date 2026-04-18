@@ -301,8 +301,8 @@ export const Games = () => {
           </p>
         </div>
 
-        <div className={activeRoom.game_type === 'animals' ? 'grid gap-4 lg:grid-cols-[1fr_300px] items-start' : ''}>
-          <div className={`grid gap-3 ${activeRoom.game_type === 'animals' ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4' : 'grid-cols-3 sm:grid-cols-5 md:grid-cols-6'}`}>
+        <div className={activeRoom.game_type === 'animals' ? 'grid gap-3 lg:grid-cols-[1fr_280px] items-start' : ''}>
+          <div className={`grid ${activeRoom.game_type === 'animals' ? 'gap-1.5 grid-cols-5 sm:grid-cols-7 md:grid-cols-9 lg:grid-cols-10' : 'gap-3 grid-cols-3 sm:grid-cols-5 md:grid-cols-6'}`}>
             {renderItems.map(item => {
               const taken = takenValues.includes(item);
               const owner = getPickOwner(item);
@@ -313,6 +313,7 @@ export const Games = () => {
                 if (isDisabled || isMine) return;
                 handleSelectBlock(item);
               };
+              const isAnimalsGame = activeRoom.game_type === 'animals';
               return (
                 <div
                   key={item}
@@ -322,7 +323,8 @@ export const Games = () => {
                   onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } }}
                   aria-disabled={isDisabled}
                   className={`
-                    relative p-3 rounded-xl transition-all duration-300 min-h-[80px] flex flex-col items-center justify-center select-none
+                    relative rounded-lg transition-all duration-300 flex flex-col items-center justify-center select-none
+                    ${isAnimalsGame ? 'p-1.5 min-h-[52px]' : 'p-3 min-h-[80px] rounded-xl'}
                     ${isMine
                       ? 'bg-green-500/15 border border-green-500/50 cursor-default'
                       : taken
@@ -333,13 +335,13 @@ export const Games = () => {
                     }
                   `}
                 >
-                  {activeRoom.game_type === 'animals' ? (
-                    <span className="text-base font-semibold text-foreground text-center leading-tight">{item}</span>
+                  {isAnimalsGame ? (
+                    <span className="text-[11px] sm:text-xs font-semibold text-foreground text-center leading-tight">{item}</span>
                   ) : (
                     <span className="text-base font-bold font-mono text-foreground">{item}</span>
                   )}
                   {owner && (
-                    <span className={`text-[10px] truncate max-w-full mt-1 font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
+                    <span className={`${isAnimalsGame ? 'text-[8px] mt-0.5' : 'text-[10px] mt-1'} truncate max-w-full font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
                       {owner.name}
                     </span>
                   )}
