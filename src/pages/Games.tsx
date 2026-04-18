@@ -279,130 +279,127 @@ export const Games = () => {
       ? INVERTIDOS_BLOCKS
       : SEQUENCES_BLOCKS;
 
+  const isAnimalsGame = activeRoom.game_type === 'animals';
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
+    <div className={`${isAnimalsGame ? 'h-screen overflow-hidden flex flex-col' : 'min-h-screen'} bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-3`}>
+      <div className={`${isAnimalsGame ? 'flex-1 min-h-0 flex flex-col' : ''} max-w-6xl mx-auto w-full`}>
+        <div className={`text-center ${isAnimalsGame ? 'mb-2 flex-shrink-0' : 'mb-6'}`}>
+          <h1 className={`${isAnimalsGame ? 'text-xl' : 'text-3xl'} font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent ${isAnimalsGame ? 'mb-0.5' : 'mb-2'}`}>
             {gameIcon} {gameName}
           </h1>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground text-xs">
             Olá, <span className="text-purple-400 font-semibold">{currentPlayer.name}</span>!{" "}
-            {activeRoom.game_type === 'animals'
+            {isAnimalsGame
               ? (reachedLimit
-                  ? `Você selecionou seus 2 animais (${myPicks.length}/2). Copie a combinação ao lado.`
-                  : `Você precisa selecionar 2 animais (${myPicks.length}/2).`)
+                  ? `Selecionados ${myPicks.length}/2. Copie a combinação abaixo.`
+                  : `Selecione 2 animais (${myPicks.length}/2).`)
               : (reachedLimit
                   ? `Você já selecionou ${myPicks.length}/${maxPicks}. Clique em copiar.`
                   : `Selecione ${maxPicks} bloco (${myPicks.length}/${maxPicks}).`)}
-          </p>
-          <p className="text-muted-foreground text-xs mt-1">
-            {picks.length}/{getMaxSlots()} ocupados no total
+            {" · "}{picks.length}/{getMaxSlots()} ocupados
           </p>
         </div>
 
-        <div className={activeRoom.game_type === 'animals' ? 'grid gap-3 lg:grid-cols-[1fr_280px] items-start' : ''}>
-          <div className={`grid ${activeRoom.game_type === 'animals' ? 'gap-1.5 grid-cols-5 sm:grid-cols-7 md:grid-cols-9 lg:grid-cols-10' : 'gap-3 grid-cols-3 sm:grid-cols-5 md:grid-cols-6'}`}>
-            {renderItems.map(item => {
-              const taken = takenValues.includes(item);
-              const owner = getPickOwner(item);
-              const isMine = owner?.playerId === currentPlayer.id;
-              const isCopied = copiedKey === item;
-              const isDisabled = taken || loading || reachedLimit;
-              const handleClick = () => {
-                if (isDisabled || isMine) return;
-                handleSelectBlock(item);
-              };
-              const isAnimalsGame = activeRoom.game_type === 'animals';
-              return (
-                <div
-                  key={item}
-                  role="button"
-                  tabIndex={isDisabled ? -1 : 0}
-                  onClick={handleClick}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } }}
-                  aria-disabled={isDisabled}
-                  className={`
-                    relative rounded-lg transition-all duration-300 flex flex-col items-center justify-center select-none
-                    ${isAnimalsGame ? 'p-1.5 min-h-[52px]' : 'p-3 min-h-[80px] rounded-xl'}
-                    ${isMine
-                      ? 'bg-green-500/15 border border-green-500/50 cursor-default'
-                      : taken
-                        ? 'bg-red-500/10 opacity-70 cursor-not-allowed border border-transparent'
-                        : reachedLimit
-                          ? 'backdrop-blur-md bg-white/5 border border-white/5 opacity-50 cursor-not-allowed'
-                          : 'neon-snake backdrop-blur-md bg-white/5 border border-white/10 hover:border-purple-500/50 hover:scale-105 cursor-pointer'
-                    }
-                  `}
-                >
-                  {isAnimalsGame ? (
-                    <span className="text-[11px] sm:text-xs font-semibold text-foreground text-center leading-tight">{item}</span>
-                  ) : (
-                    <span className="text-base font-bold font-mono text-foreground">{item}</span>
-                  )}
-                  {owner && (
-                    <span className={`${isAnimalsGame ? 'text-[8px] mt-0.5' : 'text-[10px] mt-1'} truncate max-w-full font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
-                      {owner.name}
-                    </span>
-                  )}
-                  {isMine && activeRoom.game_type !== 'animals' && (
-                    <button
-                      type="button"
-                      onClick={(e) => handleCopyBlock(e, item)}
-                      className={`mt-1.5 inline-flex items-center justify-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md cursor-pointer transition-colors ${
-                        isCopied
-                          ? 'bg-green-500 text-white'
-                          : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'
-                      }`}
-                    >
-                      {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                      {isCopied ? 'Copiado' : 'Copiar'}
-                    </button>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {activeRoom.game_type === 'animals' && myPicks.length > 0 && (
-            <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-5 lg:sticky lg:top-4">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Sua combinação</h3>
-              <div className="bg-background/40 border border-white/10 rounded-lg p-4 mb-3 text-center">
-                <span className="text-lg font-bold text-foreground break-words">
-                  {myPicks.map(p => p.pick_value).join(' - ')}
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground mb-3">
-                {myPicks.length < 2
-                  ? `Falta selecionar ${2 - myPicks.length} animal.`
-                  : 'Pronto! Copie e envie.'}
-              </p>
-              <Button
-                onClick={handleCopyAnimalsCombo}
-                disabled={myPicks.length === 0}
-                className={`w-full ${copiedKey === 'combo' ? 'bg-green-500 hover:bg-green-500' : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'}`}
+        <div className={`grid ${isAnimalsGame ? 'gap-1 grid-cols-7 sm:grid-cols-9 md:grid-cols-10 lg:grid-cols-12 flex-1 min-h-0 content-start auto-rows-min' : 'gap-3 grid-cols-3 sm:grid-cols-5 md:grid-cols-6'}`}>
+          {renderItems.map(item => {
+            const taken = takenValues.includes(item);
+            const owner = getPickOwner(item);
+            const isMine = owner?.playerId === currentPlayer.id;
+            const isCopied = copiedKey === item;
+            const isDisabled = taken || loading || reachedLimit;
+            const handleClick = () => {
+              if (isDisabled || isMine) return;
+              handleSelectBlock(item);
+            };
+            return (
+              <div
+                key={item}
+                role="button"
+                tabIndex={isDisabled ? -1 : 0}
+                onClick={handleClick}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } }}
+                aria-disabled={isDisabled}
+                className={`
+                  relative rounded-md transition-all duration-300 flex flex-col items-center justify-center select-none
+                  ${isAnimalsGame ? 'p-1 min-h-[40px]' : 'p-3 min-h-[80px] rounded-xl'}
+                  ${isMine
+                    ? 'bg-green-500/15 border border-green-500/50 cursor-default'
+                    : taken
+                      ? 'bg-red-500/10 opacity-70 cursor-not-allowed border border-transparent'
+                      : reachedLimit
+                        ? 'backdrop-blur-md bg-white/5 border border-white/5 opacity-50 cursor-not-allowed'
+                        : 'neon-snake backdrop-blur-md bg-white/5 border border-white/10 hover:border-purple-500/50 hover:scale-105 cursor-pointer'
+                  }
+                `}
               >
-                {copiedKey === 'combo' ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
-                {copiedKey === 'combo' ? 'Copiado!' : 'Copiar combinação'}
-              </Button>
-            </div>
-          )}
+                {isAnimalsGame ? (
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-foreground text-center leading-none">{item}</span>
+                ) : (
+                  <span className="text-base font-bold font-mono text-foreground">{item}</span>
+                )}
+                {owner && (
+                  <span className={`${isAnimalsGame ? 'text-[7px] mt-0.5' : 'text-[10px] mt-1'} truncate max-w-full font-semibold leading-none ${isMine ? 'text-green-400' : 'text-red-400'}`}>
+                    {owner.name}
+                  </span>
+                )}
+                {isMine && !isAnimalsGame && (
+                  <button
+                    type="button"
+                    onClick={(e) => handleCopyBlock(e, item)}
+                    className={`mt-1.5 inline-flex items-center justify-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md cursor-pointer transition-colors ${
+                      isCopied
+                        ? 'bg-green-500 text-white'
+                        : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'
+                    }`}
+                  >
+                    {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                    {isCopied ? 'Copiado' : 'Copiar'}
+                  </button>
+                )}
+              </div>
+            );
+          })}
         </div>
 
-        <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded backdrop-blur-md bg-white/5 border border-white/10" />
-            <span className="text-muted-foreground">Disponível</span>
+        {/* Footer combo bar - fixed at bottom for animals game */}
+        {isAnimalsGame && (
+          <div className="mt-2 flex-shrink-0 backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-2 flex items-center gap-2">
+            <div className="flex-1 bg-background/40 border border-white/10 rounded-lg px-3 py-2 text-center min-w-0">
+              <span className="text-sm font-bold text-foreground break-words">
+                {myPicks.length > 0
+                  ? myPicks.map(p => p.pick_value).join(' - ')
+                  : <span className="text-muted-foreground font-normal">Selecione 2 animais para formar a combinação</span>}
+              </span>
+            </div>
+            <Button
+              onClick={handleCopyAnimalsCombo}
+              disabled={myPicks.length === 0}
+              size="sm"
+              className={`flex-shrink-0 ${copiedKey === 'combo' ? 'bg-green-500 hover:bg-green-500' : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'}`}
+            >
+              {copiedKey === 'combo' ? <Check className="w-4 h-4 mr-1" /> : <Copy className="w-4 h-4 mr-1" />}
+              {copiedKey === 'combo' ? 'Copiado!' : 'Copiar'}
+            </Button>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-green-500/15 border border-green-500/50" />
-            <span className="text-muted-foreground">Sua seleção</span>
+        )}
+
+        {!isAnimalsGame && (
+          <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded backdrop-blur-md bg-white/5 border border-white/10" />
+              <span className="text-muted-foreground">Disponível</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded bg-green-500/15 border border-green-500/50" />
+              <span className="text-muted-foreground">Sua seleção</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded bg-red-500/10" />
+              <span className="text-muted-foreground">Ocupado</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-red-500/10" />
-            <span className="text-muted-foreground">Ocupado</span>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
