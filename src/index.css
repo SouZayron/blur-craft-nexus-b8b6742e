@@ -6,85 +6,85 @@
 
 @layer base {
   :root {
-    /* Dark futuristic neon palette */
-    --background: 200 50% 5%;
-    --foreground: 160 30% 96%;
+    /* Dark + Neon Pink/Purple/Magenta palette */
+    --background: 250 40% 6%;
+    --foreground: 0 0% 100%;
 
-    --card: 195 40% 9%;
-    --card-foreground: 160 30% 96%;
+    --card: 250 35% 10%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 195 40% 9%;
-    --popover-foreground: 160 30% 96%;
+    --popover: 250 35% 10%;
+    --popover-foreground: 0 0% 100%;
 
-    /* Primary = vibrant neon green */
-    --primary: 152 100% 50%;
-    --primary-foreground: 200 60% 6%;
+    /* Primary = vibrant purple */
+    --primary: 262 100% 62%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary = cyan */
-    --secondary: 185 100% 55%;
-    --secondary-foreground: 200 60% 6%;
+    /* Secondary = neon pink */
+    --secondary: 326 100% 59%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 195 25% 14%;
-    --muted-foreground: 180 15% 70%;
+    --muted: 250 25% 14%;
+    --muted-foreground: 0 0% 75%;
 
-    --accent: 185 100% 55%;
-    --accent-foreground: 200 60% 6%;
+    --accent: 326 100% 59%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 180 30% 25%;
-    --input: 195 30% 14%;
-    --ring: 152 100% 50%;
+    --border: 270 40% 28%;
+    --input: 250 30% 14%;
+    --ring: 326 100% 59%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
 
-    /* Labxat brand tokens — remapped to neon/cyan/petroleum */
-    --labxat-blue: 185 100% 55%;     /* cyan */
-    --labxat-purple: 152 100% 50%;   /* neon green (primary accent) */
-    --labxat-pink: 165 90% 55%;      /* mint accent */
-    --labxat-green: 152 100% 50%;    /* neon green */
-    --labxat-lilac: 185 80% 65%;     /* light cyan */
+    /* Brand tokens — remapped to pink/purple/magenta */
+    --labxat-blue: 262 100% 62%;     /* purple */
+    --labxat-purple: 326 100% 59%;   /* neon pink (primary accent) */
+    --labxat-pink: 326 100% 59%;     /* magenta pink */
+    --labxat-green: 290 100% 65%;    /* magenta */
+    --labxat-lilac: 280 100% 75%;    /* light purple */
 
-    /* Glassmorphism — dark translucent with neon tint */
-    --glass-bg: 180 40% 12% / 0.45;
-    --glass-border: 152 100% 50% / 0.18;
-    --glass-shadow: 152 100% 50% / 0.15;
+    /* Glassmorphism — dark translucent with pink/purple tint */
+    --glass-bg: 260 40% 10% / 0.5;
+    --glass-border: 326 100% 60% / 0.25;
+    --glass-shadow: 326 100% 60% / 0.18;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(152 100% 50%), hsl(185 100% 55%));
-    --gradient-secondary: linear-gradient(135deg, hsl(185 100% 55%), hsl(200 80% 40%));
-    --gradient-accent: linear-gradient(135deg, hsl(152 100% 50%), hsl(165 90% 55%));
+    --gradient-primary: linear-gradient(135deg, hsl(326 100% 59%), hsl(262 100% 62%));
+    --gradient-secondary: linear-gradient(135deg, hsl(290 100% 65%), hsl(262 100% 62%));
+    --gradient-accent: linear-gradient(135deg, hsl(326 100% 59%), hsl(290 100% 65%));
   }
 
   .dark {
-    --background: 200 50% 4%;
-    --foreground: 160 30% 96%;
+    --background: 250 40% 5%;
+    --foreground: 0 0% 100%;
 
-    --card: 195 40% 8%;
-    --card-foreground: 160 30% 96%;
+    --card: 250 35% 9%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 195 40% 8%;
-    --popover-foreground: 160 30% 96%;
+    --popover: 250 35% 9%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 152 100% 50%;
-    --primary-foreground: 200 60% 6%;
+    --primary: 262 100% 62%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 185 100% 55%;
-    --secondary-foreground: 200 60% 6%;
+    --secondary: 326 100% 59%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 195 25% 12%;
-    --muted-foreground: 180 15% 70%;
+    --muted: 250 25% 12%;
+    --muted-foreground: 0 0% 75%;
 
-    --accent: 185 100% 55%;
-    --accent-foreground: 200 60% 6%;
+    --accent: 326 100% 59%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 180 30% 22%;
-    --input: 195 30% 12%;
-    --ring: 152 100% 50%;
+    --border: 270 40% 25%;
+    --input: 250 30% 12%;
+    --ring: 326 100% 59%;
   }
 }
 
@@ -118,42 +118,44 @@
 @layer components {
   .glass {
     @apply backdrop-blur-xl border shadow-xl;
-    background: hsl(180 40% 10% / 0.5);
-    border-color: hsl(152 100% 50% / 0.18);
-    box-shadow: 0 8px 32px hsl(152 100% 50% / 0.08), inset 0 1px 0 hsl(152 100% 50% / 0.08);
+    background: hsl(260 40% 9% / 0.55);
+    border-color: hsl(326 100% 60% / 0.22);
+    box-shadow:
+      0 8px 32px hsl(326 100% 60% / 0.10),
+      inset 0 1px 0 hsl(326 100% 60% / 0.12);
   }
 
   .glass-card {
     @apply backdrop-blur-2xl border shadow-2xl rounded-3xl;
-    background: hsl(180 40% 10% / 0.55);
-    border-color: hsl(152 100% 50% / 0.20);
+    background: hsl(260 40% 9% / 0.6);
+    border-color: hsl(326 100% 60% / 0.25);
     box-shadow:
-      0 8px 32px hsl(152 100% 50% / 0.10),
-      0 0 0 1px hsl(185 100% 55% / 0.06),
-      inset 0 1px 0 hsl(152 100% 50% / 0.10);
+      0 10px 40px hsl(262 100% 50% / 0.18),
+      0 0 0 1px hsl(326 100% 60% / 0.12),
+      inset 0 1px 0 hsl(326 100% 60% / 0.18);
   }
 
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(152 100% 55%), hsl(185 100% 60%));
+    background-image: linear-gradient(135deg, hsl(326 100% 65%), hsl(290 100% 70%), hsl(262 100% 72%));
   }
 
   .glow {
     box-shadow:
-      0 0 20px hsl(152 100% 50% / 0.45),
-      0 0 40px hsl(185 100% 55% / 0.25),
-      0 0 60px hsl(152 100% 50% / 0.15);
+      0 0 20px hsl(326 100% 60% / 0.55),
+      0 0 40px hsl(262 100% 62% / 0.35),
+      0 0 60px hsl(326 100% 60% / 0.20);
   }
 
   .glow-hover {
-    @apply transition-all duration-500;
+    @apply transition-all duration-300;
   }
 
   .glow-hover:hover {
     box-shadow:
-      0 0 30px hsl(152 100% 50% / 0.65),
-      0 0 60px hsl(185 100% 55% / 0.4),
-      0 0 90px hsl(152 100% 50% / 0.25);
+      0 0 30px hsl(326 100% 60% / 0.75),
+      0 0 60px hsl(262 100% 62% / 0.5),
+      0 0 90px hsl(326 100% 60% / 0.3);
     transform: translateY(-2px);
   }
 }
