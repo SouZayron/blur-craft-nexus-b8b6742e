@@ -99,28 +99,28 @@ const Index = () => {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("status")}</p>
+                <div className="bg-labxat-blue/15 border border-labxat-blue/25 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("status")}</p>
                   <p className="text-foreground text-sm font-medium">Ilimitado</p>
                 </div>
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("group")}</p>
+                <div className="bg-labxat-purple/15 border border-labxat-purple/25 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("group")}</p>
                   <p className="text-foreground text-sm font-medium">❌</p>
                 </div>
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("epic")}</p>
+                <div className="bg-labxat-pink/15 border border-labxat-pink/25 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("epic")}</p>
                   <p className="text-foreground text-sm font-medium">❌</p>
                 </div>
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("storePrice")}</p>
+                <div className="bg-labxat-green/15 border border-labxat-green/25 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("storePrice")}</p>
                   <p className="text-foreground text-sm font-medium">220 xats</p>
                 </div>
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradePrice")}</p>
+                <div className="bg-labxat-lilac/15 border border-labxat-lilac/25 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("tradePrice")}</p>
                   <p className="text-foreground text-sm font-medium">180 - 200 xats</p>
                 </div>
-                <div className="bg-background/30 rounded-lg p-2.5">
-                  <p className="text-[10px] text-foreground/60 uppercase tracking-wider mb-0.5">{t("tradeDays")}</p>
+                <div className="bg-labxat-blue/15 border border-labxat-blue/25 rounded-lg p-2.5">
+                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("tradeDays")}</p>
                   <p className="text-foreground text-sm font-medium">12 - 15 days</p>
                 </div>
               </div>
