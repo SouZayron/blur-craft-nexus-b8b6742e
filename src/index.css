@@ -445,7 +445,7 @@
             mask-composite: exclude;
     filter: blur(8px) brightness(1.4);
     opacity: 0.95;
-    animation: neon-wire-travel 2.5s linear infinite;
+    animation: neon-wire-travel 6s linear infinite;
     pointer-events: none;
     z-index: 1;
   }
