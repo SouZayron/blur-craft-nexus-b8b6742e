@@ -128,7 +128,6 @@
 }
 
 @layer components {
-@layer components {
   .glass {
     @apply backdrop-blur-xl border shadow-xl;
     background: hsl(var(--glass-bg));
