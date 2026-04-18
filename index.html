@@ -31,19 +31,26 @@
     <!-- Preconnect to critical origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://xatimg.com" crossorigin />
-    
-    <!-- Preload critical font with display=swap for non-blocking -->
+
+    <!-- Load font non-blocking -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
-    
-    <!-- Preload LCP image -->
-    <link rel="preload" href="https://xatimg.com/image/YuaLbdfuX4Q8.png" as="image" fetchpriority="high" />
 
-    <!-- DNS prefetch for external resources -->
+    <!-- DNS prefetch for non-critical external resources -->
     <link rel="dns-prefetch" href="https://xat.com" />
+    <link rel="dns-prefetch" href="https://xatimg.com" />
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9503578701144532" crossorigin="anonymous"></script>
+    <!-- AdSense: load after page is interactive to avoid blocking LCP -->
+    <script>
+      window.addEventListener('load', function () {
+        var s = document.createElement('script');
+        s.async = true;
+        s.crossOrigin = 'anonymous';
+        s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9503578701144532';
+        document.head.appendChild(s);
+      });
+    </script>
   </head>
 
   <body>

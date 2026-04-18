@@ -4,43 +4,54 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { lazy, Suspense } from "react";
 
+// Eager-loaded: home is the LCP page, keep it in the initial bundle.
 import Index from "./pages/Index";
-import ColorGenerator from "./pages/ColorGenerator";
-import { NickGenerator } from "./pages/NickGenerator";
-import { Bingo } from "./pages/Bingo";
-import { BingoAnimais } from "./pages/BingoAnimais";
-import { GraphicsFree } from "./pages/GraphicsFree";
-import { Emojis } from "./pages/Emojis";
-import { BingoCards } from "./pages/BingoCards";
-import { AvatarEditor } from "./pages/AvatarEditor";
-import { BingoCardView } from "./pages/BingoCardView";
-import { BingoCardsAccess } from "./pages/BingoCardsAccess";
-import { BingoGames } from "./pages/BingoGames";
-import { BingoPanel } from "./pages/BingoPanel";
-import { About } from "./pages/About";
-import { UltimoPower } from "./pages/UltimoPower";
-import { PrivacyPolicy } from "./pages/PrivacyPolicy";
-import { TermsOfService } from "./pages/TermsOfService";
-import { Kerassentials } from "./pages/Kerassentials";
-import { Works } from "./pages/Works";
-import { MixHits } from "./pages/MixHits";
-import { Games } from "./pages/Games";
-import { Control } from "./pages/Control";
-import { CookieConsent } from "./components/CookieConsent";
-import { FloatingRadio } from "./components/FloatingRadio";
 
-import NotFound from "./pages/NotFound";
+// Lazy-loaded: every other route is split into its own chunk so the
+// initial JS payload (and TBT) shrinks dramatically.
+const ColorGenerator = lazy(() => import("./pages/ColorGenerator"));
+const NickGenerator = lazy(() => import("./pages/NickGenerator").then(m => ({ default: m.NickGenerator })));
+const Bingo = lazy(() => import("./pages/Bingo").then(m => ({ default: m.Bingo })));
+const BingoAnimais = lazy(() => import("./pages/BingoAnimais").then(m => ({ default: m.BingoAnimais })));
+const GraphicsFree = lazy(() => import("./pages/GraphicsFree").then(m => ({ default: m.GraphicsFree })));
+const Emojis = lazy(() => import("./pages/Emojis").then(m => ({ default: m.Emojis })));
+const BingoCards = lazy(() => import("./pages/BingoCards").then(m => ({ default: m.BingoCards })));
+const AvatarEditor = lazy(() => import("./pages/AvatarEditor").then(m => ({ default: m.AvatarEditor })));
+const BingoCardView = lazy(() => import("./pages/BingoCardView").then(m => ({ default: m.BingoCardView })));
+const BingoCardsAccess = lazy(() => import("./pages/BingoCardsAccess").then(m => ({ default: m.BingoCardsAccess })));
+const BingoGames = lazy(() => import("./pages/BingoGames").then(m => ({ default: m.BingoGames })));
+const BingoPanel = lazy(() => import("./pages/BingoPanel").then(m => ({ default: m.BingoPanel })));
+const About = lazy(() => import("./pages/About").then(m => ({ default: m.About })));
+const UltimoPower = lazy(() => import("./pages/UltimoPower").then(m => ({ default: m.UltimoPower })));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy").then(m => ({ default: m.PrivacyPolicy })));
+const TermsOfService = lazy(() => import("./pages/TermsOfService").then(m => ({ default: m.TermsOfService })));
+const Kerassentials = lazy(() => import("./pages/Kerassentials").then(m => ({ default: m.Kerassentials })));
+const Works = lazy(() => import("./pages/Works").then(m => ({ default: m.Works })));
+const MixHits = lazy(() => import("./pages/MixHits").then(m => ({ default: m.MixHits })));
+const Games = lazy(() => import("./pages/Games").then(m => ({ default: m.Games })));
+const Control = lazy(() => import("./pages/Control").then(m => ({ default: m.Control })));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+// Non-critical UI: defer until after first paint.
+const CookieConsent = lazy(() => import("./components/CookieConsent").then(m => ({ default: m.CookieConsent })));
+const FloatingRadio = lazy(() => import("./components/FloatingRadio").then(m => ({ default: m.FloatingRadio })));
 
 const queryClient = new QueryClient();
 
+const RouteFallback = () => (
+  <div className="min-h-screen bg-background" aria-hidden="true" />
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
-      <LanguageProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+    <LanguageProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/cores" element={<ColorGenerator />} />
@@ -64,14 +75,16 @@ const App = () => (
               <Route path="/mixhits" element={<MixHits />} />
               <Route path="/games" element={<Games />} />
               <Route path="/control" element={<Control />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+          </Suspense>
+          <Suspense fallback={null}>
             <CookieConsent />
             <FloatingRadio />
-          </BrowserRouter>
-        </TooltipProvider>
-      </LanguageProvider>
+          </Suspense>
+        </BrowserRouter>
+      </TooltipProvider>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 
