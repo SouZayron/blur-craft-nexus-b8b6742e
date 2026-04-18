@@ -568,8 +568,8 @@ const translations: Translations = {
     de: "ShopLAB", nl: "ShopLAB", tl: "ShopLAB", tr: "ShopLAB", bs: "ShopLAB", fr: "ShopLAB", it: "ShopLAB", hu: "ShopLAB", pl: "ShopLAB", "pt-pt": "ShopLAB", ro: "ShopLAB", sr: "ShopLAB", th: "ShopLAB"
   },
   contact: {
-    pt: "Contato", en: "Contact", es: "Contacto", ar: "اتصال",
-    de: "Kontakt", nl: "Contact", tl: "Makipag-ugnayan", tr: "İletişim", bs: "Kontakt", fr: "Contact", it: "Contatto", hu: "Kapcsolat", pl: "Kontakt", "pt-pt": "Contacto", ro: "Contact", sr: "Kontakt", th: "ติดต่อ"
+    pt: "Fale comigo!", en: "Talk to me!", es: "¡Habla conmigo!", ar: "!تحدث معي",
+    de: "Sprich mit mir!", nl: "Praat met mij!", tl: "Kausapin mo ako!", tr: "Benimle konuş!", bs: "Razgovaraj sa mnom!", fr: "Parle-moi !", it: "Parla con me!", hu: "Beszélj velem!", pl: "Porozmawiaj ze mną!", "pt-pt": "Fala comigo!", ro: "Vorbește cu mine!", sr: "Razgovaraj sa mnom!", th: "คุยกับฉัน!"
   },
   fundos: {
     pt: "Fundos", en: "Backgrounds", es: "Fondos", ar: "خلفيات",
