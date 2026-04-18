@@ -331,7 +331,76 @@ export const Bingo = () => {
                 );
               })}
             </div>
-{/* PRINT_BUTTON_KEEP_BELOW */}
+
+            {/* Print Button */}
+            <div className="mt-4 flex flex-col gap-3">
+              <Button
+                onClick={handlePrintPanel}
+                disabled={isUploading}
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold"
+              >
+                {isUploading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    {t("sending")}
+                  </>
+                ) : (
+                  <>
+                    <Camera className="w-5 h-5 mr-2" />
+                    {t("takeScreenshot")}
+                  </>
+                )}
+              </Button>
+
+              {imageUrl && (
+                <div className="p-3 bg-muted/50 rounded-lg space-y-2">
+                  <p className="text-xs text-muted-foreground text-center">{t("imageLink")}</p>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={imageUrl}
+                      readOnly
+                      className="flex-1 text-xs bg-background px-2 py-1.5 rounded border border-border truncate"
+                    />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        navigator.clipboard.writeText(imageUrl);
+                        toast({ title: t("linkCopied") });
+                      }}
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => window.open(imageUrl, '_blank')}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right Panel - Roleta style (Auto layout) */}
+          <div className="glass-card p-4 md:p-6 w-full lg:w-96 flex flex-col items-center">
+            {/* Big current number */}
+            <div className="flex flex-col items-center justify-center mb-6 w-full">
+              <div className="text-[10px] uppercase tracking-widest text-foreground/60 mb-3">
+                Número atual
+              </div>
+              <div
+                className={cn(
+                  "w-40 h-40 md:w-48 md:h-48 rounded-2xl bg-labxat-pink/90 text-white flex items-center justify-center text-7xl md:text-8xl font-black shadow-lg shadow-labxat-pink/30 transition-all duration-500",
+                  isAnimating && "scale-110"
+                )}
+              >
+                {currentBall ?? "—"}
+              </div>
+            </div>
 
             {/* History - Last 10 balls */}
             <div className="w-full mb-6">
@@ -345,10 +414,10 @@ export const Bingo = () => {
                     <div
                       key={i}
                       className={cn(
-                        "w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all mx-auto",
+                        "w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center text-sm font-bold transition-all mx-auto",
                         ball
-                          ? `bg-gradient-to-br ${getBallColor(ball)} text-white shadow-md`
-                          : "bg-muted/30 text-muted-foreground/50"
+                          ? "bg-labxat-purple/70 text-white shadow-md"
+                          : "bg-muted/30 text-muted-foreground/50 border border-white/10"
                       )}
                     >
                       {ball || "-"}
