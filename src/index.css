@@ -6,56 +6,58 @@
 
 @layer base {
   :root {
-    /* LIGHT mode — soft white with pink/purple accents */
-    --background: 270 50% 98%;
-    --foreground: 260 35% 12%;
+    /* Dark + Neon Pink/Purple/Magenta palette */
+    --background: 250 40% 6%;
+    --foreground: 0 0% 100%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 260 35% 12%;
+    --card: 250 35% 10%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 260 35% 12%;
+    --popover: 250 35% 10%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 262 85% 55%;
+    /* Primary = vibrant purple */
+    --primary: 262 100% 62%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 326 90% 55%;
+    /* Secondary = neon pink */
+    --secondary: 326 100% 59%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 270 30% 94%;
-    --muted-foreground: 260 15% 40%;
+    --muted: 250 25% 14%;
+    --muted-foreground: 0 0% 75%;
 
-    --accent: 326 90% 55%;
+    --accent: 326 100% 59%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 55%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 30% 88%;
-    --input: 270 30% 92%;
-    --ring: 326 90% 55%;
+    --border: 270 40% 28%;
+    --input: 250 30% 14%;
+    --ring: 326 100% 59%;
 
     --radius: 1.25rem;
 
-    /* Brand tokens */
-    --labxat-blue: 262 85% 55%;
-    --labxat-purple: 326 90% 55%;
-    --labxat-pink: 326 90% 60%;
-    --labxat-green: 290 80% 55%;
-    --labxat-lilac: 280 80% 70%;
+    /* Brand tokens — remapped to pink/purple/magenta */
+    --labxat-blue: 262 100% 62%;     /* purple */
+    --labxat-purple: 326 100% 59%;   /* neon pink (primary accent) */
+    --labxat-pink: 326 100% 59%;     /* magenta pink */
+    --labxat-green: 290 100% 65%;    /* magenta */
+    --labxat-lilac: 280 100% 75%;    /* light purple */
 
-    /* Glassmorphism — light translucent */
-    --glass-bg: 0 0% 100% / 0.55;
-    --glass-border: 326 90% 55% / 0.20;
-    --glass-shadow: 326 90% 55% / 0.12;
+    /* Glassmorphism — dark translucent with pink/purple tint */
+    --glass-bg: 260 40% 10% / 0.5;
+    --glass-border: 326 100% 60% / 0.25;
+    --glass-shadow: 326 100% 60% / 0.18;
 
-    --gradient-primary: linear-gradient(135deg, hsl(326 90% 55%), hsl(262 85% 55%));
-    --gradient-secondary: linear-gradient(135deg, hsl(290 80% 60%), hsl(262 85% 55%));
-    --gradient-accent: linear-gradient(135deg, hsl(326 90% 55%), hsl(290 80% 60%));
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(326 100% 59%), hsl(262 100% 62%));
+    --gradient-secondary: linear-gradient(135deg, hsl(290 100% 65%), hsl(262 100% 62%));
+    --gradient-accent: linear-gradient(135deg, hsl(326 100% 59%), hsl(290 100% 65%));
   }
 
   .dark {
-    /* DARK mode — neon pink/purple/magenta on near-black */
     --background: 250 40% 5%;
     --foreground: 0 0% 100%;
 
@@ -83,20 +85,6 @@
     --border: 270 40% 25%;
     --input: 250 30% 12%;
     --ring: 326 100% 59%;
-
-    --labxat-blue: 262 100% 62%;
-    --labxat-purple: 326 100% 59%;
-    --labxat-pink: 326 100% 59%;
-    --labxat-green: 290 100% 65%;
-    --labxat-lilac: 280 100% 75%;
-
-    --glass-bg: 260 40% 10% / 0.5;
-    --glass-border: 326 100% 60% / 0.25;
-    --glass-shadow: 326 100% 60% / 0.18;
-
-    --gradient-primary: linear-gradient(135deg, hsl(326 100% 59%), hsl(262 100% 62%));
-    --gradient-secondary: linear-gradient(135deg, hsl(290 100% 65%), hsl(262 100% 62%));
-    --gradient-accent: linear-gradient(135deg, hsl(326 100% 59%), hsl(290 100% 65%));
   }
 }
 
@@ -130,33 +118,33 @@
 @layer components {
   .glass {
     @apply backdrop-blur-xl border shadow-xl;
-    background: hsl(var(--glass-bg));
-    border-color: hsl(var(--glass-border));
+    background: hsl(260 40% 9% / 0.55);
+    border-color: hsl(326 100% 60% / 0.22);
     box-shadow:
-      0 8px 32px hsl(var(--glass-shadow)),
-      inset 0 1px 0 hsl(var(--glass-border));
+      0 8px 32px hsl(326 100% 60% / 0.10),
+      inset 0 1px 0 hsl(326 100% 60% / 0.12);
   }
 
   .glass-card {
     @apply backdrop-blur-2xl border shadow-2xl rounded-3xl;
-    background: hsl(var(--glass-bg));
-    border-color: hsl(var(--glass-border));
+    background: hsl(260 40% 9% / 0.6);
+    border-color: hsl(326 100% 60% / 0.25);
     box-shadow:
-      0 10px 40px hsl(var(--glass-shadow)),
-      0 0 0 1px hsl(var(--glass-border)),
-      inset 0 1px 0 hsl(var(--glass-border));
+      0 10px 40px hsl(262 100% 50% / 0.18),
+      0 0 0 1px hsl(326 100% 60% / 0.12),
+      inset 0 1px 0 hsl(326 100% 60% / 0.18);
   }
 
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: var(--gradient-primary);
+    background-image: linear-gradient(135deg, hsl(326 100% 65%), hsl(290 100% 70%), hsl(262 100% 72%));
   }
 
   .glow {
     box-shadow:
-      0 0 20px hsl(var(--secondary) / 0.55),
-      0 0 40px hsl(var(--primary) / 0.35),
-      0 0 60px hsl(var(--secondary) / 0.20);
+      0 0 20px hsl(326 100% 60% / 0.55),
+      0 0 40px hsl(262 100% 62% / 0.35),
+      0 0 60px hsl(326 100% 60% / 0.20);
   }
 
   .glow-hover {
@@ -165,26 +153,26 @@
 
   .glow-hover:hover {
     box-shadow:
-      0 0 30px hsl(var(--secondary) / 0.75),
-      0 0 60px hsl(var(--primary) / 0.5),
-      0 0 90px hsl(var(--secondary) / 0.3);
+      0 0 30px hsl(326 100% 60% / 0.75),
+      0 0 60px hsl(262 100% 62% / 0.5),
+      0 0 90px hsl(326 100% 60% / 0.3);
     transform: translateY(-2px);
   }
 }
 
 @layer utilities {
-  /* Light-mode animated gradient background */
+  /* Animated gradient background — dark + pink/purple/magenta radial glow */
   .animated-gradient-bg {
     background:
-      radial-gradient(ellipse 80% 50% at 15% 5%, hsl(326 90% 70% / 0.30), transparent 60%),
-      radial-gradient(ellipse 70% 50% at 90% 90%, hsl(262 85% 70% / 0.30), transparent 60%),
-      radial-gradient(ellipse 60% 40% at 50% 50%, hsl(290 80% 75% / 0.18), transparent 70%),
+      radial-gradient(ellipse 80% 50% at 15% 5%, hsl(326 100% 55% / 0.35), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 90% 90%, hsl(262 100% 60% / 0.40), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 50% 50%, hsl(290 100% 55% / 0.18), transparent 70%),
       linear-gradient(-45deg,
-        hsl(270 50% 98%),
-        hsl(290 60% 96%),
-        hsl(310 60% 97%),
-        hsl(260 50% 98%),
-        hsl(270 50% 98%)
+        hsl(250 50% 5%),
+        hsl(265 45% 7%),
+        hsl(280 45% 6%),
+        hsl(255 50% 4%),
+        hsl(250 50% 5%)
       );
     background-size: 100% 100%, 100% 100%, 100% 100%, 400% 400%;
     animation: gradient-shift 20s ease infinite;
