@@ -21,6 +21,8 @@ export const ToolButton = ({ label, icon: Icon, onClick, className, gradient = "
   return (
     <button
       onClick={onClick}
+      type="button"
+      aria-label={label}
       className={cn(
         "relative flex items-center justify-center gap-3",
         "px-4 py-4 rounded-2xl",
@@ -38,7 +40,7 @@ export const ToolButton = ({ label, icon: Icon, onClick, className, gradient = "
         boxShadow: "0 4px 24px hsl(326 100% 60% / 0.18)",
       }}
     >
-      <Icon className="w-5 h-5 flex-shrink-0 text-secondary" />
+      <Icon className="w-5 h-5 flex-shrink-0 text-secondary" aria-hidden="true" />
       <span>{label}</span>
     </button>
   );
