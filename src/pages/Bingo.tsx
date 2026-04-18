@@ -302,28 +302,28 @@ export const Bingo = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
-          {/* Left Panel - Ball Grid */}
+          {/* Left Panel - Ball Grid (Auto-style) */}
           <div className="glass-card p-4 md:p-6 flex-1">
             <h2 className="text-lg font-bold text-foreground mb-4 text-center">
               {t("verificationPanel")}
             </h2>
-            <div 
+            <div
               ref={panelRef}
-              className="grid grid-cols-9 md:grid-cols-10 gap-2 md:gap-2.5 bg-background p-4 rounded-lg"
+              className="grid grid-cols-10 gap-1.5 md:gap-2 bg-background p-4 rounded-lg"
             >
               {Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1).map((num) => {
                 const isDrawn = drawnNumbers.includes(num);
-                const isJustDrawn = currentBall === num && isAnimating;
-                
+                const isCurrent = num === currentBall;
                 return (
                   <div
                     key={num}
                     className={cn(
-                      "w-9 h-9 md:w-11 md:h-11 rounded-lg flex items-center justify-center text-sm md:text-base font-bold transition-all duration-300",
-                      isDrawn
-                        ? "bg-red-500 text-white shadow-lg scale-105"
-                        : "bg-muted/50 text-muted-foreground",
-                      isJustDrawn && "animate-pulse ring-4 ring-red-300"
+                      "aspect-square rounded-md flex items-center justify-center text-xs md:text-sm font-semibold transition-all",
+                      isCurrent
+                        ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
+                        : isDrawn
+                          ? "bg-labxat-purple/70 text-white"
+                          : "bg-background/60 text-foreground/60 border border-white/10"
                     )}
                   >
                     {num}
@@ -331,7 +331,7 @@ export const Bingo = () => {
                 );
               })}
             </div>
-            
+
             {/* Print Button */}
             <div className="mt-4 flex flex-col gap-3">
               <Button
@@ -351,15 +351,15 @@ export const Bingo = () => {
                   </>
                 )}
               </Button>
-              
+
               {imageUrl && (
                 <div className="p-3 bg-muted/50 rounded-lg space-y-2">
                   <p className="text-xs text-muted-foreground text-center">{t("imageLink")}</p>
                   <div className="flex gap-2">
-                    <input 
-                      type="text" 
-                      value={imageUrl} 
-                      readOnly 
+                    <input
+                      type="text"
+                      value={imageUrl}
+                      readOnly
                       className="flex-1 text-xs bg-background px-2 py-1.5 rounded border border-border truncate"
                     />
                     <Button
@@ -385,67 +385,20 @@ export const Bingo = () => {
             </div>
           </div>
 
-          {/* Right Panel - Globe and Controls */}
+          {/* Right Panel - Roleta style (Auto layout) */}
           <div className="glass-card p-4 md:p-6 w-full lg:w-96 flex flex-col items-center">
-            {/* Bingo Globe */}
-            <div className="relative mb-6">
-              <style>{`
-                @keyframes float-ball-0 {
-                  0%, 100% { transform: translate(0, 0); }
-                  25% { transform: translate(10px, -8px); }
-                  50% { transform: translate(-5px, 5px); }
-                  75% { transform: translate(8px, 10px); }
-                }
-                @keyframes float-ball-1 {
-                  0%, 100% { transform: translate(0, 0); }
-                  25% { transform: translate(-12px, 6px); }
-                  50% { transform: translate(8px, -10px); }
-                  75% { transform: translate(-6px, 8px); }
-                }
-                @keyframes float-ball-2 {
-                  0%, 100% { transform: translate(0, 0); }
-                  25% { transform: translate(6px, 12px); }
-                  50% { transform: translate(-10px, -5px); }
-                  75% { transform: translate(5px, -8px); }
-                }
-                @keyframes float-ball-3 {
-                  0%, 100% { transform: translate(0, 0); }
-                  25% { transform: translate(-8px, -10px); }
-                  50% { transform: translate(12px, 8px); }
-                  75% { transform: translate(-5px, 6px); }
-                }
-              `}</style>
-              
-              <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-4 border-white/20 shadow-2xl relative overflow-hidden flex items-center justify-center">
-                {/* Animated balls inside globe */}
-                {globeColors.map((color, i) => (
-                  <GlobeBall key={i} index={i} color={color} />
-                ))}
-                {globeColors.slice(0, 5).map((color, i) => (
-                  <GlobeBall key={`extra-${i}`} index={i + 9} color={color} />
-                ))}
-                
-                {/* Glass reflection */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-full pointer-events-none" />
-                
-                {/* Center highlight */}
-                <div className="absolute top-4 left-4 w-6 h-6 bg-white/20 rounded-full blur-sm" />
-
-                {/* Current Ball - centered in globe */}
-                {currentBall && (
-                  <div
-                    className={cn(
-                      "relative z-10 w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-2xl md:text-3xl font-black text-white shadow-2xl transition-all duration-500",
-                      `bg-gradient-to-br ${getBallColor(currentBall)}`,
-                      isAnimating ? "scale-110" : "scale-100"
-                    )}
-                    style={{
-                      boxShadow: "0 0 30px rgba(255,255,255,0.5), 0 10px 40px rgba(0,0,0,0.3)"
-                    }}
-                  >
-                    {currentBall}
-                  </div>
+            {/* Big current number */}
+            <div className="flex flex-col items-center justify-center mb-6 w-full">
+              <div className="text-[10px] uppercase tracking-widest text-foreground/60 mb-3">
+                Número atual
+              </div>
+              <div
+                className={cn(
+                  "w-40 h-40 md:w-48 md:h-48 rounded-2xl bg-labxat-pink/90 text-white flex items-center justify-center text-7xl md:text-8xl font-black shadow-lg shadow-labxat-pink/30 transition-all duration-500",
+                  isAnimating && "scale-110"
                 )}
+              >
+                {currentBall ?? "—"}
               </div>
             </div>
 
@@ -461,10 +414,10 @@ export const Bingo = () => {
                     <div
                       key={i}
                       className={cn(
-                        "w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all mx-auto",
+                        "w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center text-sm font-bold transition-all mx-auto",
                         ball
-                          ? `bg-gradient-to-br ${getBallColor(ball)} text-white shadow-md`
-                          : "bg-muted/30 text-muted-foreground/50"
+                          ? "bg-labxat-purple/70 text-white shadow-md"
+                          : "bg-muted/30 text-muted-foreground/50 border border-white/10"
                       )}
                     >
                       {ball || "-"}
