@@ -162,7 +162,18 @@ const Index = () => {
 
         {/* Footer inline */}
         <footer className="mt-12 text-center pb-6">
-          <p className="text-muted-foreground text-xs">Feito com amor Zayron - 2025 · {t("copyright")}</p>
+          <p className="text-muted-foreground text-xs">
+            Feito por{" "}
+            <a
+              href="https://xat.com/mixhits"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-labxat-purple hover:underline font-medium"
+            >
+              Zaru
+            </a>{" "}
+            - 2025 · {t("copyright")}
+          </p>
           <div className="mt-2 flex justify-center gap-4 text-xs">
             <Link to="/privacidade" className="text-muted-foreground hover:text-labxat-purple transition-colors">
               {t("privacyPolicy")}
