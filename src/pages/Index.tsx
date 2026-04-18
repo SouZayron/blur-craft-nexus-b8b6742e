@@ -179,10 +179,6 @@ const Index = () => {
         </footer>
       </main>
 
-      {/* Decorative circles - hidden from accessibility tree */}
-      <div className="absolute top-1/4 left-1/4 w-3 h-3 rounded-full bg-labxat-blue/50 float" aria-hidden="true" />
-      <div className="absolute top-3/4 right-1/4 w-4 h-4 rounded-full bg-labxat-pink/50 float-delayed" aria-hidden="true" />
-      <div className="absolute top-1/2 right-1/3 w-2 h-2 rounded-full bg-labxat-purple/50 float-slow" aria-hidden="true" />
     </div>
   );
 };
