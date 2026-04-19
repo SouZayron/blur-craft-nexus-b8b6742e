@@ -81,8 +81,8 @@ const Index = () => {
             <GlassCard className="p-5 md:p-6 h-full flex flex-col">
               <div className="flex items-start gap-4 mb-5">
                 <img
-                  src="https://gs.xat.com/a_(stella)_40"
-                  alt="Power Stella do xat"
+                  src="https://gs.xat.com/a_(leafy)_40"
+                  alt="Power Leafy do xat"
                   width={80}
                   height={80}
                   className="rounded-xl object-contain bg-background/30 shadow-lg p-2 shrink-0"
@@ -95,7 +95,7 @@ const Index = () => {
                   <p className="text-xs uppercase tracking-wider text-labxat-purple font-semibold mb-1">
                     {t("ultimoPower")}
                   </p>
-                  <h2 className="text-2xl md:text-3xl font-bold text-foreground">Stella</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold text-foreground">Leafy</h2>
                 </div>
               </div>
 
@@ -131,7 +131,7 @@ const Index = () => {
                   {t("smiliesOfPower")}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {["(stella)", "(stellacb)", "(stellahair)", "(stellamb)", "(stelladt)"].map((s) => (
+                  {["(leafy)", "(leafycb)", "(leafyhair)", "(leafymb)", "(leafydt)"].map((s) => (
                     <span key={s} className="bg-labxat-purple/20 text-labxat-purple px-2 py-0.5 rounded-md text-xs font-mono">
                       {s}
                     </span>
