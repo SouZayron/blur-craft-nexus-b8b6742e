@@ -81,7 +81,7 @@ const Index = () => {
             <GlassCard className="p-5 md:p-6 h-full flex flex-col">
               <div className="flex items-start gap-4 mb-5">
                 <img
-                  src="https://gs.xat.com/a_(leafy)_40"
+                  src="https://xat.com/images/smw/leafy.png"
                   alt="Power Leafy do xat"
                   width={80}
                   height={80}
@@ -102,7 +102,7 @@ const Index = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
                 <div className="bg-labxat-blue/15 border border-labxat-blue/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("status")}</p>
-                  <p className="text-foreground text-sm font-medium">Ilimitado</p>
+                  <p className="text-foreground text-sm font-medium">Limitado</p>
                 </div>
                 <div className="bg-labxat-purple/15 border border-labxat-purple/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("group")}</p>
@@ -114,15 +114,15 @@ const Index = () => {
                 </div>
                 <div className="bg-labxat-green/15 border border-labxat-green/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("storePrice")}</p>
-                  <p className="text-foreground text-sm font-medium">220 xats</p>
+                  <p className="text-foreground text-sm font-medium">325 xats</p>
                 </div>
                 <div className="bg-labxat-lilac/15 border border-labxat-lilac/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("tradePrice")}</p>
-                  <p className="text-foreground text-sm font-medium">180 - 200 xats</p>
+                  <p className="text-foreground text-sm font-medium">Desconhecido</p>
                 </div>
                 <div className="bg-labxat-blue/15 border border-labxat-blue/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("tradeDays")}</p>
-                  <p className="text-foreground text-sm font-medium">12 - 15 days</p>
+                  <p className="text-foreground text-sm font-medium">Desconhecido</p>
                 </div>
               </div>
 
