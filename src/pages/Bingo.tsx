@@ -333,34 +333,35 @@ export const Bingo = () => {
             </div>
 
             {/* Print Button */}
-            <div className="mt-4 flex flex-col gap-3">
+            <div className="mt-2 flex flex-col gap-2">
               <Button
                 onClick={handlePrintPanel}
                 disabled={isUploading}
+                size="sm"
                 className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold"
               >
                 {isUploading ? (
                   <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                     {t("sending")}
                   </>
                 ) : (
                   <>
-                    <Camera className="w-5 h-5 mr-2" />
+                    <Camera className="w-4 h-4 mr-2" />
                     {t("takeScreenshot")}
                   </>
                 )}
               </Button>
 
               {imageUrl && (
-                <div className="p-3 bg-muted/50 rounded-lg space-y-2">
-                  <p className="text-xs text-muted-foreground text-center">{t("imageLink")}</p>
-                  <div className="flex gap-2">
+                <div className="p-2 bg-muted/50 rounded-lg space-y-1.5">
+                  <p className="text-[10px] text-muted-foreground text-center">{t("imageLink")}</p>
+                  <div className="flex gap-1.5">
                     <input
                       type="text"
                       value={imageUrl}
                       readOnly
-                      className="flex-1 text-xs bg-background px-2 py-1.5 rounded border border-border truncate"
+                      className="flex-1 text-xs bg-background px-2 py-1 rounded border border-border truncate"
                     />
                     <Button
                       size="sm"
@@ -370,14 +371,14 @@ export const Bingo = () => {
                         toast({ title: t("linkCopied") });
                       }}
                     >
-                      <Copy className="w-4 h-4" />
+                      <Copy className="w-3.5 h-3.5" />
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => window.open(imageUrl, '_blank')}
                     >
-                      <ExternalLink className="w-4 h-4" />
+                      <ExternalLink className="w-3.5 h-3.5" />
                     </Button>
                   </div>
                 </div>
@@ -386,15 +387,15 @@ export const Bingo = () => {
           </div>
 
           {/* Right Panel - Roleta style (Auto layout) */}
-          <div className="glass-card p-4 md:p-6 w-full lg:w-96 flex flex-col items-center">
+          <div className="glass-card p-3 md:p-4 w-full lg:w-80 flex flex-col items-center">
             {/* Big current number */}
-            <div className="flex flex-col items-center justify-center mb-6 w-full">
-              <div className="text-[10px] uppercase tracking-widest text-foreground/60 mb-3">
+            <div className="flex flex-col items-center justify-center mb-3 w-full">
+              <div className="text-[10px] uppercase tracking-widest text-foreground/60 mb-1.5">
                 Número atual
               </div>
               <div
                 className={cn(
-                  "w-40 h-40 md:w-48 md:h-48 rounded-2xl bg-labxat-pink/90 text-white flex items-center justify-center text-7xl md:text-8xl font-black shadow-lg shadow-labxat-pink/30 transition-all duration-500",
+                  "w-28 h-28 md:w-32 md:h-32 rounded-2xl bg-labxat-pink/90 text-white flex items-center justify-center text-5xl md:text-6xl font-black shadow-lg shadow-labxat-pink/30 transition-all duration-500",
                   isAnimating && "scale-110"
                 )}
               >
@@ -403,18 +404,18 @@ export const Bingo = () => {
             </div>
 
             {/* History - Last 10 balls */}
-            <div className="w-full mb-6">
-              <h3 className="text-sm font-semibold text-muted-foreground mb-3 text-center">
+            <div className="w-full mb-3">
+              <h3 className="text-xs font-semibold text-muted-foreground mb-1.5 text-center">
                 {t("last10Balls")}
               </h3>
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-5 gap-1.5">
                 {[...Array(10)].map((_, i) => {
                   const ball = lastTenBalls[lastTenBalls.length - 1 - i];
                   return (
                     <div
                       key={i}
                       className={cn(
-                        "w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center text-sm font-bold transition-all mx-auto",
+                        "w-8 h-8 md:w-9 md:h-9 rounded-lg flex items-center justify-center text-xs font-bold transition-all mx-auto",
                         ball
                           ? "bg-labxat-purple/70 text-white shadow-md"
                           : "bg-muted/30 text-muted-foreground/50 border border-white/10"
@@ -428,22 +429,22 @@ export const Bingo = () => {
             </div>
 
             {/* Controls */}
-            <div className="flex gap-3 w-full">
+            <div className="flex gap-2 w-full">
               {!isPlaying ? (
                 <Button
                   onClick={handlePlay}
                   disabled={availableNumbers.length === 0}
-                  className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-6"
+                  className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3"
                 >
-                  <Play className="w-5 h-5 mr-2" />
+                  <Play className="w-4 h-4 mr-2" />
                   {t("play")}
                 </Button>
               ) : (
                 <Button
                   onClick={handlePause}
-                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-6"
+                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-3"
                 >
-                  <Pause className="w-5 h-5 mr-2" />
+                  <Pause className="w-4 h-4 mr-2" />
                   {t("pause")}
                 </Button>
               )}
@@ -451,9 +452,9 @@ export const Bingo = () => {
               <Button
                 onClick={handleReset}
                 variant="outline"
-                className="flex-1 border-2 font-bold py-6"
+                className="flex-1 border-2 font-bold py-3"
               >
-                <RotateCcw className="w-5 h-5 mr-2" />
+                <RotateCcw className="w-4 h-4 mr-2" />
                 REINICIAR
               </Button>
             </div>
@@ -462,16 +463,17 @@ export const Bingo = () => {
             <Button
               onClick={() => setAudioEnabled(!audioEnabled)}
               variant="ghost"
-              className="mt-4 text-muted-foreground hover:text-foreground"
+              size="sm"
+              className="mt-2 text-muted-foreground hover:text-foreground text-xs"
             >
               {audioEnabled ? (
                 <>
-                  <Volume2 className="w-5 h-5 mr-2" />
+                  <Volume2 className="w-4 h-4 mr-2" />
                   Áudio Ligado
                 </>
               ) : (
                 <>
-                  <VolumeX className="w-5 h-5 mr-2" />
+                  <VolumeX className="w-4 h-4 mr-2" />
                   Áudio Desligado
                 </>
               )}
@@ -479,9 +481,8 @@ export const Bingo = () => {
 
             {/* Game Status */}
             {availableNumbers.length === 0 && (
-              <div className="mt-4 text-center p-4 bg-green-500/20 rounded-lg border border-green-500/30">
-                <p className="text-green-400 font-bold">🎉 Bingo Completo!</p>
-                <p className="text-sm text-muted-foreground">Todas as bolas foram sorteadas</p>
+              <div className="mt-2 text-center p-2 bg-green-500/20 rounded-lg border border-green-500/30">
+                <p className="text-green-400 font-bold text-sm">🎉 Bingo Completo!</p>
               </div>
             )}
           </div>
