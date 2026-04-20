@@ -318,7 +318,7 @@ export const Bingo = () => {
                   <div
                     key={num}
                     className={cn(
-                      "aspect-square rounded-md flex items-center justify-center text-xs md:text-sm font-semibold transition-all",
+                      "aspect-square rounded-md flex items-center justify-center text-[10px] md:text-xs font-semibold transition-all",
                       isCurrent
                         ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
                         : isDrawn
