@@ -88,6 +88,25 @@ export const BingoAnimais = () => {
     setIsAnimating(true);
     setCurrentAnimal(newAnimal);
     speakAnimal(newAnimal, audioRef.current);
+    // Auto-copy to clipboard so user just needs Ctrl+V in chat
+    (async () => {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(newAnimal);
+        } else {
+          const ta = document.createElement("textarea");
+          ta.value = newAnimal;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+        }
+      } catch {
+        // silent fail
+      }
+    })();
     setTimeout(() => {
       setDrawnAnimals(prev => [...prev, newAnimal]);
       setIsAnimating(false);
