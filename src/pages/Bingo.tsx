@@ -488,39 +488,34 @@ export const Bingo = () => {
           </div>
         </div>
 
-        {/* Progress Block */}
-        <div className="glass-card p-4 md:p-6 max-w-7xl mx-auto mt-6">
-          <div className="flex flex-col items-center gap-3">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
-                <div className="absolute inset-0 w-3 h-3 rounded-full bg-primary/50 animate-ping" />
-              </div>
-              <p className="text-lg font-semibold text-foreground">
-                {t("drawn")} {drawnNumbers.length} {t("of")} {TOTAL_BALLS} {t("balls")}
-              </p>
-              {isPlaying && (
-                <div className="flex gap-1">
-                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '300ms' }} />
-                </div>
-              )}
+        {/* Progress Block - compact */}
+        <div className="glass-card px-4 py-2 max-w-7xl mx-auto mt-3">
+          <div className="flex items-center gap-3">
+            <div className="relative shrink-0">
+              <div className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
+              <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-primary/50 animate-ping" />
             </div>
-            
-            {/* Progress Bar */}
-            <div className="w-full max-w-md h-3 bg-muted/50 rounded-full overflow-hidden">
-              <div 
+            <p className="text-xs font-semibold text-foreground whitespace-nowrap">
+              {drawnNumbers.length}/{TOTAL_BALLS}
+            </p>
+            <div className="flex-1 h-2 bg-muted/50 rounded-full overflow-hidden">
+              <div
                 className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full transition-all duration-500 ease-out relative"
                 style={{ width: `${(drawnNumbers.length / TOTAL_BALLS) * 100}%` }}
               >
                 <div className="absolute inset-0 bg-white/20 animate-pulse" />
               </div>
             </div>
-            
-            <p className="text-sm text-muted-foreground">
-              {t("remaining")} {availableNumbers.length} {t("balls")}
+            <p className="text-xs text-muted-foreground whitespace-nowrap">
+              {availableNumbers.length} {t("remaining")}
             </p>
+            {isPlaying && (
+              <div className="flex gap-1 shrink-0">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} />
+                <div className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: '150ms' }} />
+                <div className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
+            )}
           </div>
         </div>
       </main>
