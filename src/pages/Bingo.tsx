@@ -283,33 +283,33 @@ export const Bingo = () => {
       <FloatingBlob color="blue" size="lg" position={{ bottom: "20%", right: "-5%" }} animation="float-delayed" />
       
       {/* Header */}
-      <header className="relative z-10 p-6">
+      <header className="relative z-10 px-6 pt-3 pb-1">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className="w-4 h-4" />
           <span>{t("back")}</span>
         </Link>
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 container mx-auto px-4 pb-12">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-black text-gradient mb-2">
+      <main className="relative z-10 container mx-auto px-4 pb-3">
+        <div className="text-center mb-2">
+          <h1 className="text-2xl md:text-3xl font-black text-gradient">
             {t("bingoTitle")}
           </h1>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row gap-3 max-w-7xl mx-auto">
           {/* Left Panel - Ball Grid (Auto-style) */}
-          <div className="glass-card p-4 md:p-6 flex-1">
-            <h2 className="text-lg font-bold text-foreground mb-4 text-center">
+          <div className="glass-card p-3 md:p-4 flex-1">
+            <h2 className="text-sm font-bold text-foreground mb-2 text-center">
               {t("verificationPanel")}
             </h2>
             <div
               ref={panelRef}
-              className="grid grid-cols-10 gap-1.5 md:gap-2 bg-background p-4 rounded-lg"
+              className="grid grid-cols-10 gap-1 md:gap-1.5 bg-background p-2 md:p-3 rounded-lg"
             >
               {Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1).map((num) => {
                 const isDrawn = drawnNumbers.includes(num);
