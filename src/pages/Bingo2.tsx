@@ -56,6 +56,8 @@ const Bingo2 = () => {
   const intervalRef = useRef<number | null>(null);
   const drawnNumRef = useRef<number[]>([]);
   const audioRef = useRef(true);
+  // Track the order in which players completed their cards (first to complete = 1º)
+  const [winnerOrder, setWinnerOrder] = useState<string[]>([]);
 
   useEffect(() => { drawnNumRef.current = drawnNumbers; }, [drawnNumbers]);
   useEffect(() => { audioRef.current = audioEnabled; }, [audioEnabled]);
