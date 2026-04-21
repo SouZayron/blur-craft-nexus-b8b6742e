@@ -6,7 +6,7 @@ import { FloatingBlob } from "@/components/FloatingBlob";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
+import { GAME_NAMES, GAME_ICONS } from "@/data/gameData";
 
 const TOTAL_BALLS = 90;
 const DRAW_INTERVAL = 4500;
@@ -46,12 +46,8 @@ const Bingo2 = () => {
   const [players, setPlayers] = useState<GamePlayer[]>([]);
   const [picks, setPicks] = useState<GamePick[]>([]);
 
-  // Numeric mode state
   const [drawnNumbers, setDrawnNumbers] = useState<number[]>([]);
   const [currentBall, setCurrentBall] = useState<number | null>(null);
-  // Animal mode state
-  const [drawnAnimals, setDrawnAnimals] = useState<string[]>([]);
-  const [currentAnimal, setCurrentAnimal] = useState<string | null>(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -59,11 +55,9 @@ const Bingo2 = () => {
 
   const intervalRef = useRef<number | null>(null);
   const drawnNumRef = useRef<number[]>([]);
-  const drawnAniRef = useRef<string[]>([]);
   const audioRef = useRef(true);
 
   useEffect(() => { drawnNumRef.current = drawnNumbers; }, [drawnNumbers]);
-  useEffect(() => { drawnAniRef.current = drawnAnimals; }, [drawnAnimals]);
   useEffect(() => { audioRef.current = audioEnabled; }, [audioEnabled]);
 
   const fetchData = useCallback(async () => {
@@ -83,30 +77,14 @@ const Bingo2 = () => {
     tables: ["game_rooms", "game_picks", "game_players"],
   });
 
-  // Active room: most recently updated open room. Fallback: most recently updated overall.
+  // Active room: only number-based games (invertidos / sequences). Ignore animals entirely.
   const activeRoom = useMemo<GameRoom | null>(() => {
-    if (!rooms.length) return null;
-    const open = rooms.filter(r => r.is_open);
-    const pool = open.length ? open : rooms;
+    const numericRooms = rooms.filter(r => r.game_type === "invertidos" || r.game_type === "sequences");
+    if (!numericRooms.length) return null;
+    const open = numericRooms.filter(r => r.is_open);
+    const pool = open.length ? open : numericRooms;
     return [...pool].sort((a, b) => (b.updated_at || "").localeCompare(a.updated_at || ""))[0] || null;
   }, [rooms]);
-
-  const mode: "numbers" | "animals" = activeRoom?.game_type === "animals" ? "animals" : "numbers";
-
-  // Reset drawing state when mode changes
-  const lastModeRef = useRef(mode);
-  useEffect(() => {
-    if (lastModeRef.current !== mode) {
-      lastModeRef.current = mode;
-      setIsPlaying(false);
-      if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; }
-      setDrawnNumbers([]); drawnNumRef.current = [];
-      setDrawnAnimals([]); drawnAniRef.current = [];
-      setCurrentBall(null); setCurrentAnimal(null);
-      setIsAnimating(false);
-      window.speechSynthesis?.cancel();
-    }
-  }, [mode]);
 
   const drawNumber = useCallback(() => {
     const available = Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1).filter(n => !drawnNumRef.current.includes(n));
@@ -126,29 +104,11 @@ const Bingo2 = () => {
     }, 800);
   }, []);
 
-  const drawAnimal = useCallback(() => {
-    const available = ANIMALS.filter(a => !drawnAniRef.current.includes(a));
-    if (available.length === 0) {
-      setIsPlaying(false);
-      if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; }
-      return;
-    }
-    const a = available[Math.floor(Math.random() * available.length)];
-    setIsAnimating(true);
-    setCurrentAnimal(a);
-    speak(a, audioRef.current);
-    setTimeout(() => {
-      setDrawnAnimals(prev => [...prev, a]);
-      setIsAnimating(false);
-    }, 800);
-  }, []);
-
   useEffect(() => {
     if (isPlaying) {
-      const tick = () => (mode === "animals" ? drawAnimal() : drawNumber());
       const initial = window.setTimeout(() => {
-        tick();
-        intervalRef.current = window.setInterval(tick, DRAW_INTERVAL);
+        drawNumber();
+        intervalRef.current = window.setInterval(drawNumber, DRAW_INTERVAL);
       }, DRAW_INTERVAL);
       return () => {
         clearTimeout(initial);
@@ -158,7 +118,7 @@ const Bingo2 = () => {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
-  }, [isPlaying, mode, drawNumber, drawAnimal]);
+  }, [isPlaying, drawNumber]);
 
   const handlePlay = () => setIsPlaying(true);
   const handlePause = () => setIsPlaying(false);
@@ -166,33 +126,25 @@ const Bingo2 = () => {
     setIsPlaying(false);
     if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; }
     setDrawnNumbers([]); drawnNumRef.current = [];
-    setDrawnAnimals([]); drawnAniRef.current = [];
-    setCurrentBall(null); setCurrentAnimal(null);
+    setCurrentBall(null);
     setIsAnimating(false);
     window.speechSynthesis?.cancel();
   };
 
-  // Picks for the active room
   const roomPicks = useMemo(() => activeRoom ? picks.filter(p => p.room_id === activeRoom.id) : [], [picks, activeRoom]);
 
-  // Compute which numeric blocks are "hit" (all numbers drawn)
-  // pick_value examples: "01-10", "1-2-3"
   const parsePickNumbers = (val: string): number[] =>
     val.split("-").map(s => parseInt(s, 10)).filter(n => !isNaN(n));
 
-  // Set of numbers that belong to ANY player's pick in this room
   const pickNumberSet = useMemo(() => {
-    if (mode !== "numbers") return new Set<number>();
     const s = new Set<number>();
     roomPicks.forEach(p => parsePickNumbers(p.pick_value).forEach(n => s.add(n)));
     return s;
-  }, [roomPicks, mode]);
+  }, [roomPicks]);
 
-  // Winners: players whose ALL picks are fully drawn
   const winners = useMemo(() => {
     if (!activeRoom) return [];
     type Win = { playerId: string; name: string; xatId: string | null; values: string[] };
-    // Group picks by player
     const byPlayer = new Map<string, GamePick[]>();
     roomPicks.forEach(p => {
       const arr = byPlayer.get(p.player_id) || [];
@@ -203,18 +155,7 @@ const Bingo2 = () => {
     byPlayer.forEach((pks, playerId) => {
       const player = players.find(pl => pl.id === playerId);
       if (!player) return;
-      let allHit = true;
-      if (mode === "animals") {
-        for (const pk of pks) {
-          if (!drawnAnimals.includes(pk.pick_value)) { allHit = false; break; }
-        }
-      } else {
-        // numbers: every block (each pick_value) must have ALL its numbers drawn
-        for (const pk of pks) {
-          const nums = parsePickNumbers(pk.pick_value);
-          if (!nums.every(n => drawnNumbers.includes(n))) { allHit = false; break; }
-        }
-      }
+      const allHit = pks.every(pk => parsePickNumbers(pk.pick_value).every(n => drawnNumbers.includes(n)));
       if (allHit) {
         result.push({
           playerId,
@@ -225,12 +166,12 @@ const Bingo2 = () => {
       }
     });
     return result;
-  }, [roomPicks, players, drawnNumbers, drawnAnimals, mode, activeRoom]);
+  }, [roomPicks, players, drawnNumbers, activeRoom]);
 
   const lastTen = drawnNumbers.slice(-10);
   const availableNumbers = TOTAL_BALLS - drawnNumbers.length;
 
-  const gameLabel = activeRoom ? (GAME_NAMES[activeRoom.game_type] || activeRoom.game_type) : "Aguardando painel";
+  const gameLabel = activeRoom ? (GAME_NAMES[activeRoom.game_type] || activeRoom.game_type) : "Aguardando jogo de números";
   const gameIcon = activeRoom ? (GAME_ICONS[activeRoom.game_type] || "🎮") : "⏳";
 
   return (
@@ -249,7 +190,7 @@ const Bingo2 = () => {
             ? "bg-green-500/20 border-green-500/40 text-green-300"
             : "bg-yellow-500/20 border-yellow-500/40 text-yellow-300"
         )}>
-          {gameIcon} {gameLabel} {activeRoom?.is_open ? "• Aberto" : "• Aguardando"}
+          {gameIcon} {gameLabel} {activeRoom ? (activeRoom.is_open ? "• Aberto" : "• Fechado") : ""}
         </div>
       </header>
 
@@ -267,65 +208,35 @@ const Bingo2 = () => {
           {/* Left Panel */}
           <div className="glass-card p-4 md:p-6 flex-1">
             <h2 className="text-lg font-bold text-foreground mb-4 text-center">
-              {mode === "animals" ? "Painel de Animais" : "Painel de Verificação"}
+              Painel de Verificação
             </h2>
 
-            {mode === "numbers" ? (
-              <div className="grid grid-cols-10 gap-1.5 md:gap-2 bg-background p-4 rounded-lg">
-                {Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1).map((num) => {
-                  const isDrawn = drawnNumbers.includes(num);
-                  const isCurrent = num === currentBall;
-                  const inPick = pickNumberSet.has(num);
-                  return (
-                    <div
-                      key={num}
-                      className={cn(
-                        "aspect-square rounded-md flex items-center justify-center text-xs md:text-sm font-semibold transition-all",
-                        isCurrent
-                          ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
-                          : isDrawn && inPick
-                            ? "bg-green-500 text-white shadow-md shadow-green-500/40"
-                            : isDrawn
-                              ? "bg-labxat-purple/70 text-white"
-                              : inPick
-                                ? "bg-background/60 text-foreground border-2 border-green-500/40"
-                                : "bg-background/60 text-foreground/60 border border-white/10"
-                      )}
-                    >
-                      {num}
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="grid grid-cols-7 sm:grid-cols-8 md:grid-cols-10 gap-1 bg-background/50 p-3 rounded-lg">
-                {ANIMALS.map((animal) => {
-                  const isDrawn = drawnAnimals.includes(animal);
-                  const isCurrent = animal === currentAnimal;
-                  const inPick = roomPicks.some(p => p.pick_value === animal);
-                  return (
-                    <div
-                      key={animal}
-                      className={cn(
-                        "px-1 py-1 rounded flex flex-col items-center justify-center text-[10px] md:text-xs font-bold text-center transition-all duration-300 min-h-[40px] leading-tight",
-                        isCurrent
-                          ? "bg-labxat-pink text-white scale-105 ring-2 ring-pink-300"
-                          : isDrawn && inPick
-                            ? "bg-green-500 text-white shadow"
-                            : isDrawn
-                              ? "bg-red-500 text-white shadow"
-                              : inPick
-                                ? "bg-muted/40 text-foreground border-2 border-green-500/40"
-                                : "bg-muted/40 text-muted-foreground"
-                      )}
-                    >
-                      <span className="text-base">{ANIMAL_EMOJIS[animal] || "🐾"}</span>
-                      <span className="truncate w-full">{animal}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+            <div className="grid grid-cols-10 gap-1.5 md:gap-2 bg-background p-4 rounded-lg">
+              {Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1).map((num) => {
+                const isDrawn = drawnNumbers.includes(num);
+                const isCurrent = num === currentBall;
+                const inPick = pickNumberSet.has(num);
+                return (
+                  <div
+                    key={num}
+                    className={cn(
+                      "aspect-square rounded-md flex items-center justify-center text-xs md:text-sm font-semibold transition-all",
+                      isCurrent
+                        ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
+                        : isDrawn && inPick
+                          ? "bg-green-500 text-white shadow-md shadow-green-500/40"
+                          : isDrawn
+                            ? "bg-labxat-purple/70 text-white"
+                            : inPick
+                              ? "bg-background/60 text-foreground border-2 border-green-500/40"
+                              : "bg-background/60 text-foreground/60 border border-white/10"
+                    )}
+                  >
+                    {num}
+                  </div>
+                );
+              })}
+            </div>
 
             <p className="text-xs text-center text-muted-foreground mt-3">
               <span className="inline-block w-3 h-3 bg-green-500 rounded mr-1 align-middle" />
@@ -337,7 +248,7 @@ const Bingo2 = () => {
           <div className="glass-card p-4 md:p-6 w-full lg:w-96 flex flex-col items-center">
             <div className="flex flex-col items-center justify-center mb-6 w-full">
               <div className="text-[10px] uppercase tracking-widest text-foreground/60 mb-3">
-                {mode === "animals" ? "Animal atual" : "Número atual"}
+                Número atual
               </div>
               <div
                 className={cn(
@@ -345,20 +256,11 @@ const Bingo2 = () => {
                   isAnimating && "scale-110"
                 )}
               >
-                {mode === "animals" ? (
-                  currentAnimal ? (
-                    <>
-                      <span className="text-5xl md:text-6xl">{ANIMAL_EMOJIS[currentAnimal] || "🐾"}</span>
-                      <span className="text-sm md:text-base text-center mt-1 leading-tight">{currentAnimal}</span>
-                    </>
-                  ) : <span className="text-7xl md:text-8xl">—</span>
-                ) : (
-                  <span className="text-7xl md:text-8xl">{currentBall ?? "—"}</span>
-                )}
+                <span className="text-7xl md:text-8xl">{currentBall ?? "—"}</span>
               </div>
             </div>
 
-            {/* Winners block - below the sound block */}
+            {/* Winners block */}
             <div className="w-full mb-4">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Trophy className="w-4 h-4 text-yellow-400" />
@@ -387,35 +289,33 @@ const Bingo2 = () => {
               )}
             </div>
 
-            {/* History (numbers only) */}
-            {mode === "numbers" && (
-              <div className="w-full mb-4">
-                <h3 className="text-sm font-semibold text-muted-foreground mb-2 text-center">
-                  Últimas 10
-                </h3>
-                <div className="grid grid-cols-5 gap-2">
-                  {[...Array(10)].map((_, i) => {
-                    const ball = lastTen[lastTen.length - 1 - i];
-                    const inPick = ball ? pickNumberSet.has(ball) : false;
-                    return (
-                      <div
-                        key={i}
-                        className={cn(
-                          "w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold mx-auto",
-                          ball
-                            ? inPick
-                              ? "bg-green-500 text-white shadow-md"
-                              : "bg-labxat-purple/70 text-white shadow-md"
-                            : "bg-muted/30 text-muted-foreground/50 border border-white/10"
-                        )}
-                      >
-                        {ball || "-"}
-                      </div>
-                    );
-                  })}
-                </div>
+            {/* History */}
+            <div className="w-full mb-4">
+              <h3 className="text-sm font-semibold text-muted-foreground mb-2 text-center">
+                Últimas 10
+              </h3>
+              <div className="grid grid-cols-5 gap-2">
+                {[...Array(10)].map((_, i) => {
+                  const ball = lastTen[lastTen.length - 1 - i];
+                  const inPick = ball ? pickNumberSet.has(ball) : false;
+                  return (
+                    <div
+                      key={i}
+                      className={cn(
+                        "w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold mx-auto",
+                        ball
+                          ? inPick
+                            ? "bg-green-500 text-white shadow-md"
+                            : "bg-labxat-purple/70 text-white shadow-md"
+                          : "bg-muted/30 text-muted-foreground/50 border border-white/10"
+                      )}
+                    >
+                      {ball || "-"}
+                    </div>
+                  );
+                })}
               </div>
-            )}
+            </div>
 
             {/* Controls */}
             <div className="flex gap-3 w-full">
@@ -455,9 +355,7 @@ const Bingo2 = () => {
             </Button>
 
             <p className="mt-3 text-xs text-muted-foreground text-center">
-              {mode === "numbers"
-                ? `${availableNumbers} bolas restantes`
-                : `${ANIMALS.length - drawnAnimals.length} animais restantes`}
+              {availableNumbers} bolas restantes
             </p>
           </div>
         </div>
