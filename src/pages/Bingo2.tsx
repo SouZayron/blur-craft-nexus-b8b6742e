@@ -302,19 +302,23 @@ const Bingo2 = () => {
                 </div>
               ) : (
                 <div className="space-y-2 max-h-48 overflow-y-auto">
-                  {winners.map(w => (
-                    <div key={w.playerId} className="bg-gradient-to-r from-yellow-500/20 to-green-500/20 border border-yellow-400/40 rounded-lg p-2.5 animate-pulse">
-                      <div className="flex items-center gap-1.5 mb-1">
-                        <Trophy className="w-3.5 h-3.5 text-yellow-300 shrink-0" />
-                        <p className="text-sm font-bold text-foreground truncate">
-                          {w.name}{w.xatId ? ` (${w.xatId})` : ""}
+                  {winners.map((w, idx) => {
+                    const c = WINNER_COLORS[idx % WINNER_COLORS.length];
+                    return (
+                      <div key={w.playerId} className={cn("bg-gradient-to-r to-yellow-500/10 border rounded-lg p-2.5 animate-pulse", c.from, c.border)}>
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <span className={cn("inline-block w-3 h-3 rounded-full shrink-0", c.bg)} />
+                          <Trophy className="w-3.5 h-3.5 text-yellow-300 shrink-0" />
+                          <p className="text-sm font-bold text-foreground truncate">
+                            {w.name}{w.xatId ? ` (${w.xatId})` : ""}
+                          </p>
+                        </div>
+                        <p className={cn("text-xs font-mono truncate", c.text)}>
+                          {w.values.join(" | ")}
                         </p>
                       </div>
-                      <p className="text-xs text-yellow-200 font-mono truncate">
-                        {w.values.join(" | ")}
-                      </p>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
