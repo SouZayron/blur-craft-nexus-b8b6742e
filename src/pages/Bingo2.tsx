@@ -136,6 +136,18 @@ const Bingo2 = () => {
   const parsePickNumbers = (val: string): number[] =>
     val.split("-").map(s => parseInt(s, 10)).filter(n => !isNaN(n));
 
+  // Distinct vivid colors per winner (avoiding pink which is the "current ball" color)
+  const WINNER_COLORS = [
+    { bg: "bg-green-500", ring: "ring-green-400", text: "text-green-200", border: "border-green-400/50", from: "from-green-500/30" },
+    { bg: "bg-cyan-500", ring: "ring-cyan-400", text: "text-cyan-200", border: "border-cyan-400/50", from: "from-cyan-500/30" },
+    { bg: "bg-amber-500", ring: "ring-amber-400", text: "text-amber-200", border: "border-amber-400/50", from: "from-amber-500/30" },
+    { bg: "bg-blue-500", ring: "ring-blue-400", text: "text-blue-200", border: "border-blue-400/50", from: "from-blue-500/30" },
+    { bg: "bg-orange-500", ring: "ring-orange-400", text: "text-orange-200", border: "border-orange-400/50", from: "from-orange-500/30" },
+    { bg: "bg-teal-500", ring: "ring-teal-400", text: "text-teal-200", border: "border-teal-400/50", from: "from-teal-500/30" },
+    { bg: "bg-lime-500", ring: "ring-lime-400", text: "text-lime-200", border: "border-lime-400/50", from: "from-lime-500/30" },
+    { bg: "bg-red-500", ring: "ring-red-400", text: "text-red-200", border: "border-red-400/50", from: "from-red-500/30" },
+  ];
+
   const pickNumberSet = useMemo(() => {
     const s = new Set<number>();
     roomPicks.forEach(p => parsePickNumbers(p.pick_value).forEach(n => s.add(n)));
@@ -144,7 +156,7 @@ const Bingo2 = () => {
 
   const winners = useMemo(() => {
     if (!activeRoom) return [];
-    type Win = { playerId: string; name: string; xatId: string | null; values: string[] };
+    type Win = { playerId: string; name: string; xatId: string | null; values: string[]; numbers: number[] };
     const byPlayer = new Map<string, GamePick[]>();
     roomPicks.forEach(p => {
       const arr = byPlayer.get(p.player_id) || [];
@@ -157,16 +169,31 @@ const Bingo2 = () => {
       if (!player) return;
       const allHit = pks.every(pk => parsePickNumbers(pk.pick_value).every(n => drawnNumbers.includes(n)));
       if (allHit) {
+        const nums: number[] = [];
+        pks.forEach(pk => parsePickNumbers(pk.pick_value).forEach(n => nums.push(n)));
         result.push({
           playerId,
           name: player.name,
           xatId: player.xat_id,
           values: pks.map(p => p.pick_value),
+          numbers: nums,
         });
       }
     });
-    return result;
+    // Sort by playerId for stable color assignment
+    return result.sort((a, b) => a.playerId.localeCompare(b.playerId));
   }, [roomPicks, players, drawnNumbers, activeRoom]);
+
+  // Map number -> winner index (for per-winner color on the panel)
+  const numberToWinnerIdx = useMemo(() => {
+    const map = new Map<number, number>();
+    winners.forEach((w, idx) => {
+      w.numbers.forEach(n => {
+        if (!map.has(n)) map.set(n, idx);
+      });
+    });
+    return map;
+  }, [winners]);
 
   const lastTen = drawnNumbers.slice(-10);
   const availableNumbers = TOTAL_BALLS - drawnNumbers.length;
@@ -190,7 +217,7 @@ const Bingo2 = () => {
             ? "bg-green-500/20 border-green-500/40 text-green-300"
             : "bg-yellow-500/20 border-yellow-500/40 text-yellow-300"
         )}>
-          {gameIcon} {gameLabel} {activeRoom ? (activeRoom.is_open ? "• Aberto" : "• Fechado") : ""}
+          {gameIcon} {gameLabel} {activeRoom ? (activeRoom.is_open ? "• Inscrições abertas" : "• Inscrições fechadas (jogo continua)") : ""}
         </div>
       </header>
 
@@ -216,6 +243,8 @@ const Bingo2 = () => {
                 const isDrawn = drawnNumbers.includes(num);
                 const isCurrent = num === currentBall;
                 const inPick = pickNumberSet.has(num);
+                const winnerIdx = numberToWinnerIdx.get(num);
+                const winnerColor = winnerIdx !== undefined ? WINNER_COLORS[winnerIdx % WINNER_COLORS.length] : null;
                 return (
                   <div
                     key={num}
@@ -223,13 +252,15 @@ const Bingo2 = () => {
                       "aspect-square rounded-md flex items-center justify-center text-xs md:text-sm font-semibold transition-all",
                       isCurrent
                         ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
-                        : isDrawn && inPick
-                          ? "bg-green-500 text-white shadow-md shadow-green-500/40"
-                          : isDrawn
-                            ? "bg-labxat-purple/70 text-white"
-                            : inPick
-                              ? "bg-background/60 text-foreground border-2 border-green-500/40"
-                              : "bg-background/60 text-foreground/60 border border-white/10"
+                        : isDrawn && winnerColor
+                          ? `${winnerColor.bg} text-white shadow-md`
+                          : isDrawn && inPick
+                            ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/40"
+                            : isDrawn
+                              ? "bg-labxat-purple/70 text-white"
+                              : inPick
+                                ? "bg-background/60 text-foreground border-2 border-emerald-500/40"
+                                : "bg-background/60 text-foreground/60 border border-white/10"
                     )}
                   >
                     {num}
@@ -239,8 +270,7 @@ const Bingo2 = () => {
             </div>
 
             <p className="text-xs text-center text-muted-foreground mt-3">
-              <span className="inline-block w-3 h-3 bg-green-500 rounded mr-1 align-middle" />
-              verde = bola sorteada que pertence a uma seleção
+              Cada ganhador recebe uma cor única no painel • verde = bola pertence a uma seleção
             </p>
           </div>
 
@@ -272,19 +302,23 @@ const Bingo2 = () => {
                 </div>
               ) : (
                 <div className="space-y-2 max-h-48 overflow-y-auto">
-                  {winners.map(w => (
-                    <div key={w.playerId} className="bg-gradient-to-r from-yellow-500/20 to-green-500/20 border border-yellow-400/40 rounded-lg p-2.5 animate-pulse">
-                      <div className="flex items-center gap-1.5 mb-1">
-                        <Trophy className="w-3.5 h-3.5 text-yellow-300 shrink-0" />
-                        <p className="text-sm font-bold text-foreground truncate">
-                          {w.name}{w.xatId ? ` (${w.xatId})` : ""}
+                  {winners.map((w, idx) => {
+                    const c = WINNER_COLORS[idx % WINNER_COLORS.length];
+                    return (
+                      <div key={w.playerId} className={cn("bg-gradient-to-r to-yellow-500/10 border rounded-lg p-2.5 animate-pulse", c.from, c.border)}>
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <span className={cn("inline-block w-3 h-3 rounded-full shrink-0", c.bg)} />
+                          <Trophy className="w-3.5 h-3.5 text-yellow-300 shrink-0" />
+                          <p className="text-sm font-bold text-foreground truncate">
+                            {w.name}{w.xatId ? ` (${w.xatId})` : ""}
+                          </p>
+                        </div>
+                        <p className={cn("text-xs font-mono truncate", c.text)}>
+                          {w.values.join(" | ")}
                         </p>
                       </div>
-                      <p className="text-xs text-yellow-200 font-mono truncate">
-                        {w.values.join(" | ")}
-                      </p>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
