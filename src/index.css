@@ -501,3 +501,79 @@
     }
   }
 }
+
+/* ===== Blog article content styles ===== */
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4 {
+  font-weight: 800;
+  line-height: 1.2;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: hsl(var(--foreground));
+}
+.blog-content h1 { font-size: 2.25rem; background: linear-gradient(135deg, hsl(var(--labxat-purple)), hsl(var(--labxat-pink))); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.blog-content h2 { font-size: 1.75rem; color: hsl(var(--labxat-pink)); border-bottom: 1px solid hsl(var(--border) / 0.4); padding-bottom: 0.5rem; }
+.blog-content h3 { font-size: 1.35rem; color: hsl(var(--labxat-lilac)); }
+.blog-content h4 { font-size: 1.15rem; }
+.blog-content p {
+  margin-bottom: 1.25rem;
+  line-height: 1.75;
+  color: hsl(var(--foreground) / 0.9);
+  font-size: 1.05rem;
+}
+.blog-content a {
+  color: hsl(var(--labxat-pink));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s, text-decoration-thickness 0.2s;
+}
+.blog-content a:hover {
+  color: hsl(var(--labxat-lilac));
+  text-decoration-thickness: 2px;
+}
+.blog-content ul,
+.blog-content ol {
+  margin: 1.25rem 0 1.25rem 1.5rem;
+  color: hsl(var(--foreground) / 0.9);
+  line-height: 1.75;
+}
+.blog-content ul { list-style: disc; }
+.blog-content ol { list-style: decimal; }
+.blog-content li { margin-bottom: 0.5rem; }
+.blog-content li::marker { color: hsl(var(--labxat-pink)); }
+.blog-content strong { color: hsl(var(--foreground)); font-weight: 700; }
+.blog-content em { color: hsl(var(--labxat-lilac)); font-style: italic; }
+.blog-content blockquote {
+  border-left: 4px solid hsl(var(--labxat-pink));
+  background: hsl(var(--card) / 0.6);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 0.5rem;
+  font-style: italic;
+  color: hsl(var(--foreground) / 0.85);
+}
+.blog-content img {
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+  max-width: 100%;
+  height: auto;
+}
+.blog-content code {
+  background: hsl(var(--muted));
+  color: hsl(var(--labxat-pink));
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.3rem;
+  font-size: 0.9em;
+  font-family: ui-monospace, monospace;
+}
+.blog-content pre {
+  background: hsl(var(--muted));
+  padding: 1rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+.blog-content pre code { background: transparent; padding: 0; color: hsl(var(--foreground)); }
