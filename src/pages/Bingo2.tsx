@@ -136,6 +136,18 @@ const Bingo2 = () => {
   const parsePickNumbers = (val: string): number[] =>
     val.split("-").map(s => parseInt(s, 10)).filter(n => !isNaN(n));
 
+  // Distinct vivid colors per winner (avoiding pink which is the "current ball" color)
+  const WINNER_COLORS = [
+    { bg: "bg-green-500", ring: "ring-green-400", text: "text-green-200", border: "border-green-400/50", from: "from-green-500/30" },
+    { bg: "bg-cyan-500", ring: "ring-cyan-400", text: "text-cyan-200", border: "border-cyan-400/50", from: "from-cyan-500/30" },
+    { bg: "bg-amber-500", ring: "ring-amber-400", text: "text-amber-200", border: "border-amber-400/50", from: "from-amber-500/30" },
+    { bg: "bg-blue-500", ring: "ring-blue-400", text: "text-blue-200", border: "border-blue-400/50", from: "from-blue-500/30" },
+    { bg: "bg-orange-500", ring: "ring-orange-400", text: "text-orange-200", border: "border-orange-400/50", from: "from-orange-500/30" },
+    { bg: "bg-teal-500", ring: "ring-teal-400", text: "text-teal-200", border: "border-teal-400/50", from: "from-teal-500/30" },
+    { bg: "bg-lime-500", ring: "ring-lime-400", text: "text-lime-200", border: "border-lime-400/50", from: "from-lime-500/30" },
+    { bg: "bg-red-500", ring: "ring-red-400", text: "text-red-200", border: "border-red-400/50", from: "from-red-500/30" },
+  ];
+
   const pickNumberSet = useMemo(() => {
     const s = new Set<number>();
     roomPicks.forEach(p => parsePickNumbers(p.pick_value).forEach(n => s.add(n)));
@@ -144,7 +156,7 @@ const Bingo2 = () => {
 
   const winners = useMemo(() => {
     if (!activeRoom) return [];
-    type Win = { playerId: string; name: string; xatId: string | null; values: string[] };
+    type Win = { playerId: string; name: string; xatId: string | null; values: string[]; numbers: number[] };
     const byPlayer = new Map<string, GamePick[]>();
     roomPicks.forEach(p => {
       const arr = byPlayer.get(p.player_id) || [];
@@ -157,16 +169,31 @@ const Bingo2 = () => {
       if (!player) return;
       const allHit = pks.every(pk => parsePickNumbers(pk.pick_value).every(n => drawnNumbers.includes(n)));
       if (allHit) {
+        const nums: number[] = [];
+        pks.forEach(pk => parsePickNumbers(pk.pick_value).forEach(n => nums.push(n)));
         result.push({
           playerId,
           name: player.name,
           xatId: player.xat_id,
           values: pks.map(p => p.pick_value),
+          numbers: nums,
         });
       }
     });
-    return result;
+    // Sort by playerId for stable color assignment
+    return result.sort((a, b) => a.playerId.localeCompare(b.playerId));
   }, [roomPicks, players, drawnNumbers, activeRoom]);
+
+  // Map number -> winner index (for per-winner color on the panel)
+  const numberToWinnerIdx = useMemo(() => {
+    const map = new Map<number, number>();
+    winners.forEach((w, idx) => {
+      w.numbers.forEach(n => {
+        if (!map.has(n)) map.set(n, idx);
+      });
+    });
+    return map;
+  }, [winners]);
 
   const lastTen = drawnNumbers.slice(-10);
   const availableNumbers = TOTAL_BALLS - drawnNumbers.length;
