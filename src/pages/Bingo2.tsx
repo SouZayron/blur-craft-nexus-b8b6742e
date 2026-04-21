@@ -243,6 +243,8 @@ const Bingo2 = () => {
                 const isDrawn = drawnNumbers.includes(num);
                 const isCurrent = num === currentBall;
                 const inPick = pickNumberSet.has(num);
+                const winnerIdx = numberToWinnerIdx.get(num);
+                const winnerColor = winnerIdx !== undefined ? WINNER_COLORS[winnerIdx % WINNER_COLORS.length] : null;
                 return (
                   <div
                     key={num}
@@ -250,13 +252,15 @@ const Bingo2 = () => {
                       "aspect-square rounded-md flex items-center justify-center text-xs md:text-sm font-semibold transition-all",
                       isCurrent
                         ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
-                        : isDrawn && inPick
-                          ? "bg-green-500 text-white shadow-md shadow-green-500/40"
-                          : isDrawn
-                            ? "bg-labxat-purple/70 text-white"
-                            : inPick
-                              ? "bg-background/60 text-foreground border-2 border-green-500/40"
-                              : "bg-background/60 text-foreground/60 border border-white/10"
+                        : isDrawn && winnerColor
+                          ? `${winnerColor.bg} text-white shadow-md`
+                          : isDrawn && inPick
+                            ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/40"
+                            : isDrawn
+                              ? "bg-labxat-purple/70 text-white"
+                              : inPick
+                                ? "bg-background/60 text-foreground border-2 border-emerald-500/40"
+                                : "bg-background/60 text-foreground/60 border border-white/10"
                     )}
                   >
                     {num}
@@ -266,8 +270,7 @@ const Bingo2 = () => {
             </div>
 
             <p className="text-xs text-center text-muted-foreground mt-3">
-              <span className="inline-block w-3 h-3 bg-green-500 rounded mr-1 align-middle" />
-              verde = bola sorteada que pertence a uma seleção
+              Cada ganhador recebe uma cor única no painel • verde = bola pertence a uma seleção
             </p>
           </div>
 
