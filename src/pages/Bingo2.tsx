@@ -191,9 +191,25 @@ const Bingo2 = () => {
         });
       }
     });
-    // Sort by playerId for stable color assignment
-    return result.sort((a, b) => a.playerId.localeCompare(b.playerId));
-  }, [roomPicks, players, drawnNumbers, activeRoom]);
+    // Sort by the order they completed (1º, 2º, 3º...). Anyone not yet ranked goes to the end stably.
+    return result.sort((a, b) => {
+      const ai = winnerOrder.indexOf(a.playerId);
+      const bi = winnerOrder.indexOf(b.playerId);
+      if (ai === -1 && bi === -1) return a.playerId.localeCompare(b.playerId);
+      if (ai === -1) return 1;
+      if (bi === -1) return -1;
+      return ai - bi;
+    });
+  }, [roomPicks, players, drawnNumbers, activeRoom, winnerOrder]);
+
+  // Append newly-completed players to winnerOrder in the order they complete
+  useEffect(() => {
+    const completedIds = winners.map(w => w.playerId);
+    const newcomers = completedIds.filter(id => !winnerOrder.includes(id));
+    if (newcomers.length > 0) {
+      setWinnerOrder(prev => [...prev, ...newcomers.filter(id => !prev.includes(id))]);
+    }
+  }, [winners, winnerOrder]);
 
   // Map number -> winner index (for per-winner color on the panel)
   const numberToWinnerIdx = useMemo(() => {
