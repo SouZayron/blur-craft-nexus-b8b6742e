@@ -254,7 +254,7 @@ const Bingo2 = () => {
             Bingo Conectado
           </h1>
           <p className="text-sm text-muted-foreground">
-            Sincronizado com /control • {roomPicks.length} seleções • {players.filter(p => p.is_approved).length} jogadores
+            {roomPicks.length} seleções • {players.filter(p => p.is_approved).length} jogadores
           </p>
         </div>
 
