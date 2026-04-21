@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { FloatingBlob } from "@/components/FloatingBlob";
 import { GlassCard } from "@/components/GlassCard";
 import { ToolButton } from "@/components/ToolButton";
+import { AdSenseVertical } from "@/components/AdSenseVertical";
 import { Palette, Sparkles, Dices, Download, Smile, UserCircle } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -74,8 +75,11 @@ const Index = () => {
 
       {/* Main Content - flows naturally, AdSense ads can be placed inline */}
       <main className="relative z-10 flex flex-col items-center px-4 pt-28 pb-16">
-        {/* Two Column Layout */}
-        <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-6">
+        {/* Layout with side ads */}
+        <div className="w-full max-w-[1400px] grid grid-cols-1 xl:grid-cols-[160px,1fr,160px] gap-6 items-start">
+          <AdSenseVertical />
+
+          <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-6">
           {/* Left Column - Último Power */}
           <div className="fade-in-up">
             <GlassCard className="p-5 md:p-6 h-full flex flex-col">
@@ -159,6 +163,9 @@ const Index = () => {
               </div>
             ))}
           </div>
+          </div>
+
+          <AdSenseVertical />
         </div>
 
         {/* ShopLAB Section */}
