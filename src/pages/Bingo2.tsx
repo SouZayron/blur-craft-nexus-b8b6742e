@@ -138,6 +138,7 @@ const Bingo2 = () => {
     setDrawnNumbers([]); drawnNumRef.current = [];
     setCurrentBall(null);
     setIsAnimating(false);
+    setWinnerOrder([]);
     window.speechSynthesis?.cancel();
   };
 
