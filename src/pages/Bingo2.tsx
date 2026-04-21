@@ -217,7 +217,7 @@ const Bingo2 = () => {
             ? "bg-green-500/20 border-green-500/40 text-green-300"
             : "bg-yellow-500/20 border-yellow-500/40 text-yellow-300"
         )}>
-          {gameIcon} {gameLabel} {activeRoom ? (activeRoom.is_open ? "• Aberto" : "• Fechado") : ""}
+          {gameIcon} {gameLabel} {activeRoom ? (activeRoom.is_open ? "• Inscrições abertas" : "• Inscrições fechadas (jogo continua)") : ""}
         </div>
       </header>
 
