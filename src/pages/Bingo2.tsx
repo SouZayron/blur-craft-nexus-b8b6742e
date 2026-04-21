@@ -331,10 +331,13 @@ const Bingo2 = () => {
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {winners.map((w, idx) => {
                     const c = WINNER_COLORS[idx % WINNER_COLORS.length];
+                    const ordinal = `${idx + 1}º`;
                     return (
-                      <div key={w.playerId} className={cn("bg-gradient-to-r to-yellow-500/10 border rounded-lg p-2.5 animate-pulse", c.from, c.border)}>
+                      <div key={w.playerId} className={cn("bg-gradient-to-r to-yellow-500/10 border rounded-lg p-2.5", c.from, c.border, idx === 0 && "animate-pulse")}>
                         <div className="flex items-center gap-1.5 mb-1">
-                          <span className={cn("inline-block w-3 h-3 rounded-full shrink-0", c.bg)} />
+                          <span className={cn("inline-flex items-center justify-center min-w-[28px] h-6 px-1.5 rounded-md text-[11px] font-black text-white shrink-0", c.bg)}>
+                            {ordinal}
+                          </span>
                           <Trophy className="w-3.5 h-3.5 text-yellow-300 shrink-0" />
                           <p className="text-sm font-bold text-foreground truncate">
                             {w.name}{w.xatId ? ` (${w.xatId})` : ""}
