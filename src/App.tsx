@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { lazy, Suspense } from "react";
 
@@ -34,6 +35,8 @@ const Games = lazy(() => import("./pages/Games").then(m => ({ default: m.Games }
 const Control = lazy(() => import("./pages/Control").then(m => ({ default: m.Control })));
 const Auto = lazy(() => import("./pages/Auto"));
 const Bingo2 = lazy(() => import("./pages/Bingo2"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Non-critical UI: defer until after first paint.
@@ -47,6 +50,7 @@ const RouteFallback = () => (
 );
 
 const App = () => (
+  <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
       <TooltipProvider>
@@ -79,6 +83,8 @@ const App = () => (
               <Route path="/control" element={<Control />} />
               <Route path="/auto" element={<Auto />} />
               <Route path="/bingo2" element={<Bingo2 />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
@@ -90,6 +96,7 @@ const App = () => (
       </TooltipProvider>
     </LanguageProvider>
   </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;
