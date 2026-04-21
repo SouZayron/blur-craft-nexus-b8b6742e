@@ -163,6 +163,9 @@ const Index = () => {
               </div>
             ))}
           </div>
+          </div>
+
+          <AdSenseVertical />
         </div>
 
         {/* ShopLAB Section */}
