@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Palette, Sparkles, Dices, Home, Info } from "lucide-react";
+import { Palette, Sparkles, Dices, Home, Info, Newspaper } from "lucide-react";
 import { LanguageSelector } from "./LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -12,6 +12,7 @@ export const Header = () => {
     { name: t("nicks"), icon: Sparkles, path: "/nicks" },
     { name: t("cores"), icon: Palette, path: "/cores" },
     { name: t("bingo"), icon: Dices, path: "/bingo" },
+    { name: "Blog", icon: Newspaper, path: "/blog" },
     { name: t("about"), icon: Info, path: "/sobre" },
   ];
 

@@ -161,6 +161,60 @@ export type Database = {
           },
         ]
       }
+      blog_posts: {
+        Row: {
+          category: Database["public"]["Enums"]["blog_category"]
+          content_html: string
+          cover_image_url: string | null
+          created_at: string
+          excerpt: string
+          id: string
+          is_published: boolean
+          meta_description: string
+          meta_title: string
+          published_at: string
+          reading_time_minutes: number
+          slug: string
+          title: string
+          updated_at: string
+          views: number
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["blog_category"]
+          content_html: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt: string
+          id?: string
+          is_published?: boolean
+          meta_description: string
+          meta_title: string
+          published_at?: string
+          reading_time_minutes?: number
+          slug: string
+          title: string
+          updated_at?: string
+          views?: number
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["blog_category"]
+          content_html?: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string
+          id?: string
+          is_published?: boolean
+          meta_description?: string
+          meta_title?: string
+          published_at?: string
+          reading_time_minutes?: number
+          slug?: string
+          title?: string
+          updated_at?: string
+          views?: number
+        }
+        Relationships: []
+      }
       game_picks: {
         Row: {
           created_at: string
@@ -281,6 +335,7 @@ export type Database = {
     }
     Enums: {
       bingo_game_type: "pairs" | "sequences"
+      blog_category: "tech" | "curiosidades" | "comunicacao"
       game_room_type: "animals" | "invertidos" | "sequences"
     }
     CompositeTypes: {
@@ -410,6 +465,7 @@ export const Constants = {
   public: {
     Enums: {
       bingo_game_type: ["pairs", "sequences"],
+      blog_category: ["tech", "curiosidades", "comunicacao"],
       game_room_type: ["animals", "invertidos", "sequences"],
     },
   },
