@@ -78,13 +78,21 @@ const Bingo2 = () => {
   });
 
   // Active room: only number-based games (invertidos / sequences). Ignore animals entirely.
+  // Closing inscriptions in /control must NOT change which room is active here.
+  // Priority: room with most picks > open room > most recently updated.
   const activeRoom = useMemo<GameRoom | null>(() => {
     const numericRooms = rooms.filter(r => r.game_type === "invertidos" || r.game_type === "sequences");
     if (!numericRooms.length) return null;
-    const open = numericRooms.filter(r => r.is_open);
-    const pool = open.length ? open : numericRooms;
-    return [...pool].sort((a, b) => (b.updated_at || "").localeCompare(a.updated_at || ""))[0] || null;
-  }, [rooms]);
+    const pickCount = new Map<string, number>();
+    picks.forEach(p => pickCount.set(p.room_id, (pickCount.get(p.room_id) || 0) + 1));
+    return [...numericRooms].sort((a, b) => {
+      const pa = pickCount.get(a.id) || 0;
+      const pb = pickCount.get(b.id) || 0;
+      if (pb !== pa) return pb - pa;
+      if (a.is_open !== b.is_open) return a.is_open ? -1 : 1;
+      return (b.updated_at || "").localeCompare(a.updated_at || "");
+    })[0] || null;
+  }, [rooms, picks]);
 
   const drawNumber = useCallback(() => {
     const available = Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1).filter(n => !drawnNumRef.current.includes(n));
