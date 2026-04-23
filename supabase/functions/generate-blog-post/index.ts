@@ -10,12 +10,13 @@ const corsHeaders = {
 const CATEGORIES = ["tech", "curiosidades", "comunicacao"] as const;
 type Category = (typeof CATEGORIES)[number];
 
+// Foco: tecnologia e bate-papo (chats, comunidades online, comunicação digital)
 const CATEGORY_PROMPT: Record<Category, string> = {
-  tech: "tecnologia, inovação, gadgets, IA, programação, internet ou cultura digital",
+  tech: "tecnologia prática e atual: IA generativa, ferramentas web, apps, gadgets, navegadores, segurança digital, dicas de internet, novidades de plataformas (WhatsApp, Discord, Telegram, xat, etc.)",
   curiosidades:
-    "fatos curiosos pouco conhecidos, ciência popular, história estranha, mistérios resolvidos, descobertas surpreendentes",
+    "curiosidades do mundo da internet e cultura digital: histórias de comunidades online, origem de memes, evolução de chats e fóruns, bastidores de redes sociais, fatos sobre a web que poucos sabem",
   comunicacao:
-    "comunicação humana, redes sociais, comportamento online, linguagem, mídia, marketing digital, oratória",
+    "bate-papo e comunicação online: salas de chat, comunidades virtuais, etiqueta em chats, dicas para conversar melhor online, plataformas de mensagens, lives, moderação, relacionamentos digitais, cultura de chatrooms (xat, Discord, IRC)",
 };
 
 function slugify(text: string): string {
