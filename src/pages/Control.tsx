@@ -246,7 +246,7 @@ export const Control = () => {
                 {/* Selections list */}
                 {roomPicks.length > 0 && (
                   <div className="mt-4 space-y-1 max-h-56 overflow-y-auto">
-                    {(room.game_type === 'animals' || room.game_type === 'rhythms') ? (
+                    {(room.game_type === 'animals' || room.game_type === 'rhythms' || room.game_type === 'brands') ? (
                       Array.from(new Set(roomPicks.map(p => p.player_id))).map(playerId => {
                         const player = players.find(pl => pl.id === playerId);
                         const playerPicks = roomPicks.filter(p => p.player_id === playerId);
