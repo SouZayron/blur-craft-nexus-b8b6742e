@@ -43,7 +43,7 @@ export const RHYTHMS = [
   "Lambada", "Ambient", "Classical", "Opera", "Samba", "Bossa", "Forró", "Sertanejo", "Axé", "Pagode",
   "Choro", "Frevo", "Maracatu", "Reggaeton", "Salsa", "Merengue", "Cumbia", "Flamenco", "Kpop", "MPB",
   "Carimbó", "Calypso", "Arrocha", "Zouk", "Piseiro", "Mambo", "Tango", "Melody", "Valsa", "Trap",
-  "Emo", "Xote", "Eletronico", "Dance", "LoFi", "Bregafunk", "Bolero", "Tecnobrega", "Brega"
+  "Emo", "Xote", "Eletronico", "Dance", "LoFi", "Bregafunk", "Bolero", "Tecnobrega", "Brega", "Xaxado"
 ];
 
 export const RHYTHM_EMOJIS: Record<string, string> = {
@@ -58,7 +58,71 @@ export const RHYTHM_EMOJIS: Record<string, string> = {
   "Carimbó": "🥁", "Calypso": "🏝️", "Arrocha": "❤️", "Zouk": "💞", "Piseiro": "🎹",
   "Mambo": "🎺", "Tango": "🌹", "Melody": "🎶", "Valsa": "🩰", "Trap": "💎",
   "Emo": "🖤", "Xote": "🪗", "Eletronico": "⚡", "Dance": "💫", "LoFi": "📻",
-  "Bregafunk": "🔊", "Bolero": "🌙", "Tecnobrega": "🤖", "Brega": "💖"
+  "Bregafunk": "🔊", "Bolero": "🌙", "Tecnobrega": "🤖", "Brega": "💖", "Xaxado": "🌵"
+};
+
+// Gradiente por ritmo: cor escura -> cor clara (mesma paleta tonal)
+export const RHYTHM_GRADIENTS: Record<string, string> = {
+  "Pop": "from-pink-700 to-pink-300",
+  "Rock": "from-stone-800 to-stone-400",
+  "Jazz": "from-amber-800 to-amber-300",
+  "Blues": "from-blue-800 to-blue-300",
+  "Reggae": "from-green-800 to-green-300",
+  "Rap": "from-zinc-800 to-zinc-400",
+  "Funk": "from-fuchsia-800 to-fuchsia-300",
+  "Soul": "from-purple-800 to-purple-300",
+  "Gospel": "from-yellow-700 to-yellow-200",
+  "Country": "from-orange-800 to-orange-300",
+  "Folk": "from-lime-800 to-lime-300",
+  "Indie": "from-teal-800 to-teal-300",
+  "Punk": "from-red-800 to-red-300",
+  "Hiphop": "from-slate-800 to-slate-400",
+  "Metal": "from-gray-900 to-gray-500",
+  "Disco": "from-violet-700 to-violet-300",
+  "House": "from-indigo-700 to-indigo-300",
+  "Techno": "from-cyan-800 to-cyan-300",
+  "Trance": "from-sky-800 to-sky-300",
+  "Pisadinha": "from-amber-900 to-amber-400",
+  "Lambada": "from-rose-700 to-rose-300",
+  "Ambient": "from-slate-700 to-slate-300",
+  "Classical": "from-yellow-800 to-yellow-300",
+  "Opera": "from-rose-900 to-rose-400",
+  "Samba": "from-emerald-800 to-emerald-300",
+  "Bossa": "from-teal-700 to-teal-200",
+  "Forró": "from-orange-700 to-orange-200",
+  "Sertanejo": "from-amber-700 to-amber-200",
+  "Axé": "from-yellow-600 to-yellow-200",
+  "Pagode": "from-green-700 to-green-200",
+  "Choro": "from-orange-900 to-orange-400",
+  "Frevo": "from-fuchsia-700 to-fuchsia-200",
+  "Maracatu": "from-red-900 to-red-400",
+  "Reggaeton": "from-orange-700 to-orange-300",
+  "Salsa": "from-red-700 to-red-300",
+  "Merengue": "from-yellow-700 to-yellow-300",
+  "Cumbia": "from-amber-800 to-amber-400",
+  "Flamenco": "from-red-800 to-red-400",
+  "Kpop": "from-pink-600 to-pink-200",
+  "MPB": "from-emerald-700 to-emerald-200",
+  "Carimbó": "from-lime-700 to-lime-200",
+  "Calypso": "from-cyan-700 to-cyan-200",
+  "Arrocha": "from-rose-800 to-rose-300",
+  "Zouk": "from-purple-700 to-purple-200",
+  "Piseiro": "from-yellow-800 to-yellow-300",
+  "Mambo": "from-orange-800 to-orange-400",
+  "Tango": "from-red-900 to-red-500",
+  "Melody": "from-violet-800 to-violet-300",
+  "Valsa": "from-pink-800 to-pink-300",
+  "Trap": "from-zinc-900 to-zinc-500",
+  "Emo": "from-neutral-900 to-neutral-500",
+  "Xote": "from-amber-800 to-amber-300",
+  "Eletronico": "from-sky-700 to-sky-200",
+  "Dance": "from-fuchsia-700 to-fuchsia-300",
+  "LoFi": "from-slate-700 to-slate-300",
+  "Bregafunk": "from-purple-800 to-purple-400",
+  "Bolero": "from-indigo-800 to-indigo-300",
+  "Tecnobrega": "from-cyan-900 to-cyan-400",
+  "Brega": "from-pink-700 to-pink-200",
+  "Xaxado": "from-yellow-900 to-yellow-400"
 };
 
 export const SEQUENCES_BLOCKS = [
