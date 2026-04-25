@@ -127,7 +127,7 @@ export const Games = () => {
   };
 
   const myPicks = currentPlayer ? picks.filter(p => p.player_id === currentPlayer.id) : [];
-  const maxPicks = (activeRoom?.game_type === 'animals' || activeRoom?.game_type === 'rhythms') ? 2 : 1;
+  const maxPicks = (activeRoom?.game_type === 'animals' || activeRoom?.game_type === 'rhythms' || activeRoom?.game_type === 'brands') ? 2 : 1;
   const reachedLimit = myPicks.length >= maxPicks;
 
   const handleSelectBlock = async (block: string) => {
