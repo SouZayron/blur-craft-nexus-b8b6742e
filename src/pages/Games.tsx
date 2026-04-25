@@ -211,6 +211,7 @@ export const Games = () => {
     if (activeRoom.game_type === 'animals') return ANIMALS.length;
     if (activeRoom.game_type === 'invertidos') return INVERTIDOS_BLOCKS.length;
     if (activeRoom.game_type === 'rhythms') return RHYTHMS.length;
+    if (activeRoom.game_type === 'brands') return BRANDS.length;
     return SEQUENCES_BLOCKS.length;
   };
 
