@@ -297,7 +297,7 @@ export const Control = () => {
                   <div key={room.id} className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-3">
                     <p className="text-sm font-semibold text-foreground mb-2">{gameIcon} {gameName} <span className="text-muted-foreground font-normal">({roomPicks.length})</span></p>
                     <div className="flex flex-wrap gap-2">
-                      {(room.game_type === 'animals' || room.game_type === 'rhythms') ? (
+                      {(room.game_type === 'animals' || room.game_type === 'rhythms' || room.game_type === 'brands') ? (
                         Array.from(new Set(roomPicks.map(p => p.player_id))).map(playerId => {
                           const player = players.find(pl => pl.id === playerId);
                           const playerPicks = roomPicks.filter(p => p.player_id === playerId);
