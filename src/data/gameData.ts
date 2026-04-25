@@ -73,11 +73,13 @@ export const SEQUENCES_BLOCKS = [
 export const GAME_NAMES: Record<string, string> = {
   animals: "Jogo dos Animais",
   invertidos: "Jogo dos Invertidos",
-  sequences: "Bingo das Sequências"
+  sequences: "Bingo das Sequências",
+  rhythms: "Jogo dos Ritmos"
 };
 
 export const GAME_ICONS: Record<string, string> = {
   animals: "🐾",
   invertidos: "🔢",
-  sequences: "📊"
+  sequences: "📊",
+  rhythms: "🎵"
 };
