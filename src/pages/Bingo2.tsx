@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Play, Pause, RotateCcw, Volume2, VolumeX, Trophy } from "lucide-react";
+import { ArrowLeft, Play, Pause, RotateCcw, Volume2, VolumeX, Trophy, Copy } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { FloatingBlob } from "@/components/FloatingBlob";
 import { cn } from "@/lib/utils";
@@ -58,6 +59,27 @@ const Bingo2 = () => {
   const drawnRef = useRef<string[]>([]);
   const audioRef = useRef(true);
   const [winnerOrder, setWinnerOrder] = useState<string[]>([]);
+  const { toast } = useToast();
+
+  const copyText = useCallback(async (text: string) => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
+      toast({ title: "Copiado!", description: text });
+    } catch {
+      toast({ title: "Não foi possível copiar", variant: "destructive" });
+    }
+  }, [toast]);
 
   useEffect(() => { drawnRef.current = drawnItems; }, [drawnItems]);
   useEffect(() => { audioRef.current = audioEnabled; }, [audioEnabled]);
@@ -433,6 +455,16 @@ const Bingo2 = () => {
                 )}
               </div>
             </div>
+
+            {isItemBased && currentItem && (
+              <Button
+                onClick={() => copyText(currentItem)}
+                className="w-full mb-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold h-9 text-sm"
+              >
+                <Copy className="w-3.5 h-3.5 mr-2" />
+                Copiar: {currentItem}
+              </Button>
+            )}
 
             {/* Winners block */}
             <div className="w-full mb-4">
