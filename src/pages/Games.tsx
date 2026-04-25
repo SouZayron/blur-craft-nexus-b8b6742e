@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
+import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, RHYTHMS, RHYTHM_EMOJIS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
 import { Copy, Check, Clock, Gamepad2, LogIn } from "lucide-react";
 
 interface GameRoom {
@@ -210,6 +210,7 @@ export const Games = () => {
     if (!activeRoom) return 0;
     if (activeRoom.game_type === 'animals') return ANIMALS.length;
     if (activeRoom.game_type === 'invertidos') return INVERTIDOS_BLOCKS.length;
+    if (activeRoom.game_type === 'rhythms') return RHYTHMS.length;
     return SEQUENCES_BLOCKS.length;
   };
 
@@ -290,7 +291,9 @@ export const Games = () => {
     ? ANIMALS
     : activeRoom.game_type === 'invertidos'
       ? INVERTIDOS_BLOCKS
-      : SEQUENCES_BLOCKS;
+      : activeRoom.game_type === 'rhythms'
+        ? RHYTHMS
+        : SEQUENCES_BLOCKS;
 
   const isAnimalsGame = activeRoom.game_type === 'animals';
 

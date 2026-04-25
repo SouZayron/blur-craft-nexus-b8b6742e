@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
+import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, RHYTHMS, RHYTHM_EMOJIS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
 import { Lock, Power, PowerOff, UserCheck, Trash2, Users, RefreshCw } from "lucide-react";
 
 interface GameRoom {
@@ -210,6 +210,7 @@ export const Control = () => {
             const gameIcon = GAME_ICONS[room.game_type] || "🎮";
             const maxSlots = room.game_type === 'animals' ? ANIMALS.length
               : room.game_type === 'invertidos' ? INVERTIDOS_BLOCKS.length
+              : room.game_type === 'rhythms' ? RHYTHMS.length
               : SEQUENCES_BLOCKS.length;
 
             return (
