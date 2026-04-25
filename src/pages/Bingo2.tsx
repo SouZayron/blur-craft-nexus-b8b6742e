@@ -404,8 +404,11 @@ const Bingo2 = () => {
               </div>
               <div
                 className={cn(
-                  "w-40 h-40 md:w-48 md:h-48 rounded-2xl bg-labxat-pink/90 text-white flex flex-col items-center justify-center font-black shadow-lg shadow-labxat-pink/30 transition-all duration-500 px-2 text-center",
-                  isAnimating && "scale-110"
+                  "w-40 h-40 md:w-48 md:h-48 rounded-2xl text-white flex flex-col items-center justify-center font-black shadow-lg transition-all duration-500 px-2 text-center",
+                  isRhythmsGame && currentItem
+                    ? cn("bg-gradient-to-br shadow-black/20", RHYTHM_GRADIENTS[currentItem] || "from-slate-700 to-slate-300")
+                    : "bg-labxat-pink/90 shadow-labxat-pink/30",
+                  isAnimating && !isRhythmsGame && "scale-110"
                 )}
               >
                 {isItemBased && currentItem ? (
