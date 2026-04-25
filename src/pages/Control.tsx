@@ -211,6 +211,7 @@ export const Control = () => {
             const maxSlots = room.game_type === 'animals' ? ANIMALS.length
               : room.game_type === 'invertidos' ? INVERTIDOS_BLOCKS.length
               : room.game_type === 'rhythms' ? RHYTHMS.length
+              : room.game_type === 'brands' ? BRANDS.length
               : SEQUENCES_BLOCKS.length;
 
             return (
