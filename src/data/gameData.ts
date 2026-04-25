@@ -37,6 +37,30 @@ export const INVERTIDOS_BLOCKS = [
   "11-22", "33-44", "55-66", "77-88"
 ];
 
+export const RHYTHMS = [
+  "Pop", "Rock", "Jazz", "Blues", "Reggae", "Rap", "Funk", "Soul", "Gospel", "Country",
+  "Folk", "Indie", "Punk", "Hiphop", "Metal", "Disco", "House", "Techno", "Trance", "Pisadinha",
+  "Lambada", "Ambient", "Classical", "Opera", "Samba", "Bossa", "Forró", "Sertanejo", "Axé", "Pagode",
+  "Choro", "Frevo", "Maracatu", "Reggaeton", "Salsa", "Merengue", "Cumbia", "Flamenco", "Kpop", "MPB",
+  "Carimbó", "Calypso", "Arrocha", "Zouk", "Piseiro", "Mambo", "Tango", "Melody", "Valsa", "Trap",
+  "Emo", "Xote", "Eletronico", "Dance", "LoFi", "Bregafunk", "Bolero", "Tecnobrega", "Brega"
+];
+
+export const RHYTHM_EMOJIS: Record<string, string> = {
+  "Pop": "🎤", "Rock": "🎸", "Jazz": "🎷", "Blues": "🎺", "Reggae": "🌴",
+  "Rap": "🎙️", "Funk": "🕺", "Soul": "💜", "Gospel": "🙏", "Country": "🤠",
+  "Folk": "🪕", "Indie": "🎼", "Punk": "🤘", "Hiphop": "🧢", "Metal": "🤘",
+  "Disco": "🪩", "House": "🏠", "Techno": "🎛️", "Trance": "🌀", "Pisadinha": "👢",
+  "Lambada": "💃", "Ambient": "🌌", "Classical": "🎻", "Opera": "🎭", "Samba": "🪘",
+  "Bossa": "🎶", "Forró": "🪗", "Sertanejo": "🐎", "Axé": "🥁", "Pagode": "🎵",
+  "Choro": "🎷", "Frevo": "☂️", "Maracatu": "🥁", "Reggaeton": "🔥", "Salsa": "💃",
+  "Merengue": "🎺", "Cumbia": "🪗", "Flamenco": "💃", "Kpop": "🌸", "MPB": "🇧🇷",
+  "Carimbó": "🥁", "Calypso": "🏝️", "Arrocha": "❤️", "Zouk": "💞", "Piseiro": "🎹",
+  "Mambo": "🎺", "Tango": "🌹", "Melody": "🎶", "Valsa": "🩰", "Trap": "💎",
+  "Emo": "🖤", "Xote": "🪗", "Eletronico": "⚡", "Dance": "💫", "LoFi": "📻",
+  "Bregafunk": "🔊", "Bolero": "🌙", "Tecnobrega": "🤖", "Brega": "💖"
+};
+
 export const SEQUENCES_BLOCKS = [
   "1-2-3", "4-5-6", "7-8-9", "10-11-12", "13-14-15", "16-17-18",
   "19-20-21", "22-23-24", "25-26-27", "28-29-30", "31-32-33", "34-35-36",
