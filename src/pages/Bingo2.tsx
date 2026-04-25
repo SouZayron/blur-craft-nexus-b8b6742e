@@ -6,7 +6,7 @@ import { FloatingBlob } from "@/components/FloatingBlob";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { GAME_NAMES, GAME_ICONS, ANIMALS, ANIMAL_EMOJIS, RHYTHMS, RHYTHM_EMOJIS, RHYTHM_GRADIENTS } from "@/data/gameData";
+import { GAME_NAMES, GAME_ICONS, ANIMALS, ANIMAL_EMOJIS, RHYTHMS, RHYTHM_EMOJIS, RHYTHM_GRADIENTS, BRANDS, BRAND_EMOJIS, BRAND_GRADIENTS } from "@/data/gameData";
 
 const TOTAL_NUMBERS = 90;
 const DRAW_INTERVAL = 4500;
