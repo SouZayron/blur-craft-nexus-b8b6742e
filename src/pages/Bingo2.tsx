@@ -96,14 +96,17 @@ const Bingo2 = () => {
 
   const isAnimalsGame = activeRoom?.game_type === "animals";
   const isRhythmsGame = activeRoom?.game_type === "rhythms";
-  const isItemBased = isAnimalsGame || isRhythmsGame;
+  const isBrandsGame = activeRoom?.game_type === "brands";
+  const isItemBased = isAnimalsGame || isRhythmsGame || isBrandsGame;
+  const isGradientGame = isRhythmsGame || isBrandsGame;
 
   // Pool de itens disponíveis para sortear
   const allItems = useMemo<string[]>(() => {
     if (isAnimalsGame) return ANIMALS;
     if (isRhythmsGame) return RHYTHMS;
+    if (isBrandsGame) return BRANDS;
     return Array.from({ length: TOTAL_NUMBERS }, (_, i) => String(i + 1));
-  }, [isAnimalsGame, isRhythmsGame]);
+  }, [isAnimalsGame, isRhythmsGame, isBrandsGame]);
 
   // Reset automático quando muda o tipo de jogo
   const lastGameTypeRef = useRef<string | null>(null);
