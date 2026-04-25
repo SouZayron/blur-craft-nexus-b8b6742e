@@ -458,8 +458,8 @@ const Bingo2 = () => {
                       )}
                       title={item || ""}
                     >
-                      {isAnimalsGame
-                        ? <span className="text-lg leading-none">{item ? (ANIMAL_EMOJIS[item] || "🐾") : "-"}</span>
+                      {isItemBased
+                        ? <span className="text-lg leading-none">{item ? (isAnimalsGame ? (ANIMAL_EMOJIS[item] || "🐾") : (RHYTHM_EMOJIS[item] || "🎵")) : "-"}</span>
                         : <span className="text-sm">{item || "-"}</span>}
                     </div>
                   );
@@ -505,7 +505,7 @@ const Bingo2 = () => {
             </Button>
 
             <p className="mt-3 text-xs text-muted-foreground text-center">
-              {remaining} {isAnimalsGame ? "animais" : "bolas"} restantes
+              {remaining} {isAnimalsGame ? "animais" : isRhythmsGame ? "ritmos" : "bolas"} restantes
             </p>
           </div>
         </div>
