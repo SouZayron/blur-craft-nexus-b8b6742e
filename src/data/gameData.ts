@@ -226,12 +226,14 @@ export const GAME_NAMES: Record<string, string> = {
   animals: "Jogo dos Animais",
   invertidos: "Jogo dos Invertidos",
   sequences: "Bingo das Sequências",
-  rhythms: "Jogo dos Ritmos"
+  rhythms: "Jogo dos Ritmos",
+  brands: "Jogo das Marcas"
 };
 
 export const GAME_ICONS: Record<string, string> = {
   animals: "🐾",
   invertidos: "🔢",
   sequences: "📊",
-  rhythms: "🎵"
+  rhythms: "🎵",
+  brands: "™️"
 };
