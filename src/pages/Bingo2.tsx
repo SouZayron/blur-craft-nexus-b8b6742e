@@ -304,7 +304,7 @@ const Bingo2 = () => {
 
             {isItemBased ? (
               <div className="grid grid-cols-5 sm:grid-cols-7 lg:grid-cols-10 gap-1.5 md:gap-2 bg-background p-4 rounded-lg">
-                {(isAnimalsGame ? ANIMALS : RHYTHMS).map((item) => {
+                {(isAnimalsGame ? ANIMALS : isRhythmsGame ? RHYTHMS : BRANDS).map((item) => {
                   const isDrawn = drawnItems.includes(item);
                   const isCurrent = item === currentItem;
                   const inPick = pickItemSet.has(item);
@@ -312,11 +312,14 @@ const Bingo2 = () => {
                   const winnerColor = winnerIdx !== undefined ? WINNER_COLORS[winnerIdx % WINNER_COLORS.length] : null;
                   const emoji = isAnimalsGame
                     ? (ANIMAL_EMOJIS[item] || "🐾")
-                    : (RHYTHM_EMOJIS[item] || "🎵");
+                    : isRhythmsGame
+                      ? (RHYTHM_EMOJIS[item] || "🎵")
+                      : (BRAND_EMOJIS[item] || "™️");
 
-                  // Modo Ritmos: gradiente fixo por bloco, sem animação/contorno de "current"
-                  if (isRhythmsGame) {
-                    const grad = RHYTHM_GRADIENTS[item] || "from-slate-700 to-slate-300";
+                  // Modo Ritmos/Marcas: gradiente fixo por bloco, sem animação/contorno de "current"
+                  if (isGradientGame) {
+                    const gradMap = isRhythmsGame ? RHYTHM_GRADIENTS : BRAND_GRADIENTS;
+                    const grad = gradMap[item] || "from-slate-700 to-slate-300";
                     return (
                       <div
                         key={item}
