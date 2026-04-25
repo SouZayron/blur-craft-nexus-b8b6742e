@@ -406,21 +406,25 @@ const Bingo2 = () => {
           <div className="glass-card p-4 md:p-6 w-full lg:w-96 flex flex-col items-center">
             <div className="flex flex-col items-center justify-center mb-6 w-full">
               <div className="text-[10px] uppercase tracking-widest text-foreground/60 mb-3">
-                {isAnimalsGame ? "Animal atual" : isRhythmsGame ? "Ritmo atual" : "Número atual"}
+                {isAnimalsGame ? "Animal atual" : isRhythmsGame ? "Ritmo atual" : isBrandsGame ? "Marca atual" : "Número atual"}
               </div>
               <div
                 className={cn(
                   "w-40 h-40 md:w-48 md:h-48 rounded-2xl text-white flex flex-col items-center justify-center font-black shadow-lg transition-all duration-500 px-2 text-center",
-                  isRhythmsGame && currentItem
-                    ? cn("bg-gradient-to-br shadow-black/20", RHYTHM_GRADIENTS[currentItem] || "from-slate-700 to-slate-300")
+                  isGradientGame && currentItem
+                    ? cn("bg-gradient-to-br shadow-black/20", (isRhythmsGame ? RHYTHM_GRADIENTS : BRAND_GRADIENTS)[currentItem] || "from-slate-700 to-slate-300")
                     : "bg-labxat-pink/90 shadow-labxat-pink/30",
-                  isAnimating && !isRhythmsGame && "scale-110"
+                  isAnimating && !isGradientGame && "scale-110"
                 )}
               >
                 {isItemBased && currentItem ? (
                   <>
                     <span className="text-6xl md:text-7xl leading-none">
-                      {isAnimalsGame ? (ANIMAL_EMOJIS[currentItem] || "🐾") : (RHYTHM_EMOJIS[currentItem] || "🎵")}
+                      {isAnimalsGame
+                        ? (ANIMAL_EMOJIS[currentItem] || "🐾")
+                        : isRhythmsGame
+                          ? (RHYTHM_EMOJIS[currentItem] || "🎵")
+                          : (BRAND_EMOJIS[currentItem] || "™️")}
                     </span>
                     <span className="text-base md:text-lg mt-2 leading-tight">{currentItem}</span>
                   </>
