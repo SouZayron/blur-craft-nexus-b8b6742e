@@ -22,19 +22,16 @@ export const Header = () => {
         <div className="glass-card px-6 py-3 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" aria-label="Labxat - Página inicial" className="flex items-center gap-2 group">
-            <picture>
-              <source srcSet="/labxat-logo-64.webp" type="image/webp" />
-              <img
-                src="/labxat-logo-64.png"
-                alt="Logotipo Labxat"
-                width={32}
-                height={32}
-                className="block shrink-0"
-                style={{ width: 32, height: 32, aspectRatio: "1 / 1" }}
-                fetchPriority="high"
-                decoding="async"
-              />
-            </picture>
+            <img
+              src="/labxat-logo-new.png"
+              alt="Logotipo Labxat"
+              width={32}
+              height={32}
+              className="block shrink-0"
+              style={{ width: 32, height: 32, aspectRatio: "1 / 1" }}
+              fetchPriority="high"
+              decoding="async"
+            />
             <span className="text-2xl font-black text-gradient">Labxat</span>
           </Link>
 
