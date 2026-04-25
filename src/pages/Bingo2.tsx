@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Play, Pause, RotateCcw, Volume2, VolumeX, Trophy } from "lucide-react";
+import { ArrowLeft, Play, Pause, RotateCcw, Volume2, VolumeX, Trophy, Copy } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { FloatingBlob } from "@/components/FloatingBlob";
 import { cn } from "@/lib/utils";
