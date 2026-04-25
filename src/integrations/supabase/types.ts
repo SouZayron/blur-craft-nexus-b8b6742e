@@ -336,7 +336,12 @@ export type Database = {
     Enums: {
       bingo_game_type: "pairs" | "sequences"
       blog_category: "tech" | "curiosidades" | "comunicacao"
-      game_room_type: "animals" | "invertidos" | "sequences" | "rhythms"
+      game_room_type:
+        | "animals"
+        | "invertidos"
+        | "sequences"
+        | "rhythms"
+        | "brands"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -466,7 +471,13 @@ export const Constants = {
     Enums: {
       bingo_game_type: ["pairs", "sequences"],
       blog_category: ["tech", "curiosidades", "comunicacao"],
-      game_room_type: ["animals", "invertidos", "sequences", "rhythms"],
+      game_room_type: [
+        "animals",
+        "invertidos",
+        "sequences",
+        "rhythms",
+        "brands",
+      ],
     },
   },
 } as const

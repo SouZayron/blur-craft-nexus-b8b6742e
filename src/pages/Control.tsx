@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, RHYTHMS, RHYTHM_EMOJIS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
+import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, RHYTHMS, RHYTHM_EMOJIS, BRANDS, BRAND_EMOJIS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
 import { Lock, Power, PowerOff, UserCheck, Trash2, Users, RefreshCw } from "lucide-react";
 
 interface GameRoom {
@@ -211,6 +211,7 @@ export const Control = () => {
             const maxSlots = room.game_type === 'animals' ? ANIMALS.length
               : room.game_type === 'invertidos' ? INVERTIDOS_BLOCKS.length
               : room.game_type === 'rhythms' ? RHYTHMS.length
+              : room.game_type === 'brands' ? BRANDS.length
               : SEQUENCES_BLOCKS.length;
 
             return (
@@ -245,7 +246,7 @@ export const Control = () => {
                 {/* Selections list */}
                 {roomPicks.length > 0 && (
                   <div className="mt-4 space-y-1 max-h-56 overflow-y-auto">
-                    {(room.game_type === 'animals' || room.game_type === 'rhythms') ? (
+                    {(room.game_type === 'animals' || room.game_type === 'rhythms' || room.game_type === 'brands') ? (
                       Array.from(new Set(roomPicks.map(p => p.player_id))).map(playerId => {
                         const player = players.find(pl => pl.id === playerId);
                         const playerPicks = roomPicks.filter(p => p.player_id === playerId);
@@ -296,7 +297,7 @@ export const Control = () => {
                   <div key={room.id} className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-3">
                     <p className="text-sm font-semibold text-foreground mb-2">{gameIcon} {gameName} <span className="text-muted-foreground font-normal">({roomPicks.length})</span></p>
                     <div className="flex flex-wrap gap-2">
-                      {(room.game_type === 'animals' || room.game_type === 'rhythms') ? (
+                      {(room.game_type === 'animals' || room.game_type === 'rhythms' || room.game_type === 'brands') ? (
                         Array.from(new Set(roomPicks.map(p => p.player_id))).map(playerId => {
                           const player = players.find(pl => pl.id === playerId);
                           const playerPicks = roomPicks.filter(p => p.player_id === playerId);

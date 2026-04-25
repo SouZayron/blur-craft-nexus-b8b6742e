@@ -6,14 +6,14 @@ import { FloatingBlob } from "@/components/FloatingBlob";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { GAME_NAMES, GAME_ICONS, ANIMALS, ANIMAL_EMOJIS, RHYTHMS, RHYTHM_EMOJIS, RHYTHM_GRADIENTS } from "@/data/gameData";
+import { GAME_NAMES, GAME_ICONS, ANIMALS, ANIMAL_EMOJIS, RHYTHMS, RHYTHM_EMOJIS, RHYTHM_GRADIENTS, BRANDS, BRAND_EMOJIS, BRAND_GRADIENTS } from "@/data/gameData";
 
 const TOTAL_NUMBERS = 90;
 const DRAW_INTERVAL = 4500;
 
 interface GameRoom {
   id: string;
-  game_type: "animals" | "invertidos" | "sequences" | "rhythms";
+  game_type: "animals" | "invertidos" | "sequences" | "rhythms" | "brands";
   is_open: boolean;
   updated_at: string;
 }
@@ -96,14 +96,17 @@ const Bingo2 = () => {
 
   const isAnimalsGame = activeRoom?.game_type === "animals";
   const isRhythmsGame = activeRoom?.game_type === "rhythms";
-  const isItemBased = isAnimalsGame || isRhythmsGame;
+  const isBrandsGame = activeRoom?.game_type === "brands";
+  const isItemBased = isAnimalsGame || isRhythmsGame || isBrandsGame;
+  const isGradientGame = isRhythmsGame || isBrandsGame;
 
   // Pool de itens disponíveis para sortear
   const allItems = useMemo<string[]>(() => {
     if (isAnimalsGame) return ANIMALS;
     if (isRhythmsGame) return RHYTHMS;
+    if (isBrandsGame) return BRANDS;
     return Array.from({ length: TOTAL_NUMBERS }, (_, i) => String(i + 1));
-  }, [isAnimalsGame, isRhythmsGame]);
+  }, [isAnimalsGame, isRhythmsGame, isBrandsGame]);
 
   // Reset automático quando muda o tipo de jogo
   const lastGameTypeRef = useRef<string | null>(null);
@@ -301,7 +304,7 @@ const Bingo2 = () => {
 
             {isItemBased ? (
               <div className="grid grid-cols-5 sm:grid-cols-7 lg:grid-cols-10 gap-1.5 md:gap-2 bg-background p-4 rounded-lg">
-                {(isAnimalsGame ? ANIMALS : RHYTHMS).map((item) => {
+                {(isAnimalsGame ? ANIMALS : isRhythmsGame ? RHYTHMS : BRANDS).map((item) => {
                   const isDrawn = drawnItems.includes(item);
                   const isCurrent = item === currentItem;
                   const inPick = pickItemSet.has(item);
@@ -309,11 +312,14 @@ const Bingo2 = () => {
                   const winnerColor = winnerIdx !== undefined ? WINNER_COLORS[winnerIdx % WINNER_COLORS.length] : null;
                   const emoji = isAnimalsGame
                     ? (ANIMAL_EMOJIS[item] || "🐾")
-                    : (RHYTHM_EMOJIS[item] || "🎵");
+                    : isRhythmsGame
+                      ? (RHYTHM_EMOJIS[item] || "🎵")
+                      : (BRAND_EMOJIS[item] || "™️");
 
-                  // Modo Ritmos: gradiente fixo por bloco, sem animação/contorno de "current"
-                  if (isRhythmsGame) {
-                    const grad = RHYTHM_GRADIENTS[item] || "from-slate-700 to-slate-300";
+                  // Modo Ritmos/Marcas: gradiente fixo por bloco, sem animação/contorno de "current"
+                  if (isGradientGame) {
+                    const gradMap = isRhythmsGame ? RHYTHM_GRADIENTS : BRAND_GRADIENTS;
+                    const grad = gradMap[item] || "from-slate-700 to-slate-300";
                     return (
                       <div
                         key={item}
@@ -400,21 +406,25 @@ const Bingo2 = () => {
           <div className="glass-card p-4 md:p-6 w-full lg:w-96 flex flex-col items-center">
             <div className="flex flex-col items-center justify-center mb-6 w-full">
               <div className="text-[10px] uppercase tracking-widest text-foreground/60 mb-3">
-                {isAnimalsGame ? "Animal atual" : isRhythmsGame ? "Ritmo atual" : "Número atual"}
+                {isAnimalsGame ? "Animal atual" : isRhythmsGame ? "Ritmo atual" : isBrandsGame ? "Marca atual" : "Número atual"}
               </div>
               <div
                 className={cn(
                   "w-40 h-40 md:w-48 md:h-48 rounded-2xl text-white flex flex-col items-center justify-center font-black shadow-lg transition-all duration-500 px-2 text-center",
-                  isRhythmsGame && currentItem
-                    ? cn("bg-gradient-to-br shadow-black/20", RHYTHM_GRADIENTS[currentItem] || "from-slate-700 to-slate-300")
+                  isGradientGame && currentItem
+                    ? cn("bg-gradient-to-br shadow-black/20", (isRhythmsGame ? RHYTHM_GRADIENTS : BRAND_GRADIENTS)[currentItem] || "from-slate-700 to-slate-300")
                     : "bg-labxat-pink/90 shadow-labxat-pink/30",
-                  isAnimating && !isRhythmsGame && "scale-110"
+                  isAnimating && !isGradientGame && "scale-110"
                 )}
               >
                 {isItemBased && currentItem ? (
                   <>
                     <span className="text-6xl md:text-7xl leading-none">
-                      {isAnimalsGame ? (ANIMAL_EMOJIS[currentItem] || "🐾") : (RHYTHM_EMOJIS[currentItem] || "🎵")}
+                      {isAnimalsGame
+                        ? (ANIMAL_EMOJIS[currentItem] || "🐾")
+                        : isRhythmsGame
+                          ? (RHYTHM_EMOJIS[currentItem] || "🎵")
+                          : (BRAND_EMOJIS[currentItem] || "™️")}
                     </span>
                     <span className="text-base md:text-lg mt-2 leading-tight">{currentItem}</span>
                   </>

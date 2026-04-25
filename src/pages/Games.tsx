@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, RHYTHMS, RHYTHM_EMOJIS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
+import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, RHYTHMS, RHYTHM_EMOJIS, BRANDS, BRAND_EMOJIS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
 import { Copy, Check, Clock, Gamepad2, LogIn } from "lucide-react";
 
 interface GameRoom {
@@ -127,7 +127,7 @@ export const Games = () => {
   };
 
   const myPicks = currentPlayer ? picks.filter(p => p.player_id === currentPlayer.id) : [];
-  const maxPicks = (activeRoom?.game_type === 'animals' || activeRoom?.game_type === 'rhythms') ? 2 : 1;
+  const maxPicks = (activeRoom?.game_type === 'animals' || activeRoom?.game_type === 'rhythms' || activeRoom?.game_type === 'brands') ? 2 : 1;
   const reachedLimit = myPicks.length >= maxPicks;
 
   const handleSelectBlock = async (block: string) => {
@@ -211,6 +211,7 @@ export const Games = () => {
     if (activeRoom.game_type === 'animals') return ANIMALS.length;
     if (activeRoom.game_type === 'invertidos') return INVERTIDOS_BLOCKS.length;
     if (activeRoom.game_type === 'rhythms') return RHYTHMS.length;
+    if (activeRoom.game_type === 'brands') return BRANDS.length;
     return SEQUENCES_BLOCKS.length;
   };
 
@@ -293,12 +294,15 @@ export const Games = () => {
       ? INVERTIDOS_BLOCKS
       : activeRoom.game_type === 'rhythms'
         ? RHYTHMS
-        : SEQUENCES_BLOCKS;
+        : activeRoom.game_type === 'brands'
+          ? BRANDS
+          : SEQUENCES_BLOCKS;
 
   const isAnimalsGame = activeRoom.game_type === 'animals';
   const isRhythmsGame = activeRoom.game_type === 'rhythms';
-  const isMultiPickGame = isAnimalsGame || isRhythmsGame;
-  const itemLabel = isAnimalsGame ? 'animais' : isRhythmsGame ? 'ritmos' : 'blocos';
+  const isBrandsGame = activeRoom.game_type === 'brands';
+  const isMultiPickGame = isAnimalsGame || isRhythmsGame || isBrandsGame;
+  const itemLabel = isAnimalsGame ? 'animais' : isRhythmsGame ? 'ritmos' : isBrandsGame ? 'marcas' : 'blocos';
 
   // Paleta de gradientes (escuro → claro) para variar cor por bloco
   const BLOCK_GRADIENTS = [
