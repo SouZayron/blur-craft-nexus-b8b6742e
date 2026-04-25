@@ -296,20 +296,23 @@ export const Games = () => {
         : SEQUENCES_BLOCKS;
 
   const isAnimalsGame = activeRoom.game_type === 'animals';
+  const isRhythmsGame = activeRoom.game_type === 'rhythms';
+  const isMultiPickGame = isAnimalsGame || isRhythmsGame;
+  const itemLabel = isAnimalsGame ? 'animais' : isRhythmsGame ? 'ritmos' : 'blocos';
 
   return (
-    <div className={`${isAnimalsGame ? 'h-screen overflow-hidden flex flex-col' : 'min-h-screen'} bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-2`}>
-      <div className={`${isAnimalsGame ? 'flex-1 min-h-0 flex flex-col gap-2 max-w-[98vw]' : 'max-w-6xl'} mx-auto w-full`}>
-        <div className={`text-center ${isAnimalsGame ? 'mb-1 flex-shrink-0' : 'mb-6'}`}>
-          <h1 className={`${isAnimalsGame ? 'text-lg md:text-xl' : 'text-3xl'} font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent ${isAnimalsGame ? 'mb-0.5' : 'mb-2'}`}>
+    <div className={`${isMultiPickGame ? 'h-screen overflow-hidden flex flex-col' : 'min-h-screen'} bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-2`}>
+      <div className={`${isMultiPickGame ? 'flex-1 min-h-0 flex flex-col gap-2 max-w-[98vw]' : 'max-w-6xl'} mx-auto w-full`}>
+        <div className={`text-center ${isMultiPickGame ? 'mb-1 flex-shrink-0' : 'mb-6'}`}>
+          <h1 className={`${isMultiPickGame ? 'text-lg md:text-xl' : 'text-3xl'} font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent ${isMultiPickGame ? 'mb-0.5' : 'mb-2'}`}>
             {gameIcon} {gameName}
           </h1>
           <p className="text-muted-foreground text-xs leading-tight">
             Olá, <span className="text-purple-400 font-semibold">{currentPlayer.name}</span>{" "}
-            {isAnimalsGame
+            {isMultiPickGame
               ? (reachedLimit
                   ? `• Selecionados ${myPicks.length}/2. Copie abaixo.`
-                  : `• Selecione 2 animais (${myPicks.length}/2).`)
+                  : `• Selecione 2 ${itemLabel} (${myPicks.length}/2).`)
               : (reachedLimit
                   ? `Você já selecionou ${myPicks.length}/${maxPicks}. Clique em copiar.`
                   : `Selecione ${maxPicks} bloco (${myPicks.length}/${maxPicks}).`)}
@@ -317,7 +320,7 @@ export const Games = () => {
           </p>
         </div>
 
-        <div className={`grid ${isAnimalsGame ? 'gap-1 flex-1 min-h-0 h-full grid-cols-5 grid-rows-[repeat(14,minmax(0,1fr))] sm:grid-cols-7 sm:grid-rows-[repeat(10,minmax(0,1fr))] lg:grid-cols-10 lg:grid-rows-[repeat(7,minmax(0,1fr))]' : 'gap-3 grid-cols-3 sm:grid-cols-5 md:grid-cols-6'}`}>
+        <div className={`grid ${isMultiPickGame ? 'gap-1 flex-1 min-h-0 h-full grid-cols-5 grid-rows-[repeat(14,minmax(0,1fr))] sm:grid-cols-7 sm:grid-rows-[repeat(10,minmax(0,1fr))] lg:grid-cols-10 lg:grid-rows-[repeat(7,minmax(0,1fr))]' : 'gap-3 grid-cols-3 sm:grid-cols-5 md:grid-cols-6'}`}>
           {renderItems.map(item => {
             const taken = takenValues.includes(item);
             const owner = getPickOwner(item);
@@ -338,7 +341,7 @@ export const Games = () => {
                 aria-disabled={isDisabled}
                 className={`
                   relative flex h-full min-h-0 flex-col items-center justify-center select-none overflow-hidden transition-all duration-300
-                  ${isAnimalsGame ? 'rounded-md p-1' : 'rounded-xl p-3 min-h-[80px]'}
+                  ${isMultiPickGame ? 'rounded-md p-1' : 'rounded-xl p-3 min-h-[80px]'}
                   ${isMine
                     ? 'bg-green-500/15 border border-green-500/50 cursor-default'
                     : taken
@@ -349,17 +352,17 @@ export const Games = () => {
                   }
                 `}
               >
-                {isAnimalsGame ? (
+                {isMultiPickGame ? (
                   <span className="text-[9px] sm:text-[10px] lg:text-[11px] font-semibold text-foreground text-center leading-none">{item}</span>
                 ) : (
                   <span className="text-base font-bold font-mono text-foreground">{item}</span>
                 )}
                 {owner && (
-                  <span className={`${isAnimalsGame ? 'text-[6px] mt-0.5 leading-none' : 'text-[10px] mt-1'} truncate max-w-full font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
+                  <span className={`${isMultiPickGame ? 'text-[6px] mt-0.5 leading-none' : 'text-[10px] mt-1'} truncate max-w-full font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
                     {owner.name}
                   </span>
                 )}
-                {isMine && !isAnimalsGame && (
+                {isMine && !isMultiPickGame && (
                   <button
                     type="button"
                     onClick={(e) => handleCopyBlock(e, item)}
@@ -378,13 +381,13 @@ export const Games = () => {
           })}
         </div>
 
-        {isAnimalsGame && (
+        {isMultiPickGame && (
           <div className="flex-shrink-0 backdrop-blur-md bg-white/5 border border-white/10 rounded-lg p-1.5 flex items-center gap-2 min-h-[44px]">
             <div className="flex-1 bg-background/40 border border-white/10 rounded-md px-2 py-1 text-center min-w-0 overflow-hidden">
               <span className="text-xs font-bold text-foreground break-words leading-tight">
                 {myPicks.length > 0
                   ? myPicks.map(p => p.pick_value).join(' - ')
-                  : <span className="text-muted-foreground font-normal">Selecione 2 animais</span>}
+                  : <span className="text-muted-foreground font-normal">Selecione 2 {itemLabel}</span>}
               </span>
             </div>
             <Button
@@ -399,7 +402,7 @@ export const Games = () => {
           </div>
         )}
 
-        {!isAnimalsGame && (
+        {!isMultiPickGame && (
           <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded backdrop-blur-md bg-white/5 border border-white/10" />
