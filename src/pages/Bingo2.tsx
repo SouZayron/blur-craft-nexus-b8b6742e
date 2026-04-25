@@ -13,7 +13,7 @@ const DRAW_INTERVAL = 4500;
 
 interface GameRoom {
   id: string;
-  game_type: "animals" | "invertidos" | "sequences" | "rhythms";
+  game_type: "animals" | "invertidos" | "sequences" | "rhythms" | "brands";
   is_open: boolean;
   updated_at: string;
 }
