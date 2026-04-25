@@ -294,12 +294,15 @@ export const Games = () => {
       ? INVERTIDOS_BLOCKS
       : activeRoom.game_type === 'rhythms'
         ? RHYTHMS
-        : SEQUENCES_BLOCKS;
+        : activeRoom.game_type === 'brands'
+          ? BRANDS
+          : SEQUENCES_BLOCKS;
 
   const isAnimalsGame = activeRoom.game_type === 'animals';
   const isRhythmsGame = activeRoom.game_type === 'rhythms';
-  const isMultiPickGame = isAnimalsGame || isRhythmsGame;
-  const itemLabel = isAnimalsGame ? 'animais' : isRhythmsGame ? 'ritmos' : 'blocos';
+  const isBrandsGame = activeRoom.game_type === 'brands';
+  const isMultiPickGame = isAnimalsGame || isRhythmsGame || isBrandsGame;
+  const itemLabel = isAnimalsGame ? 'animais' : isRhythmsGame ? 'ritmos' : isBrandsGame ? 'marcas' : 'blocos';
 
   // Paleta de gradientes (escuro → claro) para variar cor por bloco
   const BLOCK_GRADIENTS = [
