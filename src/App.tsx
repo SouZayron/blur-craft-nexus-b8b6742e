@@ -37,6 +37,7 @@ const Auto = lazy(() => import("./pages/Auto"));
 const Bingo2 = lazy(() => import("./pages/Bingo2"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const Torneios = lazy(() => import("./pages/Torneios"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Non-critical UI: defer until after first paint.
@@ -85,6 +86,7 @@ const App = () => (
               <Route path="/bingo2" element={<Bingo2 />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/torneios" element={<Torneios />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

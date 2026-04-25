@@ -326,6 +326,179 @@ export type Database = {
         }
         Relationships: []
       }
+      torneio_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          payload: Json
+          player_id: string | null
+          room_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          payload?: Json
+          player_id?: string | null
+          room_id: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          payload?: Json
+          player_id?: string | null
+          room_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "torneio_events_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "torneio_players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "torneio_events_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "torneio_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      torneio_players: {
+        Row: {
+          avatar: string
+          client_token: string
+          color: string
+          created_at: string
+          id: string
+          is_connected: boolean
+          is_eliminated: boolean
+          nickname: string
+          position: number
+          px: number
+          room_id: string
+          skip_turns: number
+          turn_order: number
+        }
+        Insert: {
+          avatar?: string
+          client_token: string
+          color: string
+          created_at?: string
+          id?: string
+          is_connected?: boolean
+          is_eliminated?: boolean
+          nickname: string
+          position?: number
+          px?: number
+          room_id: string
+          skip_turns?: number
+          turn_order?: number
+        }
+        Update: {
+          avatar?: string
+          client_token?: string
+          color?: string
+          created_at?: string
+          id?: string
+          is_connected?: boolean
+          is_eliminated?: boolean
+          nickname?: string
+          position?: number
+          px?: number
+          room_id?: string
+          skip_turns?: number
+          turn_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "torneio_players_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "torneio_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      torneio_properties: {
+        Row: {
+          created_at: string
+          id: string
+          level: number
+          owner_id: string
+          room_id: string
+          tile_index: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          level?: number
+          owner_id: string
+          room_id: string
+          tile_index: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          level?: number
+          owner_id?: string
+          room_id?: string
+          tile_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "torneio_properties_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "torneio_players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "torneio_properties_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "torneio_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      torneio_rooms: {
+        Row: {
+          code: string
+          created_at: string
+          current_turn_player_id: string | null
+          id: string
+          last_dice: number | null
+          status: string
+          turn_number: number
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          current_turn_player_id?: string | null
+          id?: string
+          last_dice?: number | null
+          status?: string
+          turn_number?: number
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          current_turn_player_id?: string | null
+          id?: string
+          last_dice?: number | null
+          status?: string
+          turn_number?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
