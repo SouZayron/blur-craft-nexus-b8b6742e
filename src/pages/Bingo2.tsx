@@ -473,7 +473,7 @@ const Bingo2 = () => {
                     <div
                       key={i}
                       className={cn(
-                        "w-10 h-10 rounded-lg flex items-center justify-center font-bold mx-auto",
+                        "h-10 px-1 rounded-lg flex items-center justify-center font-bold text-center",
                         item
                           ? inPick
                             ? "bg-green-500 text-white shadow-md"
@@ -482,9 +482,12 @@ const Bingo2 = () => {
                       )}
                       title={item || ""}
                     >
-                      {isItemBased
-                        ? <span className="text-lg leading-none">{item ? (isAnimalsGame ? (ANIMAL_EMOJIS[item] || "🐾") : (RHYTHM_EMOJIS[item] || "🎵")) : "-"}</span>
-                        : <span className="text-sm">{item || "-"}</span>}
+                      <span className={cn(
+                        "leading-tight truncate max-w-full",
+                        isItemBased ? "text-[10px]" : "text-sm"
+                      )}>
+                        {item || "-"}
+                      </span>
                     </div>
                   );
                 })}
