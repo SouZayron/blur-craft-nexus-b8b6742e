@@ -300,6 +300,27 @@ export const Games = () => {
   const isMultiPickGame = isAnimalsGame || isRhythmsGame;
   const itemLabel = isAnimalsGame ? 'animais' : isRhythmsGame ? 'ritmos' : 'blocos';
 
+  // Paleta de gradientes (escuro → claro) para variar cor por bloco
+  const BLOCK_GRADIENTS = [
+    'from-rose-800 to-rose-400',
+    'from-pink-800 to-pink-400',
+    'from-fuchsia-800 to-fuchsia-400',
+    'from-purple-800 to-purple-400',
+    'from-violet-800 to-violet-400',
+    'from-indigo-800 to-indigo-400',
+    'from-blue-800 to-blue-400',
+    'from-sky-800 to-sky-400',
+    'from-cyan-800 to-cyan-400',
+    'from-teal-800 to-teal-400',
+    'from-emerald-800 to-emerald-400',
+    'from-green-800 to-green-400',
+    'from-lime-800 to-lime-400',
+    'from-yellow-800 to-yellow-400',
+    'from-amber-800 to-amber-400',
+    'from-orange-800 to-orange-400',
+    'from-red-800 to-red-400',
+  ];
+
   return (
     <div className={`${isMultiPickGame ? 'h-screen overflow-hidden flex flex-col' : 'min-h-screen'} bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-2`}>
       <div className={`${isMultiPickGame ? 'flex-1 min-h-0 flex flex-col gap-2 max-w-[98vw]' : 'max-w-6xl'} mx-auto w-full`}>
