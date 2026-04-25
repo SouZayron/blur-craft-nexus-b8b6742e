@@ -342,12 +342,13 @@ export const Games = () => {
         </div>
 
         <div className={`grid ${isMultiPickGame ? 'gap-1 flex-1 min-h-0 h-full grid-cols-5 grid-rows-[repeat(14,minmax(0,1fr))] sm:grid-cols-7 sm:grid-rows-[repeat(10,minmax(0,1fr))] lg:grid-cols-10 lg:grid-rows-[repeat(7,minmax(0,1fr))]' : 'gap-3 grid-cols-3 sm:grid-cols-5 md:grid-cols-6'}`}>
-          {renderItems.map(item => {
+          {renderItems.map((item, idx) => {
             const taken = takenValues.includes(item);
             const owner = getPickOwner(item);
             const isMine = owner?.playerId === currentPlayer.id;
             const isCopied = copiedKey === item;
             const isDisabled = taken || loading || reachedLimit;
+            const grad = BLOCK_GRADIENTS[idx % BLOCK_GRADIENTS.length];
             const handleClick = () => {
               if (isDisabled || isMine) return;
               handleSelectBlock(item);
@@ -361,25 +362,26 @@ export const Games = () => {
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } }}
                 aria-disabled={isDisabled}
                 className={`
-                  relative flex h-full min-h-0 flex-col items-center justify-center select-none overflow-hidden transition-all duration-300
+                  relative flex h-full min-h-0 flex-col items-center justify-center select-none overflow-hidden transition-all duration-300 text-white
                   ${isMultiPickGame ? 'rounded-md p-1' : 'rounded-xl p-3 min-h-[80px]'}
+                  bg-gradient-to-br ${grad}
                   ${isMine
-                    ? 'bg-green-500/15 border border-green-500/50 cursor-default'
+                    ? 'ring-2 ring-green-400 cursor-default'
                     : taken
-                      ? 'bg-red-500/10 opacity-70 cursor-not-allowed border border-transparent'
+                      ? 'opacity-50 grayscale cursor-not-allowed'
                       : reachedLimit
-                        ? 'backdrop-blur-md bg-white/5 border border-white/5 opacity-50 cursor-not-allowed'
-                        : 'neon-snake backdrop-blur-md bg-white/5 border border-white/10 hover:border-purple-500/50 hover:scale-105 cursor-pointer'
+                        ? 'opacity-50 cursor-not-allowed'
+                        : 'cursor-pointer hover:brightness-110'
                   }
                 `}
               >
                 {isMultiPickGame ? (
-                  <span className="text-[9px] sm:text-[10px] lg:text-[11px] font-semibold text-foreground text-center leading-none">{item}</span>
+                  <span className="text-xs sm:text-sm lg:text-base font-bold text-white text-center leading-tight drop-shadow">{item}</span>
                 ) : (
-                  <span className="text-base font-bold font-mono text-foreground">{item}</span>
+                  <span className="text-2xl font-bold font-mono text-white drop-shadow">{item}</span>
                 )}
                 {owner && (
-                  <span className={`${isMultiPickGame ? 'text-[6px] mt-0.5 leading-none' : 'text-[10px] mt-1'} truncate max-w-full font-semibold ${isMine ? 'text-green-400' : 'text-red-400'}`}>
+                  <span className={`${isMultiPickGame ? 'text-[7px] mt-0.5 leading-none' : 'text-[10px] mt-1'} truncate max-w-full font-semibold ${isMine ? 'text-green-200' : 'text-white/90'}`}>
                     {owner.name}
                   </span>
                 )}
@@ -390,7 +392,7 @@ export const Games = () => {
                     className={`mt-1.5 inline-flex items-center justify-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md cursor-pointer transition-colors ${
                       isCopied
                         ? 'bg-green-500 text-white'
-                        : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'
+                        : 'bg-white/20 backdrop-blur text-white hover:bg-white/30'
                     }`}
                   >
                     {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
