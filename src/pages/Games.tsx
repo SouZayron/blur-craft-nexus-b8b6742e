@@ -35,6 +35,7 @@ export const Games = () => {
   const [allPlayers, setAllPlayers] = useState<GamePlayer[]>([]);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const submittingRef = useRef(false);
   const { toast } = useToast();
 
   const fetchData = useCallback(async () => {
