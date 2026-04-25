@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +35,7 @@ export const Games = () => {
   const [allPlayers, setAllPlayers] = useState<GamePlayer[]>([]);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const submittingRef = useRef(false);
   const { toast } = useToast();
 
   const fetchData = useCallback(async () => {
@@ -131,9 +132,11 @@ export const Games = () => {
 
   const handleSelectBlock = async (block: string) => {
     if (!currentPlayer || !activeRoom || reachedLimit) return;
+    if (submittingRef.current) return; // bloqueia duplo-clique síncrono
     const taken = picks.map(p => p.pick_value);
     if (taken.includes(block)) return;
 
+    submittingRef.current = true;
     setLoading(true);
     const { error } = await supabase.from("game_picks").insert({
       room_id: activeRoom.id,
@@ -141,11 +144,21 @@ export const Games = () => {
       pick_value: block
     });
     if (error) {
-      toast({ title: "Erro ao selecionar", variant: "destructive" });
+      // 23505 = unique_violation (alguém pegou primeiro)
+      // check_violation = limite de seleções atingido
+      if (error.code === '23505') {
+        toast({ title: "Esse bloco acabou de ser ocupado", variant: "destructive" });
+      } else if (error.message?.includes('Limite')) {
+        toast({ title: "Você já atingiu o limite de seleções", variant: "destructive" });
+      } else {
+        toast({ title: "Erro ao selecionar", variant: "destructive" });
+      }
+      await fetchData();
     } else {
       toast({ title: "Selecionado!" });
     }
     setLoading(false);
+    submittingRef.current = false;
   };
 
   const getPickOwner = (value: string) => {
