@@ -59,6 +59,27 @@ const Bingo2 = () => {
   const drawnRef = useRef<string[]>([]);
   const audioRef = useRef(true);
   const [winnerOrder, setWinnerOrder] = useState<string[]>([]);
+  const { toast } = useToast();
+
+  const copyText = useCallback(async (text: string) => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
+      toast({ title: "Copiado!", description: text });
+    } catch {
+      toast({ title: "Não foi possível copiar", variant: "destructive" });
+    }
+  }, [toast]);
 
   useEffect(() => { drawnRef.current = drawnItems; }, [drawnItems]);
   useEffect(() => { audioRef.current = audioEnabled; }, [audioEnabled]);
