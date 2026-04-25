@@ -25,19 +25,15 @@ const BingoCardsAccess = lazy(() => import("./pages/BingoCardsAccess").then(m =>
 const BingoGames = lazy(() => import("./pages/BingoGames").then(m => ({ default: m.BingoGames })));
 const BingoPanel = lazy(() => import("./pages/BingoPanel").then(m => ({ default: m.BingoPanel })));
 const About = lazy(() => import("./pages/About").then(m => ({ default: m.About })));
-const UltimoPower = lazy(() => import("./pages/UltimoPower").then(m => ({ default: m.UltimoPower })));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy").then(m => ({ default: m.PrivacyPolicy })));
 const TermsOfService = lazy(() => import("./pages/TermsOfService").then(m => ({ default: m.TermsOfService })));
-const Kerassentials = lazy(() => import("./pages/Kerassentials").then(m => ({ default: m.Kerassentials })));
 const Works = lazy(() => import("./pages/Works").then(m => ({ default: m.Works })));
 const MixHits = lazy(() => import("./pages/MixHits").then(m => ({ default: m.MixHits })));
 const Games = lazy(() => import("./pages/Games").then(m => ({ default: m.Games })));
 const Control = lazy(() => import("./pages/Control").then(m => ({ default: m.Control })));
-const Auto = lazy(() => import("./pages/Auto"));
 const Bingo2 = lazy(() => import("./pages/Bingo2"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
-const Torneios = lazy(() => import("./pages/Torneios"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Non-critical UI: defer until after first paint.
@@ -74,19 +70,15 @@ const App = () => (
               <Route path="/bingo-games" element={<BingoGames />} />
               <Route path="/Painel" element={<BingoPanel />} />
               <Route path="/sobre" element={<About />} />
-              <Route path="/ultimo-power" element={<UltimoPower />} />
               <Route path="/privacidade" element={<PrivacyPolicy />} />
               <Route path="/termos" element={<TermsOfService />} />
-              <Route path="/kerassentials" element={<Kerassentials />} />
               <Route path="/works" element={<Works />} />
               <Route path="/mixhits" element={<MixHits />} />
               <Route path="/games" element={<Games />} />
               <Route path="/control" element={<Control />} />
-              <Route path="/auto" element={<Auto />} />
               <Route path="/bingo2" element={<Bingo2 />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
-              <Route path="/torneios" element={<Torneios />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
