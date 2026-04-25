@@ -6,7 +6,7 @@ import { FloatingBlob } from "@/components/FloatingBlob";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { GAME_NAMES, GAME_ICONS, ANIMALS, ANIMAL_EMOJIS, RHYTHMS, RHYTHM_EMOJIS } from "@/data/gameData";
+import { GAME_NAMES, GAME_ICONS, ANIMALS, ANIMAL_EMOJIS, RHYTHMS, RHYTHM_EMOJIS, RHYTHM_GRADIENTS } from "@/data/gameData";
 
 const TOTAL_NUMBERS = 90;
 const DRAW_INTERVAL = 4500;
@@ -310,6 +310,27 @@ const Bingo2 = () => {
                   const emoji = isAnimalsGame
                     ? (ANIMAL_EMOJIS[item] || "🐾")
                     : (RHYTHM_EMOJIS[item] || "🎵");
+
+                  // Modo Ritmos: gradiente fixo por bloco, sem animação/contorno de "current"
+                  if (isRhythmsGame) {
+                    const grad = RHYTHM_GRADIENTS[item] || "from-slate-700 to-slate-300";
+                    return (
+                      <div
+                        key={item}
+                        className={cn(
+                          "aspect-square rounded-md flex flex-col items-center justify-center px-0.5 py-1 text-center bg-gradient-to-br text-white transition-opacity",
+                          grad,
+                          !isDrawn && "opacity-40 grayscale"
+                        )}
+                      >
+                        <span className="text-base md:text-lg leading-none drop-shadow">{emoji}</span>
+                        <span className="text-[8px] md:text-[9px] font-bold leading-tight mt-0.5 truncate max-w-full drop-shadow">
+                          {item}
+                        </span>
+                      </div>
+                    );
+                  }
+
                   return (
                     <div
                       key={item}
@@ -383,8 +404,11 @@ const Bingo2 = () => {
               </div>
               <div
                 className={cn(
-                  "w-40 h-40 md:w-48 md:h-48 rounded-2xl bg-labxat-pink/90 text-white flex flex-col items-center justify-center font-black shadow-lg shadow-labxat-pink/30 transition-all duration-500 px-2 text-center",
-                  isAnimating && "scale-110"
+                  "w-40 h-40 md:w-48 md:h-48 rounded-2xl text-white flex flex-col items-center justify-center font-black shadow-lg transition-all duration-500 px-2 text-center",
+                  isRhythmsGame && currentItem
+                    ? cn("bg-gradient-to-br shadow-black/20", RHYTHM_GRADIENTS[currentItem] || "from-slate-700 to-slate-300")
+                    : "bg-labxat-pink/90 shadow-labxat-pink/30",
+                  isAnimating && !isRhythmsGame && "scale-110"
                 )}
               >
                 {isItemBased && currentItem ? (
