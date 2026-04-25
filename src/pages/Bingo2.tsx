@@ -299,18 +299,20 @@ const Bingo2 = () => {
               Painel de Verificação
             </h2>
 
-            {isAnimalsGame ? (
+            {isItemBased ? (
               <div className="grid grid-cols-5 sm:grid-cols-7 lg:grid-cols-10 gap-1.5 md:gap-2 bg-background p-4 rounded-lg">
-                {ANIMALS.map((animal) => {
-                  const isDrawn = drawnItems.includes(animal);
-                  const isCurrent = animal === currentItem;
-                  const inPick = pickItemSet.has(animal);
-                  const winnerIdx = itemToWinnerIdx.get(animal);
+                {(isAnimalsGame ? ANIMALS : RHYTHMS).map((item) => {
+                  const isDrawn = drawnItems.includes(item);
+                  const isCurrent = item === currentItem;
+                  const inPick = pickItemSet.has(item);
+                  const winnerIdx = itemToWinnerIdx.get(item);
                   const winnerColor = winnerIdx !== undefined ? WINNER_COLORS[winnerIdx % WINNER_COLORS.length] : null;
-                  const emoji = ANIMAL_EMOJIS[animal] || "🐾";
+                  const emoji = isAnimalsGame
+                    ? (ANIMAL_EMOJIS[item] || "🐾")
+                    : (RHYTHM_EMOJIS[item] || "🎵");
                   return (
                     <div
-                      key={animal}
+                      key={item}
                       className={cn(
                         "aspect-square rounded-md flex flex-col items-center justify-center px-0.5 py-1 transition-all text-center",
                         isCurrent
@@ -328,7 +330,7 @@ const Bingo2 = () => {
                     >
                       <span className="text-base md:text-lg leading-none">{emoji}</span>
                       <span className="text-[8px] md:text-[9px] font-semibold leading-tight mt-0.5 truncate max-w-full">
-                        {animal}
+                        {item}
                       </span>
                     </div>
                   );
@@ -377,7 +379,7 @@ const Bingo2 = () => {
           <div className="glass-card p-4 md:p-6 w-full lg:w-96 flex flex-col items-center">
             <div className="flex flex-col items-center justify-center mb-6 w-full">
               <div className="text-[10px] uppercase tracking-widest text-foreground/60 mb-3">
-                {isAnimalsGame ? "Animal atual" : "Número atual"}
+                {isAnimalsGame ? "Animal atual" : isRhythmsGame ? "Ritmo atual" : "Número atual"}
               </div>
               <div
                 className={cn(
@@ -385,9 +387,11 @@ const Bingo2 = () => {
                   isAnimating && "scale-110"
                 )}
               >
-                {isAnimalsGame && currentItem ? (
+                {isItemBased && currentItem ? (
                   <>
-                    <span className="text-6xl md:text-7xl leading-none">{ANIMAL_EMOJIS[currentItem] || "🐾"}</span>
+                    <span className="text-6xl md:text-7xl leading-none">
+                      {isAnimalsGame ? (ANIMAL_EMOJIS[currentItem] || "🐾") : (RHYTHM_EMOJIS[currentItem] || "🎵")}
+                    </span>
                     <span className="text-base md:text-lg mt-2 leading-tight">{currentItem}</span>
                   </>
                 ) : (
