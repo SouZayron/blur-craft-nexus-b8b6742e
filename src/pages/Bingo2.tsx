@@ -456,6 +456,16 @@ const Bingo2 = () => {
               </div>
             </div>
 
+            {isItemBased && currentItem && (
+              <Button
+                onClick={() => copyText(currentItem)}
+                className="w-full mb-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold h-9 text-sm"
+              >
+                <Copy className="w-3.5 h-3.5 mr-2" />
+                Copiar: {currentItem}
+              </Button>
+            )}
+
             {/* Winners block */}
             <div className="w-full mb-4">
               <div className="flex items-center justify-center gap-2 mb-2">
