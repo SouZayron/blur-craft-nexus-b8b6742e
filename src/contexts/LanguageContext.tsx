@@ -1,26 +1,30 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 type Language = "pt" | "en" | "es" | "ar" | "de" | "nl" | "tl" | "tr" | "bs" | "fr" | "it" | "hu" | "pl" | "pt-pt" | "ro" | "sr" | "th";
 
+const SUPPORTED_LANGUAGES: Language[] = ["pt", "en", "es", "ar", "de", "nl", "tl", "tr", "bs", "fr", "it", "hu", "pl", "pt-pt", "ro", "sr", "th"];
+const STORAGE_KEY = "labxat:lang";
+
+// All locales except `pt` and `en` are optional. Missing values fall back to en → pt → key.
 interface Translations {
   [key: string]: {
     pt: string;
     en: string;
-    es: string;
-    ar: string;
-    de: string;
-    nl: string;
-    tl: string;
-    tr: string;
-    bs: string;
-    fr: string;
-    it: string;
-    hu: string;
-    pl: string;
-    "pt-pt": string;
-    ro: string;
-    sr: string;
-    th: string;
+    es?: string;
+    ar?: string;
+    de?: string;
+    nl?: string;
+    tl?: string;
+    tr?: string;
+    bs?: string;
+    fr?: string;
+    it?: string;
+    hu?: string;
+    pl?: string;
+    "pt-pt"?: string;
+    ro?: string;
+    sr?: string;
+    th?: string;
   };
 }
 
