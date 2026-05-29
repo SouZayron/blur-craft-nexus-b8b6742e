@@ -4,60 +4,49 @@ import { FloatingBlob } from "@/components/FloatingBlob";
 import { GlassCard } from "@/components/GlassCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Sparkles, Copy, Check } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { Sparkles, Copy, Check, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { searchPalettes, PALETTE_THEMES, type StaticPalette } from "@/data/staticPalettes";
 
 interface ParsedPalette {
   name: string;
+  code: string;
   glowColor: string;
   angle: number;
   colors: string[];
-  animation: string;
   animationSpeed: number;
 }
 
-const parsePaletteCode = (line: string): ParsedPalette | null => {
+const parsePaletteCode = (name: string, code: string): ParsedPalette | null => {
   try {
-    const match = line.match(/^(\d+)\.\s*(.+?):\s*\((.+)\)$/);
-    if (!match) return null;
-
-    const [, , name, code] = match;
-    const parts = code.split("#").filter(Boolean);
+    const inner = code.replace(/^\(|\)$/g, "");
+    const parts = inner.split("#").filter(Boolean);
 
     let glowColor = "#FFFFFF";
     let angle = 45;
     const colors: string[] = [];
-    let animation = "normal";
     let animationSpeed = 4;
 
     for (let i = 0; i < parts.length; i++) {
       const part = parts[i];
-      
       if (part.startsWith("glow")) {
-        glowColor = "#" + parts[i + 1];
-        i++;
-      } else if (part.startsWith("grad")) {
-        const angleMatch = parts[i + 1]?.match(/r(\d+)/);
-        if (angleMatch) {
-          angle = parseInt(angleMatch[1]);
-          i++;
-        }
-      } else if (part.match(/^[A-Fa-f0-9]{6}$/)) {
+        glowColor = "#" + part.slice(4);
+      } else if (part === "grad") {
+        // next will be rXX
+      } else if (/^r\d+$/.test(part)) {
+        angle = parseInt(part.slice(1));
+      } else if (/^[A-Fa-f0-9]{6}$/.test(part)) {
         colors.push("#" + part);
-      } else if (part.match(/^o[1-3]$/)) {
-        animation = "fast";
+      } else if (/^o[1-3]$/.test(part)) {
         animationSpeed = part === "o1" ? 3 : part === "o2" ? 2 : 1;
-      } else if (part.match(/^f[1-4]$/)) {
-        animation = "slow";
+      } else if (/^f[1-4]$/.test(part)) {
         animationSpeed = part === "f1" ? 6 : part === "f3" ? 8 : 10;
       }
     }
 
     if (colors.length < 2) return null;
-
-    return { name, glowColor, angle, colors, animation, animationSpeed };
+    return { name, code, glowColor, angle, colors, animationSpeed };
   } catch {
     return null;
   }
@@ -66,7 +55,7 @@ const parsePaletteCode = (line: string): ParsedPalette | null => {
 const PalettePreview = ({ palette }: { palette: ParsedPalette }) => {
   const [copied, setCopied] = useState(false);
   const { t } = useLanguage();
-  
+
   const gradientStyle = {
     background: `linear-gradient(${palette.angle}deg, ${palette.colors.join(", ")})`,
     backgroundSize: "200% 200%",
@@ -78,8 +67,7 @@ const PalettePreview = ({ palette }: { palette: ParsedPalette }) => {
   };
 
   const copyCode = () => {
-    const code = `(glow${palette.glowColor}#grad#r${palette.angle}#${palette.colors.map(c => c.slice(1)).join("#")}#${palette.animation === "fast" ? "o" : "f"}${palette.animationSpeed})`;
-    navigator.clipboard.writeText(code);
+    navigator.clipboard.writeText(palette.code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -87,14 +75,11 @@ const PalettePreview = ({ palette }: { palette: ParsedPalette }) => {
   return (
     <div className="glass-card p-4 group hover:scale-[1.02] transition-all duration-300">
       <div className="relative overflow-hidden rounded-xl p-6 bg-background/50 mb-3">
-        <h3 
-          className="text-2xl md:text-3xl font-bold text-center"
-          style={gradientStyle}
-        >
+        <h3 className="text-2xl md:text-3xl font-bold text-center" style={gradientStyle}>
           {palette.name}
         </h3>
       </div>
-      
+
       <div className="flex gap-1 justify-center mb-3">
         {palette.colors.map((color, i) => (
           <div
@@ -105,11 +90,11 @@ const PalettePreview = ({ palette }: { palette: ParsedPalette }) => {
           />
         ))}
       </div>
-      
+
       <Button
         variant="ghost"
         size="sm"
-        className="w-full opacity-0 group-hover:opacity-100 transition-opacity"
+        className="w-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
         onClick={copyCode}
       >
         {copied ? (
@@ -131,12 +116,13 @@ const PalettePreview = ({ palette }: { palette: ParsedPalette }) => {
 const ColorGenerator = () => {
   const [theme, setTheme] = useState("");
   const [palettes, setPalettes] = useState<ParsedPalette[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
   const { toast } = useToast();
   const { t } = useLanguage();
 
-  const generatePalettes = async () => {
-    if (!theme.trim()) {
+  const runSearch = (query: string) => {
+    const q = query.trim();
+    if (!q) {
       toast({
         title: t("enterTheme"),
         description: t("enterThemeDesc"),
@@ -144,114 +130,94 @@ const ColorGenerator = () => {
       });
       return;
     }
+    const results: StaticPalette[] = searchPalettes(q, 10);
+    const parsed = results
+      .map((r) => parsePaletteCode(r.name, r.code))
+      .filter((p): p is ParsedPalette => p !== null);
 
-    setIsLoading(true);
-    setPalettes([]);
+    setPalettes(parsed);
+    setSearched(true);
 
-    try {
-      const { data, error } = await supabase.functions.invoke("generate-palettes", {
-        body: { theme: theme.trim() },
-      });
-
-      if (error) throw error;
-
-      const lines = data.palettes.split("\n").filter((line: string) => line.trim());
-      const parsed = lines
-        .map((line: string) => parsePaletteCode(line))
-        .filter((p: ParsedPalette | null): p is ParsedPalette => p !== null);
-
-      if (parsed.length === 0) {
-        toast({
-          title: t("processingError"),
-          description: t("processingErrorDesc"),
-          variant: "destructive",
-        });
-        return;
-      }
-
-      setPalettes(parsed);
-    } catch (error: any) {
-      console.error("Error generating palettes:", error);
+    if (parsed.length === 0) {
       toast({
-        title: t("error"),
-        description: error.message || t("errorGenerating"),
+        title: t("processingError") || "Nenhum resultado",
+        description: "Tente outro tema, ex: azul claro, rosa, neon, fogo, oceano...",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
+  };
+
+  const handleQuickTheme = (themeName: string) => {
+    setTheme(themeName);
+    runSearch(themeName);
   };
 
   return (
     <div className="min-h-screen animated-gradient-bg">
       <Header />
-      
-      {/* Background blobs */}
+
       <FloatingBlob color="blue" size="xl" position={{ top: "10%", left: "-10%" }} animation="float" />
       <FloatingBlob color="purple" size="lg" position={{ bottom: "20%", right: "-5%" }} animation="float-delayed" />
       <FloatingBlob color="pink" size="md" position={{ top: "50%", right: "10%" }} animation="float-slow" />
 
       <main className="relative z-10 pt-24 pb-12 px-4">
         <div className="max-w-6xl mx-auto">
-          {/* Title */}
-          <div className="text-center mb-12 fade-in-up">
+          <div className="text-center mb-8 fade-in-up">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gradient mb-4">
               {t("colorTitle")}
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              {t("colorSubtitle")}
+              Digite uma cor ou tema e receba 10 códigos prontos para copiar.
             </p>
           </div>
 
-          {/* Input Section */}
-          <GlassCard className="max-w-xl mx-auto mb-12 fade-in-up-delayed">
+          <GlassCard className="max-w-xl mx-auto mb-6 fade-in-up-delayed">
             <div className="flex gap-3">
               <Input
                 type="text"
-                placeholder={t("colorPlaceholder")}
+                placeholder="ex: azul claro, rosa, neon, fogo..."
                 value={theme}
                 onChange={(e) => setTheme(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && generatePalettes()}
+                onKeyDown={(e) => e.key === "Enter" && runSearch(theme)}
                 className="flex-1 bg-white/50 border-white/30 text-foreground placeholder:text-muted-foreground"
-                disabled={isLoading}
               />
               <Button
-                onClick={generatePalettes}
-                disabled={isLoading}
+                onClick={() => runSearch(theme)}
                 className="gradient-btn text-white font-semibold px-6 glow-hover"
               >
-                {isLoading ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <>
-                    <Sparkles className="w-5 h-5 mr-2" />
-                    {t("generate")}
-                  </>
-                )}
+                <Search className="w-5 h-5 mr-2" />
+                Buscar
               </Button>
             </div>
           </GlassCard>
 
-          {/* Palettes Grid */}
+          {/* Quick theme chips */}
+          <div className="max-w-4xl mx-auto mb-10 flex flex-wrap gap-2 justify-center fade-in-up">
+            {PALETTE_THEMES.map((th) => (
+              <button
+                key={th.id}
+                onClick={() => handleQuickTheme(th.name)}
+                className="px-3 py-1.5 text-sm rounded-full bg-white/40 hover:bg-white/70 border border-white/30 text-foreground transition-all hover:scale-105"
+              >
+                {th.name}
+              </button>
+            ))}
+          </div>
+
           {palettes.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in-up">
               {palettes.map((palette, index) => (
-                <div
-                  key={index}
-                  className="scale-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
+                <div key={index} className="scale-in" style={{ animationDelay: `${index * 0.05}s` }}>
                   <PalettePreview palette={palette} />
                 </div>
               ))}
             </div>
           )}
 
-          {/* Empty State */}
-          {!isLoading && palettes.length === 0 && (
-            <div className="text-center text-muted-foreground py-16">
+          {!searched && palettes.length === 0 && (
+            <div className="text-center text-muted-foreground py-12">
               <Sparkles className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>{t("emptyStateColors")}</p>
+              <p>Escolha um tema acima ou digite uma cor para começar.</p>
             </div>
           )}
         </div>
