@@ -120,6 +120,7 @@ const ColorGenerator = () => {
   const [theme, setTheme] = useState("");
   const [palettes, setPalettes] = useState<ParsedPalette[]>([]);
   const [searched, setSearched] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string>(PALETTE_CATEGORIES[0]);
   const { toast } = useToast();
   const { t } = useLanguage();
 
@@ -155,6 +156,8 @@ const ColorGenerator = () => {
     runSearch(themeName);
   };
 
+  const visibleThemes = PALETTE_THEMES.filter((th) => th.category === activeCategory);
+
   return (
     <div className="min-h-screen animated-gradient-bg">
       <Header />
@@ -170,7 +173,7 @@ const ColorGenerator = () => {
               {t("colorTitle")}
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Digite uma cor ou tema e receba 10 códigos prontos para copiar.
+              Digite uma cor ou escolha uma categoria e receba 10 códigos prontos para copiar.
             </p>
           </div>
 
@@ -194,18 +197,39 @@ const ColorGenerator = () => {
             </div>
           </GlassCard>
 
-          {/* Quick theme chips */}
-          <div className="max-w-4xl mx-auto mb-10 flex flex-wrap gap-2 justify-center fade-in-up">
-            {PALETTE_THEMES.map((th) => (
+          {/* Category tabs */}
+          <div className="max-w-5xl mx-auto mb-4 flex flex-wrap gap-2 justify-center fade-in-up">
+            {PALETTE_CATEGORIES.map((cat) => {
+              const active = cat === activeCategory;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-4 py-2 text-sm font-semibold rounded-full border transition-all ${
+                    active
+                      ? "gradient-btn text-white border-transparent shadow-md scale-105"
+                      : "bg-white/40 hover:bg-white/70 border-white/30 text-foreground hover:scale-105"
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Theme chips for the active category */}
+          <div className="max-w-5xl mx-auto mb-10 flex flex-wrap gap-2 justify-center fade-in-up">
+            {visibleThemes.map((th) => (
               <button
                 key={th.id}
                 onClick={() => handleQuickTheme(th.name)}
-                className="px-3 py-1.5 text-sm rounded-full bg-white/40 hover:bg-white/70 border border-white/30 text-foreground transition-all hover:scale-105"
+                className="px-3 py-1.5 text-sm rounded-full bg-white/50 hover:bg-white/80 border border-white/40 text-foreground transition-all hover:scale-105"
               >
                 {th.name}
               </button>
             ))}
           </div>
+
 
           {palettes.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in-up">
