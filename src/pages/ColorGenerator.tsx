@@ -60,7 +60,7 @@ const PalettePreview = ({ palette }: { palette: ParsedPalette }) => {
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",
-    textShadow: `0 0 30px ${palette.glowColor}40`,
+    textShadow: `0 0 12px ${palette.glowColor}60`,
   };
 
   const copyCode = () => {
@@ -70,18 +70,18 @@ const PalettePreview = ({ palette }: { palette: ParsedPalette }) => {
   };
 
   return (
-    <div className="glass-card p-4 group hover:scale-[1.02] transition-all duration-300">
-      <div className="relative overflow-hidden rounded-xl p-5 bg-background/50 mb-3">
-        <h3 className="text-xl md:text-2xl font-bold text-center" style={gradientStyle}>
+    <div className="glass-card p-2 group hover:scale-[1.02] transition-all duration-300">
+      <div className="relative overflow-hidden rounded-lg px-2 py-2 bg-background/40 mb-1.5">
+        <h3 className="text-sm font-bold text-center leading-tight truncate" style={gradientStyle}>
           {palette.name}
         </h3>
       </div>
 
-      <div className="flex gap-1 justify-center mb-3">
+      <div className="flex gap-0.5 justify-center mb-1.5">
         {palette.colors.map((color, i) => (
           <div
             key={i}
-            className="w-7 h-7 rounded-lg shadow-md"
+            className="w-4 h-4 rounded-md shadow-sm"
             style={{ backgroundColor: color }}
             title={color}
           />
@@ -89,22 +89,22 @@ const PalettePreview = ({ palette }: { palette: ParsedPalette }) => {
       </div>
 
       <div
-        className="bg-background/60 border border-white/30 rounded-lg p-2 mb-2 font-mono text-xs break-all text-foreground/80 cursor-pointer select-all"
+        className="bg-background/60 border border-white/20 rounded-md px-1.5 py-1 mb-1.5 font-mono text-[10px] break-all text-foreground/70 cursor-pointer select-all leading-tight"
         onClick={copyCode}
         title={t("copyCode")}
       >
         {palette.code}
       </div>
 
-      <Button variant="ghost" size="sm" className="w-full" onClick={copyCode}>
+      <Button variant="ghost" size="sm" className="w-full h-7 text-xs" onClick={copyCode}>
         {copied ? (
           <>
-            <Check className="w-4 h-4 mr-2" />
+            <Check className="w-3 h-3 mr-1" />
             {t("copied")}
           </>
         ) : (
           <>
-            <Copy className="w-4 h-4 mr-2" />
+            <Copy className="w-3 h-3 mr-1" />
             {t("copyCode")}
           </>
         )}
