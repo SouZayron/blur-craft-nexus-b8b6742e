@@ -123,43 +123,43 @@ const ColorGenerator = () => {
     .filter((p): p is ParsedPalette => p !== null);
 
   return (
-    <div className="min-h-screen animated-gradient-bg">
+    <div className="h-screen overflow-hidden animated-gradient-bg flex flex-col">
       <Header />
 
       <FloatingBlob color="blue" size="xl" position={{ top: "10%", left: "-10%" }} animation="float" />
       <FloatingBlob color="purple" size="lg" position={{ bottom: "20%", right: "-5%" }} animation="float-delayed" />
       <FloatingBlob color="pink" size="md" position={{ top: "50%", right: "10%" }} animation="float-slow" />
 
-      <main className="relative z-10 pt-24 pb-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8 fade-in-up">
-            <h1 className="text-4xl md:text-5xl font-black text-gradient mb-3">
+      <main className="relative z-10 flex-1 px-4 pt-20 pb-4 min-h-0">
+        <div className="max-w-7xl mx-auto h-full">
+          <div className="text-center mb-3 fade-in-up shrink-0">
+            <h1 className="text-3xl font-black text-gradient mb-1">
               {t("colorTitle")}
             </h1>
-            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
               Escolha um tema à esquerda e copie os códigos prontos à direita.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 fade-in-up-delayed">
+          <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4 h-[calc(100%-80px)] fade-in-up-delayed">
             {/* Sidebar — themes by category */}
-            <aside className="glass-card p-4 lg:max-h-[calc(100vh-180px)] lg:overflow-y-auto lg:sticky lg:top-24 self-start">
-              <div className="space-y-5">
+            <aside className="glass-card p-3 overflow-y-auto h-full">
+              <div className="space-y-4">
                 {PALETTE_CATEGORIES.map((cat) => {
                   const catThemes = PALETTE_THEMES.filter((th) => th.category === cat);
                   return (
                     <div key={cat}>
-                      <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 px-1">
+                      <h2 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5 px-1">
                         {cat}
                       </h2>
-                      <div className="flex flex-col gap-1">
+                      <div className="flex flex-col gap-0.5">
                         {catThemes.map((th) => {
                           const active = th.id === selectedThemeId;
                           return (
                             <button
                               key={th.id}
                               onClick={() => setSelectedThemeId(th.id)}
-                              className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                              className={`text-left px-2.5 py-1.5 rounded-md text-xs font-medium transition-all ${
                                 active
                                   ? "gradient-btn text-white shadow-md"
                                   : "bg-white/40 hover:bg-white/70 text-foreground"
@@ -177,16 +177,16 @@ const ColorGenerator = () => {
             </aside>
 
             {/* Right column — palette previews */}
-            <section>
-              <div className="mb-4 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-primary" />
-                <h2 className="text-2xl font-bold text-foreground">{selectedTheme.name}</h2>
-                <span className="text-sm text-muted-foreground ml-1">
+            <section className="overflow-y-auto h-full pr-1">
+              <div className="mb-2 flex items-center gap-2 shrink-0">
+                <Sparkles className="w-4 h-4 text-primary" />
+                <h2 className="text-lg font-bold text-foreground">{selectedTheme.name}</h2>
+                <span className="text-xs text-muted-foreground ml-1">
                   · {palettes.length} códigos
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                 {palettes.map((palette, index) => (
                   <div
                     key={index}
