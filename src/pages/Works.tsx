@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { X } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const works = [
   { client: "NitroHITS", image: "https://xatimg.com/image/AivQhlTOmd7f.png" },
