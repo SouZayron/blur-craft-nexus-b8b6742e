@@ -120,7 +120,7 @@ const ColorGenerator = () => {
   const [theme, setTheme] = useState("");
   const [palettes, setPalettes] = useState<ParsedPalette[]>([]);
   const [searched, setSearched] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<string>(PALETTE_CATEGORIES[0]);
+  
   const { toast } = useToast();
   const { t } = useLanguage();
 
