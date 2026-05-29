@@ -85,8 +85,8 @@ const Index = () => {
             <GlassCard className="p-5 md:p-6 h-full flex flex-col">
               <div className="flex items-start gap-4 mb-5">
                 <img
-                  src="https://xat.com/images/smw/leafy.png"
-                  alt="Power Leafy do xat"
+                  src="https://s0.xat.com/web_gear/chat/GetStrip8.php?c=a_(libro)_80"
+                  alt="Power Libro do xat"
                   width={80}
                   height={80}
                   className="rounded-xl object-contain bg-background/30 shadow-lg p-2 shrink-0"
@@ -99,34 +99,37 @@ const Index = () => {
                   <p className="text-xs uppercase tracking-wider text-labxat-purple font-semibold mb-1">
                     {t("ultimoPower")}
                   </p>
-                  <h2 className="text-2xl md:text-3xl font-bold text-foreground">Leafy</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                    Libro <span className="text-foreground/60 text-base font-normal">(ID: 744)</span>
+                  </h2>
+                  <p className="text-xs text-foreground/60 mt-1 italic">It is time to read.</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
                 <div className="bg-labxat-blue/15 border border-labxat-blue/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("status")}</p>
-                  <p className="text-foreground text-sm font-medium">Limitado</p>
+                  <p className="text-foreground text-sm font-medium">Limited</p>
                 </div>
                 <div className="bg-labxat-purple/15 border border-labxat-purple/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("group")}</p>
                   <p className="text-foreground text-sm font-medium">❌</p>
                 </div>
                 <div className="bg-labxat-pink/15 border border-labxat-pink/25 rounded-lg p-2.5">
-                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("epic")}</p>
+                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">Game</p>
                   <p className="text-foreground text-sm font-medium">❌</p>
                 </div>
                 <div className="bg-labxat-green/15 border border-labxat-green/25 rounded-lg p-2.5">
-                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("storePrice")}</p>
-                  <p className="text-foreground text-sm font-medium">325 xats</p>
+                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">Allpowers</p>
+                  <p className="text-foreground text-sm font-medium">❌</p>
                 </div>
                 <div className="bg-labxat-lilac/15 border border-labxat-lilac/25 rounded-lg p-2.5">
-                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("tradePrice")}</p>
-                  <p className="text-foreground text-sm font-medium">Desconhecido</p>
+                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("epic")}</p>
+                  <p className="text-foreground text-sm font-medium">❌</p>
                 </div>
                 <div className="bg-labxat-blue/15 border border-labxat-blue/25 rounded-lg p-2.5">
-                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("tradeDays")}</p>
-                  <p className="text-foreground text-sm font-medium">Desconhecido</p>
+                  <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">Store</p>
+                  <p className="text-foreground text-sm font-medium">Limited</p>
                 </div>
               </div>
 
@@ -135,7 +138,7 @@ const Index = () => {
                   {t("smiliesOfPower")}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {["(leafy)", "(lfback)", "(lfback2)", "(lfbasket)", "(lfblanket)", "(lfblankettop)", "(lfblush)", "(lfbutterfly)", "(lfbutterflytop)", "(lfflower)", "(lfflowertop)", "(lfheart)", "(lfleavestop)", "(lfmad)", "(lfsinister)", "(lfsleep)", "(lfwreathe)", "(lfwreathetop)"].map((s) => (
+                  {["(libro)", "(loalien)", "(locat)", "(locoffee)", "(locoffee2)", "(loglasses)", "(loheart)", "(lorose)", "(losword)", "(loworm)"].map((s) => (
                     <span key={s} className="bg-labxat-purple/20 text-labxat-purple px-2 py-0.5 rounded-md text-xs font-mono">
                       {s}
                     </span>
