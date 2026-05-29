@@ -737,12 +737,8 @@ const translations: Translations = {
   },
 
   // Common actions
-  back: { pt: "Voltar", en: "Back", es: "Volver", fr: "Retour", it: "Indietro", de: "Zurück", ar: "رجوع" },
-  copy: { pt: "Copiar", en: "Copy", es: "Copiar", fr: "Copier", it: "Copia", de: "Kopieren" },
-  copied: { pt: "Copiado!", en: "Copied!", es: "¡Copiado!", fr: "Copié!", it: "Copiato!", de: "Kopiert!" },
-  copyError: { pt: "Erro ao copiar", en: "Copy failed", es: "Error al copiar", fr: "Échec de la copie" },
+  commonCopy: { pt: "Copiar", en: "Copy", es: "Copiar", fr: "Copier", it: "Copia", de: "Kopieren" },
   share: { pt: "Compartilhar", en: "Share", es: "Compartir", fr: "Partager", it: "Condividi", de: "Teilen" },
-  linkCopied: { pt: "Link copiado!", en: "Link copied!", es: "¡Enlace copiado!", fr: "Lien copié!" },
   loading: { pt: "Carregando...", en: "Loading...", es: "Cargando...", fr: "Chargement..." },
 
   // Floating radio
