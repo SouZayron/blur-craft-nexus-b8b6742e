@@ -720,6 +720,53 @@ const translations: Translations = {
     pt: "Termos", en: "Terms", es: "Términos", ar: "الشروط",
     de: "AGB", nl: "Voorwaarden", tl: "Mga Tuntunin", tr: "Şartlar", bs: "Uslovi", fr: "Conditions", it: "Termini", hu: "Feltételek", pl: "Warunki", "pt-pt": "Termos", ro: "Termeni", sr: "Uslovi", th: "ข้อกำหนด"
   },
+
+  // ===== Additional UI strings (pt + en, with auto-fallback) =====
+  // NotFound page
+  notFoundTitle: { pt: "Página não encontrada", en: "Page not found" },
+  notFoundDesc: { pt: "Oops! A página que você procura não existe.", en: "Oops! The page you're looking for doesn't exist." },
+  returnHome: { pt: "Voltar para o início", en: "Return to Home" },
+
+  // Works page
+  worksTitle: { pt: "Meus Trabalhos", en: "My Works", es: "Mis Trabajos", fr: "Mes Travaux", it: "I Miei Lavori", de: "Meine Arbeiten" },
+  worksSubtitle: {
+    pt: "Uma seleção dos projetos que desenvolvi para meus clientes",
+    en: "A selection of projects I've developed for my clients",
+    es: "Una selección de proyectos que he desarrollado para mis clientes",
+    fr: "Une sélection de projets que j'ai développés pour mes clients",
+  },
+
+  // Common actions
+  back: { pt: "Voltar", en: "Back", es: "Volver", fr: "Retour", it: "Indietro", de: "Zurück", ar: "رجوع" },
+  copy: { pt: "Copiar", en: "Copy", es: "Copiar", fr: "Copier", it: "Copia", de: "Kopieren" },
+  copied: { pt: "Copiado!", en: "Copied!", es: "¡Copiado!", fr: "Copié!", it: "Copiato!", de: "Kopiert!" },
+  copyError: { pt: "Erro ao copiar", en: "Copy failed", es: "Error al copiar", fr: "Échec de la copie" },
+  share: { pt: "Compartilhar", en: "Share", es: "Compartir", fr: "Partager", it: "Condividi", de: "Teilen" },
+  linkCopied: { pt: "Link copiado!", en: "Link copied!", es: "¡Enlace copiado!", fr: "Lien copié!" },
+  loading: { pt: "Carregando...", en: "Loading...", es: "Cargando...", fr: "Chargement..." },
+
+  // Floating radio
+  playRadio: { pt: "Tocar rádio", en: "Play radio", es: "Reproducir radio", fr: "Lancer la radio" },
+  pauseRadio: { pt: "Pausar rádio", en: "Pause radio", es: "Pausar radio", fr: "Mettre la radio en pause" },
+
+  // Floating language selector
+  changeLanguage: { pt: "Mudar idioma", en: "Change language", es: "Cambiar idioma", fr: "Changer de langue" },
+
+  // Blog
+  blogTitle: { pt: "Blog Labxat", en: "Labxat Blog" },
+  blogSubtitle: {
+    pt: "Tech, curiosidades e comunicação — um artigo novo todos os dias.",
+    en: "Tech, curiosities and communication — a new article every day.",
+  },
+  blogEmpty: { pt: "Nenhum artigo publicado ainda. Volte em breve!", en: "No articles published yet. Check back soon!" },
+  blogAll: { pt: "Todos", en: "All", es: "Todos", fr: "Tous", it: "Tutti", de: "Alle" },
+  blogBack: { pt: "Voltar ao Blog", en: "Back to Blog" },
+  blogMinRead: { pt: "min de leitura", en: "min read" },
+  blogViews: { pt: "visualizações", en: "views" },
+  blogMore: { pt: "Ver mais artigos", en: "See more articles" },
+  catTech: { pt: "Tech", en: "Tech" },
+  catCuriosities: { pt: "Curiosidades", en: "Curiosities", es: "Curiosidades", fr: "Curiosités" },
+  catCommunication: { pt: "Comunicação", en: "Communication", es: "Comunicación", fr: "Communication" },
 };
 
 interface LanguageContextType {
@@ -728,6 +775,46 @@ interface LanguageContextType {
   t: (key: string) => string;
   isRTL: boolean;
 }
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+const detectInitialLanguage = (): Language => {
+  if (typeof window === "undefined") return "pt";
+  try {
+    const saved = window.localStorage.getItem(STORAGE_KEY) as Language | null;
+    if (saved && SUPPORTED_LANGUAGES.includes(saved)) return saved;
+  } catch { /* ignore */ }
+  const nav = window.navigator?.language?.toLowerCase() ?? "";
+  if (nav.startsWith("pt-pt")) return "pt-pt";
+  if (nav.startsWith("pt")) return "pt";
+  const short = nav.split("-")[0] as Language;
+  if (SUPPORTED_LANGUAGES.includes(short)) return short;
+  return "pt";
+};
+
+export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+  const [language, setLanguageState] = useState<Language>(detectInitialLanguage);
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    try { window.localStorage.setItem(STORAGE_KEY, lang); } catch { /* ignore */ }
+  };
+
+  useEffect(() => {
+    try {
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+    } catch { /* ignore */ }
+  }, [language]);
+
+  const t = (key: string): string => {
+    const entry = translations[key];
+    if (!entry) return key;
+    return entry[language] || entry.en || entry.pt || key;
+  };
+
+  const isRTL = language === "ar";
+
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
