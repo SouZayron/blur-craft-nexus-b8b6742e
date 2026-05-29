@@ -91,12 +91,15 @@ const PalettePreview = ({ palette }: { palette: ParsedPalette }) => {
         ))}
       </div>
 
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+      <div
+        className="bg-background/60 border border-white/30 rounded-lg p-2 mb-2 font-mono text-xs break-all text-foreground/80 cursor-pointer select-all"
         onClick={copyCode}
+        title={t("copyCode")}
       >
+        {palette.code}
+      </div>
+
+      <Button variant="ghost" size="sm" className="w-full" onClick={copyCode}>
         {copied ? (
           <>
             <Check className="w-4 h-4 mr-2" />
