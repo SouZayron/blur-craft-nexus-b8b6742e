@@ -815,8 +815,14 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
   const isRTL = language === "ar";
 
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t, isRTL }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
 
 
 export const useLanguage = () => {
