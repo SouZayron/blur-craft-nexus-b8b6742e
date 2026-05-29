@@ -28,6 +28,7 @@ const works = [
 
 export const Works = () => {
   const [selectedWork, setSelectedWork] = useState<{ client: string; image: string } | null>(null);
+  const { t } = useLanguage();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
