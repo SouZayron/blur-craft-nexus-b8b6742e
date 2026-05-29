@@ -230,25 +230,6 @@ const ColorGenerator = () => {
               );
             })}
           </div>
-
-
-
-          {palettes.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in-up">
-              {palettes.map((palette, index) => (
-                <div key={index} className="scale-in" style={{ animationDelay: `${index * 0.05}s` }}>
-                  <PalettePreview palette={palette} />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {!searched && palettes.length === 0 && (
-            <div className="text-center text-muted-foreground py-12">
-              <Sparkles className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>Escolha um tema acima ou digite uma cor para começar.</p>
-            </div>
-          )}
         </div>
       </main>
 
