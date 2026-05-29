@@ -3,10 +3,8 @@ import { FloatingBlob } from "./FloatingBlob";
 
 export const HeroSection = () => {
   const smilies = [
-    "(ratmas)", "(rmblanket)", "(rmgift)", "(rmelf)", "(rmblanketop)", 
-    "(rmlightstop)", "(rmreindeertop)", "(rmornamentback)", "(rmlights)", 
-    "(rmornament)", "(rmbow)", "(rmantlers)", "(rmsanta)", "(rmstocking)", 
-    "(rmmtoe)", "(rmback)"
+    "(libro)", "(loalien)", "(locat)", "(locoffee)", "(locoffee2)",
+    "(loglasses)", "(loheart)", "(lorose)", "(losword)", "(loworm)"
   ];
 
   return (
@@ -49,17 +47,18 @@ export const HeroSection = () => {
           {/* Header with Image and Title */}
           <div className="flex items-start gap-4 mb-6">
             <img 
-              src="https://xatimg.com/image/YuaLbdfuX4Q8.png" 
-              alt="Ratmas Power" 
-              className="w-20 h-20 rounded-xl object-cover shadow-lg"
+              src="https://s0.xat.com/web_gear/chat/GetStrip8.php?c=a_(libro)_80" 
+              alt="Libro Power" 
+              className="w-20 h-20 rounded-xl object-contain bg-background/30 shadow-lg"
             />
             <div className="flex-1">
               <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
                 Ultimo Power
               </p>
               <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                Ratmas <span className="text-foreground/60 text-lg">(ID: 734)</span>
+                Libro <span className="text-foreground/60 text-lg">(ID: 744)</span>
               </h2>
+              <p className="text-xs text-foreground/60 mt-1 italic">It is time to read.</p>
             </div>
           </div>
 
@@ -67,7 +66,7 @@ export const HeroSection = () => {
           <div className="grid grid-cols-2 gap-3 mb-6">
             <div className="bg-background/30 rounded-lg p-3">
               <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">Status</p>
-              <p className="text-foreground font-medium">Unlimited</p>
+              <p className="text-foreground font-medium">Limited</p>
             </div>
             <div className="bg-background/30 rounded-lg p-3">
               <p className="text-xs text-foreground/60 uppercase tracking-wider mb-1">Group</p>
