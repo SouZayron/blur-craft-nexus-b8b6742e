@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Sparkles, Copy, Check, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { searchPalettes, PALETTE_THEMES, type StaticPalette } from "@/data/staticPalettes";
+import { searchPalettes, PALETTE_THEMES, PALETTE_CATEGORIES, type StaticPalette } from "@/data/staticPalettes";
 
 interface ParsedPalette {
   name: string;
