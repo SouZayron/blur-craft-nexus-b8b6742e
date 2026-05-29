@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { Music, Pause } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const FloatingRadio = () => {
+  const { t } = useLanguage();
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
