@@ -86,6 +86,7 @@ const App = () => (
           <Suspense fallback={null}>
             <CookieConsent />
             <FloatingRadio />
+            <FloatingLanguageSelector />
           </Suspense>
         </BrowserRouter>
       </TooltipProvider>
