@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { X } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const works = [
   { client: "NitroHITS", image: "https://xatimg.com/image/AivQhlTOmd7f.png" },
@@ -27,6 +28,7 @@ const works = [
 
 export const Works = () => {
   const [selectedWork, setSelectedWork] = useState<{ client: string; image: string } | null>(null);
+  const { t } = useLanguage();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -35,10 +37,10 @@ export const Works = () => {
       <main className="container mx-auto px-4 py-12 pt-24">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Meus Trabalhos
+            {t("worksTitle")}
           </h1>
           <p className="text-muted-foreground text-lg">
-            Uma seleção dos projetos que desenvolvi para meus clientes
+            {t("worksSubtitle")}
           </p>
         </div>
 

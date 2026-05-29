@@ -39,6 +39,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 // Non-critical UI: defer until after first paint.
 const CookieConsent = lazy(() => import("./components/CookieConsent").then(m => ({ default: m.CookieConsent })));
 const FloatingRadio = lazy(() => import("./components/FloatingRadio").then(m => ({ default: m.FloatingRadio })));
+const FloatingLanguageSelector = lazy(() => import("./components/FloatingLanguageSelector").then(m => ({ default: m.FloatingLanguageSelector })));
 
 const queryClient = new QueryClient();
 
@@ -85,6 +86,7 @@ const App = () => (
           <Suspense fallback={null}>
             <CookieConsent />
             <FloatingRadio />
+            <FloatingLanguageSelector />
           </Suspense>
         </BrowserRouter>
       </TooltipProvider>
