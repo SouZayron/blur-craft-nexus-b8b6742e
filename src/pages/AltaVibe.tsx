@@ -89,9 +89,16 @@ const AltaVibe = () => {
 
   useEffect(() => {
     loadRanking();
+    supabase.from("altavibe_settings").select("is_open").eq("id", 1).maybeSingle().then(({ data }) => {
+      if (data) setGameOpen(!!data.is_open);
+    });
     const ch = supabase
       .channel("altavibe_users_ch")
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_users" }, () => loadRanking())
+      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_settings" }, (payload) => {
+        const row = (payload.new || payload.old) as { is_open?: boolean } | null;
+        if (row && typeof row.is_open === "boolean") setGameOpen(row.is_open);
+      })
       .subscribe();
     return () => { supabase.removeChannel(ch); };
   }, [loadRanking]);
