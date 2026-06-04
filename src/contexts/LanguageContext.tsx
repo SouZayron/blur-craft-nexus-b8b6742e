@@ -368,8 +368,8 @@ const translations: Translations = {
   
   // Color Generator Page
   colorTitle: { 
-    pt: "Gerador de Cores", en: "Color Generator", es: "Generador de Colores", ar: "مولد الألوان",
-    de: "Farbgenerator", nl: "Kleurengenerator", tl: "Generator ng Kulay", tr: "Renk Oluşturucu", bs: "Generator boja", fr: "Générateur de Couleurs", it: "Generatore di Colori", hu: "Szín Generátor", pl: "Generator kolorów", "pt-pt": "Gerador de Cores", ro: "Generator de Culori", sr: "Generator boja", th: "เครื่องสร้างสี"
+    pt: "Escolha sua Cor!", en: "Choose your Color!", es: "¡Elige tu Color!", ar: "اختر لونك!",
+    de: "Wähle deine Farbe!", nl: "Kies je Kleur!", tl: "Piliin ang iyong Kulay!", tr: "Rengini Seç!", bs: "Izaberi svoju Boju!", fr: "Choisis ta Couleur!", it: "Scegli il tuo Colore!", hu: "Válaszd ki a Színed!", pl: "Wybierz swój Kolor!", "pt-pt": "Escolha a sua Cor!", ro: "Alege-ți Culoarea!", sr: "Izaberi svoju Boju!", th: "เลือกสีของคุณ!"
   },
   colorSubtitle: { 
     pt: "Digite um tema e deixe que a gente cria as paletas de cores incríveis para você!", en: "Enter a theme and let us create amazing color palettes for you!", es: "¡Escribe un tema y deja que creemos paletas de colores increíbles para ti!", ar: "أدخل موضوعًا ودعنا ننشئ لوحات ألوان مذهلة لك!",
