@@ -172,6 +172,8 @@ const AltaVibe = () => {
 
   const today = new Date().toISOString().split("T")[0];
   const alreadySpun = me?.last_spin === today;
+  const spinDisabled = alreadySpun || !me || !gameOpen;
+  const spinLabel = !gameOpen ? "GAME FECHADO" : alreadySpun ? "VOLTA AMANHÃ" : "GIRAR";
 
   return (
     <>
