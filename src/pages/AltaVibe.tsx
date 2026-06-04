@@ -285,8 +285,8 @@ const AltaVibe = () => {
                   <canvas ref={canvasRef} width={320} height={320} />
                   <div className="av-center" aria-hidden="true" />
                 </div>
-                <button className="av-spin" onClick={spinWheel} disabled={alreadySpun || !me}>
-                  {alreadySpun ? "VOLTA AMANHÃ" : "GIRAR"}
+                <button className="av-spin" onClick={spinWheel} disabled={spinDisabled}>
+                  {spinLabel}
                 </button>
                 <div className={`av-result${flash ? " flash" : ""}`}>
                   {result ? (
