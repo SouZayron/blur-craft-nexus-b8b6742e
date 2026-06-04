@@ -534,6 +534,25 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      altavibe_login: {
+        Args: { p_name: string }
+        Returns: {
+          coins: number
+          created_at: string
+          id: string
+          last_spin: string | null
+          name: string
+          streak: number
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "altavibe_users"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      altavibe_spin: { Args: { p_name: string }; Returns: Json }
       cleanup_expired_bingo_cards: { Args: never; Returns: undefined }
     }
     Enums: {
