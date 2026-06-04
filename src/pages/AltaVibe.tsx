@@ -34,6 +34,7 @@ const AltaVibe = () => {
   const [result, setResult] = useState<{ total: number; bonus: number; prize: number } | null>(null);
   const [toast, setToast] = useState("");
   const [flash, setFlash] = useState(false);
+  const [gameOpen, setGameOpen] = useState(true);
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -88,9 +89,16 @@ const AltaVibe = () => {
 
   useEffect(() => {
     loadRanking();
+    supabase.from("altavibe_settings").select("is_open").eq("id", 1).maybeSingle().then(({ data }) => {
+      if (data) setGameOpen(!!data.is_open);
+    });
     const ch = supabase
       .channel("altavibe_users_ch")
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_users" }, () => loadRanking())
+      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_settings" }, (payload) => {
+        const row = (payload.new || payload.old) as { is_open?: boolean } | null;
+        if (row && typeof row.is_open === "boolean") setGameOpen(row.is_open);
+      })
       .subscribe();
     return () => { supabase.removeChannel(ch); };
   }, [loadRanking]);
@@ -138,6 +146,7 @@ const AltaVibe = () => {
   const spinWheel = async () => {
     if (spinningRef.current) return;
     if (!me) { showToast("Salva seu apelido primeiro! 👆"); return; }
+    if (!gameOpen) { showToast("Game fechado no momento 🔒"); return; }
     spinningRef.current = true;
 
     const { data, error } = await supabase.rpc("altavibe_spin", { p_name: me.name });
@@ -145,6 +154,7 @@ const AltaVibe = () => {
       spinningRef.current = false;
       const msg = error?.message || "";
       if (msg.includes("already_spun_today")) showToast("Já girou hoje! Volta amanhã 🌙");
+      else if (msg.includes("game_closed")) showToast("Game fechado no momento 🔒");
       else showToast("Erro ao girar");
       return;
     }
@@ -162,6 +172,8 @@ const AltaVibe = () => {
 
   const today = new Date().toISOString().split("T")[0];
   const alreadySpun = me?.last_spin === today;
+  const spinDisabled = alreadySpun || !me || !gameOpen;
+  const spinLabel = !gameOpen ? "GAME FECHADO" : alreadySpun ? "VOLTA AMANHÃ" : "GIRAR";
 
   return (
     <>
@@ -273,8 +285,8 @@ const AltaVibe = () => {
                   <canvas ref={canvasRef} width={320} height={320} />
                   <div className="av-center" aria-hidden="true" />
                 </div>
-                <button className="av-spin" onClick={spinWheel} disabled={alreadySpun || !me}>
-                  {alreadySpun ? "VOLTA AMANHÃ" : "GIRAR"}
+                <button className="av-spin" onClick={spinWheel} disabled={spinDisabled}>
+                  {spinLabel}
                 </button>
                 <div className={`av-result${flash ? " flash" : ""}`}>
                   {result ? (
