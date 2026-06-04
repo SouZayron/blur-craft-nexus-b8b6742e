@@ -81,6 +81,7 @@ const App = () => (
               <Route path="/bingo2" element={<Bingo2 />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/altavibe" element={<AltaVibe />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
