@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      altavibe_settings: {
+        Row: {
+          id: number
+          is_open: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          is_open?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          is_open?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       altavibe_users: {
         Row: {
           coins: number
