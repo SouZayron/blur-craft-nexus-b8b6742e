@@ -194,7 +194,14 @@ const AltaVibe = () => {
         .av-coins-inline{display:flex;align-items:center;gap:.55rem;padding:.45rem .8rem;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);border-radius:10px}
         .av-camt{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:#ffd700;line-height:1;letter-spacing:1.5px}
         .av-ctag{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:1.5px;text-transform:uppercase;color:#bca8d9}
-        .av-wheel-panel{display:flex;flex-direction:column;align-items:center;gap:.7rem;flex:1;min-height:0;justify-content:center}
+        .av-wheel-panel{display:flex;flex-direction:column;align-items:center;gap:.55rem;flex:1;min-height:0;justify-content:flex-start;overflow-y:auto}
+        .av-wheel-panel::-webkit-scrollbar{width:6px}
+        .av-wheel-panel::-webkit-scrollbar-thumb{background:rgba(196,122,217,0.4);border-radius:3px}
+        .av-rules{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:.55rem .8rem;margin-top:.2rem}
+        .av-rules-title{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:2.5px;text-transform:uppercase;color:#d99ee6;margin-bottom:.35rem}
+        .av-rules-list{margin:0;padding-left:1.1rem;font-family:'Barlow',sans-serif;font-size:.74rem;line-height:1.35;color:#e5d8f5;display:flex;flex-direction:column;gap:.15rem}
+        .av-rules-list strong{color:#ffd700}
+        .av-rules-note{margin-top:.4rem;font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:1px;color:#bca8d9;text-align:center}
         .av-wrap{position:relative;width:min(280px,38vh);aspect-ratio:1}
         .av-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:20px solid #ffd700;filter:drop-shadow(0 0 8px rgba(255,215,0,.7));z-index:10}
         .av-wrap canvas{width:100%;height:100%;border-radius:50%;display:block;box-shadow:0 0 40px rgba(196,122,217,0.35),0 0 80px rgba(139,63,191,0.2)}
