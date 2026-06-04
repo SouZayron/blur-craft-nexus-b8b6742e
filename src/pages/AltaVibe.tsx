@@ -146,6 +146,7 @@ const AltaVibe = () => {
   const spinWheel = async () => {
     if (spinningRef.current) return;
     if (!me) { showToast("Salva seu apelido primeiro! 👆"); return; }
+    if (!gameOpen) { showToast("Game fechado no momento 🔒"); return; }
     spinningRef.current = true;
 
     const { data, error } = await supabase.rpc("altavibe_spin", { p_name: me.name });
@@ -153,6 +154,7 @@ const AltaVibe = () => {
       spinningRef.current = false;
       const msg = error?.message || "";
       if (msg.includes("already_spun_today")) showToast("Já girou hoje! Volta amanhã 🌙");
+      else if (msg.includes("game_closed")) showToast("Game fechado no momento 🔒");
       else showToast("Erro ao girar");
       return;
     }
