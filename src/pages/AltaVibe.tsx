@@ -34,6 +34,7 @@ const AltaVibe = () => {
   const [result, setResult] = useState<{ total: number; bonus: number; prize: number } | null>(null);
   const [toast, setToast] = useState("");
   const [flash, setFlash] = useState(false);
+  const [gameOpen, setGameOpen] = useState(true);
 
   const showToast = (msg: string) => {
     setToast(msg);
