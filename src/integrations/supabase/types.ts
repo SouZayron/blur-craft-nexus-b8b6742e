@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      altavibe_users: {
+        Row: {
+          coins: number
+          created_at: string
+          id: string
+          last_spin: string | null
+          name: string
+          streak: number
+          updated_at: string
+        }
+        Insert: {
+          coins?: number
+          created_at?: string
+          id?: string
+          last_spin?: string | null
+          name: string
+          streak?: number
+          updated_at?: string
+        }
+        Update: {
+          coins?: number
+          created_at?: string
+          id?: string
+          last_spin?: string | null
+          name?: string
+          streak?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       bingo_admins: {
         Row: {
           created_at: string
