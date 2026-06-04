@@ -280,6 +280,18 @@ const AltaVibe = () => {
                     <span style={{ color: "#bca8d9" }}>Seu prêmio aparece aqui</span>
                   )}
                 </div>
+                <div className="av-rules">
+                  <div className="av-rules-title">📋 Regras</div>
+                  <ol className="av-rules-list">
+                    <li>Usar o mesmo nome de cadastro todos os dias para acumular.</li>
+                    <li>Vale apenas <strong>um giro por dia</strong>.</li>
+                    <li>Período: <strong>05/06/2026 a 15/06/2026</strong> (10 dias).</li>
+                    <li>Prêmios: <strong>1º 1500x</strong> · <strong>2º 1000x</strong> · <strong>3º 500x</strong>.</li>
+                    <li>Cadastros duplicados: vale apenas o de maior valor acumulado.</li>
+                  </ol>
+                  <div className="av-rules-note">⚠️ A roleta entrega VibeCoins aleatoriamente de 5 a 50 VC.</div>
+                </div>
+
               </div>
             </div>
 
