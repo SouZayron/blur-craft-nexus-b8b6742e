@@ -73,14 +73,20 @@ export const AvatarEditor = () => {
       ctx.lineTo(cx, cy - outer);
       ctx.closePath();
     } else if (s === "heart") {
+      // Parametric heart, scaled to fit the bounding box nicely
       const cx = x + size / 2;
       const cy = y + size / 2;
-      const w = size;
-      const h = size;
-      const topY = cy - h * 0.25;
-      ctx.moveTo(cx, cy + h * 0.4);
-      ctx.bezierCurveTo(cx + w * 0.55, cy + h * 0.1, cx + w * 0.5, topY - h * 0.15, cx, cy - h * 0.1);
-      ctx.bezierCurveTo(cx - w * 0.5, topY - h * 0.15, cx - w * 0.55, cy + h * 0.1, cx, cy + h * 0.4);
+      const scale = size / 32;
+      const steps = 200;
+      for (let i = 0; i <= steps; i++) {
+        const t = (i / steps) * Math.PI * 2;
+        const px = 16 * Math.pow(Math.sin(t), 3);
+        const py = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+        const X = cx + px * scale;
+        const Y = cy + py * scale;
+        if (i === 0) ctx.moveTo(X, Y);
+        else ctx.lineTo(X, Y);
+      }
       ctx.closePath();
     }
   }, []);
