@@ -83,6 +83,7 @@ const App = () => (
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/altavibe" element={<AltaVibe />} />
+              <Route path="/adminaltavibe" element={<AdminAltaVibe />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
