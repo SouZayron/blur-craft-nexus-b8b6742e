@@ -24,6 +24,16 @@ type User = {
   last_spin: string | null;
 };
 
+type LogRow = {
+  id: string;
+  name: string;
+  prize: number;
+  bonus: number;
+  total: number;
+  is_boost: boolean;
+  created_at: string;
+};
+
 const AltaVibe = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const angleRef = useRef(0);
