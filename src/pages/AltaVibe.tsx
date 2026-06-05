@@ -236,7 +236,17 @@ const AltaVibe = () => {
         .av-sub{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:5px;text-transform:uppercase;color:#bca8d9;margin-top:2px}
         .av-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:.85rem;flex:1;min-height:0}
         .av-col{display:flex;flex-direction:column;gap:.55rem;min-height:0}
-        .av-col-left{display:grid;grid-template-rows:auto 1fr;gap:.55rem;min-height:0}
+        .av-col-left{display:grid;grid-template-rows:auto auto 1fr;gap:.55rem;min-height:0}
+        .av-logs{display:flex;flex-direction:column;min-height:0;padding:.55rem .75rem}
+        .av-logs-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem;flex-shrink:0}
+        .av-logs-list{overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:.2rem;padding-right:.3rem}
+        .av-logs-list::-webkit-scrollbar{width:6px}
+        .av-logs-list::-webkit-scrollbar-thumb{background:rgba(196,122,217,0.4);border-radius:3px}
+        .av-log-row{display:grid;grid-template-columns:1fr auto auto auto;gap:.55rem;align-items:center;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;padding:.25rem .5rem;border-radius:5px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)}
+        .av-log-row.boost{background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.25)}
+        .av-log-name{font-weight:600;color:#f5ecff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .av-log-date,.av-log-time{color:#bca8d9;letter-spacing:.5px}
+        .av-log-pts{color:#ffd700;font-weight:700;letter-spacing:.5px}
         .av-panel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:.7rem .9rem;backdrop-filter:blur(12px)}
         .av-ptitle{font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:3px;text-transform:uppercase;color:#bca8d9}
         .av-profile{display:flex;gap:.5rem;align-items:end;flex-wrap:wrap}
