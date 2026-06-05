@@ -75,11 +75,22 @@ const AdminAltaVibe = () => {
   };
 
   const resetAll = async () => {
-    if (!confirm("Zerar TODOS os pontos e cadastros? Esta ação é irreversível.")) return;
-    const { error } = await supabase.from("altavibe_users").delete().neq("id", "00000000-0000-0000-0000-000000000000");
-    if (error) { showToast("Erro ao zerar"); return; }
+    if (!confirm("Zerar TODOS os pontos, cadastros e logs? Esta ação é irreversível.")) return;
+    const ZERO = "00000000-0000-0000-0000-000000000000";
+    const [logsRes, usersRes] = await Promise.all([
+      supabase.from("altavibe_logs").delete().neq("id", ZERO),
+      supabase.from("altavibe_users").delete().neq("id", ZERO),
+    ]);
+    if (logsRes.error || usersRes.error) { showToast("Erro ao zerar"); return; }
     showToast("Game zerado!");
     load();
+  };
+
+  const clearLogs = async () => {
+    if (!confirm("Limpar todos os logs?")) return;
+    const { error } = await supabase.from("altavibe_logs").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    if (error) { showToast("Erro ao limpar logs"); return; }
+    showToast("Logs limpos!");
   };
 
   const deleteUser = async (u: User) => {
