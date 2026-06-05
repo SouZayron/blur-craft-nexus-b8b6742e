@@ -290,7 +290,7 @@ const AltaVibe = () => {
     });
   };
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD in local tz
   const alreadySpun = me?.last_spin === today && !extraSpin;
   const spinDisabled = !me || !gameOpen || (alreadySpun && !extraSpin);
   const spinLabel = !gameOpen ? "GAME FECHADO" : extraSpin ? "GIRAR (BOOST)" : alreadySpun ? "VOLTA AMANHÃ" : "GIRAR";
