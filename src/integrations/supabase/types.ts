@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      altavibe_logs: {
+        Row: {
+          bonus: number
+          created_at: string
+          id: string
+          is_boost: boolean
+          name: string
+          prize: number
+          total: number
+          user_id: string | null
+        }
+        Insert: {
+          bonus?: number
+          created_at?: string
+          id?: string
+          is_boost?: boolean
+          name: string
+          prize?: number
+          total?: number
+          user_id?: string | null
+        }
+        Update: {
+          bonus?: number
+          created_at?: string
+          id?: string
+          is_boost?: boolean
+          name?: string
+          prize?: number
+          total?: number
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       altavibe_settings: {
         Row: {
           id: number
