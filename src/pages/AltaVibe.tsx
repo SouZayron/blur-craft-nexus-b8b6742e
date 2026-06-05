@@ -100,8 +100,18 @@ const AltaVibe = () => {
     if (data) setRanking(data as User[]);
   }, []);
 
+  const loadLogs = useCallback(async () => {
+    const { data } = await supabase
+      .from("altavibe_logs")
+      .select("id,name,prize,bonus,total,is_boost,created_at")
+      .order("created_at", { ascending: false })
+      .limit(50);
+    if (data) setLogs(data as LogRow[]);
+  }, []);
+
   useEffect(() => {
     loadRanking();
+    loadLogs();
     supabase.from("altavibe_settings").select("is_open").eq("id", 1).maybeSingle().then(({ data }) => {
       if (data) setGameOpen(!!data.is_open);
     });
@@ -112,9 +122,10 @@ const AltaVibe = () => {
         const row = (payload.new || payload.old) as { is_open?: boolean } | null;
         if (row && typeof row.is_open === "boolean") setGameOpen(row.is_open);
       })
+      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_logs" }, () => loadLogs())
       .subscribe();
     return () => { supabase.removeChannel(ch); };
-  }, [loadRanking]);
+  }, [loadRanking, loadLogs]);
 
   useEffect(() => {
     const savedName = localStorage.getItem(LS_NAME);
