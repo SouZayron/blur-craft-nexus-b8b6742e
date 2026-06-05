@@ -160,6 +160,65 @@ const AltaVibe = () => {
     loadRanking();
   };
 
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const getAudio = () => {
+    if (typeof window === "undefined") return null;
+    if (!audioCtxRef.current) {
+      const Ctx = (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext);
+      if (!Ctx) return null;
+      audioCtxRef.current = new Ctx();
+    }
+    if (audioCtxRef.current.state === "suspended") audioCtxRef.current.resume();
+    return audioCtxRef.current;
+  };
+
+  const playTick = () => {
+    const ctx = getAudio(); if (!ctx) return;
+    const t = ctx.currentTime;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "square";
+    o.frequency.setValueAtTime(880, t);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.08, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
+    o.connect(g).connect(ctx.destination);
+    o.start(t); o.stop(t + 0.07);
+  };
+
+  const playCoins = () => {
+    const ctx = getAudio(); if (!ctx) return;
+    const base = ctx.currentTime;
+    const notes = [
+      { f: 1320, t: 0 }, { f: 1760, t: 0.07 }, { f: 1480, t: 0.14 },
+      { f: 1980, t: 0.22 }, { f: 2200, t: 0.32 }, { f: 1760, t: 0.42 },
+      { f: 2640, t: 0.52 },
+    ];
+    notes.forEach(({ f, t }) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "triangle";
+      o.frequency.setValueAtTime(f, base + t);
+      g.gain.setValueAtTime(0.0001, base + t);
+      g.gain.exponentialRampToValueAtTime(0.18, base + t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, base + t + 0.25);
+      o.connect(g).connect(ctx.destination);
+      o.start(base + t); o.stop(base + t + 0.3);
+    });
+    // shimmer noise
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.5, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 2);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const ng = ctx.createGain();
+    ng.gain.value = 0.05;
+    const hp = ctx.createBiquadFilter();
+    hp.type = "highpass"; hp.frequency.value = 3000;
+    src.connect(hp).connect(ng).connect(ctx.destination);
+    src.start(base);
+  };
+
   const animateTo = (winIdx: number, onDone: () => void) => {
     const extraRot = 6 * 2 * Math.PI;
     const target = extraRot + (2 * Math.PI - winIdx * SEG - SEG / 2);
@@ -169,10 +228,13 @@ const AltaVibe = () => {
     const normalized = startAngle % (2 * Math.PI);
     const delta = target - normalized;
     const ease = (t: number) => 1 - Math.pow(1 - t, 4);
+    let lastSeg = -1;
     const frame = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
       angleRef.current = startAngle + delta * ease(progress);
       drawWheel(angleRef.current);
+      const segIdx = Math.floor((angleRef.current / SEG)) % PRIZES.length;
+      if (segIdx !== lastSeg) { lastSeg = segIdx; playTick(); }
       if (progress < 1) requestAnimationFrame(frame);
       else onDone();
     };
