@@ -260,7 +260,8 @@ const AltaVibe = () => {
     if (!gameOpen) { showToast("Game fechado no momento 🔒"); return; }
     spinningRef.current = true;
 
-    const { data, error } = await supabase.rpc("altavibe_spin", { p_name: me.name });
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+    const { data, error } = await supabase.rpc("altavibe_spin", { p_name: me.name, p_tz: tz });
     if (error || !data) {
       spinningRef.current = false;
       const msg = error?.message || "";
