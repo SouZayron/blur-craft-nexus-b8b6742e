@@ -75,11 +75,22 @@ const AdminAltaVibe = () => {
   };
 
   const resetAll = async () => {
-    if (!confirm("Zerar TODOS os pontos e cadastros? Esta ação é irreversível.")) return;
-    const { error } = await supabase.from("altavibe_users").delete().neq("id", "00000000-0000-0000-0000-000000000000");
-    if (error) { showToast("Erro ao zerar"); return; }
+    if (!confirm("Zerar TODOS os pontos, cadastros e logs? Esta ação é irreversível.")) return;
+    const ZERO = "00000000-0000-0000-0000-000000000000";
+    const [logsRes, usersRes] = await Promise.all([
+      supabase.from("altavibe_logs").delete().neq("id", ZERO),
+      supabase.from("altavibe_users").delete().neq("id", ZERO),
+    ]);
+    if (logsRes.error || usersRes.error) { showToast("Erro ao zerar"); return; }
     showToast("Game zerado!");
     load();
+  };
+
+  const clearLogs = async () => {
+    if (!confirm("Limpar todos os logs?")) return;
+    const { error } = await supabase.from("altavibe_logs").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    if (error) { showToast("Erro ao limpar logs"); return; }
+    showToast("Logs limpos!");
   };
 
   const deleteUser = async (u: User) => {
@@ -147,9 +158,16 @@ const AdminAltaVibe = () => {
             </div>
             <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "1rem" }}>
               <div style={{ fontSize: ".75rem", color: "#bca8d9", letterSpacing: 2, textTransform: "uppercase" }}>Reset Total</div>
-              <div style={{ fontSize: ".82rem", color: "#bca8d9", marginTop: ".3rem" }}>Exclui todos os cadastros e zera os pontos.</div>
+              <div style={{ fontSize: ".82rem", color: "#bca8d9", marginTop: ".3rem" }}>Exclui cadastros, pontos e logs.</div>
               <button onClick={resetAll} style={{ marginTop: ".75rem", width: "100%", padding: ".6rem", background: "linear-gradient(135deg,#b91c1c,#ef4444)", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", fontSize: ".85rem" }}>
                 Zerar Tudo
+              </button>
+            </div>
+            <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "1rem" }}>
+              <div style={{ fontSize: ".75rem", color: "#bca8d9", letterSpacing: 2, textTransform: "uppercase" }}>Logs</div>
+              <div style={{ fontSize: ".82rem", color: "#bca8d9", marginTop: ".3rem" }}>Limpa apenas o histórico de giros.</div>
+              <button onClick={clearLogs} style={{ marginTop: ".75rem", width: "100%", padding: ".6rem", background: "linear-gradient(135deg,#7c2d12,#ea580c)", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", fontSize: ".85rem" }}>
+                Limpar Logs
               </button>
             </div>
           </section>

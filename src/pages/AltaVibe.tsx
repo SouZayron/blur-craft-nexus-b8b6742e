@@ -117,7 +117,20 @@ const AltaVibe = () => {
     });
     const ch = supabase
       .channel("altavibe_users_ch")
-      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_users" }, () => loadRanking())
+      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_users" }, (payload) => {
+        loadRanking();
+        if (payload.eventType === "DELETE") {
+          const oldRow = payload.old as { id?: string } | null;
+          setMe((curr) => {
+            if (curr && oldRow?.id && curr.id === oldRow.id) {
+              localStorage.removeItem(LS_NAME);
+              localStorage.removeItem(LS_PASS);
+              return null;
+            }
+            return curr;
+          });
+        }
+      })
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_settings" }, (payload) => {
         const row = (payload.new || payload.old) as { is_open?: boolean } | null;
         if (row && typeof row.is_open === "boolean") setGameOpen(row.is_open);
