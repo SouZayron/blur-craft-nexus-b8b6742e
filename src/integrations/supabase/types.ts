@@ -39,6 +39,7 @@ export type Database = {
           id: string
           last_spin: string | null
           name: string
+          password: string | null
           streak: number
           updated_at: string
         }
@@ -48,6 +49,7 @@ export type Database = {
           id?: string
           last_spin?: string | null
           name: string
+          password?: string | null
           streak?: number
           updated_at?: string
         }
@@ -57,6 +59,7 @@ export type Database = {
           id?: string
           last_spin?: string | null
           name?: string
+          password?: string | null
           streak?: number
           updated_at?: string
         }
@@ -553,13 +556,14 @@ export type Database = {
     }
     Functions: {
       altavibe_login: {
-        Args: { p_name: string }
+        Args: { p_name: string; p_password: string }
         Returns: {
           coins: number
           created_at: string
           id: string
           last_spin: string | null
           name: string
+          password: string | null
           streak: number
           updated_at: string
         }
