@@ -265,9 +265,11 @@ const AltaVibe = () => {
       setTimeout(() => setFlash(false), 800);
       if (res.is_boost) {
         setExtraSpin(true);
+        playCoins();
         showToast("🚀 BOOST! Você ganhou um giro extra!");
       } else {
         setExtraSpin(false);
+        playCoins();
         showToast(res.bonus > 0 ? `🔥 Streak ${res.streak}d! Bônus +${res.bonus} Vibecoins` : `⚡ +${res.prize} Vibecoins!`);
       }
       loadRanking();
