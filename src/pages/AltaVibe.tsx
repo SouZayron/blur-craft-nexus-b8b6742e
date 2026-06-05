@@ -47,6 +47,7 @@ const AltaVibe = () => {
   const [flash, setFlash] = useState(false);
   const [gameOpen, setGameOpen] = useState(true);
   const [extraSpin, setExtraSpin] = useState(false);
+  const [logs, setLogs] = useState<LogRow[]>([]);
 
   const showToast = (msg: string) => {
     setToast(msg);
