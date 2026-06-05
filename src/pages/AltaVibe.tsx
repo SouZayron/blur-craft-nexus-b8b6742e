@@ -266,6 +266,8 @@ const AltaVibe = () => {
       spinningRef.current = false;
       const msg = error?.message || "";
       if (msg.includes("already_spun_today")) showToast("Já girou hoje! Volta amanhã 🌙");
+      else if (msg.includes("game_not_started")) showToast("Game ainda não começou (abre 05/06 00:01) ⏳");
+      else if (msg.includes("game_ended")) showToast("Game encerrado (terminou em 15/06) 🏁");
       else if (msg.includes("game_closed")) showToast("Game fechado no momento 🔒");
       else showToast("Erro ao girar");
       return;
