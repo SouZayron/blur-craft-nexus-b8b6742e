@@ -607,7 +607,9 @@ export type Database = {
           isSetofReturn: false
         }
       }
-      altavibe_spin: { Args: { p_name: string }; Returns: Json }
+      altavibe_spin:
+        | { Args: { p_name: string }; Returns: Json }
+        | { Args: { p_name: string; p_tz?: string }; Returns: Json }
       cleanup_expired_bingo_cards: { Args: never; Returns: undefined }
     }
     Enums: {

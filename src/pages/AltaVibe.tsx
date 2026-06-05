@@ -260,7 +260,8 @@ const AltaVibe = () => {
     if (!gameOpen) { showToast("Game fechado no momento 🔒"); return; }
     spinningRef.current = true;
 
-    const { data, error } = await supabase.rpc("altavibe_spin", { p_name: me.name });
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+    const { data, error } = await supabase.rpc("altavibe_spin", { p_name: me.name, p_tz: tz });
     if (error || !data) {
       spinningRef.current = false;
       const msg = error?.message || "";
@@ -289,7 +290,7 @@ const AltaVibe = () => {
     });
   };
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD in local tz
   const alreadySpun = me?.last_spin === today && !extraSpin;
   const spinDisabled = !me || !gameOpen || (alreadySpun && !extraSpin);
   const spinLabel = !gameOpen ? "GAME FECHADO" : extraSpin ? "GIRAR (BOOST)" : alreadySpun ? "VOLTA AMANHÃ" : "GIRAR";
