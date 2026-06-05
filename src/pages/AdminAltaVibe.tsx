@@ -158,9 +158,16 @@ const AdminAltaVibe = () => {
             </div>
             <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "1rem" }}>
               <div style={{ fontSize: ".75rem", color: "#bca8d9", letterSpacing: 2, textTransform: "uppercase" }}>Reset Total</div>
-              <div style={{ fontSize: ".82rem", color: "#bca8d9", marginTop: ".3rem" }}>Exclui todos os cadastros e zera os pontos.</div>
+              <div style={{ fontSize: ".82rem", color: "#bca8d9", marginTop: ".3rem" }}>Exclui cadastros, pontos e logs.</div>
               <button onClick={resetAll} style={{ marginTop: ".75rem", width: "100%", padding: ".6rem", background: "linear-gradient(135deg,#b91c1c,#ef4444)", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", fontSize: ".85rem" }}>
                 Zerar Tudo
+              </button>
+            </div>
+            <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "1rem" }}>
+              <div style={{ fontSize: ".75rem", color: "#bca8d9", letterSpacing: 2, textTransform: "uppercase" }}>Logs</div>
+              <div style={{ fontSize: ".82rem", color: "#bca8d9", marginTop: ".3rem" }}>Limpa apenas o histórico de giros.</div>
+              <button onClick={clearLogs} style={{ marginTop: ".75rem", width: "100%", padding: ".6rem", background: "linear-gradient(135deg,#7c2d12,#ea580c)", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", fontSize: ".85rem" }}>
+                Limpar Logs
               </button>
             </div>
           </section>
