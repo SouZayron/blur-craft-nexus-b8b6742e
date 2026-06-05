@@ -24,6 +24,16 @@ type User = {
   last_spin: string | null;
 };
 
+type LogRow = {
+  id: string;
+  name: string;
+  prize: number;
+  bonus: number;
+  total: number;
+  is_boost: boolean;
+  created_at: string;
+};
+
 const AltaVibe = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const angleRef = useRef(0);
@@ -37,6 +47,7 @@ const AltaVibe = () => {
   const [flash, setFlash] = useState(false);
   const [gameOpen, setGameOpen] = useState(true);
   const [extraSpin, setExtraSpin] = useState(false);
+  const [logs, setLogs] = useState<LogRow[]>([]);
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -89,8 +100,18 @@ const AltaVibe = () => {
     if (data) setRanking(data as User[]);
   }, []);
 
+  const loadLogs = useCallback(async () => {
+    const { data } = await supabase
+      .from("altavibe_logs")
+      .select("id,name,prize,bonus,total,is_boost,created_at")
+      .order("created_at", { ascending: false })
+      .limit(50);
+    if (data) setLogs(data as LogRow[]);
+  }, []);
+
   useEffect(() => {
     loadRanking();
+    loadLogs();
     supabase.from("altavibe_settings").select("is_open").eq("id", 1).maybeSingle().then(({ data }) => {
       if (data) setGameOpen(!!data.is_open);
     });
@@ -101,9 +122,10 @@ const AltaVibe = () => {
         const row = (payload.new || payload.old) as { is_open?: boolean } | null;
         if (row && typeof row.is_open === "boolean") setGameOpen(row.is_open);
       })
+      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_logs" }, () => loadLogs())
       .subscribe();
     return () => { supabase.removeChannel(ch); };
-  }, [loadRanking]);
+  }, [loadRanking, loadLogs]);
 
   useEffect(() => {
     const savedName = localStorage.getItem(LS_NAME);
@@ -214,7 +236,17 @@ const AltaVibe = () => {
         .av-sub{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:5px;text-transform:uppercase;color:#bca8d9;margin-top:2px}
         .av-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:.85rem;flex:1;min-height:0}
         .av-col{display:flex;flex-direction:column;gap:.55rem;min-height:0}
-        .av-col-left{display:grid;grid-template-rows:auto 1fr;gap:.55rem;min-height:0}
+        .av-col-left{display:grid;grid-template-rows:auto auto 1fr;gap:.55rem;min-height:0}
+        .av-logs{display:flex;flex-direction:column;min-height:0;padding:.55rem .75rem}
+        .av-logs-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem;flex-shrink:0}
+        .av-logs-list{overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:.2rem;padding-right:.3rem}
+        .av-logs-list::-webkit-scrollbar{width:6px}
+        .av-logs-list::-webkit-scrollbar-thumb{background:rgba(196,122,217,0.4);border-radius:3px}
+        .av-log-row{display:grid;grid-template-columns:1fr auto auto auto;gap:.55rem;align-items:center;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;padding:.25rem .5rem;border-radius:5px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)}
+        .av-log-row.boost{background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.25)}
+        .av-log-name{font-weight:600;color:#f5ecff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .av-log-date,.av-log-time{color:#bca8d9;letter-spacing:.5px}
+        .av-log-pts{color:#ffd700;font-weight:700;letter-spacing:.5px}
         .av-panel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:.7rem .9rem;backdrop-filter:blur(12px)}
         .av-ptitle{font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:3px;text-transform:uppercase;color:#bca8d9}
         .av-profile{display:flex;gap:.5rem;align-items:end;flex-wrap:wrap}
@@ -348,6 +380,32 @@ const AltaVibe = () => {
                     <div className="av-odd-row"><span className="av-odd-name">10 Vibecoins</span><span className="av-odd-pct">20% de chance</span></div>
                     <div className="av-odd-row"><span className="av-odd-name">5 Vibecoins</span><span className="av-odd-pct">40% de chance</span></div>
                   </div>
+                </div>
+              </div>
+
+              <div className="av-panel av-logs">
+                <div className="av-logs-head">
+                  <div className="av-ptitle">📡 Logs (tempo real)</div>
+                  <div className="av-ctag">{logs.length} coleta{logs.length !== 1 ? "s" : ""}</div>
+                </div>
+                <div className="av-logs-list">
+                  {logs.length === 0 ? (
+                    <div className="av-empty">Sem coletas ainda — gira a roleta! 🎯</div>
+                  ) : (
+                    logs.map((l) => {
+                      const d = new Date(l.created_at);
+                      const date = d.toLocaleDateString("pt-BR");
+                      const time = d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+                      return (
+                        <div key={l.id} className={`av-log-row${l.is_boost ? " boost" : ""}`}>
+                          <span className="av-log-name">{l.name}</span>
+                          <span className="av-log-date">{date}</span>
+                          <span className="av-log-time">{time}</span>
+                          <span className="av-log-pts">{l.is_boost ? "🚀 BOOST" : `+${l.total} VC`}</span>
+                        </div>
+                      );
+                    })
+                  )}
                 </div>
               </div>
             </div>
