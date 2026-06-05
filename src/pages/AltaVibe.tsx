@@ -382,6 +382,32 @@ const AltaVibe = () => {
                   </div>
                 </div>
               </div>
+
+              <div className="av-panel av-logs">
+                <div className="av-logs-head">
+                  <div className="av-ptitle">📡 Logs (tempo real)</div>
+                  <div className="av-ctag">{logs.length} coleta{logs.length !== 1 ? "s" : ""}</div>
+                </div>
+                <div className="av-logs-list">
+                  {logs.length === 0 ? (
+                    <div className="av-empty">Sem coletas ainda — gira a roleta! 🎯</div>
+                  ) : (
+                    logs.map((l) => {
+                      const d = new Date(l.created_at);
+                      const date = d.toLocaleDateString("pt-BR");
+                      const time = d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+                      return (
+                        <div key={l.id} className={`av-log-row${l.is_boost ? " boost" : ""}`}>
+                          <span className="av-log-name">{l.name}</span>
+                          <span className="av-log-date">{date}</span>
+                          <span className="av-log-time">{time}</span>
+                          <span className="av-log-pts">{l.is_boost ? "🚀 BOOST" : `+${l.total} VC`}</span>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* RIGHT: wheel + ranking */}
