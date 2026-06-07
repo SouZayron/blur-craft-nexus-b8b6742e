@@ -461,6 +461,17 @@ const AltaVibe = () => {
                     <div className="av-odd-row"><span className="av-odd-name">5 Vibecoins</span><span className="av-odd-pct">40% de chance</span></div>
                   </div>
                 </div>
+                <div className="av-rules-box">
+                  <div className="av-rules-title">🔥 Streak &amp; Bônus</div>
+                  <ul className="av-rules-list">
+                    <li>Girar <strong>todos os dias</strong> aumenta sua streak 🔥.</li>
+                    <li><strong>3 dias seguidos</strong>: bônus de <strong>+20%</strong> sobre o prêmio.</li>
+                    <li><strong>7+ dias seguidos</strong>: bônus de <strong>+50%</strong> sobre o prêmio.</li>
+                    <li>Ex: 30 VC com streak 3d = 30 + 6 = <strong>36 VC</strong>.</li>
+                    <li>Ex: 40 VC com streak 7d = 40 + 20 = <strong>60 VC</strong>.</li>
+                    <li>Por isso, o total pode <strong>não ser múltiplo de 5</strong> — é normal!</li>
+                  </ul>
+                </div>
               </div>
 
               <div className="av-panel av-logs">
