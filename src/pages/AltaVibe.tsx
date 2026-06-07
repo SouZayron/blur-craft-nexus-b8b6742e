@@ -341,7 +341,7 @@ const AltaVibe = () => {
         .av-camt{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#ffd700;line-height:1;letter-spacing:1.5px}
         .av-ctag{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;color:#bca8d9}
 
-        .av-rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;min-height:0}
+        .av-rules-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.55rem;min-height:0}
         .av-rules-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:.6rem .75rem;display:flex;flex-direction:column;min-height:0;overflow:hidden}
         .av-rules-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;color:#d99ee6;margin-bottom:.35rem}
         .av-rules-list{margin:0;padding-left:1rem;font-family:'Barlow',sans-serif;font-size:.7rem;line-height:1.3;color:#e5d8f5;display:flex;flex-direction:column;gap:.18rem;overflow-y:auto}
