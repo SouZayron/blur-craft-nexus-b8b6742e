@@ -341,7 +341,7 @@ const AltaVibe = () => {
         .av-camt{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#ffd700;line-height:1;letter-spacing:1.5px}
         .av-ctag{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;color:#bca8d9}
 
-        .av-rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;min-height:0}
+        .av-rules-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.55rem;min-height:0}
         .av-rules-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:.6rem .75rem;display:flex;flex-direction:column;min-height:0;overflow:hidden}
         .av-rules-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;color:#d99ee6;margin-bottom:.35rem}
         .av-rules-list{margin:0;padding-left:1rem;font-family:'Barlow',sans-serif;font-size:.7rem;line-height:1.3;color:#e5d8f5;display:flex;flex-direction:column;gap:.18rem;overflow-y:auto}
@@ -460,6 +460,17 @@ const AltaVibe = () => {
                     <div className="av-odd-row"><span className="av-odd-name">10 Vibecoins</span><span className="av-odd-pct">20% de chance</span></div>
                     <div className="av-odd-row"><span className="av-odd-name">5 Vibecoins</span><span className="av-odd-pct">40% de chance</span></div>
                   </div>
+                </div>
+                <div className="av-rules-box">
+                  <div className="av-rules-title">🔥 Streak &amp; Bônus</div>
+                  <ul className="av-rules-list">
+                    <li>Girar <strong>todos os dias</strong> aumenta sua streak 🔥.</li>
+                    <li><strong>3 dias seguidos</strong>: bônus de <strong>+20%</strong> sobre o prêmio.</li>
+                    <li><strong>7+ dias seguidos</strong>: bônus de <strong>+50%</strong> sobre o prêmio.</li>
+                    <li>Ex: 30 VC com streak 3d = 30 + 6 = <strong>36 VC</strong>.</li>
+                    <li>Ex: 40 VC com streak 7d = 40 + 20 = <strong>60 VC</strong>.</li>
+                    <li>Por isso, o total pode <strong>não ser múltiplo de 5</strong> — é normal!</li>
+                  </ul>
                 </div>
               </div>
 
