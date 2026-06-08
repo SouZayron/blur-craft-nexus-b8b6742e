@@ -492,7 +492,7 @@ const AltaVibe = () => {
                           <span className="av-log-name">{l.name}</span>
                           <span className="av-log-date">{date}</span>
                           <span className="av-log-time">{time}</span>
-                          <span className="av-log-pts">{l.is_boost ? "🚀 BOOST" : `+${l.total} VC`}</span>
+                          <span className="av-log-pts">{l.is_boost ? `🚀 +${l.total} VC` : `+${l.total} VC`}</span>
                         </div>
                       );
                     })
