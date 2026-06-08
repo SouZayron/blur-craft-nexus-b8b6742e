@@ -452,7 +452,7 @@ const AltaVibe = () => {
                 <div className="av-rules-box">
                   <div className="av-rules-title">🎯 Peso dos Ganhos</div>
                   <div className="av-odds">
-                    <div className="av-odd-row boost"><span className="av-odd-name">🚀 1 Boost (giro extra)</span><span className="av-odd-pct">0,5% de chance</span></div>
+                    <div className="av-odd-row boost"><span className="av-odd-name">🚀 BOOST (5–50 VC + giro extra)</span><span className="av-odd-pct">0,5% de chance</span></div>
                     <div className="av-odd-row"><span className="av-odd-name">50 Vibecoins</span><span className="av-odd-pct">1% de chance</span></div>
                     <div className="av-odd-row"><span className="av-odd-name">40 Vibecoins</span><span className="av-odd-pct">3% de chance</span></div>
                     <div className="av-odd-row"><span className="av-odd-name">30 Vibecoins</span><span className="av-odd-pct">5% de chance</span></div>
