@@ -464,12 +464,9 @@ const AltaVibe = () => {
                 <div className="av-rules-box">
                   <div className="av-rules-title">🔥 Streak &amp; Bônus</div>
                   <ul className="av-rules-list">
-                    <li>Girar <strong>todos os dias</strong> aumenta sua streak 🔥.</li>
-                    <li><strong>3 dias seguidos</strong>: bônus de <strong>+20%</strong> sobre o prêmio.</li>
-                    <li><strong>7+ dias seguidos</strong>: bônus de <strong>+50%</strong> sobre o prêmio.</li>
-                    <li>Ex: 30 VC com streak 3d = 30 + 6 = <strong>36 VC</strong>.</li>
-                    <li>Ex: 40 VC com streak 7d = 40 + 20 = <strong>60 VC</strong>.</li>
-                    <li>Por isso, o total pode <strong>não ser múltiplo de 5</strong> — é normal!</li>
+                    <li>Girar todos os dias aumenta streaks 🔥.</li>
+                    <li>3 dias seguidos: bônus de +20% sobre o prêmio.</li>
+                    <li>7+ dias seguidos: bônus de +50% sobre o prêmio.</li>
                   </ul>
                 </div>
               </div>
