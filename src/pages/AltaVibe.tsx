@@ -261,7 +261,7 @@ const AltaVibe = () => {
     spinningRef.current = true;
 
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-    const { data, error } = await supabase.rpc("altavibe_spin", { p_name: me.name, p_tz: tz });
+    const { data, error } = await supabase.rpc("altavibe_spin", { p_name: me.name, p_tz: tz, p_allow_boost: !extraSpin });
     if (error || !data) {
       spinningRef.current = false;
       const msg = error?.message || "";
@@ -282,7 +282,7 @@ const AltaVibe = () => {
       if (res.is_boost) {
         setExtraSpin(true);
         playCoins();
-        showToast("🚀 BOOST! Você ganhou um giro extra!");
+        showToast(`🚀 BOOST! +${res.prize} Vibecoins e um giro extra!`);
       } else {
         setExtraSpin(false);
         playCoins();
@@ -452,7 +452,7 @@ const AltaVibe = () => {
                 <div className="av-rules-box">
                   <div className="av-rules-title">🎯 Peso dos Ganhos</div>
                   <div className="av-odds">
-                    <div className="av-odd-row boost"><span className="av-odd-name">🚀 1 Boost (giro extra)</span><span className="av-odd-pct">0,5% de chance</span></div>
+                    <div className="av-odd-row boost"><span className="av-odd-name">🚀 BOOST (5–50 VC + giro extra)</span><span className="av-odd-pct">0,5% de chance</span></div>
                     <div className="av-odd-row"><span className="av-odd-name">50 Vibecoins</span><span className="av-odd-pct">1% de chance</span></div>
                     <div className="av-odd-row"><span className="av-odd-name">40 Vibecoins</span><span className="av-odd-pct">3% de chance</span></div>
                     <div className="av-odd-row"><span className="av-odd-name">30 Vibecoins</span><span className="av-odd-pct">5% de chance</span></div>
@@ -492,7 +492,7 @@ const AltaVibe = () => {
                           <span className="av-log-name">{l.name}</span>
                           <span className="av-log-date">{date}</span>
                           <span className="av-log-time">{time}</span>
-                          <span className="av-log-pts">{l.is_boost ? "🚀 BOOST" : `+${l.total} VC`}</span>
+                          <span className="av-log-pts">{l.is_boost ? `🚀 +${l.total} VC` : `+${l.total} VC`}</span>
                         </div>
                       );
                     })
@@ -515,7 +515,7 @@ const AltaVibe = () => {
                 <div className={`av-result${flash ? " flash" : ""}`}>
                   {result ? (
                     result.boost ? (
-                      <><span>🚀</span><span className="av-rval">BOOST</span><span style={{ color: "#d99ee6" }}>(giro extra)</span></>
+                      <><span>🚀 BOOST</span><span className="av-rval">+{result.prize} Vibecoins</span><span style={{ color: "#d99ee6" }}>(+ giro extra)</span></>
                     ) : (
                       <>
                         <span>Ganhou</span>

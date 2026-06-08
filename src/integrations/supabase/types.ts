@@ -610,6 +610,10 @@ export type Database = {
       altavibe_spin:
         | { Args: { p_name: string }; Returns: Json }
         | { Args: { p_name: string; p_tz?: string }; Returns: Json }
+        | {
+            Args: { p_allow_boost?: boolean; p_name: string; p_tz?: string }
+            Returns: Json
+          }
       cleanup_expired_bingo_cards: { Args: never; Returns: undefined }
     }
     Enums: {
