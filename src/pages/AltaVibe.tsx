@@ -78,7 +78,7 @@ const AltaVibe = () => {
       ctx.rotate(start + SEG / 2);
       ctx.textAlign = "right";
       ctx.fillStyle = p.text;
-      ctx.font = "bold 13px 'Barlow Condensed', sans-serif";
+      ctx.font = "bold 18px 'Barlow Condensed', sans-serif";
       ctx.fillText(p.label, r - 10, 5);
       ctx.restore();
     });
