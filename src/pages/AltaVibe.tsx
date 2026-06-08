@@ -515,7 +515,7 @@ const AltaVibe = () => {
                 <div className={`av-result${flash ? " flash" : ""}`}>
                   {result ? (
                     result.boost ? (
-                      <><span>🚀</span><span className="av-rval">BOOST</span><span style={{ color: "#d99ee6" }}>(giro extra)</span></>
+                      <><span>🚀 BOOST</span><span className="av-rval">+{result.prize} Vibecoins</span><span style={{ color: "#d99ee6" }}>(+ giro extra)</span></>
                     ) : (
                       <>
                         <span>Ganhou</span>
