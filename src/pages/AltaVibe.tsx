@@ -261,7 +261,7 @@ const AltaVibe = () => {
     spinningRef.current = true;
 
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-    const { data, error } = await supabase.rpc("altavibe_spin", { p_name: me.name, p_tz: tz });
+    const { data, error } = await supabase.rpc("altavibe_spin", { p_name: me.name, p_tz: tz, p_allow_boost: !extraSpin });
     if (error || !data) {
       spinningRef.current = false;
       const msg = error?.message || "";
@@ -282,7 +282,7 @@ const AltaVibe = () => {
       if (res.is_boost) {
         setExtraSpin(true);
         playCoins();
-        showToast("🚀 BOOST! Você ganhou um giro extra!");
+        showToast(`🚀 BOOST! +${res.prize} Vibecoins e um giro extra!`);
       } else {
         setExtraSpin(false);
         playCoins();
