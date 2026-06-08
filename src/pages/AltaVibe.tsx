@@ -354,7 +354,7 @@ const AltaVibe = () => {
         .av-odd-pct{color:#ffd700;font-weight:600}
 
         .av-wheel-wrapper{display:flex;flex-direction:column;align-items:center;gap:.45rem;justify-content:center}
-        .av-wrap{position:relative;width:min(230px,30vh);aspect-ratio:1}
+        .av-wrap{position:relative;width:min(260px,34vh);aspect-ratio:1}
         .av-pointer{position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:18px solid #ffd700;filter:drop-shadow(0 0 8px rgba(255,215,0,.7));z-index:10}
         .av-wrap canvas{width:100%;height:100%;border-radius:50%;display:block;box-shadow:0 0 40px rgba(196,122,217,0.35),0 0 80px rgba(139,63,191,0.2)}
         .av-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;background:#1a0d2e;border:3px solid #ffd700;z-index:5}
