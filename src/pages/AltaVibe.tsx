@@ -398,7 +398,7 @@ const AltaVibe = () => {
           <div className="av-grid">
             {/* LEFT: profile + rules */}
             <div className="av-col av-col-left">
-              <div className="av-panel">
+              <div className="av-panel" style={{ position: "relative" }}>
                 <div className="av-ptitle" style={{ marginBottom: ".4rem" }}>Seu perfil</div>
                 <div className="av-profile">
                   <div className="av-profile-field">
@@ -438,6 +438,26 @@ const AltaVibe = () => {
                         <span className="av-ctag">Vibecoins · {me.streak || 0}🔥</span>
                       </div>
                     </div>
+                  )}
+                </div>
+                {signupsLocked && !me && (
+                  <div style={{
+                    position: "absolute", inset: 0, borderRadius: "inherit",
+                    background: "rgba(15,8,32,0.78)", backdropFilter: "blur(6px)",
+                    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                    gap: ".6rem", textAlign: "center", padding: "1rem", zIndex: 5,
+                  }}>
+                    <div style={{ fontSize: "2.4rem", lineHeight: 1 }}>🔒</div>
+                    <div style={{ color: "#f5ecff", fontFamily: "'Barlow Condensed',sans-serif", fontSize: "1.05rem", letterSpacing: 2, textTransform: "uppercase", fontWeight: 700 }}>
+                      Cadastros encerrados
+                    </div>
+                    <div style={{ color: "#bca8d9", fontSize: ".82rem", maxWidth: 260 }}>
+                      Não estamos aceitando novos jogadores. Quem já está cadastrado pode continuar entrando normalmente.
+                    </div>
+                  </div>
+                )}
+              </div>
+
                   )}
                 </div>
               </div>
