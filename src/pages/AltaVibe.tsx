@@ -46,6 +46,7 @@ const AltaVibe = () => {
   const [toast, setToast] = useState("");
   const [flash, setFlash] = useState(false);
   const [gameOpen, setGameOpen] = useState(true);
+  const [signupsLocked, setSignupsLocked] = useState(false);
   const [extraSpin, setExtraSpin] = useState(false);
   const [logs, setLogs] = useState<LogRow[]>([]);
 
@@ -112,8 +113,11 @@ const AltaVibe = () => {
   useEffect(() => {
     loadRanking();
     loadLogs();
-    supabase.from("altavibe_settings").select("is_open").eq("id", 1).maybeSingle().then(({ data }) => {
-      if (data) setGameOpen(!!data.is_open);
+    supabase.from("altavibe_settings").select("is_open,signups_locked").eq("id", 1).maybeSingle().then(({ data }) => {
+      if (data) {
+        setGameOpen(!!data.is_open);
+        setSignupsLocked(!!(data as { signups_locked?: boolean }).signups_locked);
+      }
     });
     const ch = supabase
       .channel("altavibe_users_ch")
@@ -132,8 +136,9 @@ const AltaVibe = () => {
         }
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_settings" }, (payload) => {
-        const row = (payload.new || payload.old) as { is_open?: boolean } | null;
+        const row = (payload.new || payload.old) as { is_open?: boolean; signups_locked?: boolean } | null;
         if (row && typeof row.is_open === "boolean") setGameOpen(row.is_open);
+        if (row && typeof row.signups_locked === "boolean") setSignupsLocked(row.signups_locked);
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_logs" }, () => loadLogs())
       .subscribe();
@@ -162,6 +167,7 @@ const AltaVibe = () => {
       const msg = error?.message || "";
       if (msg.includes("wrong_password")) showToast("Senha incorreta 🔒");
       else if (msg.includes("invalid_password")) showToast("Senha inválida (4 dígitos)");
+      else if (msg.includes("signups_locked")) showToast("Cadastros encerrados 🔒");
       else if (msg.includes("invalid_name")) showToast("Apelido inválido");
       else showToast("Erro ao entrar");
       return;
@@ -392,7 +398,7 @@ const AltaVibe = () => {
           <div className="av-grid">
             {/* LEFT: profile + rules */}
             <div className="av-col av-col-left">
-              <div className="av-panel">
+              <div className="av-panel" style={{ position: "relative" }}>
                 <div className="av-ptitle" style={{ marginBottom: ".4rem" }}>Seu perfil</div>
                 <div className="av-profile">
                   <div className="av-profile-field">
@@ -434,7 +440,25 @@ const AltaVibe = () => {
                     </div>
                   )}
                 </div>
+                {signupsLocked && !me && (
+                  <div style={{
+                    position: "absolute", inset: 0, borderRadius: "inherit",
+                    background: "rgba(15,8,32,0.78)", backdropFilter: "blur(6px)",
+                    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                    gap: ".6rem", textAlign: "center", padding: "1rem", zIndex: 5,
+                  }}>
+                    <div style={{ fontSize: "2.4rem", lineHeight: 1 }}>🔒</div>
+                    <div style={{ color: "#f5ecff", fontFamily: "'Barlow Condensed',sans-serif", fontSize: "1.05rem", letterSpacing: 2, textTransform: "uppercase", fontWeight: 700 }}>
+                      Cadastros encerrados
+                    </div>
+                    <div style={{ color: "#bca8d9", fontSize: ".82rem", maxWidth: 260 }}>
+                      Não estamos aceitando novos jogadores. Quem já está cadastrado pode continuar entrando normalmente.
+                    </div>
+                  </div>
+                )}
               </div>
+
+
 
               <div className="av-rules-grid">
                 <div className="av-rules-box">

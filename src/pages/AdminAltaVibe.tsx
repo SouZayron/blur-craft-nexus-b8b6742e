@@ -19,6 +19,7 @@ const AdminAltaVibe = () => {
   const [pass, setPass] = useState("");
   const [users, setUsers] = useState<User[]>([]);
   const [isOpen, setIsOpen] = useState(true);
+  const [signupsLocked, setSignupsLocked] = useState(false);
   const [toast, setToast] = useState("");
 
   const showToast = (msg: string) => {
@@ -33,11 +34,22 @@ const AdminAltaVibe = () => {
   const load = useCallback(async () => {
     const [u, s] = await Promise.all([
       supabase.from("altavibe_users").select("*").order("coins", { ascending: false }),
-      supabase.from("altavibe_settings").select("is_open").eq("id", 1).maybeSingle(),
+      supabase.from("altavibe_settings").select("is_open,signups_locked").eq("id", 1).maybeSingle(),
     ]);
     if (u.data) setUsers(u.data as User[]);
-    if (s.data) setIsOpen(!!s.data.is_open);
+    if (s.data) {
+      setIsOpen(!!s.data.is_open);
+      setSignupsLocked(!!(s.data as { signups_locked?: boolean }).signups_locked);
+    }
   }, []);
+
+  const toggleSignups = async () => {
+    const next = !signupsLocked;
+    const { error } = await supabase.from("altavibe_settings").update({ signups_locked: next, updated_at: new Date().toISOString() }).eq("id", 1);
+    if (error) { showToast("Erro ao atualizar"); return; }
+    setSignupsLocked(next);
+    showToast(next ? "Cadastros TRANCADOS" : "Cadastros LIBERADOS");
+  };
 
   useEffect(() => {
     if (!authed) return;
@@ -154,6 +166,15 @@ const AdminAltaVibe = () => {
               </div>
               <button onClick={toggleGame} style={{ marginTop: ".75rem", width: "100%", padding: ".6rem", background: isOpen ? "linear-gradient(135deg,#b91c1c,#ef4444)" : "linear-gradient(135deg,#15803d,#22c55e)", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", fontSize: ".85rem" }}>
                 {isOpen ? "Fechar Game" : "Abrir Game"}
+              </button>
+            </div>
+            <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "1rem" }}>
+              <div style={{ fontSize: ".75rem", color: "#bca8d9", letterSpacing: 2, textTransform: "uppercase" }}>Cadastros</div>
+              <div style={{ fontSize: "1.4rem", fontWeight: 700, color: signupsLocked ? "#fca5a5" : "#86efac", marginTop: ".3rem" }}>
+                {signupsLocked ? "● TRANCADO" : "● ABERTO"}
+              </div>
+              <button onClick={toggleSignups} style={{ marginTop: ".75rem", width: "100%", padding: ".6rem", background: signupsLocked ? "linear-gradient(135deg,#15803d,#22c55e)" : "linear-gradient(135deg,#b91c1c,#ef4444)", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", fontSize: ".85rem" }}>
+                {signupsLocked ? "Liberar Cadastros" : "Trancar Cadastros"}
               </button>
             </div>
             <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "1rem" }}>
