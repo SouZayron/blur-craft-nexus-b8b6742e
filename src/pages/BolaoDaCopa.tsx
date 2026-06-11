@@ -70,6 +70,8 @@ const styles = `
 .bolao-btn:hover{ transform:translateY(-1px); filter:brightness(1.05);}
 .bolao-btn:disabled{ opacity:.6; cursor:not-allowed;}
 .bolao-card{ background: rgba(0,20,40,0.55); border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:18px; }
+.bolao-two-col{ display:grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap:20px; align-items:start; }
+@media (max-width: 760px){ .bolao-two-col{ grid-template-columns: 1fr; } }
 `;
 
 export default function BolaoDaCopa() {
