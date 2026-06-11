@@ -167,6 +167,7 @@ const AltaVibe = () => {
       const msg = error?.message || "";
       if (msg.includes("wrong_password")) showToast("Senha incorreta 🔒");
       else if (msg.includes("invalid_password")) showToast("Senha inválida (4 dígitos)");
+      else if (msg.includes("signups_locked")) showToast("Cadastros encerrados 🔒");
       else if (msg.includes("invalid_name")) showToast("Apelido inválido");
       else showToast("Erro ao entrar");
       return;
