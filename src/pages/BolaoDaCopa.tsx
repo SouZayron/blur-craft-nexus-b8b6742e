@@ -180,7 +180,7 @@ export default function BolaoDaCopa() {
       </header>
 
       {!session ? (
-        <div className="bolao-fade" style={{ maxWidth: 1100, margin: "10px auto 0", display: "grid", gridTemplateColumns: "minmax(0,1.2fr) minmax(0,1fr)", gap: 20, alignItems: "start" }}>
+        <div className="bolao-fade bolao-two-col" style={{ maxWidth: 1100, margin: "10px auto 0" }}>
           <div className="bolao-card" style={{ animationDelay: "0.1s" }}>
             <h2 style={{ margin: "0 0 12px", fontSize: 20, color: "#FFDF00" }}>Regras</h2>
             <ul style={{ margin: 0, paddingLeft: 20, fontSize: 15, lineHeight: 1.8, color: "#dbeafe" }}>
