@@ -10,8 +10,9 @@ const GAMES = [
 
 const ADMIN_PASSWORD = "admin2026";
 
-type Bet = { id: string; username: string; game_id: number; score_home: number; score_away: number };
+type Bet = { id: string; username: string; game_id: number; score_home: number; score_away: number; created_at?: string };
 type Result = { game_id: number; score_home: number; score_away: number };
+type BUser = { id: string; username: string; created_at: string };
 
 function Confetti({ trigger }: { trigger: number }) {
   const [pieces, setPieces] = useState<{ id: number; left: number; delay: number; color: string }[]>([]);
