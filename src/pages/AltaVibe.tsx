@@ -113,8 +113,11 @@ const AltaVibe = () => {
   useEffect(() => {
     loadRanking();
     loadLogs();
-    supabase.from("altavibe_settings").select("is_open").eq("id", 1).maybeSingle().then(({ data }) => {
-      if (data) setGameOpen(!!data.is_open);
+    supabase.from("altavibe_settings").select("is_open,signups_locked").eq("id", 1).maybeSingle().then(({ data }) => {
+      if (data) {
+        setGameOpen(!!data.is_open);
+        setSignupsLocked(!!(data as { signups_locked?: boolean }).signups_locked);
+      }
     });
     const ch = supabase
       .channel("altavibe_users_ch")
