@@ -72,6 +72,35 @@ const styles = `
 .bolao-card{ background: rgba(0,20,40,0.55); border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:18px; }
 .bolao-two-col{ display:grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap:20px; align-items:start; }
 @media (max-width: 760px){ .bolao-two-col{ grid-template-columns: 1fr; } }
+
+/* Rules redesign */
+.bolao-rules{ background: linear-gradient(160deg, rgba(0,39,118,0.55), rgba(0,80,40,0.45)); border:1px solid rgba(255,223,0,0.18); border-radius:20px; padding:22px; box-shadow: 0 8px 30px rgba(0,0,0,0.25) inset, 0 6px 24px rgba(0,0,0,0.25); }
+.bolao-rules-title{ display:flex; align-items:center; gap:10px; font-size:18px; color:#FFDF00; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; margin:0 0 14px; }
+.bolao-rules-title::before{ content:"📋"; font-size:22px; }
+.bolao-rules-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+.bolao-rules-list li{ display:flex; align-items:flex-start; gap:10px; font-size:14px; line-height:1.5; color:#e6f0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-left:3px solid #FFDF00; border-radius:10px; padding:10px 12px; transition: transform .2s ease, background .2s ease; }
+.bolao-rules-list li:hover{ transform: translateX(3px); background: rgba(255,255,255,0.07); }
+.bolao-rules-list li::before{ content:"⚽"; font-size:14px; line-height:1.5; flex-shrink:0; }
+
+/* Prize block + coin rain */
+.bolao-prize{ position:relative; overflow:hidden; margin-top:14px; border-radius:20px; padding:22px 22px; text-align:center;
+  background: linear-gradient(135deg, #009C3B 0%, #047a32 45%, #FFDF00 100%);
+  border:1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 10px 30px rgba(0,156,59,0.35), 0 0 40px rgba(255,223,0,0.15) inset;
+}
+.bolao-prize::after{ content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.25), transparent 50%); pointer-events:none; }
+.bolao-prize-label{ display:block; font-size:12px; letter-spacing:0.35em; font-weight:700; color:#002776; opacity:0.85; }
+.bolao-prize-value{ display:block; font-size:clamp(34px,5vw,46px); font-weight:900; color:#fff; line-height:1.1; margin-top:4px; text-shadow: 0 3px 12px rgba(0,0,0,0.35); letter-spacing:-0.01em; }
+.bolao-prize-value strong{ color:#FFDF00; }
+.bolao-prize-sub{ display:block; margin-top:6px; font-size:12px; color:#002776; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; opacity:0.85; }
+
+.bolao-coin{ position:absolute; top:-30px; font-size:22px; pointer-events:none; animation: bolao-coin-fall linear infinite; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+@keyframes bolao-coin-fall {
+  0%   { transform: translateY(-30px) rotate(0deg); opacity:0; }
+  10%  { opacity:1; }
+  90%  { opacity:1; }
+  100% { transform: translateY(220px) rotate(540deg); opacity:0; }
+}
 `;
 
 export default function BolaoDaCopa() {
