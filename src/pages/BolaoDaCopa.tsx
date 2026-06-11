@@ -282,7 +282,7 @@ export default function BolaoDaCopa() {
                   <div className="bolao-glow">
                     <div className="bolao-glow-inner">
                       <div style={{ textAlign: "center", fontSize: 22, fontWeight: 700, marginBottom: 4 }}>
-                        <span style={{ fontSize: 28 }}>{game.homeFlag}</span> {game.home} <span style={{ color: "#FFDF00" }}>vs</span> {game.away} <span style={{ fontSize: 28 }}>{game.awayFlag}</span>
+                        {game.home} <span style={{ color: "#FFDF00" }}>vs</span> {game.away}
                       </div>
                       <div style={{ textAlign: "center", fontSize: 12, color: "#cbd5e1", marginBottom: 12 }}>{game.label}</div>
 
