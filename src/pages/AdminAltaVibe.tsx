@@ -169,6 +169,15 @@ const AdminAltaVibe = () => {
               </button>
             </div>
             <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "1rem" }}>
+              <div style={{ fontSize: ".75rem", color: "#bca8d9", letterSpacing: 2, textTransform: "uppercase" }}>Cadastros</div>
+              <div style={{ fontSize: "1.4rem", fontWeight: 700, color: signupsLocked ? "#fca5a5" : "#86efac", marginTop: ".3rem" }}>
+                {signupsLocked ? "● TRANCADO" : "● ABERTO"}
+              </div>
+              <button onClick={toggleSignups} style={{ marginTop: ".75rem", width: "100%", padding: ".6rem", background: signupsLocked ? "linear-gradient(135deg,#15803d,#22c55e)" : "linear-gradient(135deg,#b91c1c,#ef4444)", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", fontSize: ".85rem" }}>
+                {signupsLocked ? "Liberar Cadastros" : "Trancar Cadastros"}
+              </button>
+            </div>
+            <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "1rem" }}>
               <div style={{ fontSize: ".75rem", color: "#bca8d9", letterSpacing: 2, textTransform: "uppercase" }}>Reset Total</div>
               <div style={{ fontSize: ".82rem", color: "#bca8d9", marginTop: ".3rem" }}>Exclui cadastros, pontos e logs.</div>
               <button onClick={resetAll} style={{ marginTop: ".75rem", width: "100%", padding: ".6rem", background: "linear-gradient(135deg,#b91c1c,#ef4444)", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", fontSize: ".85rem" }}>
