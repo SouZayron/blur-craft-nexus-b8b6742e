@@ -51,16 +51,19 @@ export type Database = {
         Row: {
           id: number
           is_open: boolean
+          signups_locked: boolean
           updated_at: string
         }
         Insert: {
           id?: number
           is_open?: boolean
+          signups_locked?: boolean
           updated_at?: string
         }
         Update: {
           id?: number
           is_open?: boolean
+          signups_locked?: boolean
           updated_at?: string
         }
         Relationships: []
