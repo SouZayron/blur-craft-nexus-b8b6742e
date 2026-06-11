@@ -76,6 +76,14 @@ export default function AdminCopa() {
     refresh();
   };
 
+  const deleteBet = async (bet: Bet) => {
+    if (!confirm(`Remover a aposta de ${bet.username} (${bet.score_home} x ${bet.score_away})?\nA pessoa poderá apostar novamente neste jogo.`)) return;
+    const { error } = await supabase.from("bolao_bets").delete().eq("id", bet.id);
+    if (error) return toast({ title: "Erro ao remover", description: error.message, variant: "destructive" });
+    toast({ title: "Aposta removida", description: `${bet.username} já pode apostar novamente.` });
+    refresh();
+  };
+
   if (!authed) {
     return (
       <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", background: "#001a2e", color: "#fff", fontFamily: "Inter, sans-serif" }}>
