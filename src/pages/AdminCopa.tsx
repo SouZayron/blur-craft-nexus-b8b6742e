@@ -171,7 +171,7 @@ export default function AdminCopa() {
               return (
                 <div key={b.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.04)", padding: "8px 10px", borderRadius: 8, fontSize: 13 }}>
                   <div style={{ minWidth: 0, flex: 1 }}>
-                    <div><strong>{b.username}</strong> — <span style={{ color: "#FFDF00", fontWeight: 700 }}>{b.score_home} x {b.score_away}</span></div>
+                    <div><strong>{b.username}</strong> — <span style={{ color: "#FFDF00", fontWeight: 700 }}>{g ? `${g.home} ${b.score_home} x ${b.score_away} ${g.away}` : `${b.score_home} x ${b.score_away}`}</span></div>
                     <div style={{ fontSize: 11, color: "#94a3b8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{g?.label ?? `Jogo ${b.game_id}`}</div>
                   </div>
                   <button onClick={() => deleteBet(b)} title="Remover aposta"
