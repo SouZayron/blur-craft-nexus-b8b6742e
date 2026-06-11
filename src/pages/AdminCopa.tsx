@@ -3,9 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 const GAMES = [
-  { id: 1, label: "🇧🇷 Brasil vs Marrocos 🇲🇦 — 13/06" },
-  { id: 2, label: "🇧🇷 Brasil vs Haiti 🇭🇹 — 19/06" },
-  { id: 3, label: "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Escócia vs Brasil 🇧🇷 — 24/06" },
+  { id: 1, home: "Brasil", away: "Marrocos", homeFlag: "🇧🇷", awayFlag: "🇲🇦", label: "🇧🇷 Brasil vs Marrocos 🇲🇦 — 13/06" },
+  { id: 2, home: "Brasil", away: "Haiti", homeFlag: "🇧🇷", awayFlag: "🇭🇹", label: "🇧🇷 Brasil vs Haiti 🇭🇹 — 19/06" },
+  { id: 3, home: "Escócia", away: "Brasil", homeFlag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", awayFlag: "🇧🇷", label: "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Escócia vs Brasil 🇧🇷 — 24/06" },
 ];
 
 const ADMIN_PASSWORD = "admin2026";
@@ -113,12 +113,18 @@ export default function AdminCopa() {
             <div key={g.id} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
               <div style={{ fontWeight: 700, marginBottom: 10 }}>{g.label}</div>
               <div style={{ fontSize: 12, color: "#cbd5e1", marginBottom: 6 }}>{gameBets.length} aposta(s)</div>
-              {r && <div style={{ background: "rgba(255,223,0,0.15)", padding: 8, borderRadius: 8, marginBottom: 10, fontSize: 13 }}>Resultado: <strong>{r.score_home} x {r.score_away}</strong></div>}
+              {r && <div style={{ background: "rgba(255,223,0,0.15)", padding: 8, borderRadius: 8, marginBottom: 10, fontSize: 13 }}>Resultado: <strong>{g.home} {r.score_home} x {r.score_away} {g.away}</strong></div>}
               <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-                <input type="number" min={0} placeholder="Casa" value={inp.h} onChange={e => setInputs(s => ({ ...s, [g.id]: { ...inp, h: e.target.value } }))}
-                  style={{ width: "100%", padding: 8, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", textAlign: "center" }} />
-                <input type="number" min={0} placeholder="Visitante" value={inp.a} onChange={e => setInputs(s => ({ ...s, [g.id]: { ...inp, a: e.target.value } }))}
-                  style={{ width: "100%", padding: 8, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", textAlign: "center" }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, textAlign: "center", letterSpacing: "0.05em", textTransform: "uppercase" }}>{g.homeFlag} {g.home}</div>
+                  <input type="number" min={0} placeholder="0" value={inp.h} onChange={e => setInputs(s => ({ ...s, [g.id]: { ...inp, h: e.target.value } }))}
+                    style={{ width: "100%", padding: 8, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", textAlign: "center", fontSize: 18, fontWeight: 800 }} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, textAlign: "center", letterSpacing: "0.05em", textTransform: "uppercase" }}>{g.awayFlag} {g.away}</div>
+                  <input type="number" min={0} placeholder="0" value={inp.a} onChange={e => setInputs(s => ({ ...s, [g.id]: { ...inp, a: e.target.value } }))}
+                    style={{ width: "100%", padding: 8, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", textAlign: "center", fontSize: 18, fontWeight: 800 }} />
+                </div>
               </div>
               <button onClick={() => confirmResult(g.id)}
                 style={{ width: "100%", padding: 10, borderRadius: 8, background: "linear-gradient(90deg,#009C3B,#FFDF00)", color: "#002776", fontWeight: 800, border: "none", cursor: "pointer" }}>Confirmar Resultado</button>
@@ -165,7 +171,7 @@ export default function AdminCopa() {
               return (
                 <div key={b.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.04)", padding: "8px 10px", borderRadius: 8, fontSize: 13 }}>
                   <div style={{ minWidth: 0, flex: 1 }}>
-                    <div><strong>{b.username}</strong> — <span style={{ color: "#FFDF00", fontWeight: 700 }}>{b.score_home} x {b.score_away}</span></div>
+                    <div><strong>{b.username}</strong> — <span style={{ color: "#FFDF00", fontWeight: 700 }}>{g ? `${g.home} ${b.score_home} x ${b.score_away} ${g.away}` : `${b.score_home} x ${b.score_away}`}</span></div>
                     <div style={{ fontSize: 11, color: "#94a3b8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{g?.label ?? `Jogo ${b.game_id}`}</div>
                   </div>
                   <button onClick={() => deleteBet(b)} title="Remover aposta"

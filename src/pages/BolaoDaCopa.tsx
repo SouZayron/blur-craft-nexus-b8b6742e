@@ -211,18 +211,7 @@ export default function BolaoDaCopa() {
       {!session ? (
         <div className="bolao-fade bolao-two-col" style={{ maxWidth: 1100, margin: "10px auto 0" }}>
           <div>
-            <div className="bolao-rules">
-              <h2 className="bolao-rules-title">Regras</h2>
-              <ul className="bolao-rules-list">
-                <li>Apenas 1 aposta permitida por jogo</li>
-                <li>As apostas abrem às 19h, 2 dias antes do jogo</li>
-                <li>As apostas fecham às 19h do dia anterior ao jogo</li>
-                <li>Se houver mais de um ganhador, o prêmio será dividido igualmente</li>
-                <li>Participação exclusiva para usuários ativos do xat.com/altavibe</li>
-              </ul>
-            </div>
-
-            <div className="bolao-prize">
+            <div className="bolao-prize" style={{ marginTop: 0, marginBottom: 14 }}>
               {Array.from({ length: 14 }).map((_, i) => (
                 <span
                   key={i}
@@ -237,6 +226,17 @@ export default function BolaoDaCopa() {
               <span className="bolao-prize-label">Prêmio Total</span>
               <span className="bolao-prize-value">2000 <strong>xats</strong></span>
               <span className="bolao-prize-sub">Acertou o placar, levou! 🏆</span>
+            </div>
+
+            <div className="bolao-rules">
+              <h2 className="bolao-rules-title">Regras</h2>
+              <ul className="bolao-rules-list">
+                <li>Apenas 1 aposta permitida por jogo</li>
+                <li>As apostas abrem às 19h, 2 dias antes do jogo</li>
+                <li>As apostas fecham às 19h do dia anterior ao jogo</li>
+                <li>Se houver mais de um ganhador, o prêmio será dividido igualmente</li>
+                <li>Participação exclusiva para usuários ativos do xat.com/altavibe</li>
+              </ul>
             </div>
           </div>
 
@@ -323,10 +323,16 @@ export default function BolaoDaCopa() {
                           </div>
                         ) : (
                           <div>
-                            <div style={{ display: "flex", gap: 8, alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
-                              <input className="bolao-input" style={{ width: 64, textAlign: "center", fontSize: 22, fontWeight: 800 }} type="number" min={0} value={inp.h} onChange={e => setBetInputs(s => ({ ...s, [game.id]: { ...inp, h: e.target.value } }))} />
-                              <span style={{ fontSize: 20, color: "#FFDF00" }}>x</span>
-                              <input className="bolao-input" style={{ width: 64, textAlign: "center", fontSize: 22, fontWeight: 800 }} type="number" min={0} value={inp.a} onChange={e => setBetInputs(s => ({ ...s, [game.id]: { ...inp, a: e.target.value } }))} />
+                            <div style={{ display: "flex", gap: 12, alignItems: "flex-end", justifyContent: "center", marginBottom: 10 }}>
+                              <div style={{ textAlign: "center" }}>
+                                <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.homeFlag} {game.home}</div>
+                                <input className="bolao-input" style={{ width: 72, textAlign: "center", fontSize: 22, fontWeight: 800 }} type="number" min={0} value={inp.h} onChange={e => setBetInputs(s => ({ ...s, [game.id]: { ...inp, h: e.target.value } }))} />
+                              </div>
+                              <span style={{ fontSize: 20, color: "#FFDF00", paddingBottom: 10 }}>x</span>
+                              <div style={{ textAlign: "center" }}>
+                                <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.awayFlag} {game.away}</div>
+                                <input className="bolao-input" style={{ width: 72, textAlign: "center", fontSize: 22, fontWeight: 800 }} type="number" min={0} value={inp.a} onChange={e => setBetInputs(s => ({ ...s, [game.id]: { ...inp, a: e.target.value } }))} />
+                              </div>
                             </div>
                             <button className="bolao-btn" onClick={() => submitBet(game)}>Confirmar Aposta</button>
                             <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 8, textAlign: "center" }}>Fecha em {fmtCountdown(close.getTime() - t)}</div>
