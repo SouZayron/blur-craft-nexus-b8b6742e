@@ -442,17 +442,23 @@ const AltaVibe = () => {
                 </div>
                 {signupsLocked && !me && (
                   <div style={{
-                    position: "absolute", inset: 0, borderRadius: "inherit",
-                    background: "rgba(15,8,32,0.78)", backdropFilter: "blur(6px)",
-                    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                    gap: ".6rem", textAlign: "center", padding: "1rem", zIndex: 5,
+                    background: "rgba(255,215,0,0.08)",
+                    border: "1px solid rgba(255,215,0,0.25)",
+                    borderRadius: 10,
+                    padding: ".55rem .75rem",
+                    marginTop: ".5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: ".6rem",
                   }}>
-                    <div style={{ fontSize: "2.4rem", lineHeight: 1 }}>🔒</div>
-                    <div style={{ color: "#f5ecff", fontFamily: "'Barlow Condensed',sans-serif", fontSize: "1.05rem", letterSpacing: 2, textTransform: "uppercase", fontWeight: 700 }}>
-                      Cadastros encerrados
-                    </div>
-                    <div style={{ color: "#bca8d9", fontSize: ".82rem", maxWidth: 260 }}>
-                      Não estamos aceitando novos jogadores. Quem já está cadastrado pode continuar entrando normalmente.
+                    <span style={{ fontSize: "1.2rem", lineHeight: 1 }}>🔒</span>
+                    <div>
+                      <div style={{ color: "#ffd700", fontFamily: "'Barlow Condensed',sans-serif", fontSize: ".78rem", letterSpacing: 1.5, textTransform: "uppercase", fontWeight: 700 }}>
+                        Cadastros encerrados
+                      </div>
+                      <div style={{ color: "#bca8d9", fontSize: ".72rem" }}>
+                        Quem já tem conta pode entrar normalmente. Novos jogadores não são aceitos.
+                      </div>
                     </div>
                   </div>
                 )}
