@@ -34,11 +34,22 @@ const AdminAltaVibe = () => {
   const load = useCallback(async () => {
     const [u, s] = await Promise.all([
       supabase.from("altavibe_users").select("*").order("coins", { ascending: false }),
-      supabase.from("altavibe_settings").select("is_open").eq("id", 1).maybeSingle(),
+      supabase.from("altavibe_settings").select("is_open,signups_locked").eq("id", 1).maybeSingle(),
     ]);
     if (u.data) setUsers(u.data as User[]);
-    if (s.data) setIsOpen(!!s.data.is_open);
+    if (s.data) {
+      setIsOpen(!!s.data.is_open);
+      setSignupsLocked(!!(s.data as { signups_locked?: boolean }).signups_locked);
+    }
   }, []);
+
+  const toggleSignups = async () => {
+    const next = !signupsLocked;
+    const { error } = await supabase.from("altavibe_settings").update({ signups_locked: next, updated_at: new Date().toISOString() }).eq("id", 1);
+    if (error) { showToast("Erro ao atualizar"); return; }
+    setSignupsLocked(next);
+    showToast(next ? "Cadastros TRANCADOS" : "Cadastros LIBERADOS");
+  };
 
   useEffect(() => {
     if (!authed) return;
