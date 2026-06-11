@@ -282,7 +282,7 @@ export default function BolaoDaCopa() {
                   <div className="bolao-glow">
                     <div className="bolao-glow-inner">
                       <div style={{ textAlign: "center", fontSize: 22, fontWeight: 700, marginBottom: 4 }}>
-                        <span style={{ fontSize: 28 }}>{game.homeFlag}</span> {game.home} <span style={{ color: "#FFDF00" }}>vs</span> {game.away} <span style={{ fontSize: 28 }}>{game.awayFlag}</span>
+                        {game.home} <span style={{ color: "#FFDF00" }}>vs</span> {game.away}
                       </div>
                       <div style={{ textAlign: "center", fontSize: 12, color: "#cbd5e1", marginBottom: 12 }}>{game.label}</div>
 
@@ -325,12 +325,12 @@ export default function BolaoDaCopa() {
                           <div>
                             <div style={{ display: "flex", gap: 12, alignItems: "flex-end", justifyContent: "center", marginBottom: 10 }}>
                               <div style={{ textAlign: "center" }}>
-                                <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.homeFlag} {game.home}</div>
+                                <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.home}</div>
                                 <input className="bolao-input" style={{ width: 72, textAlign: "center", fontSize: 22, fontWeight: 800 }} type="number" min={0} value={inp.h} onChange={e => setBetInputs(s => ({ ...s, [game.id]: { ...inp, h: e.target.value } }))} />
                               </div>
                               <span style={{ fontSize: 20, color: "#FFDF00", paddingBottom: 10 }}>x</span>
                               <div style={{ textAlign: "center" }}>
-                                <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.awayFlag} {game.away}</div>
+                                <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.away}</div>
                                 <input className="bolao-input" style={{ width: 72, textAlign: "center", fontSize: 22, fontWeight: 800 }} type="number" min={0} value={inp.a} onChange={e => setBetInputs(s => ({ ...s, [game.id]: { ...inp, a: e.target.value } }))} />
                               </div>
                             </div>

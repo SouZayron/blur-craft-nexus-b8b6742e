@@ -3,9 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 const GAMES = [
-  { id: 1, home: "Brasil", away: "Marrocos", homeFlag: "🇧🇷", awayFlag: "🇲🇦", label: "🇧🇷 Brasil vs Marrocos 🇲🇦 — 13/06" },
-  { id: 2, home: "Brasil", away: "Haiti", homeFlag: "🇧🇷", awayFlag: "🇭🇹", label: "🇧🇷 Brasil vs Haiti 🇭🇹 — 19/06" },
-  { id: 3, home: "Escócia", away: "Brasil", homeFlag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", awayFlag: "🇧🇷", label: "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Escócia vs Brasil 🇧🇷 — 24/06" },
+  { id: 1, home: "Brasil", away: "Marrocos", homeFlag: "🇧🇷", awayFlag: "🇲🇦", label: "Brasil vs Marrocos — 13/06" },
+  { id: 2, home: "Brasil", away: "Haiti", homeFlag: "🇧🇷", awayFlag: "🇭🇹", label: "Brasil vs Haiti — 19/06" },
+  { id: 3, home: "Escócia", away: "Brasil", homeFlag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", awayFlag: "🇧🇷", label: "Escócia vs Brasil — 24/06" },
 ];
 
 const ADMIN_PASSWORD = "admin2026";
@@ -116,12 +116,12 @@ export default function AdminCopa() {
               {r && <div style={{ background: "rgba(255,223,0,0.15)", padding: 8, borderRadius: 8, marginBottom: 10, fontSize: 13 }}>Resultado: <strong>{g.home} {r.score_home} x {r.score_away} {g.away}</strong></div>}
               <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, textAlign: "center", letterSpacing: "0.05em", textTransform: "uppercase" }}>{g.homeFlag} {g.home}</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, textAlign: "center", letterSpacing: "0.05em", textTransform: "uppercase" }}>{g.home}</div>
                   <input type="number" min={0} placeholder="0" value={inp.h} onChange={e => setInputs(s => ({ ...s, [g.id]: { ...inp, h: e.target.value } }))}
                     style={{ width: "100%", padding: 8, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", textAlign: "center", fontSize: 18, fontWeight: 800 }} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, textAlign: "center", letterSpacing: "0.05em", textTransform: "uppercase" }}>{g.awayFlag} {g.away}</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, textAlign: "center", letterSpacing: "0.05em", textTransform: "uppercase" }}>{g.away}</div>
                   <input type="number" min={0} placeholder="0" value={inp.a} onChange={e => setInputs(s => ({ ...s, [g.id]: { ...inp, a: e.target.value } }))}
                     style={{ width: "100%", padding: 8, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", textAlign: "center", fontSize: 18, fontWeight: 800 }} />
                 </div>
