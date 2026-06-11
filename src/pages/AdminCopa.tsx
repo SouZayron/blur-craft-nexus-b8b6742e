@@ -3,9 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 const GAMES = [
-  { id: 1, label: "🇧🇷 Brasil vs Marrocos 🇲🇦 — 13/06" },
-  { id: 2, label: "🇧🇷 Brasil vs Haiti 🇭🇹 — 19/06" },
-  { id: 3, label: "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Escócia vs Brasil 🇧🇷 — 24/06" },
+  { id: 1, home: "Brasil", away: "Marrocos", homeFlag: "🇧🇷", awayFlag: "🇲🇦", label: "🇧🇷 Brasil vs Marrocos 🇲🇦 — 13/06" },
+  { id: 2, home: "Brasil", away: "Haiti", homeFlag: "🇧🇷", awayFlag: "🇭🇹", label: "🇧🇷 Brasil vs Haiti 🇭🇹 — 19/06" },
+  { id: 3, home: "Escócia", away: "Brasil", homeFlag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", awayFlag: "🇧🇷", label: "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Escócia vs Brasil 🇧🇷 — 24/06" },
 ];
 
 const ADMIN_PASSWORD = "admin2026";
