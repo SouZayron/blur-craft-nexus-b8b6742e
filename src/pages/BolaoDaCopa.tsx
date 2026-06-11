@@ -177,19 +177,19 @@ export default function BolaoDaCopa() {
         </p>
       </header>
 
-      <div className="bolao-fade bolao-card" style={{ maxWidth: 980, margin: "0 auto 20px", animationDelay: "0.1s" }}>
-        <h2 style={{ margin: "0 0 10px", fontSize: 18, color: "#FFDF00" }}>Regras</h2>
-        <ul style={{ margin: 0, paddingLeft: 20, fontSize: 14, lineHeight: 1.7, color: "#dbeafe" }}>
-          <li>Apenas 1 aposta permitida por jogo</li>
-          <li>As apostas abrem às 19h, 2 dias antes do jogo</li>
-          <li>As apostas fecham às 19h do dia anterior ao jogo</li>
-          <li>Se houver mais de um ganhador, o prêmio será dividido igualmente</li>
-          <li>Participação exclusiva para usuários ativos do xat.com/altavibe</li>
-        </ul>
-      </div>
-
       {!session ? (
-        <div className="bolao-fade" style={{ maxWidth: 420, margin: "30px auto 0" }}>
+        <div className="bolao-fade" style={{ maxWidth: 1100, margin: "10px auto 0", display: "grid", gridTemplateColumns: "minmax(0,1.2fr) minmax(0,1fr)", gap: 20, alignItems: "start" }}>
+          <div className="bolao-card" style={{ animationDelay: "0.1s" }}>
+            <h2 style={{ margin: "0 0 12px", fontSize: 20, color: "#FFDF00" }}>Regras</h2>
+            <ul style={{ margin: 0, paddingLeft: 20, fontSize: 15, lineHeight: 1.8, color: "#dbeafe" }}>
+              <li>Apenas 1 aposta permitida por jogo</li>
+              <li>As apostas abrem às 19h, 2 dias antes do jogo</li>
+              <li>As apostas fecham às 19h do dia anterior ao jogo</li>
+              <li>Se houver mais de um ganhador, o prêmio será dividido igualmente</li>
+              <li>Participação exclusiva para usuários ativos do xat.com/altavibe</li>
+            </ul>
+          </div>
+
           <div className="bolao-glow">
             <div className="bolao-glow-inner">
               <h2 style={{ margin: "0 0 16px", textAlign: "center", fontSize: 22 }}>Entrar no Bolão</h2>
