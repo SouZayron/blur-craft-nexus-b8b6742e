@@ -323,10 +323,16 @@ export default function BolaoDaCopa() {
                           </div>
                         ) : (
                           <div>
-                            <div style={{ display: "flex", gap: 8, alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
-                              <input className="bolao-input" style={{ width: 64, textAlign: "center", fontSize: 22, fontWeight: 800 }} type="number" min={0} value={inp.h} onChange={e => setBetInputs(s => ({ ...s, [game.id]: { ...inp, h: e.target.value } }))} />
-                              <span style={{ fontSize: 20, color: "#FFDF00" }}>x</span>
-                              <input className="bolao-input" style={{ width: 64, textAlign: "center", fontSize: 22, fontWeight: 800 }} type="number" min={0} value={inp.a} onChange={e => setBetInputs(s => ({ ...s, [game.id]: { ...inp, a: e.target.value } }))} />
+                            <div style={{ display: "flex", gap: 12, alignItems: "flex-end", justifyContent: "center", marginBottom: 10 }}>
+                              <div style={{ textAlign: "center" }}>
+                                <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.homeFlag} {game.home}</div>
+                                <input className="bolao-input" style={{ width: 72, textAlign: "center", fontSize: 22, fontWeight: 800 }} type="number" min={0} value={inp.h} onChange={e => setBetInputs(s => ({ ...s, [game.id]: { ...inp, h: e.target.value } }))} />
+                              </div>
+                              <span style={{ fontSize: 20, color: "#FFDF00", paddingBottom: 10 }}>x</span>
+                              <div style={{ textAlign: "center" }}>
+                                <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.awayFlag} {game.away}</div>
+                                <input className="bolao-input" style={{ width: 72, textAlign: "center", fontSize: 22, fontWeight: 800 }} type="number" min={0} value={inp.a} onChange={e => setBetInputs(s => ({ ...s, [game.id]: { ...inp, a: e.target.value } }))} />
+                              </div>
                             </div>
                             <button className="bolao-btn" onClick={() => submitBet(game)}>Confirmar Aposta</button>
                             <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 8, textAlign: "center" }}>Fecha em {fmtCountdown(close.getTime() - t)}</div>
