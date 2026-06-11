@@ -19,6 +19,7 @@ const AdminAltaVibe = () => {
   const [pass, setPass] = useState("");
   const [users, setUsers] = useState<User[]>([]);
   const [isOpen, setIsOpen] = useState(true);
+  const [signupsLocked, setSignupsLocked] = useState(false);
   const [toast, setToast] = useState("");
 
   const showToast = (msg: string) => {
