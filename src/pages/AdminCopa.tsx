@@ -44,16 +44,19 @@ export default function AdminCopa() {
   const [pw, setPw] = useState("");
   const [bets, setBets] = useState<Bet[]>([]);
   const [results, setResults] = useState<Result[]>([]);
+  const [users, setUsers] = useState<BUser[]>([]);
   const [inputs, setInputs] = useState<Record<number, { h: string; a: string }>>({});
   const [confetti, setConfetti] = useState(0);
 
   const refresh = async () => {
-    const [b, r] = await Promise.all([
-      supabase.from("bolao_bets").select("*"),
+    const [b, r, u] = await Promise.all([
+      supabase.from("bolao_bets").select("*").order("created_at", { ascending: false }),
       supabase.from("bolao_results").select("*"),
+      supabase.from("bolao_users").select("*").order("created_at", { ascending: false }),
     ]);
     if (b.data) setBets(b.data as Bet[]);
     if (r.data) setResults(r.data as Result[]);
+    if (u.data) setUsers(u.data as BUser[]);
   };
 
   useEffect(() => { if (authed) refresh(); }, [authed]);
