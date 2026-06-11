@@ -70,6 +70,8 @@ const styles = `
 .bolao-btn:hover{ transform:translateY(-1px); filter:brightness(1.05);}
 .bolao-btn:disabled{ opacity:.6; cursor:not-allowed;}
 .bolao-card{ background: rgba(0,20,40,0.55); border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:18px; }
+.bolao-two-col{ display:grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap:20px; align-items:start; }
+@media (max-width: 760px){ .bolao-two-col{ grid-template-columns: 1fr; } }
 `;
 
 export default function BolaoDaCopa() {
@@ -177,19 +179,19 @@ export default function BolaoDaCopa() {
         </p>
       </header>
 
-      <div className="bolao-fade bolao-card" style={{ maxWidth: 980, margin: "0 auto 20px", animationDelay: "0.1s" }}>
-        <h2 style={{ margin: "0 0 10px", fontSize: 18, color: "#FFDF00" }}>Regras</h2>
-        <ul style={{ margin: 0, paddingLeft: 20, fontSize: 14, lineHeight: 1.7, color: "#dbeafe" }}>
-          <li>Apenas 1 aposta permitida por jogo</li>
-          <li>As apostas abrem às 19h, 2 dias antes do jogo</li>
-          <li>As apostas fecham às 19h do dia anterior ao jogo</li>
-          <li>Se houver mais de um ganhador, o prêmio será dividido igualmente</li>
-          <li>Participação exclusiva para usuários ativos do xat.com/altavibe</li>
-        </ul>
-      </div>
-
       {!session ? (
-        <div className="bolao-fade" style={{ maxWidth: 420, margin: "30px auto 0" }}>
+        <div className="bolao-fade bolao-two-col" style={{ maxWidth: 1100, margin: "10px auto 0" }}>
+          <div className="bolao-card" style={{ animationDelay: "0.1s" }}>
+            <h2 style={{ margin: "0 0 12px", fontSize: 20, color: "#FFDF00" }}>Regras</h2>
+            <ul style={{ margin: 0, paddingLeft: 20, fontSize: 15, lineHeight: 1.8, color: "#dbeafe" }}>
+              <li>Apenas 1 aposta permitida por jogo</li>
+              <li>As apostas abrem às 19h, 2 dias antes do jogo</li>
+              <li>As apostas fecham às 19h do dia anterior ao jogo</li>
+              <li>Se houver mais de um ganhador, o prêmio será dividido igualmente</li>
+              <li>Participação exclusiva para usuários ativos do xat.com/altavibe</li>
+            </ul>
+          </div>
+
           <div className="bolao-glow">
             <div className="bolao-glow-inner">
               <h2 style={{ margin: "0 0 16px", textAlign: "center", fontSize: 22 }}>Entrar no Bolão</h2>

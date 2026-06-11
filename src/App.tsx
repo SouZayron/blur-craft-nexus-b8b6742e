@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { lazy, Suspense } from "react";
@@ -51,6 +51,18 @@ const RouteFallback = () => (
   <div className="min-h-screen bg-background" aria-hidden="true" />
 );
 
+const HIDE_FLOATERS_ON = ["/bolaodacopa", "/admincopa"];
+const FloatingChrome = () => {
+  const { pathname } = useLocation();
+  if (HIDE_FLOATERS_ON.some(p => pathname.toLowerCase().startsWith(p))) return null;
+  return (
+    <>
+      <FloatingRadio />
+      <FloatingLanguageSelector />
+    </>
+  );
+};
+
 const App = () => (
   <HelmetProvider>
   <QueryClientProvider client={queryClient}>
@@ -93,8 +105,7 @@ const App = () => (
           </Suspense>
           <Suspense fallback={null}>
             <CookieConsent />
-            <FloatingRadio />
-            <FloatingLanguageSelector />
+            <FloatingChrome />
           </Suspense>
         </BrowserRouter>
       </TooltipProvider>
