@@ -210,15 +210,34 @@ export default function BolaoDaCopa() {
 
       {!session ? (
         <div className="bolao-fade bolao-two-col" style={{ maxWidth: 1100, margin: "10px auto 0" }}>
-          <div className="bolao-card" style={{ animationDelay: "0.1s" }}>
-            <h2 style={{ margin: "0 0 12px", fontSize: 20, color: "#FFDF00" }}>Regras</h2>
-            <ul style={{ margin: 0, paddingLeft: 20, fontSize: 15, lineHeight: 1.8, color: "#dbeafe" }}>
-              <li>Apenas 1 aposta permitida por jogo</li>
-              <li>As apostas abrem às 19h, 2 dias antes do jogo</li>
-              <li>As apostas fecham às 19h do dia anterior ao jogo</li>
-              <li>Se houver mais de um ganhador, o prêmio será dividido igualmente</li>
-              <li>Participação exclusiva para usuários ativos do xat.com/altavibe</li>
-            </ul>
+          <div>
+            <div className="bolao-rules">
+              <h2 className="bolao-rules-title">Regras</h2>
+              <ul className="bolao-rules-list">
+                <li>Apenas 1 aposta permitida por jogo</li>
+                <li>As apostas abrem às 19h, 2 dias antes do jogo</li>
+                <li>As apostas fecham às 19h do dia anterior ao jogo</li>
+                <li>Se houver mais de um ganhador, o prêmio será dividido igualmente</li>
+                <li>Participação exclusiva para usuários ativos do xat.com/altavibe</li>
+              </ul>
+            </div>
+
+            <div className="bolao-prize">
+              {Array.from({ length: 14 }).map((_, i) => (
+                <span
+                  key={i}
+                  className="bolao-coin"
+                  style={{
+                    left: `${(i * 7 + 5) % 95}%`,
+                    animationDuration: `${2.5 + (i % 5) * 0.5}s`,
+                    animationDelay: `${(i * 0.35) % 4}s`,
+                  }}
+                >🪙</span>
+              ))}
+              <span className="bolao-prize-label">Prêmio Total</span>
+              <span className="bolao-prize-value">2000 <strong>xats</strong></span>
+              <span className="bolao-prize-sub">Acertou o placar, levou! 🏆</span>
+            </div>
           </div>
 
           <div className="bolao-glow">
