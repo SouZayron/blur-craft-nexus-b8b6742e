@@ -136,8 +136,9 @@ const AltaVibe = () => {
         }
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_settings" }, (payload) => {
-        const row = (payload.new || payload.old) as { is_open?: boolean } | null;
+        const row = (payload.new || payload.old) as { is_open?: boolean; signups_locked?: boolean } | null;
         if (row && typeof row.is_open === "boolean") setGameOpen(row.is_open);
+        if (row && typeof row.signups_locked === "boolean") setSignupsLocked(row.signups_locked);
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_logs" }, () => loadLogs())
       .subscribe();
