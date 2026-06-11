@@ -242,16 +242,21 @@ export default function BolaoDaCopa() {
 
           <div className="bolao-glow">
             <div className="bolao-glow-inner">
-              <h2 style={{ margin: "0 0 16px", textAlign: "center", fontSize: 22 }}>Entrar no Bolão</h2>
+              <h2 style={{ margin: "0 0 8px", textAlign: "center", fontSize: 22 }}>Entrar / Cadastrar</h2>
+              <p style={{ margin: "0 0 16px", textAlign: "center", fontSize: 12, color: "#94a3b8", lineHeight: 1.5 }}>
+                Já tem conta? Use seu usuário e PIN para entrar.<br/>
+                Novo por aqui? Escolha um PIN de 4 dígitos para se cadastrar.
+              </p>
               <label style={{ fontSize: 13, color: "#cbd5e1" }}>Seu usuário do xat.com</label>
               <input className="bolao-input" style={{ marginTop: 6, marginBottom: 14 }} value={username} onChange={e => setUsername(e.target.value)} maxLength={40} />
-              <label style={{ fontSize: 13, color: "#cbd5e1" }}>Senha (4 dígitos)</label>
-              <input className="bolao-input" style={{ marginTop: 6, marginBottom: 14 }} type="password" inputMode="numeric" value={pin} onChange={e => setPin(e.target.value.replace(/\D/g, "").slice(0, 4))} maxLength={4} />
+              <label style={{ fontSize: 13, color: "#cbd5e1" }}>PIN (4 dígitos)</label>
+              <input className="bolao-input" style={{ marginTop: 6, marginBottom: 4 }} type="password" inputMode="numeric" value={pin} onChange={e => setPin(e.target.value.replace(/\D/g, "").slice(0, 4))} maxLength={4} />
+              <p style={{ margin: "0 0 14px", fontSize: 11, color: "#94a3b8" }}>Guarde seu PIN — será necessário para entrar de novo.</p>
               <label style={{ display: "flex", gap: 8, alignItems: "flex-start", fontSize: 13, color: "#cbd5e1", marginBottom: 16, cursor: "pointer" }}>
                 <input type="checkbox" checked={agree} onChange={e => setAgree(e.target.checked)} style={{ marginTop: 3 }} />
                 <span>Sou usuário ativo do xat.com/altavibe e li as regras do bolão</span>
               </label>
-              <button className="bolao-btn" onClick={handleLogin}>Entrar no Bolão</button>
+              <button className="bolao-btn" onClick={handleLogin}>Entrar / Cadastrar</button>
             </div>
           </div>
         </div>
