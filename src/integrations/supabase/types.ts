@@ -302,6 +302,86 @@ export type Database = {
         }
         Relationships: []
       }
+      bolao_bets: {
+        Row: {
+          created_at: string
+          game_id: number
+          id: string
+          score_away: number
+          score_home: number
+          user_id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          game_id: number
+          id?: string
+          score_away: number
+          score_home: number
+          user_id: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          game_id?: number
+          id?: string
+          score_away?: number
+          score_home?: number
+          user_id?: string
+          username?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bolao_bets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "bolao_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bolao_results: {
+        Row: {
+          confirmed_at: string
+          game_id: number
+          score_away: number
+          score_home: number
+        }
+        Insert: {
+          confirmed_at?: string
+          game_id: number
+          score_away: number
+          score_home: number
+        }
+        Update: {
+          confirmed_at?: string
+          game_id?: number
+          score_away?: number
+          score_home?: number
+        }
+        Relationships: []
+      }
+      bolao_users: {
+        Row: {
+          created_at: string
+          id: string
+          pin: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pin: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pin?: string
+          username?: string
+        }
+        Relationships: []
+      }
       game_picks: {
         Row: {
           created_at: string

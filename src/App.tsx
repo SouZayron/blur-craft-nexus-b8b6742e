@@ -37,6 +37,8 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AltaVibe = lazy(() => import("./pages/AltaVibe"));
 const AdminAltaVibe = lazy(() => import("./pages/AdminAltaVibe"));
+const BolaoDaCopa = lazy(() => import("./pages/BolaoDaCopa"));
+const AdminCopa = lazy(() => import("./pages/AdminCopa"));
 
 // Non-critical UI: defer until after first paint.
 const CookieConsent = lazy(() => import("./components/CookieConsent").then(m => ({ default: m.CookieConsent })));
@@ -84,6 +86,8 @@ const App = () => (
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/altavibe" element={<AltaVibe />} />
               <Route path="/adminaltavibe" element={<AdminAltaVibe />} />
+              <Route path="/bolaodacopa" element={<BolaoDaCopa />} />
+              <Route path="/admincopa" element={<AdminCopa />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
