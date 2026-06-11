@@ -330,7 +330,7 @@ export default function BolaoDaCopa() {
                               </div>
                               <span style={{ fontSize: 20, color: "#FFDF00", paddingBottom: 10 }}>x</span>
                               <div style={{ textAlign: "center" }}>
-                                <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.awayFlag} {game.away}</div>
+                                <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.away}</div>
                                 <input className="bolao-input" style={{ width: 72, textAlign: "center", fontSize: 22, fontWeight: 800 }} type="number" min={0} value={inp.a} onChange={e => setBetInputs(s => ({ ...s, [game.id]: { ...inp, a: e.target.value } }))} />
                               </div>
                             </div>
