@@ -458,9 +458,7 @@ const AltaVibe = () => {
                 )}
               </div>
 
-                  )}
-                </div>
-              </div>
+
 
               <div className="av-rules-grid">
                 <div className="av-rules-box">
