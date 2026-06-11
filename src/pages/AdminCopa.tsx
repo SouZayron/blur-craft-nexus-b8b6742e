@@ -10,8 +10,9 @@ const GAMES = [
 
 const ADMIN_PASSWORD = "admin2026";
 
-type Bet = { id: string; username: string; game_id: number; score_home: number; score_away: number };
+type Bet = { id: string; username: string; game_id: number; score_home: number; score_away: number; created_at?: string };
 type Result = { game_id: number; score_home: number; score_away: number };
+type BUser = { id: string; username: string; created_at: string };
 
 function Confetti({ trigger }: { trigger: number }) {
   const [pieces, setPieces] = useState<{ id: number; left: number; delay: number; color: string }[]>([]);
@@ -43,16 +44,19 @@ export default function AdminCopa() {
   const [pw, setPw] = useState("");
   const [bets, setBets] = useState<Bet[]>([]);
   const [results, setResults] = useState<Result[]>([]);
+  const [users, setUsers] = useState<BUser[]>([]);
   const [inputs, setInputs] = useState<Record<number, { h: string; a: string }>>({});
   const [confetti, setConfetti] = useState(0);
 
   const refresh = async () => {
-    const [b, r] = await Promise.all([
-      supabase.from("bolao_bets").select("*"),
+    const [b, r, u] = await Promise.all([
+      supabase.from("bolao_bets").select("*").order("created_at", { ascending: false }),
       supabase.from("bolao_results").select("*"),
+      supabase.from("bolao_users").select("*").order("created_at", { ascending: false }),
     ]);
     if (b.data) setBets(b.data as Bet[]);
     if (r.data) setResults(r.data as Result[]);
+    if (u.data) setUsers(u.data as BUser[]);
   };
 
   useEffect(() => { if (authed) refresh(); }, [authed]);
@@ -69,6 +73,14 @@ export default function AdminCopa() {
     if (winners.length === 1) toast({ title: `🏆 Parabéns, ${winners[0].username}!`, description: "Você acertou o placar!" });
     else if (winners.length > 1) toast({ title: "🏆 Prêmio dividido!", description: `Ganhadores: ${winners.map(w => w.username).join(", ")}` });
     else toast({ title: "Nenhum acerto exato neste jogo." });
+    refresh();
+  };
+
+  const deleteBet = async (bet: Bet) => {
+    if (!confirm(`Remover a aposta de ${bet.username} (${bet.score_home} x ${bet.score_away})?\nA pessoa poderá apostar novamente neste jogo.`)) return;
+    const { error } = await supabase.from("bolao_bets").delete().eq("id", bet.id);
+    if (error) return toast({ title: "Erro ao remover", description: error.message, variant: "destructive" });
+    toast({ title: "Aposta removida", description: `${bet.username} já pode apostar novamente.` });
     refresh();
   };
 
@@ -117,6 +129,54 @@ export default function AdminCopa() {
             </div>
           );
         })}
+      </div>
+
+      <div style={{ display: "grid", gap: 16, maxWidth: 900, margin: "20px auto", gridTemplateColumns: "1fr 1.4fr" }}>
+        {/* Cadastrados */}
+        <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <h2 style={{ margin: 0, fontSize: 18 }}>👥 Cadastrados</h2>
+            <span style={{ fontSize: 12, color: "#94a3b8" }}>{users.length} pessoa(s)</span>
+          </div>
+          <div style={{ maxHeight: 360, overflow: "auto", display: "flex", flexDirection: "column", gap: 6 }}>
+            {users.length === 0 && <div style={{ fontSize: 13, color: "#94a3b8" }}>Ninguém cadastrado ainda.</div>}
+            {users.map(u => {
+              const count = bets.filter(b => b.username.toLowerCase() === u.username.toLowerCase()).length;
+              return (
+                <div key={u.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(255,255,255,0.04)", padding: "8px 10px", borderRadius: 8, fontSize: 13 }}>
+                  <strong>{u.username}</strong>
+                  <span style={{ fontSize: 11, color: "#94a3b8" }}>{count} aposta(s)</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Apostas */}
+        <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <h2 style={{ margin: 0, fontSize: 18 }}>🎯 Apostas registradas</h2>
+            <span style={{ fontSize: 12, color: "#94a3b8" }}>{bets.length} total</span>
+          </div>
+          <div style={{ maxHeight: 360, overflow: "auto", display: "flex", flexDirection: "column", gap: 6 }}>
+            {bets.length === 0 && <div style={{ fontSize: 13, color: "#94a3b8" }}>Nenhuma aposta ainda.</div>}
+            {bets.map(b => {
+              const g = GAMES.find(x => x.id === b.game_id);
+              return (
+                <div key={b.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.04)", padding: "8px 10px", borderRadius: 8, fontSize: 13 }}>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div><strong>{b.username}</strong> — <span style={{ color: "#FFDF00", fontWeight: 700 }}>{b.score_home} x {b.score_away}</span></div>
+                    <div style={{ fontSize: 11, color: "#94a3b8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{g?.label ?? `Jogo ${b.game_id}`}</div>
+                  </div>
+                  <button onClick={() => deleteBet(b)} title="Remover aposta"
+                    style={{ background: "rgba(220,38,38,0.85)", color: "#fff", border: "none", padding: "6px 10px", borderRadius: 8, cursor: "pointer", fontSize: 12, fontWeight: 700 }}>
+                    Remover
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
