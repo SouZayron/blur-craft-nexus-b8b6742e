@@ -121,7 +121,7 @@ export default function AdminCopa() {
                     style={{ width: "100%", padding: 8, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", textAlign: "center", fontSize: 18, fontWeight: 800 }} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, textAlign: "center", letterSpacing: "0.05em", textTransform: "uppercase" }}>{g.awayFlag} {g.away}</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, textAlign: "center", letterSpacing: "0.05em", textTransform: "uppercase" }}>{g.away}</div>
                   <input type="number" min={0} placeholder="0" value={inp.a} onChange={e => setInputs(s => ({ ...s, [g.id]: { ...inp, a: e.target.value } }))}
                     style={{ width: "100%", padding: 8, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", textAlign: "center", fontSize: 18, fontWeight: 800 }} />
                 </div>
