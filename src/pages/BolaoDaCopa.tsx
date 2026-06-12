@@ -376,6 +376,40 @@ export default function BolaoDaCopa() {
           </div>
         </>
       )}
+
+      <div className="bolao-public-bets bolao-fade">
+        <h3>🎯 Palpites registrados</h3>
+        {bets.length === 0 ? (
+          <div className="bolao-pb-empty">Ninguém apostou ainda. Seja o primeiro!</div>
+        ) : (
+          <div className="bolao-pb-grid">
+            {GAMES.map(game => {
+              const gameBets = bets.filter(b => b.game_id === game.id);
+              const result = results.find(r => r.game_id === game.id);
+              return (
+                <div key={game.id} className="bolao-pb-game">
+                  <div className="bolao-pb-game-title">{game.home} <span style={{ color: "#FFDF00" }}>vs</span> {game.away}</div>
+                  {gameBets.length === 0 ? (
+                    <div className="bolao-pb-empty">Sem palpites.</div>
+                  ) : (
+                    <div style={{ maxHeight: 180, overflowY: "auto" }}>
+                      {gameBets.map(b => {
+                        const hit = result && b.score_home === result.score_home && b.score_away === result.score_away;
+                        return (
+                          <div key={b.id} className="bolao-pb-row" style={hit ? { background: "rgba(255,223,0,0.18)" } : undefined}>
+                            <span>{hit && "🏆 "}{b.username}</span>
+                            <strong style={{ color: "#FFDF00" }}>{b.score_home} x {b.score_away}</strong>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
