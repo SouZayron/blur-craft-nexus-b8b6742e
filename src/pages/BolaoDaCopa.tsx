@@ -221,8 +221,8 @@ export default function BolaoDaCopa() {
 
       {!session ? (
         <div className="bolao-fade bolao-two-col" style={{ maxWidth: 1100, margin: "10px auto 0" }}>
-          <div>
-            <div className="bolao-prize" style={{ marginTop: 0, marginBottom: 14 }}>
+          <div className="bolao-left-stack">
+            <div className="bolao-prize" style={{ marginTop: 0, marginBottom: 0 }}>
               {Array.from({ length: 14 }).map((_, i) => (
                 <span
                   key={i}
