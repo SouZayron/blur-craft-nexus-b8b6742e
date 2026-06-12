@@ -70,8 +70,19 @@ const styles = `
 .bolao-btn:hover{ transform:translateY(-1px); filter:brightness(1.05);}
 .bolao-btn:disabled{ opacity:.6; cursor:not-allowed;}
 .bolao-card{ background: rgba(0,20,40,0.55); border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:18px; }
-.bolao-two-col{ display:grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap:20px; align-items:start; }
-@media (max-width: 760px){ .bolao-two-col{ grid-template-columns: 1fr; } }
+.bolao-two-col{ display:grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap:20px; align-items:stretch; }
+.bolao-left-stack{ display:flex; flex-direction:column; gap:14px; height:100%; }
+.bolao-left-stack > .bolao-rules{ flex:1; display:flex; flex-direction:column; }
+.bolao-left-stack > .bolao-rules > .bolao-rules-list{ flex:1; }
+@media (max-width: 760px){ .bolao-two-col{ grid-template-columns: 1fr; } .bolao-left-stack{ height:auto; } }
+
+.bolao-public-bets{ max-width:1100px; margin:20px auto 0; background: rgba(0,20,40,0.55); border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:20px; }
+.bolao-public-bets h3{ margin:0 0 14px; font-size:18px; color:#FFDF00; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; display:flex; align-items:center; gap:8px;}
+.bolao-pb-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:14px; }
+.bolao-pb-game{ background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:12px;}
+.bolao-pb-game-title{ font-size:13px; font-weight:700; color:#fff; margin-bottom:8px; }
+.bolao-pb-row{ display:flex; justify-content:space-between; align-items:center; padding:5px 8px; font-size:13px; background:rgba(255,255,255,0.03); border-radius:6px; margin-bottom:4px;}
+.bolao-pb-empty{ font-size:12px; color:#94a3b8; }
 
 /* Rules redesign */
 .bolao-rules{ background: linear-gradient(160deg, rgba(0,39,118,0.55), rgba(0,80,40,0.45)); border:1px solid rgba(255,223,0,0.18); border-radius:20px; padding:22px; box-shadow: 0 8px 30px rgba(0,0,0,0.25) inset, 0 6px 24px rgba(0,0,0,0.25); }
@@ -210,8 +221,8 @@ export default function BolaoDaCopa() {
 
       {!session ? (
         <div className="bolao-fade bolao-two-col" style={{ maxWidth: 1100, margin: "10px auto 0" }}>
-          <div>
-            <div className="bolao-prize" style={{ marginTop: 0, marginBottom: 14 }}>
+          <div className="bolao-left-stack">
+            <div className="bolao-prize" style={{ marginTop: 0, marginBottom: 0 }}>
               {Array.from({ length: 14 }).map((_, i) => (
                 <span
                   key={i}
@@ -365,6 +376,40 @@ export default function BolaoDaCopa() {
           </div>
         </>
       )}
+
+      <div className="bolao-public-bets bolao-fade">
+        <h3>🎯 Palpites registrados</h3>
+        {bets.length === 0 ? (
+          <div className="bolao-pb-empty">Ninguém apostou ainda. Seja o primeiro!</div>
+        ) : (
+          <div className="bolao-pb-grid">
+            {GAMES.map(game => {
+              const gameBets = bets.filter(b => b.game_id === game.id);
+              const result = results.find(r => r.game_id === game.id);
+              return (
+                <div key={game.id} className="bolao-pb-game">
+                  <div className="bolao-pb-game-title">{game.home} <span style={{ color: "#FFDF00" }}>vs</span> {game.away}</div>
+                  {gameBets.length === 0 ? (
+                    <div className="bolao-pb-empty">Sem palpites.</div>
+                  ) : (
+                    <div style={{ maxHeight: 180, overflowY: "auto" }}>
+                      {gameBets.map(b => {
+                        const hit = result && b.score_home === result.score_home && b.score_away === result.score_away;
+                        return (
+                          <div key={b.id} className="bolao-pb-row" style={hit ? { background: "rgba(255,223,0,0.18)" } : undefined}>
+                            <span>{hit && "🏆 "}{b.username}</span>
+                            <strong style={{ color: "#FFDF00" }}>{b.score_home} x {b.score_away}</strong>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
