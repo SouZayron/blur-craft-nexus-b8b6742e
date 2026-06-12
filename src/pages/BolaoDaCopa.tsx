@@ -70,8 +70,19 @@ const styles = `
 .bolao-btn:hover{ transform:translateY(-1px); filter:brightness(1.05);}
 .bolao-btn:disabled{ opacity:.6; cursor:not-allowed;}
 .bolao-card{ background: rgba(0,20,40,0.55); border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:18px; }
-.bolao-two-col{ display:grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap:20px; align-items:start; }
-@media (max-width: 760px){ .bolao-two-col{ grid-template-columns: 1fr; } }
+.bolao-two-col{ display:grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap:20px; align-items:stretch; }
+.bolao-left-stack{ display:flex; flex-direction:column; gap:14px; height:100%; }
+.bolao-left-stack > .bolao-rules{ flex:1; display:flex; flex-direction:column; }
+.bolao-left-stack > .bolao-rules > .bolao-rules-list{ flex:1; }
+@media (max-width: 760px){ .bolao-two-col{ grid-template-columns: 1fr; } .bolao-left-stack{ height:auto; } }
+
+.bolao-public-bets{ max-width:1100px; margin:20px auto 0; background: rgba(0,20,40,0.55); border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:20px; }
+.bolao-public-bets h3{ margin:0 0 14px; font-size:18px; color:#FFDF00; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; display:flex; align-items:center; gap:8px;}
+.bolao-pb-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:14px; }
+.bolao-pb-game{ background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:12px;}
+.bolao-pb-game-title{ font-size:13px; font-weight:700; color:#fff; margin-bottom:8px; }
+.bolao-pb-row{ display:flex; justify-content:space-between; align-items:center; padding:5px 8px; font-size:13px; background:rgba(255,255,255,0.03); border-radius:6px; margin-bottom:4px;}
+.bolao-pb-empty{ font-size:12px; color:#94a3b8; }
 
 /* Rules redesign */
 .bolao-rules{ background: linear-gradient(160deg, rgba(0,39,118,0.55), rgba(0,80,40,0.45)); border:1px solid rgba(255,223,0,0.18); border-radius:20px; padding:22px; box-shadow: 0 8px 30px rgba(0,0,0,0.25) inset, 0 6px 24px rgba(0,0,0,0.25); }
