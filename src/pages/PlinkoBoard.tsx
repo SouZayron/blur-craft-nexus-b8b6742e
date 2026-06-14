@@ -388,7 +388,7 @@ const PlinkoBoard = () => {
 
   return (
     <>
-      <Helmet><title>Plinko da Vibe · Dia {day}/15</title><meta name="robots" content="noindex,nofollow" /></Helmet>
+      <Helmet><title>{`Plinko da Vibe · Dia ${day}/15`}</title><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div style={{ minHeight: "100vh", background: bg, color: "#f5ecff", fontFamily: "Inter, system-ui, sans-serif", padding: "1rem" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: ".5rem", marginBottom: "1rem" }}>
