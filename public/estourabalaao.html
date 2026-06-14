@@ -189,41 +189,25 @@ function renderGame(){
         <div id="loginArea"></div>
       </div>
       <div class="card">
-        <h2>📋 Regras</h2>
+        <h2>📋 Regras · Período 16/06 → 30/06/2026</h2>
         <ul class="rules">
-          <li>Até 3 balões por dia podem ser estourados</li>
-          <li>Cada estouro concede VibeCoins aleatórios</li>
-          <li>Sem repetição de pontuação na mesma sessão de 3 estouros</li>
-          <li>Streaks de dias consecutivos multiplicam ganhos</li>
-          <li>Pontuações: 5 · 10 · 20 · 30 · 40 · 50 VC</li>
+          <li>Use o <b>mesmo nome e senha</b> todos os dias para acumular</li>
+          <li><b>3 estouros</b> por dia · cada um vale VibeCoins aleatórios</li>
+          <li>🏆 Prêmios: <b>1º 1500x</b> · <b>2º 1000x</b> · <b>3º 500x</b></li>
+          <li>Cadastros duplicados: vale apenas o de <b>maior valor</b></li>
+          <li class="kill">Necessário ser <b>ativo no xat.com/altavibe</b> (eliminatória)</li>
+          <li class="kill"><b>Fraudar o jogo</b> (eliminatória)</li>
         </ul>
       </div>
       <div class="card">
-        <h2>🎲 Pesos de Ganho</h2>
-        <table>
-          <thead><tr><th>VibeCoins</th><th>Chance</th></tr></thead>
-          <tbody>
-            <tr><td>50 VC</td><td>1%</td></tr>
-            <tr><td>40 VC</td><td>3%</td></tr>
-            <tr><td>30 VC</td><td>5%</td></tr>
-            <tr><td>20 VC</td><td>10%</td></tr>
-            <tr><td>10 VC</td><td>20%</td></tr>
-            <tr><td>5 VC</td><td>40%</td></tr>
-          </tbody>
-        </table>
+        <h2>🏆 Ranking · Top 5</h2>
+        <div id="rankList" style="display:flex;flex-direction:column;gap:5px"></div>
       </div>
-      <div class="card">
-        <h2>🔥 Streaks</h2>
-        <div class="streak-box">
-          <div class="row">🔥 3 Dias → <b>+20% bônus</b></div>
-          <div class="row">🏆 7 Dias → <b>+50% bônus + badge</b></div>
-          <div id="streakCounter"></div>
-        </div>
-      </div>
-      <div class="card">
+      <div class="card scroll" style="flex:1;min-height:120px">
         <h2>📜 Histórico Global</h2>
-        <div class="log" id="logList"></div>
+        <div class="scroll-body"><div class="log" id="logList"></div></div>
       </div>
+
     </aside>
     <main class="game" id="gameArea">
       <div class="stars" id="stars"></div>
