@@ -8,7 +8,7 @@ export const FloatingRadio = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    audioRef.current = new Audio("https://hts02.brascast.com:11000/live");
+    audioRef.current = new Audio("https://hts07.brascast.com:7130/live");
     audioRef.current.volume = 0.3;
 
     return () => {
