@@ -493,6 +493,83 @@ export type Database = {
         }
         Relationships: []
       }
+      plinko_plays: {
+        Row: {
+          created_at: string
+          day: number
+          id: string
+          score: number
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          created_at?: string
+          day: number
+          id?: string
+          score?: number
+          user_id: string
+          user_name: string
+        }
+        Update: {
+          created_at?: string
+          day?: number
+          id?: string
+          score?: number
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plinko_plays_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "plinko_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plinko_settings: {
+        Row: {
+          id: number
+          is_open: boolean
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          id: number
+          is_open?: boolean
+          start_date?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          is_open?: boolean
+          start_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      plinko_users: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          password: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          password: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          password?: string
+        }
+        Relationships: []
+      }
       torneio_events: {
         Row: {
           created_at: string
@@ -698,6 +775,21 @@ export type Database = {
             Returns: Json
           }
       cleanup_expired_bingo_cards: { Args: never; Returns: undefined }
+      plinko_login: {
+        Args: { p_name: string; p_password: string }
+        Returns: {
+          created_at: string
+          id: string
+          name: string
+          password: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "plinko_users"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
     }
     Enums: {
       bingo_game_type: "pairs" | "sequences"
