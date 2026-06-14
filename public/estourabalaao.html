@@ -404,7 +404,7 @@ function popBalloon(el){
   fl.style.cssText=`left:${x-30}px;top:${y-20}px`;
   document.getElementById('gameArea').appendChild(fl);setTimeout(()=>fl.remove(),1700);
   el.remove();
-  renderLog();renderLoginArea();renderGameArea();
+  renderLog();renderRanking();renderLoginArea();renderGameArea();
 }
 
 function startCountdown(){
