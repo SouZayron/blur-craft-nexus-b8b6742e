@@ -311,7 +311,7 @@ const PlinkoBoard = () => {
     };
     draw();
     return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
-  }, []);
+  }, [user, todayPlay, settings?.is_open]);
 
   const dropBall = () => {
     if (ballsLeft <= 0) return;
