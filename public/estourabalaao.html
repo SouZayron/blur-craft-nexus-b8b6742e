@@ -332,12 +332,20 @@ function renderStreak(){
 
 function renderLog(){
   const el=document.getElementById('logList');if(!el)return;
-  const log=loadLog().slice(0,20);
-  if(!log.length){el.innerHTML='<p style="color:var(--muted);font-size:12px;text-align:center;padding:14px">Nenhum estouro ainda</p>';return}
-  el.innerHTML=log.map(e=>`
+  const log=loadLog();
+  // aggregate by player+date → total VC per user per day
+  const agg={};
+  for(const e of log){
+    const k=e.player+'|'+e.date;
+    if(!agg[k])agg[k]={player:e.player,date:e.date,vc:0,time:e.time};
+    agg[k].vc+=e.vc;
+  }
+  const rows=Object.values(agg).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)).slice(0,30);
+  if(!rows.length){el.innerHTML='<p style="color:var(--muted);font-size:12px;text-align:center;padding:14px">Nenhum estouro ainda</p>';return}
+  el.innerHTML=rows.map(e=>`
     <div class="log-entry">
       <div class="avatar">${e.player[0].toUpperCase()}</div>
-      <div class="log-meta"><span class="log-name">${e.player}</span><span class="log-time">${e.date} · ${e.time}</span></div>
+      <div class="log-meta"><span class="log-name">${e.player}</span><span class="log-time">${e.date}</span></div>
       <span class="log-vc">+${e.vc}</span>
     </div>`).join('');
 }
