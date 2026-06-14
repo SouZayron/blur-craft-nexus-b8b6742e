@@ -55,12 +55,21 @@ ul.rules li.kill:before{content:"⛔";color:var(--red)}
 .streak-counter{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;text-align:center;background:linear-gradient(135deg,var(--pink),var(--violet));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px rgba(236,72,153,.5);margin-top:3px}
 .log{display:flex;flex-direction:column;gap:5px}
 .log::-webkit-scrollbar{width:5px}.log::-webkit-scrollbar-thumb{background:var(--violet);border-radius:3px}
-.log-entry{display:flex;align-items:center;gap:9px;padding:7px 9px;background:rgba(255,255,255,.03);border-radius:9px;font-size:12px}
-.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--pink));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;font-family:'Orbitron'}
-.log-meta{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0;overflow:hidden}
-.log-name{font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.log-time{color:var(--muted);font-size:10px}
-.log-vc{font-family:'Orbitron';font-weight:700;color:var(--yellow);font-size:13px;text-shadow:0 0 8px rgba(245,158,11,.6)}
+.log-entry{display:flex;align-items:center;gap:8px;padding:5px 7px;background:rgba(255,255,255,.03);border-radius:8px;font-size:11px}
+.avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--pink));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;font-family:'Orbitron'}
+.log-meta{flex:1;display:flex;flex-direction:column;gap:0;min-width:0;overflow:hidden}
+.log-name{font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
+.log-time{color:var(--muted);font-size:9px}
+.log-vc{font-family:'Orbitron';font-weight:700;color:var(--yellow);font-size:12px;text-shadow:0 0 8px rgba(245,158,11,.6)}
+.rank-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;background:rgba(255,255,255,.03);font-size:12px}
+.rank-row.me{background:rgba(236,72,153,.15);border:1px solid rgba(236,72,153,.4)}
+.rank-pos{font-family:'Orbitron';font-weight:900;font-size:13px;width:22px;text-align:center}
+.rank-pos.p1{color:#FFD700;text-shadow:0 0 8px #FFD700}
+.rank-pos.p2{color:#C0C0C0;text-shadow:0 0 6px #C0C0C0}
+.rank-pos.p3{color:#CD7F32;text-shadow:0 0 6px #CD7F32}
+.rank-name{flex:1;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-vc{font-family:'Orbitron';font-weight:700;color:var(--yellow);font-size:12px}
+.rank-prize{font-size:10px;color:var(--muted);margin-left:4px}
 /* RIGHT PANEL */
 .game{position:relative;border-radius:18px;border:1px solid var(--border);background:radial-gradient(ellipse at center,rgba(124,58,237,.08),transparent 70%),rgba(13,11,30,.6);overflow:hidden;min-height:520px}
 .stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
