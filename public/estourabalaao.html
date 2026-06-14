@@ -550,6 +550,34 @@ function exportCsv(){
   const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download='estourabalaao_jogadores.csv';a.click();URL.revokeObjectURL(url);
 }
+
+/* ============ CROSS-TAB REALTIME SYNC ============ */
+let _syncTimer=null;
+function scheduleSync(){
+  clearTimeout(_syncTimer);
+  _syncTimer=setTimeout(()=>{
+    try{
+      if(isAdmin){
+        if(document.querySelector('.admin')){renderPlayerMgmt();renderLogTable();}
+      }else{
+        if(document.getElementById('rankList'))renderRanking();
+        if(document.getElementById('logList'))renderLog();
+        if(session.user){renderStreak();}
+      }
+    }catch(e){console.warn('sync err',e)}
+  },120);
+}
+window.addEventListener('storage',(e)=>{
+  if(e.key===LS_PLAYERS||e.key===LS_LOG)scheduleSync();
+});
+// fallback poll (covers same-tab edits made by admin actions inside iframe)
+let _lastSig='';
+setInterval(()=>{
+  try{
+    const sig=(localStorage.getItem(LS_PLAYERS)||'').length+'|'+(localStorage.getItem(LS_LOG)||'').length+'|'+((localStorage.getItem(LS_PLAYERS)||'').slice(-40));
+    if(sig!==_lastSig){_lastSig=sig;scheduleSync();}
+  }catch(e){}
+},1500);
 </script>
 </body>
 </html>
