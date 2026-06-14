@@ -196,29 +196,50 @@ function renderGame(){
         <div id="loginArea"></div>
       </div>
       <div class="card">
-        <h2>📋 Regras · Período 16/06 → 30/06/2026</h2>
+        <h2>📋 Regras · 16/06 → 30/06/2026</h2>
         <ul class="rules">
           <li>Use o <b>mesmo nome e senha</b> todos os dias para acumular</li>
-          <li><b>3 estouros</b> por dia · cada um vale VibeCoins aleatórios</li>
+          <li><b>3 estouros</b> por dia · VibeCoins aleatórios</li>
           <li>🏆 Prêmios: <b>1º 1500x</b> · <b>2º 1000x</b> · <b>3º 500x</b></li>
-          <li>Cadastros duplicados: vale apenas o de <b>maior valor</b></li>
-          <li class="kill">Necessário ser <b>ativo no xat.com/altavibe</b> (eliminatória)</li>
+          <li>Cadastros duplicados: vale apenas o <b>maior</b></li>
+          <li class="kill">Necessário ser <b>ativo no xat.com/altavibe</b></li>
           <li class="kill"><b>Fraudar o jogo</b> (eliminatória)</li>
         </ul>
       </div>
       <div class="card">
-        <h2>🏆 Ranking · Top 5</h2>
-        <div id="rankList" style="display:flex;flex-direction:column;gap:5px"></div>
+        <h2>⚖️ Peso dos Ganhos</h2>
+        <div class="weights">
+          <div class="w-row boost"><span class="w-label">🚀 BOOST <small style="color:var(--muted);font-weight:400">(5–50 VC + giro extra)</small></span><span class="w-pct">0.5%</span></div>
+          <div class="w-row"><span class="w-label">50 VibeCoins</span><span class="w-pct">1%</span></div>
+          <div class="w-row"><span class="w-label">40 VibeCoins</span><span class="w-pct">3%</span></div>
+          <div class="w-row"><span class="w-label">30 VibeCoins</span><span class="w-pct">5%</span></div>
+          <div class="w-row"><span class="w-label">20 VibeCoins</span><span class="w-pct">10%</span></div>
+          <div class="w-row"><span class="w-label">10 VibeCoins</span><span class="w-pct">20%</span></div>
+          <div class="w-row"><span class="w-label">5 VibeCoins</span><span class="w-pct">40%</span></div>
+        </div>
       </div>
-      <div class="card scroll" style="flex:1;min-height:120px">
-        <h2>📜 Histórico Global</h2>
+      <div class="card">
+        <h2>🔥 Streak & Bônus</h2>
+        <ul class="bonus-list">
+          <li>Girar todos os dias aumenta sua <b>streak</b> 🔥</li>
+          <li><b>3 dias</b> seguidos: bônus de <b>+20%</b> no prêmio</li>
+          <li><b>7+ dias</b> seguidos: bônus de <b>+50%</b> no prêmio</li>
+        </ul>
+      </div>
+      <div class="card scroll" style="flex:1;min-height:100px">
+        <h2>📜 LOGS · Total do dia</h2>
         <div class="scroll-body"><div class="log" id="logList"></div></div>
       </div>
-
     </aside>
     <main class="game" id="gameArea">
       <div class="stars" id="stars"></div>
     </main>
+    <aside class="sidebar">
+      <div class="card scroll" style="flex:1;min-height:0">
+        <h2>🏆 Ranking · Top 30</h2>
+        <div class="scroll-body"><div id="rankList" style="display:flex;flex-direction:column;gap:5px"></div></div>
+      </div>
+    </aside>
   </div>`;
   buildStars();
   renderLoginArea();
@@ -230,7 +251,7 @@ function renderGame(){
 function renderRanking(){
   const el=document.getElementById('rankList');if(!el)return;
   const players=loadPlayers();
-  const names=Object.keys(players).sort((a,b)=>players[b].total_vc-players[a].total_vc).slice(0,5);
+  const names=Object.keys(players).sort((a,b)=>players[b].total_vc-players[a].total_vc).slice(0,30);
   if(!names.length){el.innerHTML='<p style="color:var(--muted);font-size:11px;text-align:center;padding:10px">Sem jogadores ainda</p>';return}
   const PRIZE=['1500x','1000x','500x'];
   el.innerHTML=names.map((n,i)=>{
