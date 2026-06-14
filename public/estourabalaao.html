@@ -159,8 +159,11 @@ function diffDays(a,b){return Math.round((new Date(b)-new Date(a))/86400000)}
 function weightedRoll(){
   const total=WEIGHTS.reduce((s,w)=>s+w[1],0);
   let r=Math.random()*total;
-  for(const[v,w]of WEIGHTS){r-=w;if(r<=0)return v}
-  return 5;
+  for(const[v,w]of WEIGHTS){r-=w;if(r<=0){
+    if(v==='BOOST')return{value:5+Math.floor(Math.random()*46),boost:true};
+    return{value:v,boost:false};
+  }}
+  return{value:5,boost:false};
 }
 
 
