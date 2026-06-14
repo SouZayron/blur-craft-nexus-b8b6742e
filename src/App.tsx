@@ -41,6 +41,7 @@ const BolaoDaCopa = lazy(() => import("./pages/BolaoDaCopa"));
 const AdminCopa = lazy(() => import("./pages/AdminCopa"));
 const PlinkoBoard = lazy(() => import("./pages/PlinkoBoard"));
 const AdminPlinko = lazy(() => import("./pages/AdminPlinko"));
+const EstouraBalao = lazy(() => import("./pages/EstouraBalao"));
 
 // Non-critical UI: defer until after first paint.
 const CookieConsent = lazy(() => import("./components/CookieConsent").then(m => ({ default: m.CookieConsent })));
@@ -53,7 +54,7 @@ const RouteFallback = () => (
   <div className="min-h-screen bg-background" aria-hidden="true" />
 );
 
-const HIDE_FLOATERS_ON = ["/bolaodacopa", "/admincopa", "/plinkoboard", "/adminplinko"];
+const HIDE_FLOATERS_ON = ["/bolaodacopa", "/admincopa", "/plinkoboard", "/adminplinko", "/estourabalao", "/adminbalao"];
 const FloatingChrome = () => {
   const { pathname } = useLocation();
   if (HIDE_FLOATERS_ON.some(p => pathname.toLowerCase().startsWith(p))) return null;
@@ -104,6 +105,8 @@ const App = () => (
               <Route path="/admincopa" element={<AdminCopa />} />
               <Route path="/plinkoboard" element={<PlinkoBoard />} />
               <Route path="/adminplinko" element={<AdminPlinko />} />
+              <Route path="/estourabalao" element={<EstouraBalao />} />
+              <Route path="/adminbalao" element={<EstouraBalao admin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
