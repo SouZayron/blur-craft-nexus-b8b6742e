@@ -147,18 +147,13 @@ function todayStr(){const d=new Date();const o=new Date(d.getTime()-d.getTimezon
 function nowTime(){const d=new Date();return d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}
 function diffDays(a,b){return Math.round((new Date(b)-new Date(a))/86400000)}
 
-function weightedRoll(excluded){
-  for(let tries=0;tries<50;tries++){
-    let total=WEIGHTS.filter(w=>!excluded.includes(w[0])).reduce((s,w)=>s+w[1],0);
-    if(!total)return null;
-    let r=Math.random()*total;
-    for(const[v,w]of WEIGHTS){
-      if(excluded.includes(v))continue;
-      r-=w;if(r<=0)return v;
-    }
-  }
+function weightedRoll(){
+  const total=WEIGHTS.reduce((s,w)=>s+w[1],0);
+  let r=Math.random()*total;
+  for(const[v,w]of WEIGHTS){r-=w;if(r<=0)return v}
   return 5;
 }
+
 
 function popSound(){
   try{
