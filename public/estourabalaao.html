@@ -75,11 +75,13 @@ ul.rules li:before{content:"▸";position:absolute;left:0;color:var(--pink)}
 .balloon:before{content:"";position:absolute;left:50%;top:-4px;width:8px;height:8px;background:inherit;border-radius:50% 50% 0 0;transform:translateX(-50%) rotate(180deg);clip-path:polygon(0 100%,50% 0,100% 100%)}
 @keyframes rise{
   0%{transform:translateY(0) translateX(0)}
-  25%{transform:translateY(-25vh) translateX(20px)}
-  50%{transform:translateY(-50vh) translateX(-25px)}
-  75%{transform:translateY(-75vh) translateX(15px)}
-  100%{transform:translateY(-110vh) translateX(0)}
+  25%{transform:translateY(-30vh) translateX(20px)}
+  50%{transform:translateY(-55vh) translateX(-25px)}
+  75%{transform:translateY(-80vh) translateX(15px)}
+  100%{transform:translateY(-115vh) translateX(0)}
 }
+.hint{position:absolute;top:64px;left:50%;transform:translateX(-50%);background:rgba(124,58,237,.18);border:1px solid rgba(124,58,237,.5);padding:6px 14px;border-radius:999px;font-size:12px;font-family:'Orbitron';letter-spacing:1px;animation:floatHint 2.5s ease-in-out infinite;z-index:4}
+@keyframes floatHint{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
 .pop-particle{position:absolute;width:8px;height:8px;border-radius:50%;pointer-events:none;animation:burst .7s ease-out forwards}
 @keyframes burst{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
 .float-vc{position:absolute;pointer-events:none;font-family:'Orbitron';font-weight:900;font-size:24px;color:var(--yellow);text-shadow:0 0 12px var(--yellow);animation:floatup 1.6s ease-out forwards;z-index:10}
@@ -336,25 +338,28 @@ function renderGameArea(){
     return;
   }
   const ba=document.createElement('div');ba.className='balloons';ba.id='balloons';g.appendChild(ba);
-  spawnBalloon();spawnBalloon();spawnBalloon();
+  const hint=document.createElement('div');hint.className='hint';hint.textContent='👆 CLIQUE NOS BALÕES';g.appendChild(hint);
+  setTimeout(()=>{hint.style.transition='opacity .6s';hint.style.opacity='0';setTimeout(()=>hint.remove(),700)},5000);
+  // Spawn 4 balloons immediately, some already mid-flight so the player sees movement instantly
+  spawnBalloon(-3);spawnBalloon(-1);spawnBalloon(0);spawnBalloon(0);
   balloonTimer=setInterval(()=>{
     const area=document.getElementById('balloons');
     if(!area)return clearBalloonTimer();
-    if(area.children.length<5)spawnBalloon();
-  },1800);
+    if(area.children.length<6)spawnBalloon(0);
+  },1400);
 }
 
-function spawnBalloon(){
+function spawnBalloon(delay=0){
   const area=document.getElementById('balloons');if(!area)return;
   const b=document.createElement('div');b.className='balloon';
   const c=COLORS[Math.floor(Math.random()*COLORS.length)];
-  const size=50+Math.random()*30;
-  const dur=8+Math.random()*5;
+  const size=55+Math.random()*30;
+  const dur=9+Math.random()*4;
   const left=5+Math.random()*85;
-  b.style.cssText=`background:${c};color:${c};width:${size}px;height:${size*1.25}px;left:${left}%;animation-duration:${dur}s`;
+  b.style.cssText=`background:${c};color:${c};width:${size}px;height:${size*1.25}px;left:${left}%;animation-duration:${dur}s;animation-delay:${delay}s`;
   b.onclick=ev=>{ev.stopPropagation();popBalloon(b)};
   area.appendChild(b);
-  setTimeout(()=>{if(b.parentNode)b.remove()},dur*1000+200);
+  setTimeout(()=>{if(b.parentNode)b.remove()},(dur+Math.max(0,delay))*1000+200);
 }
 
 function popBalloon(el){
