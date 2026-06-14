@@ -23,12 +23,15 @@ body{
     linear-gradient(135deg,#0D0B1E,#1a1140);
 }
 h1,h2,h3,.font-display{font-family:'Orbitron',sans-serif;letter-spacing:.5px}
-.app{display:grid;grid-template-columns:380px 1fr;height:100vh;gap:14px;padding:14px}
-@media(max-width:900px){.app{grid-template-columns:1fr;grid-template-rows:auto 1fr;height:auto;min-height:100vh;overflow:auto}html,body{overflow:auto}}
-.sidebar{display:flex;flex-direction:column;gap:12px;overflow-y:auto;padding-right:4px}
-.sidebar::-webkit-scrollbar{width:6px}.sidebar::-webkit-scrollbar-thumb{background:var(--violet);border-radius:3px}
-.card{background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--border);border-radius:18px;padding:16px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
-.card h2{font-size:14px;text-transform:uppercase;margin-bottom:12px;color:#fff;display:flex;align-items:center;gap:8px}
+.app{display:grid;grid-template-columns:360px 1fr;height:100vh;gap:12px;padding:12px}
+@media(max-width:900px){.app{grid-template-columns:1fr;grid-template-rows:auto 1fr;height:auto;min-height:100vh;overflow:auto}html,body{overflow:auto}.sidebar{overflow:visible !important}}
+.sidebar{display:flex;flex-direction:column;gap:10px;overflow:hidden;min-height:0}
+.card{background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--border);border-radius:14px;padding:12px 14px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.card h2{font-size:12px;text-transform:uppercase;margin-bottom:9px;color:#fff;display:flex;align-items:center;gap:6px;letter-spacing:.8px}
+.card.scroll{min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.card.scroll .scroll-body{flex:1;min-height:0;overflow-y:auto}
+.card.scroll .scroll-body::-webkit-scrollbar{width:4px}
+.card.scroll .scroll-body::-webkit-scrollbar-thumb{background:var(--violet);border-radius:3px}
 .input{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:12px;padding:11px 14px;color:#fff;font-size:14px;font-family:inherit;margin-bottom:9px;transition:.2s}
 .input:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.25)}
 .btn{width:100%;background:linear-gradient(135deg,var(--violet),var(--pink));color:#fff;border:none;padding:12px;border-radius:12px;font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;cursor:pointer;letter-spacing:1px;box-shadow:0 0 12px rgba(124,58,237,.6),0 0 24px rgba(124,58,237,.3);transition:.2s}
@@ -43,20 +46,30 @@ table{width:100%;border-collapse:collapse;font-size:13px}
 table th,table td{padding:7px 8px;text-align:left;border-bottom:1px solid rgba(255,255,255,.06)}
 table th{font-family:'Orbitron',sans-serif;font-size:11px;text-transform:uppercase;color:var(--muted)}
 table tr:last-child td{border:0}
-ul.rules{list-style:none;display:flex;flex-direction:column;gap:7px;font-size:13px;color:#e5e1ff}
-ul.rules li{padding-left:18px;position:relative;line-height:1.45}
+ul.rules{list-style:none;display:flex;flex-direction:column;gap:5px;font-size:12px;color:#e5e1ff}
+ul.rules li{padding-left:14px;position:relative;line-height:1.35}
 ul.rules li:before{content:"▸";position:absolute;left:0;color:var(--pink)}
-.streak-box{display:flex;flex-direction:column;gap:8px;font-size:13px}
-.streak-box .row{display:flex;align-items:center;gap:10px;padding:9px 11px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid var(--border)}
-.streak-counter{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;text-align:center;background:linear-gradient(135deg,var(--pink),var(--violet));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px rgba(236,72,153,.5);margin-top:6px}
-.log{max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+ul.rules li.kill:before{content:"⛔";color:var(--red)}
+.streak-box{display:flex;flex-direction:column;gap:6px;font-size:12px}
+.streak-box .row{display:flex;align-items:center;gap:8px;padding:6px 9px;background:rgba(255,255,255,.04);border-radius:8px;border:1px solid var(--border)}
+.streak-counter{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;text-align:center;background:linear-gradient(135deg,var(--pink),var(--violet));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px rgba(236,72,153,.5);margin-top:3px}
+.log{display:flex;flex-direction:column;gap:5px}
 .log::-webkit-scrollbar{width:5px}.log::-webkit-scrollbar-thumb{background:var(--violet);border-radius:3px}
-.log-entry{display:flex;align-items:center;gap:9px;padding:7px 9px;background:rgba(255,255,255,.03);border-radius:9px;font-size:12px}
-.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--pink));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;font-family:'Orbitron'}
-.log-meta{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0;overflow:hidden}
-.log-name{font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.log-time{color:var(--muted);font-size:10px}
-.log-vc{font-family:'Orbitron';font-weight:700;color:var(--yellow);font-size:13px;text-shadow:0 0 8px rgba(245,158,11,.6)}
+.log-entry{display:flex;align-items:center;gap:8px;padding:5px 7px;background:rgba(255,255,255,.03);border-radius:8px;font-size:11px}
+.avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--pink));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;font-family:'Orbitron'}
+.log-meta{flex:1;display:flex;flex-direction:column;gap:0;min-width:0;overflow:hidden}
+.log-name{font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
+.log-time{color:var(--muted);font-size:9px}
+.log-vc{font-family:'Orbitron';font-weight:700;color:var(--yellow);font-size:12px;text-shadow:0 0 8px rgba(245,158,11,.6)}
+.rank-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;background:rgba(255,255,255,.03);font-size:12px}
+.rank-row.me{background:rgba(236,72,153,.15);border:1px solid rgba(236,72,153,.4)}
+.rank-pos{font-family:'Orbitron';font-weight:900;font-size:13px;width:22px;text-align:center}
+.rank-pos.p1{color:#FFD700;text-shadow:0 0 8px #FFD700}
+.rank-pos.p2{color:#C0C0C0;text-shadow:0 0 6px #C0C0C0}
+.rank-pos.p3{color:#CD7F32;text-shadow:0 0 6px #CD7F32}
+.rank-name{flex:1;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-vc{font-family:'Orbitron';font-weight:700;color:var(--yellow);font-size:12px}
+.rank-prize{font-size:10px;color:var(--muted);margin-left:4px}
 /* RIGHT PANEL */
 .game{position:relative;border-radius:18px;border:1px solid var(--border);background:radial-gradient(ellipse at center,rgba(124,58,237,.08),transparent 70%),rgba(13,11,30,.6);overflow:hidden;min-height:520px}
 .stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
@@ -134,18 +147,13 @@ function todayStr(){const d=new Date();const o=new Date(d.getTime()-d.getTimezon
 function nowTime(){const d=new Date();return d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}
 function diffDays(a,b){return Math.round((new Date(b)-new Date(a))/86400000)}
 
-function weightedRoll(excluded){
-  for(let tries=0;tries<50;tries++){
-    let total=WEIGHTS.filter(w=>!excluded.includes(w[0])).reduce((s,w)=>s+w[1],0);
-    if(!total)return null;
-    let r=Math.random()*total;
-    for(const[v,w]of WEIGHTS){
-      if(excluded.includes(v))continue;
-      r-=w;if(r<=0)return v;
-    }
-  }
+function weightedRoll(){
+  const total=WEIGHTS.reduce((s,w)=>s+w[1],0);
+  let r=Math.random()*total;
+  for(const[v,w]of WEIGHTS){r-=w;if(r<=0)return v}
   return 5;
 }
+
 
 function popSound(){
   try{
@@ -176,41 +184,25 @@ function renderGame(){
         <div id="loginArea"></div>
       </div>
       <div class="card">
-        <h2>📋 Regras</h2>
+        <h2>📋 Regras · Período 16/06 → 30/06/2026</h2>
         <ul class="rules">
-          <li>Até 3 balões por dia podem ser estourados</li>
-          <li>Cada estouro concede VibeCoins aleatórios</li>
-          <li>Sem repetição de pontuação na mesma sessão de 3 estouros</li>
-          <li>Streaks de dias consecutivos multiplicam ganhos</li>
-          <li>Pontuações: 5 · 10 · 20 · 30 · 40 · 50 VC</li>
+          <li>Use o <b>mesmo nome e senha</b> todos os dias para acumular</li>
+          <li><b>3 estouros</b> por dia · cada um vale VibeCoins aleatórios</li>
+          <li>🏆 Prêmios: <b>1º 1500x</b> · <b>2º 1000x</b> · <b>3º 500x</b></li>
+          <li>Cadastros duplicados: vale apenas o de <b>maior valor</b></li>
+          <li class="kill">Necessário ser <b>ativo no xat.com/altavibe</b> (eliminatória)</li>
+          <li class="kill"><b>Fraudar o jogo</b> (eliminatória)</li>
         </ul>
       </div>
       <div class="card">
-        <h2>🎲 Pesos de Ganho</h2>
-        <table>
-          <thead><tr><th>VibeCoins</th><th>Chance</th></tr></thead>
-          <tbody>
-            <tr><td>50 VC</td><td>1%</td></tr>
-            <tr><td>40 VC</td><td>3%</td></tr>
-            <tr><td>30 VC</td><td>5%</td></tr>
-            <tr><td>20 VC</td><td>10%</td></tr>
-            <tr><td>10 VC</td><td>20%</td></tr>
-            <tr><td>5 VC</td><td>40%</td></tr>
-          </tbody>
-        </table>
+        <h2>🏆 Ranking · Top 5</h2>
+        <div id="rankList" style="display:flex;flex-direction:column;gap:5px"></div>
       </div>
-      <div class="card">
-        <h2>🔥 Streaks</h2>
-        <div class="streak-box">
-          <div class="row">🔥 3 Dias → <b>+20% bônus</b></div>
-          <div class="row">🏆 7 Dias → <b>+50% bônus + badge</b></div>
-          <div id="streakCounter"></div>
-        </div>
-      </div>
-      <div class="card">
+      <div class="card scroll" style="flex:1;min-height:120px">
         <h2>📜 Histórico Global</h2>
-        <div class="log" id="logList"></div>
+        <div class="scroll-body"><div class="log" id="logList"></div></div>
       </div>
+
     </aside>
     <main class="game" id="gameArea">
       <div class="stars" id="stars"></div>
@@ -218,8 +210,23 @@ function renderGame(){
   </div>`;
   buildStars();
   renderLoginArea();
+  renderRanking();
   renderLog();
   renderGameArea();
+}
+
+function renderRanking(){
+  const el=document.getElementById('rankList');if(!el)return;
+  const players=loadPlayers();
+  const names=Object.keys(players).sort((a,b)=>players[b].total_vc-players[a].total_vc).slice(0,5);
+  if(!names.length){el.innerHTML='<p style="color:var(--muted);font-size:11px;text-align:center;padding:10px">Sem jogadores ainda</p>';return}
+  const PRIZE=['1500x','1000x','500x'];
+  el.innerHTML=names.map((n,i)=>{
+    const cls=i<3?` p${i+1}`:'';
+    const me=session.user===n?' me':'';
+    const prize=PRIZE[i]?`<span class="rank-prize">${PRIZE[i]}</span>`:'';
+    return `<div class="rank-row${me}"><div class="rank-pos${cls}">${i+1}º</div><div class="rank-name">${n}</div><div class="rank-vc">${players[n].total_vc}</div>${prize}</div>`;
+  }).join('');
 }
 
 function buildStars(){
@@ -251,7 +258,7 @@ function renderLoginArea(){
         <span class="badge yellow">⭐ ${p.total_vc} VC</span>
       </div>
       <button class="btn ghost" id="btnLogout" style="margin-top:6px">SAIR</button>`;
-    document.getElementById('btnLogout').onclick=()=>{session.user=null;renderLoginArea();renderGameArea();renderStreak()};
+    document.getElementById('btnLogout').onclick=()=>{session.user=null;renderLoginArea();renderGameArea();renderRanking()};
   }
   renderStreak();
 }
@@ -269,7 +276,7 @@ function doLogin(){
   }
   session.user=name;
   updateStreakOnLogin();
-  renderLoginArea();renderGameArea();
+  renderLoginArea();renderGameArea();renderRanking();
 }
 
 function updateStreakOnLogin(){
@@ -367,7 +374,7 @@ function popBalloon(el){
   const players=loadPlayers();const p=players[session.user];const t=todayStr();
   if(p.last_play_date!==t){p.pops_today=0;p.today_values=[]}
   if(p.pops_today>=3){el.remove();return}
-  const value=weightedRoll(p.today_values);if(!value){el.remove();return}
+  const value=weightedRoll();if(!value){el.remove();return}
   // streak update
   if(p.last_play_date){
     const d=diffDays(p.last_play_date,t);
@@ -397,7 +404,7 @@ function popBalloon(el){
   fl.style.cssText=`left:${x-30}px;top:${y-20}px`;
   document.getElementById('gameArea').appendChild(fl);setTimeout(()=>fl.remove(),1700);
   el.remove();
-  renderLog();renderLoginArea();renderGameArea();
+  renderLog();renderRanking();renderLoginArea();renderGameArea();
 }
 
 function startCountdown(){
