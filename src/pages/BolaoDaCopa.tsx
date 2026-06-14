@@ -380,35 +380,55 @@ export default function BolaoDaCopa() {
         </>
       )}
 
-      <div className="bolao-public-bets bolao-fade">
-        <h3>🎯 Palpites registrados — Brasil vs Marrocos</h3>
-        {(() => {
-          const currentGame = GAMES[0];
-          const gameBets = bets.filter(b => b.game_id === currentGame.id);
-          const result = results.find(r => r.game_id === currentGame.id);
-          if (gameBets.length === 0) return <div className="bolao-pb-empty">Ninguém apostou ainda. Seja o primeiro!</div>;
+      {(() => {
+        const currentGame = GAMES[0];
+        const gameBets = bets.filter(b => b.game_id === currentGame.id);
+        const result = results.find(r => r.game_id === currentGame.id);
+        const winners = result ? gameBets.filter(b => b.score_home === result.score_home && b.score_away === result.score_away) : [];
+        const noWinners = !!result && winners.length === 0;
+
+        if (noWinners) {
           return (
-            <div className="bolao-pb-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
-              {Array.from({ length: 3 }).map((_, colIdx) => {
-                const colBets = gameBets.filter((_, i) => i % 3 === colIdx);
-                return (
-                  <div key={colIdx} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    {colBets.map(b => {
-                      const hit = result && b.score_home === result.score_home && b.score_away === result.score_away;
-                      return (
-                        <div key={b.id} className="bolao-pb-row" style={hit ? { background: "rgba(255,223,0,0.18)" } : undefined}>
-                          <span>{hit && "🏆 "}{b.username}</span>
-                          <strong style={{ color: "#FFDF00" }}>{b.score_home} x {b.score_away}</strong>
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })}
+            <div className="bolao-public-bets bolao-fade" style={{ opacity: 0.7, filter: "grayscale(0.5)", textAlign: "center" }}>
+              <h3 style={{ justifyContent: "center", color: "#cbd5e1" }}>Resultado Oficial</h3>
+              <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", margin: "8px 0" }}>
+                {currentGame.home} {result!.score_home} x {result!.score_away} {currentGame.away}
+              </div>
+              <div style={{ fontSize: 15, color: "#FFDF00", fontWeight: 700, marginTop: 6 }}>
+                😢 Ninguém acertou! Acumulou para o próximo jogo.
+              </div>
             </div>
           );
-        })()}
-      </div>
+        }
+
+        return (
+          <div className="bolao-public-bets bolao-fade">
+            <h3>🎯 Palpites registrados — {currentGame.home} vs {currentGame.away}</h3>
+            {gameBets.length === 0 ? (
+              <div className="bolao-pb-empty">Ninguém apostou ainda. Seja o primeiro!</div>
+            ) : (
+              <div className="bolao-pb-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
+                {Array.from({ length: 3 }).map((_, colIdx) => {
+                  const colBets = gameBets.filter((_, i) => i % 3 === colIdx);
+                  return (
+                    <div key={colIdx} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      {colBets.map(b => {
+                        const hit = result && b.score_home === result.score_home && b.score_away === result.score_away;
+                        return (
+                          <div key={b.id} className="bolao-pb-row" style={hit ? { background: "rgba(255,223,0,0.18)" } : undefined}>
+                            <span>{hit && "🏆 "}{b.username}</span>
+                            <strong style={{ color: "#FFDF00" }}>{b.score_home} x {b.score_away}</strong>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })()}
     </div>
   );
 }
