@@ -23,8 +23,9 @@ body{
     linear-gradient(135deg,#0D0B1E,#1a1140);
 }
 h1,h2,h3,.font-display{font-family:'Orbitron',sans-serif;letter-spacing:.5px}
-.app{display:grid;grid-template-columns:360px 1fr;height:100vh;gap:12px;padding:12px}
-@media(max-width:900px){.app{grid-template-columns:1fr;grid-template-rows:auto 1fr;height:auto;min-height:100vh;overflow:auto}html,body{overflow:auto}.sidebar{overflow:visible !important}}
+.app{display:grid;grid-template-columns:320px 1fr 320px;height:100vh;gap:10px;padding:10px}
+@media(max-width:1100px){.app{grid-template-columns:280px 1fr 280px}}
+@media(max-width:900px){.app{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;height:auto;min-height:100vh;overflow:auto}html,body{overflow:auto}.sidebar{overflow:visible !important}}
 .sidebar{display:flex;flex-direction:column;gap:10px;overflow:hidden;min-height:0}
 .card{background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--border);border-radius:14px;padding:12px 14px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
 .card h2{font-size:12px;text-transform:uppercase;margin-bottom:9px;color:#fff;display:flex;align-items:center;gap:6px;letter-spacing:.8px}
