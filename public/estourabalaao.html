@@ -258,7 +258,7 @@ function renderLoginArea(){
         <span class="badge yellow">⭐ ${p.total_vc} VC</span>
       </div>
       <button class="btn ghost" id="btnLogout" style="margin-top:6px">SAIR</button>`;
-    document.getElementById('btnLogout').onclick=()=>{session.user=null;renderLoginArea();renderGameArea();renderStreak()};
+    document.getElementById('btnLogout').onclick=()=>{session.user=null;renderLoginArea();renderGameArea();renderRanking()};
   }
   renderStreak();
 }
