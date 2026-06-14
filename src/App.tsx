@@ -53,7 +53,7 @@ const RouteFallback = () => (
   <div className="min-h-screen bg-background" aria-hidden="true" />
 );
 
-const HIDE_FLOATERS_ON = ["/bolaodacopa", "/admincopa"];
+const HIDE_FLOATERS_ON = ["/bolaodacopa", "/admincopa", "/plinkoboard", "/adminplinko"];
 const FloatingChrome = () => {
   const { pathname } = useLocation();
   if (HIDE_FLOATERS_ON.some(p => pathname.toLowerCase().startsWith(p))) return null;
