@@ -102,6 +102,8 @@ const App = () => (
               <Route path="/adminaltavibe" element={<AdminAltaVibe />} />
               <Route path="/bolaodacopa" element={<BolaoDaCopa />} />
               <Route path="/admincopa" element={<AdminCopa />} />
+              <Route path="/plinkoboard" element={<PlinkoBoard />} />
+              <Route path="/adminplinko" element={<AdminPlinko />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
