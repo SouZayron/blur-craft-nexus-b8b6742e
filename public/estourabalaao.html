@@ -71,6 +71,14 @@ ul.rules li.kill:before{content:"⛔";color:var(--red)}
 .rank-name{flex:1;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rank-vc{font-family:'Orbitron';font-weight:700;color:var(--yellow);font-size:12px}
 .rank-prize{font-size:10px;color:var(--muted);margin-left:4px}
+.weights{display:flex;flex-direction:column;gap:4px;font-size:11px}
+.weights .w-row{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:rgba(255,255,255,.03);border-radius:7px;border:1px solid rgba(255,255,255,.05)}
+.weights .w-row.boost{background:linear-gradient(90deg,rgba(245,158,11,.18),rgba(236,72,153,.12));border-color:rgba(245,158,11,.4)}
+.weights .w-label{font-weight:600;color:#fff}
+.weights .w-pct{font-family:'Orbitron';font-weight:700;color:var(--cyan);font-size:11px}
+.bonus-list{display:flex;flex-direction:column;gap:5px;font-size:11px;color:#e5e1ff}
+.bonus-list li{padding:5px 8px;background:rgba(255,255,255,.03);border-radius:7px;list-style:none;line-height:1.4}
+.bonus-list b{color:var(--pink)}
 /* RIGHT PANEL */
 .game{position:relative;border-radius:18px;border:1px solid var(--border);background:radial-gradient(ellipse at center,rgba(124,58,237,.08),transparent 70%),rgba(13,11,30,.6);overflow:hidden;min-height:520px}
 .stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
