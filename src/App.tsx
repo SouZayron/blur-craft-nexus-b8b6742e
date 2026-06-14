@@ -39,6 +39,8 @@ const AltaVibe = lazy(() => import("./pages/AltaVibe"));
 const AdminAltaVibe = lazy(() => import("./pages/AdminAltaVibe"));
 const BolaoDaCopa = lazy(() => import("./pages/BolaoDaCopa"));
 const AdminCopa = lazy(() => import("./pages/AdminCopa"));
+const PlinkoBoard = lazy(() => import("./pages/PlinkoBoard"));
+const AdminPlinko = lazy(() => import("./pages/AdminPlinko"));
 
 // Non-critical UI: defer until after first paint.
 const CookieConsent = lazy(() => import("./components/CookieConsent").then(m => ({ default: m.CookieConsent })));
