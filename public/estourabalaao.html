@@ -210,8 +210,23 @@ function renderGame(){
   </div>`;
   buildStars();
   renderLoginArea();
+  renderRanking();
   renderLog();
   renderGameArea();
+}
+
+function renderRanking(){
+  const el=document.getElementById('rankList');if(!el)return;
+  const players=loadPlayers();
+  const names=Object.keys(players).sort((a,b)=>players[b].total_vc-players[a].total_vc).slice(0,5);
+  if(!names.length){el.innerHTML='<p style="color:var(--muted);font-size:11px;text-align:center;padding:10px">Sem jogadores ainda</p>';return}
+  const PRIZE=['1500x','1000x','500x'];
+  el.innerHTML=names.map((n,i)=>{
+    const cls=i<3?` p${i+1}`:'';
+    const me=session.user===n?' me':'';
+    const prize=PRIZE[i]?`<span class="rank-prize">${PRIZE[i]}</span>`:'';
+    return `<div class="rank-row${me}"><div class="rank-pos${cls}">${i+1}º</div><div class="rank-name">${n}</div><div class="rank-vc">${players[n].total_vc}</div>${prize}</div>`;
+  }).join('');
 }
 
 function buildStars(){
