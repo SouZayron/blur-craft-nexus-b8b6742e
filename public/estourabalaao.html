@@ -374,7 +374,7 @@ function popBalloon(el){
   const players=loadPlayers();const p=players[session.user];const t=todayStr();
   if(p.last_play_date!==t){p.pops_today=0;p.today_values=[]}
   if(p.pops_today>=3){el.remove();return}
-  const value=weightedRoll(p.today_values);if(!value){el.remove();return}
+  const value=weightedRoll();if(!value){el.remove();return}
   // streak update
   if(p.last_play_date){
     const d=diffDays(p.last_play_date,t);
