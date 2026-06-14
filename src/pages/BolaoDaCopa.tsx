@@ -235,7 +235,7 @@ export default function BolaoDaCopa() {
                 >🪙</span>
               ))}
               <span className="bolao-prize-label">Prêmio Total</span>
-              <span className="bolao-prize-value">2000 <strong>xats</strong></span>
+              <span className="bolao-prize-value">4000 <strong>xats</strong></span>
               <span className="bolao-prize-sub">Acertou o placar, levou! 🏆</span>
             </div>
 
@@ -288,8 +288,9 @@ export default function BolaoDaCopa() {
               const result = results.find(r => r.game_id === game.id);
               const winners = winnersFor(game.id);
               const inp = betInputs[game.id] || { h: "", a: "" };
+              const noWinners = !!result && (!winners || winners.length === 0);
               return (
-                <div key={game.id} className="bolao-fade" style={{ animationDelay: `${0.15 + idx * 0.1}s` }}>
+                <div key={game.id} className="bolao-fade" style={{ animationDelay: `${0.15 + idx * 0.1}s`, opacity: noWinners ? 0.55 : 1, filter: noWinners ? "grayscale(0.6)" : "none", transition: "opacity .3s, filter .3s" }}>
                   <div className="bolao-glow">
                     <div className="bolao-glow-inner">
                       <div style={{ textAlign: "center", fontSize: 22, fontWeight: 700, marginBottom: 4 }}>
@@ -298,9 +299,9 @@ export default function BolaoDaCopa() {
                       <div style={{ textAlign: "center", fontSize: 12, color: "#cbd5e1", marginBottom: 12 }}>{game.label}</div>
 
                       {result && (
-                        <div style={{ background: "rgba(255,223,0,0.12)", border: "1px solid rgba(255,223,0,0.4)", borderRadius: 10, padding: 10, marginBottom: 12, textAlign: "center" }}>
-                          <div style={{ fontSize: 12, color: "#FFDF00", fontWeight: 700 }}>Resultado Oficial</div>
-                          <div style={{ fontSize: 22, fontWeight: 800 }}>{result.score_home} x {result.score_away}</div>
+                        <div style={{ background: noWinners ? "rgba(40,40,40,0.5)" : "rgba(255,223,0,0.12)", border: `1px solid ${noWinners ? "rgba(255,255,255,0.15)" : "rgba(255,223,0,0.4)"}`, borderRadius: 10, padding: 10, marginBottom: 12, textAlign: "center" }}>
+                          <div style={{ fontSize: 12, color: noWinners ? "#cbd5e1" : "#FFDF00", fontWeight: 700 }}>Resultado Oficial</div>
+                          <div style={{ fontSize: 22, fontWeight: 800 }}>{game.home} {result.score_home} x {result.score_away} {game.away}</div>
                           {winners && winners.length > 0 ? (
                             <div style={{ marginTop: 6, fontSize: 13 }}>
                               <span style={{ display: "inline-block", animation: "bolao-trophy-pulse 1.4s ease-in-out infinite" }}>🏆</span>{" "}
@@ -310,7 +311,9 @@ export default function BolaoDaCopa() {
                               }
                             </div>
                           ) : (
-                            <div style={{ marginTop: 6, fontSize: 13, color: "#cbd5e1" }}>Nenhum acerto exato neste jogo.</div>
+                            <div style={{ marginTop: 8, fontSize: 13, color: "#FFDF00", fontWeight: 700, letterSpacing: "0.02em" }}>
+                              😢 Ninguém acertou! Acumulou para o próximo jogo.
+                            </div>
                           )}
                         </div>
                       )}
