@@ -338,25 +338,28 @@ function renderGameArea(){
     return;
   }
   const ba=document.createElement('div');ba.className='balloons';ba.id='balloons';g.appendChild(ba);
-  spawnBalloon();spawnBalloon();spawnBalloon();
+  const hint=document.createElement('div');hint.className='hint';hint.textContent='👆 CLIQUE NOS BALÕES';g.appendChild(hint);
+  setTimeout(()=>{hint.style.transition='opacity .6s';hint.style.opacity='0';setTimeout(()=>hint.remove(),700)},5000);
+  // Spawn 4 balloons immediately, some already mid-flight so the player sees movement instantly
+  spawnBalloon(-3);spawnBalloon(-1);spawnBalloon(0);spawnBalloon(0);
   balloonTimer=setInterval(()=>{
     const area=document.getElementById('balloons');
     if(!area)return clearBalloonTimer();
-    if(area.children.length<5)spawnBalloon();
-  },1800);
+    if(area.children.length<6)spawnBalloon(0);
+  },1400);
 }
 
-function spawnBalloon(){
+function spawnBalloon(delay=0){
   const area=document.getElementById('balloons');if(!area)return;
   const b=document.createElement('div');b.className='balloon';
   const c=COLORS[Math.floor(Math.random()*COLORS.length)];
-  const size=50+Math.random()*30;
-  const dur=8+Math.random()*5;
+  const size=55+Math.random()*30;
+  const dur=9+Math.random()*4;
   const left=5+Math.random()*85;
-  b.style.cssText=`background:${c};color:${c};width:${size}px;height:${size*1.25}px;left:${left}%;animation-duration:${dur}s`;
+  b.style.cssText=`background:${c};color:${c};width:${size}px;height:${size*1.25}px;left:${left}%;animation-duration:${dur}s;animation-delay:${delay}s`;
   b.onclick=ev=>{ev.stopPropagation();popBalloon(b)};
   area.appendChild(b);
-  setTimeout(()=>{if(b.parentNode)b.remove()},dur*1000+200);
+  setTimeout(()=>{if(b.parentNode)b.remove()},(dur+Math.max(0,delay))*1000+200);
 }
 
 function popBalloon(el){
