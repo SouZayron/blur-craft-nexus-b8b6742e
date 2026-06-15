@@ -598,10 +598,14 @@ const AltaVibe = () => {
                   ) : (
                     ranking.map((u, i) => {
                       const cls = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
+                      const elim = isEliminated(u.name);
                       return (
-                        <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}`}>
+                        <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}${elim ? " elim" : ""}`}>
                           <div className={`av-rpos ${cls}`}>{i + 1}</div>
-                          <div className="av-rname">{u.name}</div>
+                          <div className="av-rname">
+                            {elim && <span className="av-elim-badge">Eliminado por Inatividade no xat.com/altavibe</span>}
+                            {u.name}
+                          </div>
                           <div className="av-rstreak">{u.streak || 0}🔥</div>
                           <div className="av-rcoins">{(u.coins || 0).toLocaleString("pt-BR")}</div>
                         </div>
