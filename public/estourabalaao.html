@@ -413,7 +413,7 @@ function popBalloon(el){
   if(p.last_play_date!==t){p.pops_today=0;p.today_values=[]}
   if(p.pops_today>=3){el.remove();return}
   const roll=weightedRoll();if(!roll){el.remove();return}
-  const value=roll.value;const isBoost=roll.boost;
+  const value=roll.value;
   // streak update
   if(p.last_play_date){
     const d=diffDays(p.last_play_date,t);
@@ -422,10 +422,9 @@ function popBalloon(el){
   }else p.streak=1;
   let mult=1;if(p.streak>=7)mult=1.5;else if(p.streak>=3)mult=1.2;
   const earned=Math.round(value*mult);
-  // BOOST: ganha VC mas NÃO consome o estouro (giro extra)
-  if(!isBoost)p.pops_today++;
+  p.pops_today++;
   p.today_values.push(value);p.total_vc+=earned;p.last_play_date=t;
-  const entry={date:t,time:nowTime(),vc:earned,boost:isBoost};
+  const entry={date:t,time:nowTime(),vc:earned};
   p.history.unshift(entry);p.history=p.history.slice(0,200);
   savePlayers(players);
   const log=loadLog();log.unshift({player:session.user,...entry});saveLog(log);
@@ -433,18 +432,17 @@ function popBalloon(el){
   const rect=el.getBoundingClientRect();const game=document.getElementById('gameArea').getBoundingClientRect();
   const x=rect.left-game.left+rect.width/2,y=rect.top-game.top+rect.height/2;
   popSound();
-  const n=isBoost?28:14;
-  for(let i=0;i<n;i++){
+  for(let i=0;i<14;i++){
     const pt=document.createElement('div');pt.className='pop-particle';
-    const c=isBoost?(['#FFD700','#F59E0B','#EC4899'][i%3]):COLORS[Math.floor(Math.random()*COLORS.length)];
-    const ang=Math.random()*Math.PI*2,dist=40+Math.random()*(isBoost?100:60);
+    const c=COLORS[Math.floor(Math.random()*COLORS.length)];
+    const ang=Math.random()*Math.PI*2,dist=40+Math.random()*60;
     pt.style.cssText=`left:${x}px;top:${y}px;background:${c};--tx:${Math.cos(ang)*dist}px;--ty:${Math.sin(ang)*dist}px;box-shadow:0 0 8px ${c}`;
     document.getElementById('gameArea').appendChild(pt);
     setTimeout(()=>pt.remove(),750);
   }
   const fl=document.createElement('div');fl.className='float-vc';
-  fl.textContent=isBoost?`🚀 BOOST +${earned} VC`:`+${earned} VC`;
-  fl.style.cssText=`left:${x-30}px;top:${y-20}px${isBoost?';color:#FFD700;text-shadow:0 0 16px #FFD700':''}`;
+  fl.textContent=`+${earned} VC`;
+  fl.style.cssText=`left:${x-30}px;top:${y-20}px`;
   document.getElementById('gameArea').appendChild(fl);setTimeout(()=>fl.remove(),1700);
   el.remove();
   renderLog();renderRanking();renderLoginArea();renderGameArea();
