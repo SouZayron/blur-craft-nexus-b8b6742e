@@ -15,6 +15,10 @@ const PRIZES = [
 const SEG = (2 * Math.PI) / PRIZES.length;
 const LS_NAME = "altavibe_current_name";
 const LS_PASS = "altavibe_current_pass";
+const ELIMINATED = new Set(["breh"]);
+const isEliminated = (n: string) => ELIMINATED.has((n || "").trim().toLowerCase());
+const PRIZE_LABELS = ["1500x", "1000x", "500x"];
+const PRIZE_MEDALS = ["🥇", "🥈", "🥉"];
 
 type User = {
   id: string;
@@ -387,6 +391,33 @@ const AltaVibe = () => {
         .av-toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%) translateY(6px);background:#3a1857;border:1px solid #c47ad9;border-radius:50px;padding:.55rem 1.4rem;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;color:#f5ecff;opacity:0;transition:opacity .3s,transform .3s;z-index:100;pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.4)}
         .av-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
         @media(max-width:880px){.av-grid{grid-template-columns:1fr;overflow-y:auto}.av-root{overflow-y:auto;height:auto;min-height:100vh}.av-container{height:auto}.av-rules-grid{grid-template-columns:1fr}}
+
+        .av-elim-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;color:#ffb0b0;background:rgba(255,80,80,.12);border:1px solid rgba(255,120,120,.35);border-radius:4px;padding:1px 5px;margin-right:.4rem;vertical-align:middle}
+        .av-ritem.elim{opacity:.55;border-color:rgba(255,120,120,.25)}
+
+        .av-closed{position:fixed;inset:0;z-index:200;background:rgba(15,8,32,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:1.2rem;overflow-y:auto}
+        .av-closed-card{width:100%;max-width:980px;background:linear-gradient(160deg,rgba(58,24,87,.85),rgba(26,13,46,.85));border:1px solid rgba(255,215,0,.35);border-radius:18px;padding:1.4rem 1.4rem 1.1rem;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 80px rgba(196,122,217,.25);display:flex;flex-direction:column;gap:1rem;max-height:calc(100vh - 2rem)}
+        .av-closed-head{text-align:center}
+        .av-closed-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,3.5vw,2.4rem);letter-spacing:5px;background:linear-gradient(135deg,#ffd700,#d99ee6,#ffd1ec);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+        .av-closed-sub{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:4px;text-transform:uppercase;color:#bca8d9;margin-top:4px}
+        .av-winners{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+        @media(max-width:680px){.av-winners{grid-template-columns:1fr}}
+        .av-winner{position:relative;border-radius:14px;padding:1rem .9rem;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;gap:.35rem}
+        .av-winner.p1{background:linear-gradient(160deg,rgba(255,215,0,.18),rgba(255,180,0,.06));border-color:rgba(255,215,0,.55);box-shadow:0 0 30px rgba(255,215,0,.2)}
+        .av-winner.p2{background:linear-gradient(160deg,rgba(224,208,240,.15),rgba(180,160,210,.05));border-color:rgba(224,208,240,.4)}
+        .av-winner.p3{background:linear-gradient(160deg,rgba(217,158,108,.15),rgba(180,120,80,.05));border-color:rgba(217,158,108,.4)}
+        .av-winner-medal{font-size:1.8rem;line-height:1}
+        .av-winner-prize{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;color:#bca8d9}
+        .av-winner-prize b{color:#ffd700;font-size:.95rem;letter-spacing:1.5px}
+        .av-winner-name{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:2px;color:#f5ecff;line-height:1}
+        .av-winner-pts{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#ffd700;letter-spacing:1.5px;line-height:1}
+        .av-winner-pts span{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;color:#bca8d9;margin-left:.3rem}
+        .av-closed-logs{display:flex;flex-direction:column;min-height:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.7rem .85rem;gap:.4rem;overflow:hidden}
+        .av-closed-logs-head{display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+        .av-closed-logs-title{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;color:#d99ee6}
+        .av-closed-logs-list{overflow-y:auto;display:flex;flex-direction:column;gap:.22rem;padding-right:.3rem;min-height:0;max-height:32vh}
+        .av-closed-logs-list::-webkit-scrollbar{width:6px}
+        .av-closed-logs-list::-webkit-scrollbar-thumb{background:rgba(196,122,217,.4);border-radius:3px}
       `}</style>
       <div className="av-root">
         <div className="av-container">
@@ -567,10 +598,14 @@ const AltaVibe = () => {
                   ) : (
                     ranking.map((u, i) => {
                       const cls = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
+                      const elim = isEliminated(u.name);
                       return (
-                        <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}`}>
+                        <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}${elim ? " elim" : ""}`}>
                           <div className={`av-rpos ${cls}`}>{i + 1}</div>
-                          <div className="av-rname">{u.name}</div>
+                          <div className="av-rname">
+                            {elim && <span className="av-elim-badge">Eliminado por Inatividade no xat.com/altavibe</span>}
+                            {u.name}
+                          </div>
                           <div className="av-rstreak">{u.streak || 0}🔥</div>
                           <div className="av-rcoins">{(u.coins || 0).toLocaleString("pt-BR")}</div>
                         </div>
@@ -582,6 +617,57 @@ const AltaVibe = () => {
             </div>
           </div>
         </div>
+
+        {/* CLOSED OVERLAY — winners + logs */}
+        {(() => {
+          const winners = ranking.filter((u) => !isEliminated(u.name)).slice(0, 3);
+          return (
+            <div className="av-closed" role="dialog" aria-label="Encerramento Alta Vibe">
+              <div className="av-closed-card">
+                <div className="av-closed-head">
+                  <div className="av-closed-title">🏁 ROLETA ENCERRADA</div>
+                  <div className="av-closed-sub">Alta Vibe · Ganhadores Oficiais</div>
+                </div>
+                <div className="av-winners">
+                  {winners.map((w, i) => (
+                    <div key={w.id} className={`av-winner p${i + 1}`}>
+                      <div className="av-winner-medal">{PRIZE_MEDALS[i]}</div>
+                      <div className="av-winner-prize">Prêmio · <b>{PRIZE_LABELS[i]}</b></div>
+                      <div className="av-winner-name">{w.name}</div>
+                      <div className="av-winner-pts">{(w.coins || 0).toLocaleString("pt-BR")}<span>Vibecoins</span></div>
+                    </div>
+                  ))}
+                </div>
+                <div className="av-closed-logs">
+                  <div className="av-closed-logs-head">
+                    <div className="av-closed-logs-title">📜 Logs das Coletas</div>
+                    <div className="av-ctag">{logs.length} coleta{logs.length !== 1 ? "s" : ""}</div>
+                  </div>
+                  <div className="av-closed-logs-list">
+                    {logs.length === 0 ? (
+                      <div className="av-empty">Sem coletas registradas.</div>
+                    ) : (
+                      logs.map((l) => {
+                        const d = new Date(l.created_at);
+                        const date = d.toLocaleDateString("pt-BR");
+                        const time = d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+                        return (
+                          <div key={l.id} className={`av-log-row${l.is_boost ? " boost" : ""}`}>
+                            <span className="av-log-name">{l.name}</span>
+                            <span className="av-log-date">{date}</span>
+                            <span className="av-log-time">{time}</span>
+                            <span className="av-log-pts">{l.is_boost ? `🚀 +${l.total} VC` : `+${l.total} VC`}</span>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
         <div className={`av-toast${toast ? " show" : ""}`}>{toast}</div>
       </div>
     </>
