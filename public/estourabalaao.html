@@ -73,7 +73,7 @@ ul.rules li.kill:before{content:"⛔";color:var(--red)}
 .rank-prize{font-size:10px;color:var(--muted);margin-left:4px}
 .weights{display:flex;flex-direction:column;gap:4px;font-size:11px}
 .weights .w-row{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:rgba(255,255,255,.03);border-radius:7px;border:1px solid rgba(255,255,255,.05)}
-.weights .w-row.boost{background:linear-gradient(90deg,rgba(245,158,11,.18),rgba(236,72,153,.12));border-color:rgba(245,158,11,.4)}
+
 .weights .w-label{font-weight:600;color:#fff}
 .weights .w-pct{font-family:'Orbitron';font-weight:700;color:var(--cyan);font-size:11px}
 .bonus-list{display:flex;flex-direction:column;gap:5px;font-size:11px;color:#e5e1ff}
@@ -143,7 +143,7 @@ ul.rules li.kill:before{content:"⛔";color:var(--red)}
 const LS_PLAYERS='estourabalaao_players';
 const LS_LOG='estourabalaao_global_log';
 const COLORS=['#EC4899','#7C3AED','#06B6D4','#F59E0B','#10B981'];
-const WEIGHTS=[[5,40],[10,20],[20,10],[30,5],[40,3],[50,1],['BOOST',0.5]];
+const WEIGHTS=[[5,40],[10,20],[20,10],[30,5],[40,3],[50,1]];
 let session={user:null};
 let balloonTimer=null;
 
@@ -159,11 +159,8 @@ function diffDays(a,b){return Math.round((new Date(b)-new Date(a))/86400000)}
 function weightedRoll(){
   const total=WEIGHTS.reduce((s,w)=>s+w[1],0);
   let r=Math.random()*total;
-  for(const[v,w]of WEIGHTS){r-=w;if(r<=0){
-    if(v==='BOOST')return{value:5+Math.floor(Math.random()*46),boost:true};
-    return{value:v,boost:false};
-  }}
-  return{value:5,boost:false};
+  for(const[v,w]of WEIGHTS){r-=w;if(r<=0)return{value:v};}
+  return{value:5};
 }
 
 
@@ -196,20 +193,20 @@ function renderGame(){
         <div id="loginArea"></div>
       </div>
       <div class="card">
-        <h2>📋 Regras · 16/06 → 30/06/2026</h2>
+        <h2>📋 Regras</h2>
         <ul class="rules">
+          <li>Período: <b>16/06 → 30/06/2026</b></li>
           <li>Use o <b>mesmo nome e senha</b> todos os dias para acumular</li>
-          <li><b>3 estouros</b> por dia · VibeCoins aleatórios</li>
+          <li><b>3 estouros por dia</b> · VibeCoins aleatórios</li>
           <li>🏆 Prêmios: <b>1º 1500x</b> · <b>2º 1000x</b> · <b>3º 500x</b></li>
-          <li>Cadastros duplicados: vale apenas o <b>maior</b></li>
-          <li class="kill">Necessário ser <b>ativo no xat.com/altavibe</b></li>
-          <li class="kill"><b>Fraudar o jogo</b> (eliminatória)</li>
+          <li>Cadastros duplicados: vale apenas o de <b>maior valor acumulado</b></li>
+          <li>É necessário ser <b>ativo no xat.com/altavibe</b> (Eliminatória)</li>
+          <li class="kill"><b>Fraudar o jogo!</b> (Eliminatória)</li>
         </ul>
       </div>
       <div class="card">
         <h2>⚖️ Peso dos Ganhos</h2>
         <div class="weights">
-          <div class="w-row boost"><span class="w-label">🚀 BOOST <small style="color:var(--muted);font-weight:400">(5–50 VC + giro extra)</small></span><span class="w-pct">0.5%</span></div>
           <div class="w-row"><span class="w-label">50 VibeCoins</span><span class="w-pct">1%</span></div>
           <div class="w-row"><span class="w-label">40 VibeCoins</span><span class="w-pct">3%</span></div>
           <div class="w-row"><span class="w-label">30 VibeCoins</span><span class="w-pct">5%</span></div>
@@ -416,7 +413,7 @@ function popBalloon(el){
   if(p.last_play_date!==t){p.pops_today=0;p.today_values=[]}
   if(p.pops_today>=3){el.remove();return}
   const roll=weightedRoll();if(!roll){el.remove();return}
-  const value=roll.value;const isBoost=roll.boost;
+  const value=roll.value;
   // streak update
   if(p.last_play_date){
     const d=diffDays(p.last_play_date,t);
@@ -425,10 +422,9 @@ function popBalloon(el){
   }else p.streak=1;
   let mult=1;if(p.streak>=7)mult=1.5;else if(p.streak>=3)mult=1.2;
   const earned=Math.round(value*mult);
-  // BOOST: ganha VC mas NÃO consome o estouro (giro extra)
-  if(!isBoost)p.pops_today++;
+  p.pops_today++;
   p.today_values.push(value);p.total_vc+=earned;p.last_play_date=t;
-  const entry={date:t,time:nowTime(),vc:earned,boost:isBoost};
+  const entry={date:t,time:nowTime(),vc:earned};
   p.history.unshift(entry);p.history=p.history.slice(0,200);
   savePlayers(players);
   const log=loadLog();log.unshift({player:session.user,...entry});saveLog(log);
@@ -436,18 +432,17 @@ function popBalloon(el){
   const rect=el.getBoundingClientRect();const game=document.getElementById('gameArea').getBoundingClientRect();
   const x=rect.left-game.left+rect.width/2,y=rect.top-game.top+rect.height/2;
   popSound();
-  const n=isBoost?28:14;
-  for(let i=0;i<n;i++){
+  for(let i=0;i<14;i++){
     const pt=document.createElement('div');pt.className='pop-particle';
-    const c=isBoost?(['#FFD700','#F59E0B','#EC4899'][i%3]):COLORS[Math.floor(Math.random()*COLORS.length)];
-    const ang=Math.random()*Math.PI*2,dist=40+Math.random()*(isBoost?100:60);
+    const c=COLORS[Math.floor(Math.random()*COLORS.length)];
+    const ang=Math.random()*Math.PI*2,dist=40+Math.random()*60;
     pt.style.cssText=`left:${x}px;top:${y}px;background:${c};--tx:${Math.cos(ang)*dist}px;--ty:${Math.sin(ang)*dist}px;box-shadow:0 0 8px ${c}`;
     document.getElementById('gameArea').appendChild(pt);
     setTimeout(()=>pt.remove(),750);
   }
   const fl=document.createElement('div');fl.className='float-vc';
-  fl.textContent=isBoost?`🚀 BOOST +${earned} VC`:`+${earned} VC`;
-  fl.style.cssText=`left:${x-30}px;top:${y-20}px${isBoost?';color:#FFD700;text-shadow:0 0 16px #FFD700':''}`;
+  fl.textContent=`+${earned} VC`;
+  fl.style.cssText=`left:${x-30}px;top:${y-20}px`;
   document.getElementById('gameArea').appendChild(fl);setTimeout(()=>fl.remove(),1700);
   el.remove();
   renderLog();renderRanking();renderLoginArea();renderGameArea();
