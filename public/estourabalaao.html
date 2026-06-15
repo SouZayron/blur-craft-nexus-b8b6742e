@@ -143,7 +143,7 @@ ul.rules li.kill:before{content:"⛔";color:var(--red)}
 const LS_PLAYERS='estourabalaao_players';
 const LS_LOG='estourabalaao_global_log';
 const COLORS=['#EC4899','#7C3AED','#06B6D4','#F59E0B','#10B981'];
-const WEIGHTS=[[5,40],[10,20],[20,10],[30,5],[40,3],[50,1],['BOOST',0.5]];
+const WEIGHTS=[[5,40],[10,20],[20,10],[30,5],[40,3],[50,1]];
 let session={user:null};
 let balloonTimer=null;
 
@@ -159,11 +159,8 @@ function diffDays(a,b){return Math.round((new Date(b)-new Date(a))/86400000)}
 function weightedRoll(){
   const total=WEIGHTS.reduce((s,w)=>s+w[1],0);
   let r=Math.random()*total;
-  for(const[v,w]of WEIGHTS){r-=w;if(r<=0){
-    if(v==='BOOST')return{value:5+Math.floor(Math.random()*46),boost:true};
-    return{value:v,boost:false};
-  }}
-  return{value:5,boost:false};
+  for(const[v,w]of WEIGHTS){r-=w;if(r<=0)return{value:v};}
+  return{value:5};
 }
 
 
@@ -196,20 +193,20 @@ function renderGame(){
         <div id="loginArea"></div>
       </div>
       <div class="card">
-        <h2>📋 Regras · 16/06 → 30/06/2026</h2>
+        <h2>📋 Regras</h2>
         <ul class="rules">
+          <li>Período: <b>16/06 → 30/06/2026</b></li>
           <li>Use o <b>mesmo nome e senha</b> todos os dias para acumular</li>
-          <li><b>3 estouros</b> por dia · VibeCoins aleatórios</li>
+          <li><b>3 estouros por dia</b> · VibeCoins aleatórios</li>
           <li>🏆 Prêmios: <b>1º 1500x</b> · <b>2º 1000x</b> · <b>3º 500x</b></li>
-          <li>Cadastros duplicados: vale apenas o <b>maior</b></li>
-          <li class="kill">Necessário ser <b>ativo no xat.com/altavibe</b></li>
-          <li class="kill"><b>Fraudar o jogo</b> (eliminatória)</li>
+          <li>Cadastros duplicados: vale apenas o de <b>maior valor acumulado</b></li>
+          <li>É necessário ser <b>ativo no xat.com/altavibe</b> (Eliminatória)</li>
+          <li class="kill"><b>Fraudar o jogo!</b> (Eliminatória)</li>
         </ul>
       </div>
       <div class="card">
         <h2>⚖️ Peso dos Ganhos</h2>
         <div class="weights">
-          <div class="w-row boost"><span class="w-label">🚀 BOOST <small style="color:var(--muted);font-weight:400">(5–50 VC + giro extra)</small></span><span class="w-pct">0.5%</span></div>
           <div class="w-row"><span class="w-label">50 VibeCoins</span><span class="w-pct">1%</span></div>
           <div class="w-row"><span class="w-label">40 VibeCoins</span><span class="w-pct">3%</span></div>
           <div class="w-row"><span class="w-label">30 VibeCoins</span><span class="w-pct">5%</span></div>
