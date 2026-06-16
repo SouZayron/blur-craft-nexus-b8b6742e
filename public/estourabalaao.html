@@ -530,6 +530,10 @@ function renderAdmin(){
   document.getElementById('csvBtn').onclick=exportCsv;
   document.getElementById('logFilter').oninput=renderLogTable;
   document.getElementById('logClear').onclick=()=>{if(confirm('Limpar todo o log global?')){saveLog([]);renderAdmin()}};
+  document.getElementById('resetGameBtn').onclick=()=>{
+    if(!confirm('RESET GERAL: apagar TODOS os jogadores e logs?'))return;
+    savePlayers({});saveLog([]);renderAdmin();
+  };
   renderPlayerMgmt();renderLogTable();
 }
 
