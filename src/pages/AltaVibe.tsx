@@ -435,6 +435,17 @@ const AltaVibe = () => {
         .av-winner-name{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:2px;color:#f5ecff;line-height:1}
         .av-winner-pts{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#ffd700;letter-spacing:1.5px;line-height:1}
         .av-winner-pts span{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;color:#bca8d9;margin-left:.3rem}
+        .av-winner-logs{margin-top:.5rem;width:100%;display:flex;flex-direction:column;gap:.22rem;max-height:180px;overflow-y:auto;padding-right:.3rem}
+        .av-winner-logs::-webkit-scrollbar{width:5px}
+        .av-winner-logs::-webkit-scrollbar-thumb{background:rgba(196,122,217,.35);border-radius:3px}
+        .av-winner-logs-title{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:#bca8d9;margin-bottom:.15rem;text-align:center}
+        .av-winner-log-row{display:grid;grid-template-columns:1fr auto auto;gap:.45rem;align-items:center;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;padding:.2rem .45rem;border-radius:5px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+        .av-winner-log-row.boost{background:rgba(255,215,0,.08);border-color:rgba(255,215,0,.25)}
+        .av-winner-log-row .d{color:#bca8d9;letter-spacing:.5px}
+        .av-winner-log-row .t{color:#bca8d9;letter-spacing:.5px}
+        .av-winner-log-row .p{color:#ffd700;font-weight:700;letter-spacing:.5px}
+        .av-winner-logs-empty{text-align:center;color:#bca8d9;font-size:.68rem;padding:.4rem 0}
+
         .av-closed-logs{display:flex;flex-direction:column;min-height:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.7rem .85rem;gap:.4rem;overflow:hidden}
         .av-closed-logs-head{display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
         .av-closed-logs-title{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;color:#d99ee6}
