@@ -434,6 +434,16 @@ const AltaVibe = () => {
         .av-winner-name{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:2px;color:#f5ecff;line-height:1}
         .av-winner-pts{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#ffd700;letter-spacing:1.5px;line-height:1}
         .av-winner-pts span{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;color:#bca8d9;margin-left:.3rem}
+        .av-winner-logs{width:100%;margin-top:.5rem;display:flex;flex-direction:column;gap:.2rem;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.4rem .5rem;max-height:160px;overflow-y:auto}
+        .av-winner-logs::-webkit-scrollbar{width:5px}
+        .av-winner-logs::-webkit-scrollbar-thumb{background:rgba(196,122,217,.4);border-radius:3px}
+        .av-winner-logs-title{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#bca8d9;text-align:left;margin-bottom:.15rem}
+        .av-winner-log-row{display:grid;grid-template-columns:auto auto 1fr;gap:.45rem;align-items:center;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;color:#e5d8f5;padding:.18rem .35rem;border-radius:4px;background:rgba(255,255,255,.04)}
+        .av-winner-log-row.boost{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.2)}
+        .av-winner-log-row .d{color:#bca8d9;letter-spacing:.5px}
+        .av-winner-log-row .t{color:#bca8d9;letter-spacing:.5px}
+        .av-winner-log-row .p{color:#ffd700;font-weight:700;text-align:right;letter-spacing:.5px}
+        .av-winner-logs-empty{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;color:#bca8d9;text-align:center;padding:.3rem 0}
         .av-closed-logs{display:flex;flex-direction:column;min-height:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.7rem .85rem;gap:.4rem;overflow:hidden}
         .av-closed-logs-head{display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
         .av-closed-logs-title{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;color:#d99ee6}
