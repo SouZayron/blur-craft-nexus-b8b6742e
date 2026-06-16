@@ -53,6 +53,8 @@ const AltaVibe = () => {
   const [signupsLocked, setSignupsLocked] = useState(false);
   const [extraSpin, setExtraSpin] = useState(false);
   const [logs, setLogs] = useState<LogRow[]>([]);
+  const [winnerLogs, setWinnerLogs] = useState<Record<string, LogRow[]>>({});
+
 
   const showToast = (msg: string) => {
     setToast(msg);
