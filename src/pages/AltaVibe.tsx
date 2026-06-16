@@ -446,12 +446,6 @@ const AltaVibe = () => {
         .av-winner-log-row .p{color:#ffd700;font-weight:700;letter-spacing:.5px}
         .av-winner-logs-empty{text-align:center;color:#bca8d9;font-size:.68rem;padding:.4rem 0}
 
-        .av-closed-logs{display:flex;flex-direction:column;min-height:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.7rem .85rem;gap:.4rem;overflow:hidden}
-        .av-closed-logs-head{display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-        .av-closed-logs-title{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;color:#d99ee6}
-        .av-closed-logs-list{overflow-y:auto;display:flex;flex-direction:column;gap:.22rem;padding-right:.3rem;min-height:0;max-height:32vh}
-        .av-closed-logs-list::-webkit-scrollbar{width:6px}
-        .av-closed-logs-list::-webkit-scrollbar-thumb{background:rgba(196,122,217,.4);border-radius:3px}
       `}</style>
       <div className="av-root">
         <div className="av-container">
