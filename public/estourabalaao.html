@@ -544,6 +544,7 @@ function renderPlayerMgmt(){
     <td>${n}</td><td><b style="color:var(--yellow)">${players[n].total_vc}</b></td><td>🔥${players[n].streak||0}</td>
     <td><div class="row-btns">
       <button onclick="adminResetPlayer('${n.replace(/'/g,"\\'")}')">Resetar Pontos</button>
+      <button onclick="adminClearCooldown('${n.replace(/'/g,"\\'")}')">Liberar Cooldown</button>
       <button onclick="adminEditBalance('${n.replace(/'/g,"\\'")}')">Editar Saldo</button>
       <button class="danger" onclick="adminDeletePlayer('${n.replace(/'/g,"\\'")}')">Excluir</button>
     </div></td></tr>`).join('')||'<tr><td colspan=4 style="text-align:center;color:var(--muted)">Sem jogadores</td></tr>';
