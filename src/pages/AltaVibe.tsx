@@ -657,40 +657,38 @@ const AltaVibe = () => {
                   <div className="av-closed-sub">Alta Vibe · Ganhadores Oficiais</div>
                 </div>
                 <div className="av-winners">
-                  {winners.map((w, i) => (
-                    <div key={w.id} className={`av-winner p${i + 1}`}>
-                      <div className="av-winner-medal">{PRIZE_MEDALS[i]}</div>
-                      <div className="av-winner-prize">Prêmio · <b>{PRIZE_LABELS[i]}</b></div>
-                      <div className="av-winner-name">{w.name}</div>
-                      <div className="av-winner-pts">{(w.coins || 0).toLocaleString("pt-BR")}<span>Vibecoins</span></div>
-                    </div>
-                  ))}
+                  {winners.map((w, i) => {
+                    const wLogs = winnerLogs[w.id] || [];
+                    return (
+                      <div key={w.id} className={`av-winner p${i + 1}`}>
+                        <div className="av-winner-medal">{PRIZE_MEDALS[i]}</div>
+                        <div className="av-winner-prize">Prêmio · <b>{PRIZE_LABELS[i]}</b></div>
+                        <div className="av-winner-name">{w.name}</div>
+                        <div className="av-winner-pts">{(w.coins || 0).toLocaleString("pt-BR")}<span>Vibecoins</span></div>
+                        <div className="av-winner-logs">
+                          <div className="av-winner-logs-title">📜 Histórico ({wLogs.length})</div>
+                          {wLogs.length === 0 ? (
+                            <div className="av-winner-logs-empty">Sem coletas registradas.</div>
+                          ) : (
+                            wLogs.map((l) => {
+                              const d = new Date(l.created_at);
+                              const date = d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+                              const time = d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+                              return (
+                                <div key={l.id} className={`av-winner-log-row${l.is_boost ? " boost" : ""}`}>
+                                  <span className="d">{date}</span>
+                                  <span className="t">{time}</span>
+                                  <span className="p">{l.is_boost ? `🚀 +${l.total} VC` : `+${l.total} VC`}</span>
+                                </div>
+                              );
+                            })
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-                <div className="av-closed-logs">
-                  <div className="av-closed-logs-head">
-                    <div className="av-closed-logs-title">📜 Logs das Coletas</div>
-                    <div className="av-ctag">{logs.length} coleta{logs.length !== 1 ? "s" : ""}</div>
-                  </div>
-                  <div className="av-closed-logs-list">
-                    {logs.length === 0 ? (
-                      <div className="av-empty">Sem coletas registradas.</div>
-                    ) : (
-                      logs.map((l) => {
-                        const d = new Date(l.created_at);
-                        const date = d.toLocaleDateString("pt-BR");
-                        const time = d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-                        return (
-                          <div key={l.id} className={`av-log-row${l.is_boost ? " boost" : ""}`}>
-                            <span className="av-log-name">{l.name}</span>
-                            <span className="av-log-date">{date}</span>
-                            <span className="av-log-time">{time}</span>
-                            <span className="av-log-pts">{l.is_boost ? `🚀 +${l.total} VC` : `+${l.total} VC`}</span>
-                          </div>
-                        );
-                      })
-                    )}
-                  </div>
-                </div>
+
               </div>
             </div>
           );
