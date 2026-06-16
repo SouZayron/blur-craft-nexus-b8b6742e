@@ -53,7 +53,6 @@ const AltaVibe = () => {
   const [signupsLocked, setSignupsLocked] = useState(false);
   const [extraSpin, setExtraSpin] = useState(false);
   const [logs, setLogs] = useState<LogRow[]>([]);
-  const [winnerLogs, setWinnerLogs] = useState<Record<string, LogRow[]>>({});
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -150,26 +149,6 @@ const AltaVibe = () => {
     return () => { supabase.removeChannel(ch); };
   }, [loadRanking, loadLogs]);
 
-  // Load per-winner logs (top 3 non-eliminated) for the closed overlay
-  useEffect(() => {
-    const winners = ranking.filter((u) => !isEliminated(u.name)).slice(0, 3);
-    if (winners.length === 0) { setWinnerLogs({}); return; }
-    let cancelled = false;
-    (async () => {
-      const entries: Record<string, LogRow[]> = {};
-      await Promise.all(winners.map(async (w) => {
-        const { data } = await supabase
-          .from("altavibe_logs")
-          .select("id,name,prize,bonus,total,is_boost,created_at")
-          .ilike("name", w.name)
-          .order("created_at", { ascending: false })
-          .limit(50);
-        if (data) entries[w.id] = data as LogRow[];
-      }));
-      if (!cancelled) setWinnerLogs(entries);
-    })();
-    return () => { cancelled = true; };
-  }, [ranking, logs]);
 
   useEffect(() => {
     const savedName = localStorage.getItem(LS_NAME);
@@ -434,16 +413,6 @@ const AltaVibe = () => {
         .av-winner-name{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:2px;color:#f5ecff;line-height:1}
         .av-winner-pts{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#ffd700;letter-spacing:1.5px;line-height:1}
         .av-winner-pts span{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;color:#bca8d9;margin-left:.3rem}
-        .av-winner-logs{width:100%;margin-top:.5rem;display:flex;flex-direction:column;gap:.2rem;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.4rem .5rem;max-height:160px;overflow-y:auto}
-        .av-winner-logs::-webkit-scrollbar{width:5px}
-        .av-winner-logs::-webkit-scrollbar-thumb{background:rgba(196,122,217,.4);border-radius:3px}
-        .av-winner-logs-title{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#bca8d9;text-align:left;margin-bottom:.15rem}
-        .av-winner-log-row{display:grid;grid-template-columns:auto auto 1fr;gap:.45rem;align-items:center;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;color:#e5d8f5;padding:.18rem .35rem;border-radius:4px;background:rgba(255,255,255,.04)}
-        .av-winner-log-row.boost{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.2)}
-        .av-winner-log-row .d{color:#bca8d9;letter-spacing:.5px}
-        .av-winner-log-row .t{color:#bca8d9;letter-spacing:.5px}
-        .av-winner-log-row .p{color:#ffd700;font-weight:700;text-align:right;letter-spacing:.5px}
-        .av-winner-logs-empty{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;color:#bca8d9;text-align:center;padding:.3rem 0}
         .av-closed-logs{display:flex;flex-direction:column;min-height:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.7rem .85rem;gap:.4rem;overflow:hidden}
         .av-closed-logs-head{display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
         .av-closed-logs-title{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;color:#d99ee6}
@@ -661,36 +630,14 @@ const AltaVibe = () => {
                   <div className="av-closed-sub">Alta Vibe · Ganhadores Oficiais</div>
                 </div>
                 <div className="av-winners">
-                  {winners.map((w, i) => {
-                    const wLogs = winnerLogs[w.id] || [];
-                    return (
-                      <div key={w.id} className={`av-winner p${i + 1}`}>
-                        <div className="av-winner-medal">{PRIZE_MEDALS[i]}</div>
-                        <div className="av-winner-prize">Prêmio · <b>{PRIZE_LABELS[i]}</b></div>
-                        <div className="av-winner-name">{w.name}</div>
-                        <div className="av-winner-pts">{(w.coins || 0).toLocaleString("pt-BR")}<span>Vibecoins</span></div>
-                        <div className="av-winner-logs">
-                          <div className="av-winner-logs-title">📜 Histórico ({wLogs.length})</div>
-                          {wLogs.length === 0 ? (
-                            <div className="av-winner-logs-empty">Sem coletas registradas.</div>
-                          ) : (
-                            wLogs.map((l) => {
-                              const d = new Date(l.created_at);
-                              const date = d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
-                              const time = d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-                              return (
-                                <div key={l.id} className={`av-winner-log-row${l.is_boost ? " boost" : ""}`}>
-                                  <span className="d">{date}</span>
-                                  <span className="t">{time}</span>
-                                  <span className="p">{l.is_boost ? `🚀 +${l.total}` : `+${l.total}`} VC</span>
-                                </div>
-                              );
-                            })
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {winners.map((w, i) => (
+                    <div key={w.id} className={`av-winner p${i + 1}`}>
+                      <div className="av-winner-medal">{PRIZE_MEDALS[i]}</div>
+                      <div className="av-winner-prize">Prêmio · <b>{PRIZE_LABELS[i]}</b></div>
+                      <div className="av-winner-name">{w.name}</div>
+                      <div className="av-winner-pts">{(w.coins || 0).toLocaleString("pt-BR")}<span>Vibecoins</span></div>
+                    </div>
+                  ))}
                 </div>
                 <div className="av-closed-logs">
                   <div className="av-closed-logs-head">
