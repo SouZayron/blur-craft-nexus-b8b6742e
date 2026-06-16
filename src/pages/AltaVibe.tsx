@@ -151,6 +151,25 @@ const AltaVibe = () => {
     return () => { supabase.removeChannel(ch); };
   }, [loadRanking, loadLogs]);
 
+  useEffect(() => {
+    const loadWinnerLogs = async () => {
+      const top = ranking.filter((u) => !isEliminated(u.name)).slice(0, 3);
+      const map: Record<string, LogRow[]> = {};
+      await Promise.all(
+        top.map(async (w) => {
+          const { data } = await supabase
+            .from("altavibe_logs")
+            .select("id,name,prize,bonus,total,is_boost,created_at")
+            .eq("name", w.name)
+            .order("created_at", { ascending: false })
+            .limit(50);
+          if (data) map[w.id] = data as LogRow[];
+        })
+      );
+      setWinnerLogs(map);
+    };
+    if (ranking.length > 0) loadWinnerLogs();
+  }, [ranking]);
 
   useEffect(() => {
     const savedName = localStorage.getItem(LS_NAME);
@@ -163,6 +182,7 @@ const AltaVibe = () => {
       });
     }
   }, []);
+
 
   const saveProfile = async () => {
     const name = nameInput.trim().slice(0, 20);
