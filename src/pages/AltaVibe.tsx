@@ -53,6 +53,8 @@ const AltaVibe = () => {
   const [signupsLocked, setSignupsLocked] = useState(false);
   const [extraSpin, setExtraSpin] = useState(false);
   const [logs, setLogs] = useState<LogRow[]>([]);
+  const [winnerLogs, setWinnerLogs] = useState<Record<string, LogRow[]>>({});
+
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -149,6 +151,25 @@ const AltaVibe = () => {
     return () => { supabase.removeChannel(ch); };
   }, [loadRanking, loadLogs]);
 
+  useEffect(() => {
+    const loadWinnerLogs = async () => {
+      const top = ranking.filter((u) => !isEliminated(u.name)).slice(0, 3);
+      const map: Record<string, LogRow[]> = {};
+      await Promise.all(
+        top.map(async (w) => {
+          const { data } = await supabase
+            .from("altavibe_logs")
+            .select("id,name,prize,bonus,total,is_boost,created_at")
+            .eq("name", w.name)
+            .order("created_at", { ascending: false })
+            .limit(50);
+          if (data) map[w.id] = data as LogRow[];
+        })
+      );
+      setWinnerLogs(map);
+    };
+    if (ranking.length > 0) loadWinnerLogs();
+  }, [ranking]);
 
   useEffect(() => {
     const savedName = localStorage.getItem(LS_NAME);
@@ -161,6 +182,7 @@ const AltaVibe = () => {
       });
     }
   }, []);
+
 
   const saveProfile = async () => {
     const name = nameInput.trim().slice(0, 20);
@@ -413,12 +435,17 @@ const AltaVibe = () => {
         .av-winner-name{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:2px;color:#f5ecff;line-height:1}
         .av-winner-pts{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#ffd700;letter-spacing:1.5px;line-height:1}
         .av-winner-pts span{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;color:#bca8d9;margin-left:.3rem}
-        .av-closed-logs{display:flex;flex-direction:column;min-height:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.7rem .85rem;gap:.4rem;overflow:hidden}
-        .av-closed-logs-head{display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-        .av-closed-logs-title{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;color:#d99ee6}
-        .av-closed-logs-list{overflow-y:auto;display:flex;flex-direction:column;gap:.22rem;padding-right:.3rem;min-height:0;max-height:32vh}
-        .av-closed-logs-list::-webkit-scrollbar{width:6px}
-        .av-closed-logs-list::-webkit-scrollbar-thumb{background:rgba(196,122,217,.4);border-radius:3px}
+        .av-winner-logs{margin-top:.5rem;width:100%;display:flex;flex-direction:column;gap:.22rem;max-height:180px;overflow-y:auto;padding-right:.3rem}
+        .av-winner-logs::-webkit-scrollbar{width:5px}
+        .av-winner-logs::-webkit-scrollbar-thumb{background:rgba(196,122,217,.35);border-radius:3px}
+        .av-winner-logs-title{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:#bca8d9;margin-bottom:.15rem;text-align:center}
+        .av-winner-log-row{display:grid;grid-template-columns:1fr auto auto;gap:.45rem;align-items:center;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;padding:.2rem .45rem;border-radius:5px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+        .av-winner-log-row.boost{background:rgba(255,215,0,.08);border-color:rgba(255,215,0,.25)}
+        .av-winner-log-row .d{color:#bca8d9;letter-spacing:.5px}
+        .av-winner-log-row .t{color:#bca8d9;letter-spacing:.5px}
+        .av-winner-log-row .p{color:#ffd700;font-weight:700;letter-spacing:.5px}
+        .av-winner-logs-empty{text-align:center;color:#bca8d9;font-size:.68rem;padding:.4rem 0}
+
       `}</style>
       <div className="av-root">
         <div className="av-container">
@@ -630,40 +657,38 @@ const AltaVibe = () => {
                   <div className="av-closed-sub">Alta Vibe · Ganhadores Oficiais</div>
                 </div>
                 <div className="av-winners">
-                  {winners.map((w, i) => (
-                    <div key={w.id} className={`av-winner p${i + 1}`}>
-                      <div className="av-winner-medal">{PRIZE_MEDALS[i]}</div>
-                      <div className="av-winner-prize">Prêmio · <b>{PRIZE_LABELS[i]}</b></div>
-                      <div className="av-winner-name">{w.name}</div>
-                      <div className="av-winner-pts">{(w.coins || 0).toLocaleString("pt-BR")}<span>Vibecoins</span></div>
-                    </div>
-                  ))}
+                  {winners.map((w, i) => {
+                    const wLogs = winnerLogs[w.id] || [];
+                    return (
+                      <div key={w.id} className={`av-winner p${i + 1}`}>
+                        <div className="av-winner-medal">{PRIZE_MEDALS[i]}</div>
+                        <div className="av-winner-prize">Prêmio · <b>{PRIZE_LABELS[i]}</b></div>
+                        <div className="av-winner-name">{w.name}</div>
+                        <div className="av-winner-pts">{(w.coins || 0).toLocaleString("pt-BR")}<span>Vibecoins</span></div>
+                        <div className="av-winner-logs">
+                          <div className="av-winner-logs-title">📜 Histórico ({wLogs.length})</div>
+                          {wLogs.length === 0 ? (
+                            <div className="av-winner-logs-empty">Sem coletas registradas.</div>
+                          ) : (
+                            wLogs.map((l) => {
+                              const d = new Date(l.created_at);
+                              const date = d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+                              const time = d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+                              return (
+                                <div key={l.id} className={`av-winner-log-row${l.is_boost ? " boost" : ""}`}>
+                                  <span className="d">{date}</span>
+                                  <span className="t">{time}</span>
+                                  <span className="p">{l.is_boost ? `🚀 +${l.total} VC` : `+${l.total} VC`}</span>
+                                </div>
+                              );
+                            })
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-                <div className="av-closed-logs">
-                  <div className="av-closed-logs-head">
-                    <div className="av-closed-logs-title">📜 Logs das Coletas</div>
-                    <div className="av-ctag">{logs.length} coleta{logs.length !== 1 ? "s" : ""}</div>
-                  </div>
-                  <div className="av-closed-logs-list">
-                    {logs.length === 0 ? (
-                      <div className="av-empty">Sem coletas registradas.</div>
-                    ) : (
-                      logs.map((l) => {
-                        const d = new Date(l.created_at);
-                        const date = d.toLocaleDateString("pt-BR");
-                        const time = d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-                        return (
-                          <div key={l.id} className={`av-log-row${l.is_boost ? " boost" : ""}`}>
-                            <span className="av-log-name">{l.name}</span>
-                            <span className="av-log-date">{date}</span>
-                            <span className="av-log-time">{time}</span>
-                            <span className="av-log-pts">{l.is_boost ? `🚀 +${l.total} VC` : `+${l.total} VC`}</span>
-                          </div>
-                        );
-                      })
-                    )}
-                  </div>
-                </div>
+
               </div>
             </div>
           );
