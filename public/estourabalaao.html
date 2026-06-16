@@ -500,9 +500,10 @@ function renderAdmin(){
   root.innerHTML=`<div class="admin">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
       <h1>🔧 Painel Estoura Balão</h1>
-      <div style="display:flex;gap:8px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn ghost" style="width:auto" onclick="location.href='/estourabalaao.html'">← Voltar ao Jogo</button>
         <button class="btn" style="width:auto" id="csvBtn">⬇ Export CSV</button>
+        <button class="btn red" style="width:auto" id="resetGameBtn">🧨 RESET GERAL</button>
       </div>
     </div>
     <div class="grid-stats">
