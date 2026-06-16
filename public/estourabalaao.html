@@ -142,10 +142,24 @@ ul.rules li.kill:before{content:"⛔";color:var(--red)}
 /* ============ STATE ============ */
 const LS_PLAYERS='estourabalaao_players';
 const LS_LOG='estourabalaao_global_log';
+const LS_RESET='estourabalaao_reset_version';
+const RESET_VERSION='2026-06-16-v1';
+// Start: 16/06/2026 00:00 Brasília (UTC-3) → 03:00 UTC
+const START_AT_MS=Date.UTC(2026,5,16,3,0,0);
+const COOLDOWN_MS=24*60*60*1000;
 const COLORS=['#EC4899','#7C3AED','#06B6D4','#F59E0B','#10B981'];
 const WEIGHTS=[[5,40],[10,20],[20,10],[30,5],[40,3],[50,1]];
 let session={user:null};
 let balloonTimer=null;
+
+// One-time reset of legacy data
+try{
+  if(localStorage.getItem(LS_RESET)!==RESET_VERSION){
+    localStorage.removeItem(LS_PLAYERS);
+    localStorage.removeItem(LS_LOG);
+    localStorage.setItem(LS_RESET,RESET_VERSION);
+  }
+}catch(e){}
 
 function loadPlayers(){try{return JSON.parse(localStorage.getItem(LS_PLAYERS))||{}}catch(e){return{}}}
 function savePlayers(p){localStorage.setItem(LS_PLAYERS,JSON.stringify(p))}
@@ -155,6 +169,9 @@ function hashPw(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt
 function todayStr(){const d=new Date();const o=new Date(d.getTime()-d.getTimezoneOffset()*60000-3*3600000);return o.toISOString().slice(0,10)}
 function nowTime(){const d=new Date();return d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}
 function diffDays(a,b){return Math.round((new Date(b)-new Date(a))/86400000)}
+function gameStarted(){return Date.now()>=START_AT_MS}
+function fmtHMS(ms){let s=Math.max(0,Math.floor(ms/1000));const h=String(Math.floor(s/3600)).padStart(2,'0');s%=3600;const m=String(Math.floor(s/60)).padStart(2,'0');const ss=String(s%60).padStart(2,'0');return `${h}:${m}:${ss}`}
+function fmtDHMS(ms){let s=Math.max(0,Math.floor(ms/1000));const d=Math.floor(s/86400);s%=86400;const h=String(Math.floor(s/3600)).padStart(2,'0');s%=3600;const m=String(Math.floor(s/60)).padStart(2,'0');const ss=String(s%60).padStart(2,'0');return d>0?`${d}d ${h}:${m}:${ss}`:`${h}:${m}:${ss}`}
 
 function weightedRoll(){
   const total=WEIGHTS.reduce((s,w)=>s+w[1],0);
@@ -195,46 +212,38 @@ function renderGame(){
       <div class="card">
         <h2>📋 Regras</h2>
         <ul class="rules">
-          <li>Período: <b>16/06 → 30/06/2026</b></li>
+          <li>Início: <b>16/06/2026</b> · (horário de Brasília)</li>
           <li>Use o <b>mesmo nome e senha</b> todos os dias para acumular</li>
-          <li><b>3 estouros por dia</b> · VibeCoins aleatórios</li>
+          <li><b>1 estouro a cada 24h</b> · VibeCoins aleatórios</li>
           <li>🏆 Prêmios: <b>1º 1500x</b> · <b>2º 1000x</b> · <b>3º 500x</b></li>
-          <li>Cadastros duplicados: vale apenas o de <b>maior valor acumulado</b></li>
-          <li>É necessário ser <b>ativo no xat.com/altavibe</b> (Eliminatória)</li>
+          <li>Cadastros duplicados: vale o de <b>maior valor acumulado</b></li>
+          <li>É necessário ser <b>ativo no xat.com/altavibe</b></li>
           <li class="kill"><b>Fraudar o jogo!</b> (Eliminatória)</li>
         </ul>
       </div>
       <div class="card">
         <h2>⚖️ Peso dos Ganhos</h2>
         <div class="weights">
-          <div class="w-row"><span class="w-label">50 VibeCoins</span><span class="w-pct">1%</span></div>
-          <div class="w-row"><span class="w-label">40 VibeCoins</span><span class="w-pct">3%</span></div>
-          <div class="w-row"><span class="w-label">30 VibeCoins</span><span class="w-pct">5%</span></div>
-          <div class="w-row"><span class="w-label">20 VibeCoins</span><span class="w-pct">10%</span></div>
-          <div class="w-row"><span class="w-label">10 VibeCoins</span><span class="w-pct">20%</span></div>
-          <div class="w-row"><span class="w-label">5 VibeCoins</span><span class="w-pct">40%</span></div>
+          <div class="w-row"><span class="w-label">50 VC</span><span class="w-pct">1%</span></div>
+          <div class="w-row"><span class="w-label">40 VC</span><span class="w-pct">3%</span></div>
+          <div class="w-row"><span class="w-label">30 VC</span><span class="w-pct">5%</span></div>
+          <div class="w-row"><span class="w-label">20 VC</span><span class="w-pct">10%</span></div>
+          <div class="w-row"><span class="w-label">10 VC</span><span class="w-pct">20%</span></div>
+          <div class="w-row"><span class="w-label">5 VC</span><span class="w-pct">40%</span></div>
         </div>
-      </div>
-      <div class="card">
-        <h2>🔥 Streak & Bônus</h2>
-        <ul class="bonus-list">
-          <li>Girar todos os dias aumenta sua <b>streak</b> 🔥</li>
-          <li><b>3 dias</b> seguidos: bônus de <b>+20%</b> no prêmio</li>
-          <li><b>7+ dias</b> seguidos: bônus de <b>+50%</b> no prêmio</li>
-        </ul>
-      </div>
-      <div class="card scroll" style="flex:1;min-height:100px">
-        <h2>📜 LOGS · Total do dia</h2>
-        <div class="scroll-body"><div class="log" id="logList"></div></div>
       </div>
     </aside>
     <main class="game" id="gameArea">
       <div class="stars" id="stars"></div>
     </main>
     <aside class="sidebar">
-      <div class="card scroll" style="flex:1;min-height:0">
+      <div class="card scroll" style="flex:2;min-height:0">
         <h2>🏆 Ranking · Top 30</h2>
         <div class="scroll-body"><div id="rankList" style="display:flex;flex-direction:column;gap:5px"></div></div>
+      </div>
+      <div class="card scroll" style="flex:1;min-height:120px;max-height:38%">
+        <h2>📜 LOGS · Total do dia</h2>
+        <div class="scroll-body"><div class="log" id="logList"></div></div>
       </div>
     </aside>
   </div>`;
@@ -301,7 +310,7 @@ function doLogin(){
   if(players[name]){
     if(players[name].password!==hashPw(pass)){alert('Senha incorreta');return}
   }else{
-    players[name]={password:hashPw(pass),total_vc:0,streak:0,last_play_date:null,pops_today:0,today_values:[],history:[]};
+    players[name]={password:hashPw(pass),total_vc:0,streak:0,last_play_date:null,next_play_at:0,pops_today:0,today_values:[],history:[]};
     savePlayers(players);
   }
   session.user=name;
@@ -353,39 +362,47 @@ function renderGameArea(){
   clearBalloonTimer();
   const g=document.getElementById('gameArea');
   g.querySelectorAll('.game-top,.empty,.balloons,.daily-done,.legendary').forEach(n=>n.remove());
+  // Pre-start screen
+  if(!gameStarted()){
+    const d=document.createElement('div');d.className='daily-done';
+    d.innerHTML=`<div class="big-balloon" style="font-size:80px">🎈</div>
+      <h2 class="font-display">O jogo começa em</h2>
+      <div class="countdown" id="cd">--d --:--:--</div>
+      <p style="color:var(--muted);font-size:13px">16/06/2026 · 00:00 (horário de Brasília)</p>`;
+    g.appendChild(d);
+    startCountdownTo(START_AT_MS,true);
+    return;
+  }
   if(!session.user){
     const d=document.createElement('div');d.className='empty';
     d.innerHTML=`<div class="big-balloon">🎈</div><p>Entre com seu nome e senha para jogar</p>`;
     g.appendChild(d);return;
   }
-  const players=loadPlayers();const p=players[session.user];const t=todayStr();
-  const fresh=(p.last_play_date!==t);
-  const pops=fresh?0:p.pops_today;
+  const players=loadPlayers();const p=players[session.user];
+  const nextAt=p.next_play_at||0;
+  const onCooldown=Date.now()<nextAt;
   const top=document.createElement('div');top.className='game-top';
-  const todayEarned=fresh?0:(p.today_values||[]).reduce((s,v)=>s+v,0);
   top.innerHTML=`
     <div class="stat">👤 <strong>${session.user}</strong></div>
     <div class="stat">⭐ <strong>${p.total_vc} VC</strong></div>
     <div class="stat">🔥 Streak: <strong>${p.streak||0}</strong></div>
-    <div class="stat">🎈 Hoje: <strong>${pops} / 3</strong></div>
-    <div class="stat">💰 Ganhos hoje: <strong>+${todayEarned}</strong></div>`;
+    <div class="stat">⏱️ Próximo: <strong id="nextIn">${onCooldown?fmtHMS(nextAt-Date.now()):'PRONTO'}</strong></div>`;
   g.appendChild(top);
   if(p.streak>=7){
     const b=document.createElement('div');b.className='legendary';b.textContent='🏆 STREAK LENDÁRIO';g.appendChild(b);
   }
-  if(pops>=3){
+  if(onCooldown){
     const dd=document.createElement('div');dd.className='daily-done';
-    dd.innerHTML=`<h2 class="font-display">🎈 Você já estourou seus 3 balões!</h2>
-      <p style="color:var(--muted)">Próxima rodada em:</p>
+    dd.innerHTML=`<h2 class="font-display">🎈 Volte em breve!</h2>
+      <p style="color:var(--muted)">Você poderá estourar novamente em:</p>
       <div class="countdown" id="cd">--:--:--</div>
-      <div class="summary"><span>Ganhos do dia</span><strong>+${todayEarned} VC</strong></div>`;
-    g.appendChild(dd);startCountdown();
+      <div class="summary"><span>Saldo total</span><strong>${p.total_vc} VC</strong></div>`;
+    g.appendChild(dd);startCountdownTo(nextAt,false);
     return;
   }
   const ba=document.createElement('div');ba.className='balloons';ba.id='balloons';g.appendChild(ba);
-  const hint=document.createElement('div');hint.className='hint';hint.textContent='👆 CLIQUE NOS BALÕES';g.appendChild(hint);
+  const hint=document.createElement('div');hint.className='hint';hint.textContent='👆 CLIQUE NO BALÃO';g.appendChild(hint);
   setTimeout(()=>{hint.style.transition='opacity .6s';hint.style.opacity='0';setTimeout(()=>hint.remove(),700)},5000);
-  // Spawn 4 balloons immediately, some already mid-flight so the player sees movement instantly
   spawnBalloon(-3);spawnBalloon(-1);spawnBalloon(0);spawnBalloon(0);
   balloonTimer=setInterval(()=>{
     const area=document.getElementById('balloons');
@@ -409,23 +426,24 @@ function spawnBalloon(delay=0){
 
 function popBalloon(el){
   if(!session.user)return;
+  if(!gameStarted()){el.remove();return}
   const players=loadPlayers();const p=players[session.user];const t=todayStr();
-  if(p.last_play_date!==t){p.pops_today=0;p.today_values=[]}
-  if(p.pops_today>=3){el.remove();return}
+  if(Date.now()<(p.next_play_at||0)){el.remove();return}
   const roll=weightedRoll();if(!roll){el.remove();return}
   const value=roll.value;
-  // streak update
+  // streak: increment when last play was the previous day, reset if >1 day gap
   if(p.last_play_date){
     const d=diffDays(p.last_play_date,t);
-    if(d===1&&p.pops_today===0)p.streak=(p.streak||0)+1;
+    if(d===1)p.streak=(p.streak||0)+1;
     else if(d>1)p.streak=1;
   }else p.streak=1;
   let mult=1;if(p.streak>=7)mult=1.5;else if(p.streak>=3)mult=1.2;
   const earned=Math.round(value*mult);
-  p.pops_today++;
-  p.today_values.push(value);p.total_vc+=earned;p.last_play_date=t;
+  p.total_vc+=earned;p.last_play_date=t;
+  p.next_play_at=Date.now()+COOLDOWN_MS;
+  p.pops_today=1;p.today_values=[value];
   const entry={date:t,time:nowTime(),vc:earned};
-  p.history.unshift(entry);p.history=p.history.slice(0,200);
+  p.history=p.history||[];p.history.unshift(entry);p.history=p.history.slice(0,200);
   savePlayers(players);
   const log=loadLog();log.unshift({player:session.user,...entry});saveLog(log);
   // FX
@@ -448,19 +466,17 @@ function popBalloon(el){
   renderLog();renderRanking();renderLoginArea();renderGameArea();
 }
 
-function startCountdown(){
-  const el=document.getElementById('cd');if(!el)return;
+let _cdTimer=null;
+function startCountdownTo(targetMs,longFmt){
+  if(_cdTimer)clearInterval(_cdTimer);
   const upd=()=>{
-    const now=new Date();
-    // midnight Brasília
-    const bsbNow=new Date(now.getTime()-3*3600000);
-    const target=new Date(Date.UTC(bsbNow.getUTCFullYear(),bsbNow.getUTCMonth(),bsbNow.getUTCDate()+1,3,0,0));
-    let s=Math.max(0,Math.floor((target-now)/1000));
-    const h=String(Math.floor(s/3600)).padStart(2,'0');s%=3600;
-    const m=String(Math.floor(s/60)).padStart(2,'0');const ss=String(s%60).padStart(2,'0');
-    el.textContent=`${h}:${m}:${ss}`;
+    const el=document.getElementById('cd');if(!el){clearInterval(_cdTimer);_cdTimer=null;return}
+    const left=targetMs-Date.now();
+    el.textContent=longFmt?fmtDHMS(left):fmtHMS(left);
+    const nx=document.getElementById('nextIn');if(nx)nx.textContent=left>0?fmtHMS(left):'PRONTO';
+    if(left<=0){clearInterval(_cdTimer);_cdTimer=null;renderGameArea();}
   };
-  upd();setInterval(upd,1000);
+  upd();_cdTimer=setInterval(upd,1000);
 }
 
 /* ============ ADMIN ============ */
@@ -484,9 +500,10 @@ function renderAdmin(){
   root.innerHTML=`<div class="admin">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
       <h1>🔧 Painel Estoura Balão</h1>
-      <div style="display:flex;gap:8px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn ghost" style="width:auto" onclick="location.href='/estourabalaao.html'">← Voltar ao Jogo</button>
         <button class="btn" style="width:auto" id="csvBtn">⬇ Export CSV</button>
+        <button class="btn red" style="width:auto" id="resetGameBtn">🧨 RESET GERAL</button>
       </div>
     </div>
     <div class="grid-stats">
@@ -513,6 +530,10 @@ function renderAdmin(){
   document.getElementById('csvBtn').onclick=exportCsv;
   document.getElementById('logFilter').oninput=renderLogTable;
   document.getElementById('logClear').onclick=()=>{if(confirm('Limpar todo o log global?')){saveLog([]);renderAdmin()}};
+  document.getElementById('resetGameBtn').onclick=()=>{
+    if(!confirm('RESET GERAL: apagar TODOS os jogadores e logs?'))return;
+    savePlayers({});saveLog([]);renderAdmin();
+  };
   renderPlayerMgmt();renderLogTable();
 }
 
@@ -523,6 +544,7 @@ function renderPlayerMgmt(){
     <td>${n}</td><td><b style="color:var(--yellow)">${players[n].total_vc}</b></td><td>🔥${players[n].streak||0}</td>
     <td><div class="row-btns">
       <button onclick="adminResetPlayer('${n.replace(/'/g,"\\'")}')">Resetar Pontos</button>
+      <button onclick="adminClearCooldown('${n.replace(/'/g,"\\'")}')">Liberar Cooldown</button>
       <button onclick="adminEditBalance('${n.replace(/'/g,"\\'")}')">Editar Saldo</button>
       <button class="danger" onclick="adminDeletePlayer('${n.replace(/'/g,"\\'")}')">Excluir</button>
     </div></td></tr>`).join('')||'<tr><td colspan=4 style="text-align:center;color:var(--muted)">Sem jogadores</td></tr>';
@@ -534,7 +556,8 @@ function renderLogTable(){
   document.getElementById('logTbody').innerHTML=log.map(e=>`<tr><td>${e.player}</td><td>${e.date}</td><td>${e.time}</td><td><b style="color:var(--yellow)">+${e.vc}</b></td></tr>`).join('')||'<tr><td colspan=4 style="text-align:center;color:var(--muted)">Vazio</td></tr>';
 }
 
-window.adminResetPlayer=function(n){if(!confirm('Resetar pontos de '+n+'?'))return;const p=loadPlayers();p[n].total_vc=0;p[n].streak=0;p[n].pops_today=0;p[n].today_values=[];p[n].history=[];savePlayers(p);renderAdmin()};
+window.adminResetPlayer=function(n){if(!confirm('Resetar pontos de '+n+'?'))return;const p=loadPlayers();p[n].total_vc=0;p[n].streak=0;p[n].pops_today=0;p[n].today_values=[];p[n].history=[];p[n].next_play_at=0;p[n].last_play_date=null;savePlayers(p);renderAdmin()};
+window.adminClearCooldown=function(n){const p=loadPlayers();p[n].next_play_at=0;savePlayers(p);renderAdmin()};
 window.adminDeletePlayer=function(n){if(!confirm('Excluir '+n+' permanentemente?'))return;const p=loadPlayers();delete p[n];savePlayers(p);renderAdmin()};
 window.adminEditBalance=function(n){const v=prompt('Novo saldo VC para '+n+':',loadPlayers()[n].total_vc);if(v===null)return;const num=parseInt(v);if(isNaN(num))return alert('Inválido');const p=loadPlayers();p[n].total_vc=num;savePlayers(p);renderAdmin()};
 
