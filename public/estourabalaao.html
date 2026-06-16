@@ -556,7 +556,8 @@ function renderLogTable(){
   document.getElementById('logTbody').innerHTML=log.map(e=>`<tr><td>${e.player}</td><td>${e.date}</td><td>${e.time}</td><td><b style="color:var(--yellow)">+${e.vc}</b></td></tr>`).join('')||'<tr><td colspan=4 style="text-align:center;color:var(--muted)">Vazio</td></tr>';
 }
 
-window.adminResetPlayer=function(n){if(!confirm('Resetar pontos de '+n+'?'))return;const p=loadPlayers();p[n].total_vc=0;p[n].streak=0;p[n].pops_today=0;p[n].today_values=[];p[n].history=[];savePlayers(p);renderAdmin()};
+window.adminResetPlayer=function(n){if(!confirm('Resetar pontos de '+n+'?'))return;const p=loadPlayers();p[n].total_vc=0;p[n].streak=0;p[n].pops_today=0;p[n].today_values=[];p[n].history=[];p[n].next_play_at=0;p[n].last_play_date=null;savePlayers(p);renderAdmin()};
+window.adminClearCooldown=function(n){const p=loadPlayers();p[n].next_play_at=0;savePlayers(p);renderAdmin()};
 window.adminDeletePlayer=function(n){if(!confirm('Excluir '+n+' permanentemente?'))return;const p=loadPlayers();delete p[n];savePlayers(p);renderAdmin()};
 window.adminEditBalance=function(n){const v=prompt('Novo saldo VC para '+n+':',loadPlayers()[n].total_vc);if(v===null)return;const num=parseInt(v);if(isNaN(num))return alert('Inválido');const p=loadPlayers();p[n].total_vc=num;savePlayers(p);renderAdmin()};
 
