@@ -149,26 +149,6 @@ const AltaVibe = () => {
     return () => { supabase.removeChannel(ch); };
   }, [loadRanking, loadLogs]);
 
-  // Load per-winner logs (top 3 non-eliminated) for the closed overlay
-  useEffect(() => {
-    const winners = ranking.filter((u) => !isEliminated(u.name)).slice(0, 3);
-    if (winners.length === 0) { setWinnerLogs({}); return; }
-    let cancelled = false;
-    (async () => {
-      const entries: Record<string, LogRow[]> = {};
-      await Promise.all(winners.map(async (w) => {
-        const { data } = await supabase
-          .from("altavibe_logs")
-          .select("id,name,prize,bonus,total,is_boost,created_at")
-          .ilike("name", w.name)
-          .order("created_at", { ascending: false })
-          .limit(50);
-        if (data) entries[w.id] = data as LogRow[];
-      }));
-      if (!cancelled) setWinnerLogs(entries);
-    })();
-    return () => { cancelled = true; };
-  }, [ranking, logs]);
 
   useEffect(() => {
     const savedName = localStorage.getItem(LS_NAME);
