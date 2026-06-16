@@ -310,7 +310,7 @@ function doLogin(){
   if(players[name]){
     if(players[name].password!==hashPw(pass)){alert('Senha incorreta');return}
   }else{
-    players[name]={password:hashPw(pass),total_vc:0,streak:0,last_play_date:null,pops_today:0,today_values:[],history:[]};
+    players[name]={password:hashPw(pass),total_vc:0,streak:0,last_play_date:null,next_play_at:0,pops_today:0,today_values:[],history:[]};
     savePlayers(players);
   }
   session.user=name;
