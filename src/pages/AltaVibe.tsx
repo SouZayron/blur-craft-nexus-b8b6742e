@@ -300,8 +300,9 @@ const AltaVibe = () => {
       spinningRef.current = false;
       const msg = error?.message || "";
       if (msg.includes("already_spun_today")) showToast("Já girou hoje! Volta amanhã 🌙");
-      else if (msg.includes("game_not_started")) showToast("Game ainda não começou (abre 05/06 00:01) ⏳");
-      else if (msg.includes("game_ended")) showToast("Game encerrado (terminou em 15/06) 🏁");
+      else if (msg.includes("game_not_started")) showToast("Game ainda não começou (abre 17/06 00:00) ⏳");
+      else if (msg.includes("game_ended")) showToast("Game encerrado (terminou em 30/06) 🏁");
+
       else if (msg.includes("game_closed")) showToast("Game fechado no momento 🔒");
       else showToast("Erro ao girar");
       return;
@@ -532,11 +533,14 @@ const AltaVibe = () => {
                   <ol className="av-rules-list">
                     <li>Usar o mesmo nome e senha todos os dias para acumular.</li>
                     <li>Vale apenas <strong>um giro por dia</strong>.</li>
-                    <li>Período: <strong>05/06/2026 a 15/06/2026</strong>.</li>
+                    <li>Período: <strong>17/06/2026 a 30/06/2026</strong>.</li>
+                    <li>Liberado todo dia após <strong>00h</strong>.</li>
                     <li>Prêmios: <strong>1º 1500x</strong> · <strong>2º 1000x</strong> · <strong>3º 500x</strong>.</li>
                     <li>Cadastros duplicados: vale apenas o de maior valor acumulado.</li>
+                    <li className="elim">Últimos ganhadores: <strong>Zaru, Dani e Morgan</strong> estão fora.</li>
                     <li className="elim">É necessário ser ativo no <strong>xat.com/altavibe</strong> (Eliminatória).</li>
                     <li className="elim">Fraudar a roleta (Eliminatória).</li>
+
                   </ol>
                 </div>
                 <div className="av-rules-box">
