@@ -3,14 +3,15 @@ import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 
 const PRIZES = [
-  { label: "5", coins: 5, color: "#b59ad6", text: "#1a0d2e" },
-  { label: "10", coins: 10, color: "#7a4bcc", text: "#fff" },
-  { label: "20", coins: 20, color: "#d99ee6", text: "#1a0d2e" },
-  { label: "30", coins: 30, color: "#5a2e9e", text: "#fff" },
-  { label: "40", coins: 40, color: "#c47ad9", text: "#1a0d2e" },
-  { label: "50", coins: 50, color: "#8b3fbf", text: "#fff" },
+  { label: "50", coins: 50, color: "#b59ad6", text: "#1a0d2e" },
+  { label: "100", coins: 100, color: "#7a4bcc", text: "#fff" },
+  { label: "200", coins: 200, color: "#d99ee6", text: "#1a0d2e" },
+  { label: "300", coins: 300, color: "#5a2e9e", text: "#fff" },
+  { label: "400", coins: 400, color: "#c47ad9", text: "#1a0d2e" },
+  { label: "500", coins: 500, color: "#8b3fbf", text: "#fff" },
   { label: "BOOST", coins: 0, color: "#ffd700", text: "#3a1857" },
 ];
+
 
 const SEG = (2 * Math.PI) / PRIZES.length;
 const LS_NAME = "altavibe_current_name";
@@ -541,13 +542,14 @@ const AltaVibe = () => {
                 <div className="av-rules-box">
                   <div className="av-rules-title">🎯 Peso dos Ganhos</div>
                   <div className="av-odds">
-                    <div className="av-odd-row boost"><span className="av-odd-name">🚀 BOOST (5–50 VC + giro extra)</span><span className="av-odd-pct">0,5% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">50 Vibecoins</span><span className="av-odd-pct">1% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">40 Vibecoins</span><span className="av-odd-pct">3% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">30 Vibecoins</span><span className="av-odd-pct">5% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">20 Vibecoins</span><span className="av-odd-pct">10% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">10 Vibecoins</span><span className="av-odd-pct">20% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">5 Vibecoins</span><span className="av-odd-pct">40% de chance</span></div>
+                    <div className="av-odd-row boost"><span className="av-odd-name">🚀 BOOST (50–500 VC + giro extra)</span><span className="av-odd-pct">0,5% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">500 Vibecoins</span><span className="av-odd-pct">1% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">400 Vibecoins</span><span className="av-odd-pct">3% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">300 Vibecoins</span><span className="av-odd-pct">5% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">200 Vibecoins</span><span className="av-odd-pct">10% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">100 Vibecoins</span><span className="av-odd-pct">20% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">50 Vibecoins</span><span className="av-odd-pct">40% de chance</span></div>
+
                   </div>
                 </div>
                 <div className="av-rules-box">
