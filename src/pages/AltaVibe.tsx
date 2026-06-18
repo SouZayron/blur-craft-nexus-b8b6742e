@@ -646,53 +646,8 @@ const AltaVibe = () => {
           </div>
         </div>
 
-        {/* CLOSED OVERLAY — winners + logs */}
-        {(() => {
-          const winners = ranking.filter((u) => !isEliminated(u.name)).slice(0, 3);
-          return (
-            <div className="av-closed" role="dialog" aria-label="Encerramento Alta Vibe">
-              <div className="av-closed-card">
-                <div className="av-closed-head">
-                  <div className="av-closed-title">🏁 ROLETA ENCERRADA</div>
-                  <div className="av-closed-sub">Alta Vibe · Ganhadores Oficiais</div>
-                </div>
-                <div className="av-winners">
-                  {winners.map((w, i) => {
-                    const wLogs = winnerLogs[w.id] || [];
-                    return (
-                      <div key={w.id} className={`av-winner p${i + 1}`}>
-                        <div className="av-winner-medal">{PRIZE_MEDALS[i]}</div>
-                        <div className="av-winner-prize">Prêmio · <b>{PRIZE_LABELS[i]}</b></div>
-                        <div className="av-winner-name">{w.name}</div>
-                        <div className="av-winner-pts">{(w.coins || 0).toLocaleString("pt-BR")}<span>Vibecoins</span></div>
-                        <div className="av-winner-logs">
-                          <div className="av-winner-logs-title">📜 Histórico ({wLogs.length})</div>
-                          {wLogs.length === 0 ? (
-                            <div className="av-winner-logs-empty">Sem coletas registradas.</div>
-                          ) : (
-                            wLogs.map((l) => {
-                              const d = new Date(l.created_at);
-                              const date = d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
-                              const time = d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-                              return (
-                                <div key={l.id} className={`av-winner-log-row${l.is_boost ? " boost" : ""}`}>
-                                  <span className="d">{date}</span>
-                                  <span className="t">{time}</span>
-                                  <span className="p">{l.is_boost ? `🚀 +${l.total} VC` : `+${l.total} VC`}</span>
-                                </div>
-                              );
-                            })
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
 
-              </div>
-            </div>
-          );
-        })()}
+
 
         <div className={`av-toast${toast ? " show" : ""}`}>{toast}</div>
       </div>
