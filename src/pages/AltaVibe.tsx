@@ -532,11 +532,14 @@ const AltaVibe = () => {
                   <ol className="av-rules-list">
                     <li>Usar o mesmo nome e senha todos os dias para acumular.</li>
                     <li>Vale apenas <strong>um giro por dia</strong>.</li>
-                    <li>Período: <strong>05/06/2026 a 15/06/2026</strong>.</li>
+                    <li>Período: <strong>17/06/2026 a 30/06/2026</strong>.</li>
+                    <li>Liberado todo dia após <strong>00h</strong>.</li>
                     <li>Prêmios: <strong>1º 1500x</strong> · <strong>2º 1000x</strong> · <strong>3º 500x</strong>.</li>
                     <li>Cadastros duplicados: vale apenas o de maior valor acumulado.</li>
+                    <li className="elim">Últimos ganhadores: <strong>Zaru, Dani e Morgan</strong> estão fora.</li>
                     <li className="elim">É necessário ser ativo no <strong>xat.com/altavibe</strong> (Eliminatória).</li>
                     <li className="elim">Fraudar a roleta (Eliminatória).</li>
+
                   </ol>
                 </div>
                 <div className="av-rules-box">
