@@ -542,13 +542,14 @@ const AltaVibe = () => {
                 <div className="av-rules-box">
                   <div className="av-rules-title">🎯 Peso dos Ganhos</div>
                   <div className="av-odds">
-                    <div className="av-odd-row boost"><span className="av-odd-name">🚀 BOOST (5–50 VC + giro extra)</span><span className="av-odd-pct">0,5% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">50 Vibecoins</span><span className="av-odd-pct">1% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">40 Vibecoins</span><span className="av-odd-pct">3% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">30 Vibecoins</span><span className="av-odd-pct">5% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">20 Vibecoins</span><span className="av-odd-pct">10% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">10 Vibecoins</span><span className="av-odd-pct">20% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">5 Vibecoins</span><span className="av-odd-pct">40% de chance</span></div>
+                    <div className="av-odd-row boost"><span className="av-odd-name">🚀 BOOST (50–500 VC + giro extra)</span><span className="av-odd-pct">0,5% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">500 Vibecoins</span><span className="av-odd-pct">1% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">400 Vibecoins</span><span className="av-odd-pct">3% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">300 Vibecoins</span><span className="av-odd-pct">5% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">200 Vibecoins</span><span className="av-odd-pct">10% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">100 Vibecoins</span><span className="av-odd-pct">20% de chance</span></div>
+                    <div className="av-odd-row"><span className="av-odd-name">50 Vibecoins</span><span className="av-odd-pct">40% de chance</span></div>
+
                   </div>
                 </div>
                 <div className="av-rules-box">
