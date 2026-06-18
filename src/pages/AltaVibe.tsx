@@ -16,7 +16,7 @@ const PRIZES = [
 const SEG = (2 * Math.PI) / PRIZES.length;
 const LS_NAME = "altavibe_current_name";
 const LS_PASS = "altavibe_current_pass";
-const ELIMINATED = new Set(["breh"]);
+const ELIMINATED = new Set<string>([]);
 const isEliminated = (n: string) => ELIMINATED.has((n || "").trim().toLowerCase());
 const PRIZE_LABELS = ["1500x", "1000x", "500x"];
 const PRIZE_MEDALS = ["🥇", "🥈", "🥉"];
