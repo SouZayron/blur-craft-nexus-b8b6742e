@@ -18,6 +18,8 @@ const LS_NAME = "altavibe_current_name";
 const LS_PASS = "altavibe_current_pass";
 const ELIMINATED = new Set<string>([]);
 const isEliminated = (n: string) => ELIMINATED.has((n || "").trim().toLowerCase());
+const EX_WINNERS = new Set(["zaru", "morgan", "café com leite"]);
+const isExWinner = (n: string) => EX_WINNERS.has((n || "").trim().toLowerCase());
 const PRIZE_LABELS = ["1500x", "1000x", "500x"];
 const PRIZE_MEDALS = ["🥇", "🥈", "🥉"];
 
@@ -407,6 +409,7 @@ const AltaVibe = () => {
         .av-rlist::-webkit-scrollbar-thumb{background:rgba(196,122,217,0.4);border-radius:3px}
         .av-ritem{display:grid;grid-template-columns:26px 1fr auto auto;align-items:center;gap:.55rem;background:rgba(255,255,255,0.05);border-radius:7px;padding:.38rem .65rem;border:1px solid rgba(255,255,255,0.08)}
         .av-ritem.me{border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.06)}
+        .av-ritem.ex-winner{border-color:rgba(255,215,0,0.25);background:rgba(255,215,0,0.04)}
         .av-rpos{font-family:'Bebas Neue',sans-serif;font-size:1rem;text-align:center;color:#bca8d9}
         .av-rpos.gold{color:#ffd700}.av-rpos.silver{color:#e0d0f0}.av-rpos.bronze{color:#d99e6c}
         .av-rname{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:600;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -537,7 +540,7 @@ const AltaVibe = () => {
                     <li>Liberado todo dia após <strong>00h</strong>.</li>
                     <li>Prêmios: <strong>1º 1500x</strong> · <strong>2º 1000x</strong> · <strong>3º 500x</strong>.</li>
                     <li>Cadastros duplicados: vale apenas o de maior valor acumulado.</li>
-                    <li className="elim">Últimos ganhadores: <strong>Zaru, Dani e Morgan</strong> estão fora.</li>
+                    <li className="elim">Últimos ganhadores: <strong>Zaru, Morgan e Café com leite</strong> estão fora (podem jogar, mas não ganham).</li>
                     <li className="elim">É necessário ser ativo no <strong>xat.com/altavibe</strong> (Eliminatória).</li>
                     <li className="elim">Fraudar a roleta (Eliminatória).</li>
 
@@ -633,11 +636,13 @@ const AltaVibe = () => {
                     ranking.map((u, i) => {
                       const cls = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
                       const elim = isEliminated(u.name);
+                      const exWin = isExWinner(u.name);
                       return (
-                        <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}${elim ? " elim" : ""}`}>
+                        <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}${elim ? " elim" : ""}${exWin ? " ex-winner" : ""}`}>
                           <div className={`av-rpos ${cls}`}>{i + 1}</div>
                           <div className="av-rname">
                             {elim && <span className="av-elim-badge">Eliminado por Inatividade no xat.com/altavibe</span>}
+                            {exWin && <span className="av-elim-badge" style={{color:"#ffd700",background:"rgba(255,215,0,0.12)",borderColor:"rgba(255,215,0,0.35)"}}>fora do jogo</span>}
                             {u.name}
                           </div>
                           <div className="av-rstreak">{u.streak || 0}🔥</div>
