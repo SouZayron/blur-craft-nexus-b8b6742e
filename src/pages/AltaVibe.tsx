@@ -409,6 +409,7 @@ const AltaVibe = () => {
         .av-rlist::-webkit-scrollbar-thumb{background:rgba(196,122,217,0.4);border-radius:3px}
         .av-ritem{display:grid;grid-template-columns:26px 1fr auto auto;align-items:center;gap:.55rem;background:rgba(255,255,255,0.05);border-radius:7px;padding:.38rem .65rem;border:1px solid rgba(255,255,255,0.08)}
         .av-ritem.me{border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.06)}
+        .av-ritem.ex-winner{border-color:rgba(255,215,0,0.25);background:rgba(255,215,0,0.04)}
         .av-rpos{font-family:'Bebas Neue',sans-serif;font-size:1rem;text-align:center;color:#bca8d9}
         .av-rpos.gold{color:#ffd700}.av-rpos.silver{color:#e0d0f0}.av-rpos.bronze{color:#d99e6c}
         .av-rname{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:600;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
