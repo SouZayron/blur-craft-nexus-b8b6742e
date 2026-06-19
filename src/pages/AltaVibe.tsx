@@ -636,11 +636,13 @@ const AltaVibe = () => {
                     ranking.map((u, i) => {
                       const cls = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
                       const elim = isEliminated(u.name);
+                      const exWin = isExWinner(u.name);
                       return (
-                        <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}${elim ? " elim" : ""}`}>
+                        <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}${elim ? " elim" : ""}${exWin ? " ex-winner" : ""}`}>
                           <div className={`av-rpos ${cls}`}>{i + 1}</div>
                           <div className="av-rname">
                             {elim && <span className="av-elim-badge">Eliminado por Inatividade no xat.com/altavibe</span>}
+                            {exWin && <span className="av-elim-badge" style={{color:"#ffd700",background:"rgba(255,215,0,0.12)",borderColor:"rgba(255,215,0,0.35)"}}>fora do jogo</span>}
                             {u.name}
                           </div>
                           <div className="av-rstreak">{u.streak || 0}🔥</div>
