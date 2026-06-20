@@ -235,7 +235,7 @@ export default function BolaoDaCopa() {
                 >🪙</span>
               ))}
               <span className="bolao-prize-label">Prêmio Total</span>
-              <span className="bolao-prize-value">4000 <strong>xats</strong></span>
+              <span className="bolao-prize-value">2000 <strong>xats</strong></span>
               <span className="bolao-prize-sub">Acertou o placar, levou! 🏆</span>
             </div>
 
@@ -381,7 +381,10 @@ export default function BolaoDaCopa() {
       )}
 
       {(() => {
-        const currentGame = GAMES[0];
+        // Mostra a tabela do jogo mais recente cujas apostas já encerraram.
+        // Se nenhum jogo fechou ainda, mostra o primeiro.
+        const closedGames = GAMES.filter(g => now >= getWindow(g).close.getTime());
+        const currentGame = closedGames.length > 0 ? closedGames[closedGames.length - 1] : GAMES[0];
         const gameBets = bets.filter(b => b.game_id === currentGame.id);
         const result = results.find(r => r.game_id === currentGame.id);
         const winners = result ? gameBets.filter(b => b.score_home === result.score_home && b.score_away === result.score_away) : [];

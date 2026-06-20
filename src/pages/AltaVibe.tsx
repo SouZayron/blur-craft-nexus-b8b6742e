@@ -540,7 +540,7 @@ const AltaVibe = () => {
                     <li>Liberado todo dia após <strong>00h</strong>.</li>
                     <li>Prêmios: <strong>1º 1500x</strong> · <strong>2º 1000x</strong> · <strong>3º 500x</strong>.</li>
                     <li>Cadastros duplicados: vale apenas o de maior valor acumulado.</li>
-                    <li className="elim">Últimos ganhadores: <strong>Zaru, Morgan e Café com leite</strong> estão fora (podem jogar, mas não ganham).</li>
+                    
                     <li className="elim">É necessário ser ativo no <strong>xat.com/altavibe</strong> (Eliminatória).</li>
                     <li className="elim">Fraudar a roleta (Eliminatória).</li>
 
