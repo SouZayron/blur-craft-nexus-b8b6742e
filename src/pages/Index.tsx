@@ -85,8 +85,8 @@ const Index = () => {
             <GlassCard className="p-5 md:p-6 h-full flex flex-col">
               <div className="flex items-start gap-4 mb-5">
                 <img
-                  src="https://s0.xat.com/web_gear/chat/GetStrip8.php?c=a_(beanie)_80"
-                  alt="Power Beanie do xat"
+                  src="https://s0.xat.com/web_gear/chat/GetStrip8.php?c=a_(dad)_80"
+                  alt="Power Dad do xat"
                   width={80}
                   height={80}
                   className="rounded-xl object-contain bg-background/30 shadow-lg p-2 shrink-0"
@@ -100,7 +100,7 @@ const Index = () => {
                     {t("ultimoPower")}
                   </p>
                   <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                    Beanie <span className="text-foreground/60 text-base font-normal">(ID: 745)</span>
+                    Dad <span className="text-foreground/60 text-base font-normal">(ID: 747)</span>
                   </h2>
                   <p className="text-xs text-foreground/60 mt-1 italic"> </p>
                 </div>
