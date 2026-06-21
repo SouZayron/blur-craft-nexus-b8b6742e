@@ -138,7 +138,7 @@ const Index = () => {
                   {t("smiliesOfPower")}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {["(beanie)", "(bnback)", "(bnbox)", "(bnchair)", "(bncharge)", "(bndesk)", "(bnhammock)", "(bnlaptop)", "(bnpaper)", "(bnpapertop)", "(bnpizza)", "(bnstick)"].map((s) => (
+                  {["(dad)", "(ddbike)", "(ddsoccer)", "(ddcard)", "(ddhands)", "(ddheart)", "(ddhold)", "(ddmug)", "(ddrod)", "(ddsuper)", "(ddtop)", "(ddbeer)"].map((s) => (
                     <span key={s} className="bg-labxat-purple/20 text-labxat-purple px-2 py-0.5 rounded-md text-xs font-mono">
                       {s}
                     </span>
