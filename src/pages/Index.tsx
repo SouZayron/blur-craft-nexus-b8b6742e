@@ -129,7 +129,7 @@ const Index = () => {
                 </div>
                 <div className="bg-labxat-blue/15 border border-labxat-blue/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">Store</p>
-                  <p className="text-foreground text-sm font-medium">Limited</p>
+                  <p className="text-foreground text-sm font-medium">300 xats</p>
                 </div>
               </div>
 
