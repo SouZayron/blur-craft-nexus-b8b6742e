@@ -252,7 +252,7 @@ export default function BolaoDaCopa() {
                 >🪙</span>
               ))}
               <span className="bolao-prize-label">Prêmio Total</span>
-              <span className="bolao-prize-value">2000 <strong>xats</strong></span>
+              <span className="bolao-prize-value">4000 <strong>xats</strong></span>
               <span className="bolao-prize-sub">Acertou o placar, levou! 🏆</span>
             </div>
 
