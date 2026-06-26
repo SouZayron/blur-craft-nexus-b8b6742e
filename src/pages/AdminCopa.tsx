@@ -6,7 +6,9 @@ const GAMES = [
   { id: 1, home: "Brasil", away: "Marrocos", homeFlag: "🇧🇷", awayFlag: "🇲🇦", label: "Brasil vs Marrocos — 13/06" },
   { id: 2, home: "Brasil", away: "Haiti", homeFlag: "🇧🇷", awayFlag: "🇭🇹", label: "Brasil vs Haiti — 19/06" },
   { id: 3, home: "Escócia", away: "Brasil", homeFlag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", awayFlag: "🇧🇷", label: "Escócia vs Brasil — 24/06" },
+  { id: 4, home: "Brasil", away: "Japão", homeFlag: "🇧🇷", awayFlag: "🇯🇵", label: "Brasil vs Japão — 29/06" },
 ];
+
 
 const ADMIN_PASSWORD = "admin2026";
 
