@@ -469,6 +469,143 @@ export type Database = {
         }
         Relationships: []
       }
+      machine_plays: {
+        Row: {
+          created_at: string
+          id: string
+          is_trinca: boolean
+          name: string
+          prize: number
+          symbols: Json
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_trinca?: boolean
+          name: string
+          prize?: number
+          symbols: Json
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_trinca?: boolean
+          name?: string
+          prize?: number
+          symbols?: Json
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "machine_plays_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "machine_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      machine_settings: {
+        Row: {
+          id: number
+          is_open: boolean
+          max_spins_per_day: number
+          mix_prize: number
+          signups_locked: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          is_open?: boolean
+          max_spins_per_day?: number
+          mix_prize?: number
+          signups_locked?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          is_open?: boolean
+          max_spins_per_day?: number
+          mix_prize?: number
+          signups_locked?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      machine_symbols: {
+        Row: {
+          created_at: string
+          id: string
+          img: string
+          name: string
+          position: number
+          symbol_id: string
+          value: number
+          weight: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          img: string
+          name: string
+          position?: number
+          symbol_id: string
+          value?: number
+          weight?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          img?: string
+          name?: string
+          position?: number
+          symbol_id?: string
+          value?: number
+          weight?: number
+        }
+        Relationships: []
+      }
+      machine_users: {
+        Row: {
+          coins: number
+          created_at: string
+          id: string
+          last_play_date: string | null
+          last_spin_day: string | null
+          name: string
+          password: string
+          spins_today: number
+          streak: number
+          updated_at: string
+        }
+        Insert: {
+          coins?: number
+          created_at?: string
+          id?: string
+          last_play_date?: string | null
+          last_spin_day?: string | null
+          name: string
+          password: string
+          spins_today?: number
+          streak?: number
+          updated_at?: string
+        }
+        Update: {
+          coins?: number
+          created_at?: string
+          id?: string
+          last_play_date?: string | null
+          last_spin_day?: string | null
+          name?: string
+          password?: string
+          spins_today?: number
+          streak?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       mixhits_selections: {
         Row: {
           app_name: string
@@ -775,6 +912,28 @@ export type Database = {
             Returns: Json
           }
       cleanup_expired_bingo_cards: { Args: never; Returns: undefined }
+      machine_login: {
+        Args: { p_name: string; p_password: string }
+        Returns: {
+          coins: number
+          created_at: string
+          id: string
+          last_play_date: string | null
+          last_spin_day: string | null
+          name: string
+          password: string
+          spins_today: number
+          streak: number
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "machine_users"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      machine_spin: { Args: { p_name: string; p_tz?: string }; Returns: Json }
       plinko_login: {
         Args: { p_name: string; p_password: string }
         Returns: {
