@@ -6,30 +6,15 @@ type Game = {
   id: number;
   home: string;
   away: string;
-  homeFlag: string;
-  awayFlag: string;
+  homeFlag?: string;
+  awayFlag?: string;
   date: Date;
   label: string;
   openAt?: Date;
   closeAt?: Date;
 };
 
-const GAMES: Game[] = [
-  { id: 1, home: "Brasil", away: "Marrocos", homeFlag: "🇧🇷", awayFlag: "🇲🇦", date: new Date("2026-06-13T19:00:00-03:00"), label: "Sábado, 13/06 às 19:00" },
-  { id: 2, home: "Brasil", away: "Haiti", homeFlag: "🇧🇷", awayFlag: "🇭🇹", date: new Date("2026-06-19T21:30:00-03:00"), label: "Sexta, 19/06 às 21:30" },
-  { id: 3, home: "Escócia", away: "Brasil", homeFlag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", awayFlag: "🇧🇷", date: new Date("2026-06-24T19:00:00-03:00"), label: "Quarta, 24/06 às 19:00" },
-  {
-    id: 4,
-    home: "Brasil",
-    away: "Japão",
-    homeFlag: "🇧🇷",
-    awayFlag: "🇯🇵",
-    date: new Date("2026-06-29T14:00:00-03:00"),
-    label: "Segunda, 29/06 às 14:00",
-    openAt: new Date("2026-06-26T00:00:00-03:00"),
-    closeAt: new Date("2026-06-28T19:00:00-03:00"),
-  },
-];
+
 
 type Bet = { id: string; user_id: string; username: string; game_id: number; score_home: number; score_away: number };
 type Result = { game_id: number; score_home: number; score_away: number };
@@ -136,6 +121,9 @@ export default function BolaoDaCopa() {
   const [session, setSession] = useState<{ id: string; username: string } | null>(null);
   const [bets, setBets] = useState<Bet[]>([]);
   const [results, setResults] = useState<Result[]>([]);
+  const [GAMES, setGAMES] = useState<Game[]>([]);
+  const [prizeTotal, setPrizeTotal] = useState<number>(2000);
+
 
   // Login form
   const [username, setUsername] = useState("");
@@ -158,12 +146,26 @@ export default function BolaoDaCopa() {
   }, []);
 
   const refresh = async () => {
-    const [b, r] = await Promise.all([
+    const [b, r, m, s] = await Promise.all([
       supabase.from("bolao_bets").select("*").order("created_at", { ascending: true }),
       supabase.from("bolao_results").select("*"),
+      supabase.from("bolao_matches").select("*").order("position").order("id"),
+      supabase.from("bolao_settings").select("*").eq("id", 1).maybeSingle(),
     ]);
     if (b.data) setBets(b.data as Bet[]);
     if (r.data) setResults(r.data as Result[]);
+    if (m.data) {
+      setGAMES(m.data.map((row: any) => ({
+        id: row.id,
+        home: row.home,
+        away: row.away,
+        label: row.label,
+        date: new Date(row.closes_at),
+        openAt: new Date(row.opens_at),
+        closeAt: new Date(row.closes_at),
+      })));
+    }
+    if (s.data) setPrizeTotal((s.data as any).prize_total ?? 2000);
   };
 
   useEffect(() => {
@@ -172,9 +174,12 @@ export default function BolaoDaCopa() {
       .channel("bolao")
       .on("postgres_changes", { event: "*", schema: "public", table: "bolao_bets" }, refresh)
       .on("postgres_changes", { event: "*", schema: "public", table: "bolao_results" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "bolao_matches" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "bolao_settings" }, refresh)
       .subscribe();
     return () => { supabase.removeChannel(ch); };
   }, []);
+
 
   const handleLogin = async () => {
     const u = username.trim();
@@ -252,7 +257,7 @@ export default function BolaoDaCopa() {
                 >🪙</span>
               ))}
               <span className="bolao-prize-label">Prêmio Total</span>
-              <span className="bolao-prize-value">4000 <strong>xats</strong></span>
+              <span className="bolao-prize-value">{prizeTotal} <strong>xats</strong></span>
               <span className="bolao-prize-sub">Acertou o placar, levou! 🏆</span>
             </div>
 

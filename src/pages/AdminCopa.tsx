@@ -2,16 +2,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
-const GAMES = [
-  { id: 1, home: "Brasil", away: "Marrocos", homeFlag: "🇧🇷", awayFlag: "🇲🇦", label: "Brasil vs Marrocos — 13/06" },
-  { id: 2, home: "Brasil", away: "Haiti", homeFlag: "🇧🇷", awayFlag: "🇭🇹", label: "Brasil vs Haiti — 19/06" },
-  { id: 3, home: "Escócia", away: "Brasil", homeFlag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", awayFlag: "🇧🇷", label: "Escócia vs Brasil — 24/06" },
-  { id: 4, home: "Brasil", away: "Japão", homeFlag: "🇧🇷", awayFlag: "🇯🇵", label: "Brasil vs Japão — 29/06" },
-];
-
-
 const ADMIN_PASSWORD = "admin2026";
 
+type Game = { id: number; home: string; away: string; label: string; opens_at: string; closes_at: string; position: number };
 type Bet = { id: string; username: string; game_id: number; score_home: number; score_away: number; created_at?: string };
 type Result = { game_id: number; score_home: number; score_away: number };
 type BUser = { id: string; username: string; created_at: string };
@@ -41,27 +34,93 @@ function Confetti({ trigger }: { trigger: number }) {
   );
 }
 
+// datetime-local <-> ISO helpers (Brasília UTC-3)
+const toLocalInput = (iso: string) => {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const off = -180; // -03:00
+  const local = new Date(d.getTime() - (d.getTimezoneOffset() - off) * 60000);
+  return `${local.getFullYear()}-${pad(local.getMonth() + 1)}-${pad(local.getDate())}T${pad(local.getHours())}:${pad(local.getMinutes())}`;
+};
+const fromLocalInput = (v: string) => {
+  if (!v) return "";
+  // treat input as -03:00
+  return new Date(v + ":00-03:00").toISOString();
+};
+
 export default function AdminCopa() {
   const [authed, setAuthed] = useState(false);
   const [pw, setPw] = useState("");
+  const [games, setGames] = useState<Game[]>([]);
   const [bets, setBets] = useState<Bet[]>([]);
   const [results, setResults] = useState<Result[]>([]);
   const [users, setUsers] = useState<BUser[]>([]);
   const [inputs, setInputs] = useState<Record<number, { h: string; a: string }>>({});
+  const [prize, setPrize] = useState<number>(2000);
   const [confetti, setConfetti] = useState(0);
 
+  // new-game form
+  const [ng, setNg] = useState({ home: "", away: "", label: "", opens_at: "", closes_at: "" });
+
   const refresh = async () => {
-    const [b, r, u] = await Promise.all([
+    const [b, r, u, g, s] = await Promise.all([
       supabase.from("bolao_bets").select("*").order("created_at", { ascending: false }),
       supabase.from("bolao_results").select("*"),
       supabase.from("bolao_users").select("*").order("created_at", { ascending: false }),
+      supabase.from("bolao_matches").select("*").order("position").order("id"),
+      supabase.from("bolao_settings").select("*").eq("id", 1).maybeSingle(),
     ]);
     if (b.data) setBets(b.data as Bet[]);
     if (r.data) setResults(r.data as Result[]);
     if (u.data) setUsers(u.data as BUser[]);
+    if (g.data) setGames(g.data as Game[]);
+    if (s.data) setPrize((s.data as any).prize_total ?? 2000);
   };
 
-  useEffect(() => { if (authed) refresh(); }, [authed]);
+  useEffect(() => {
+    if (!authed) return;
+    refresh();
+    const ch = supabase.channel("admincopa")
+      .on("postgres_changes", { event: "*", schema: "public", table: "bolao_bets" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "bolao_results" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "bolao_users" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "bolao_matches" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "bolao_settings" }, refresh)
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, [authed]);
+
+  const savePrize = async () => {
+    const { error } = await supabase.from("bolao_settings").upsert({ id: 1, prize_total: prize, updated_at: new Date().toISOString() });
+    if (error) return toast({ title: "Erro", description: error.message, variant: "destructive" });
+    toast({ title: "Prêmio atualizado" });
+  };
+
+  const addGame = async () => {
+    if (!ng.home || !ng.away || !ng.label || !ng.opens_at || !ng.closes_at) {
+      return toast({ title: "Preencha todos os campos", variant: "destructive" });
+    }
+    const { error } = await supabase.from("bolao_matches").insert({
+      home: ng.home, away: ng.away, label: ng.label,
+      opens_at: fromLocalInput(ng.opens_at), closes_at: fromLocalInput(ng.closes_at),
+      position: (games[games.length - 1]?.position ?? 0) + 1,
+    });
+    if (error) return toast({ title: "Erro ao criar jogo", description: error.message, variant: "destructive" });
+    setNg({ home: "", away: "", label: "", opens_at: "", closes_at: "" });
+    toast({ title: "Jogo cadastrado" });
+  };
+
+  const updateGame = async (id: number, patch: Partial<Game>) => {
+    const { error } = await supabase.from("bolao_matches").update(patch).eq("id", id);
+    if (error) toast({ title: "Erro ao atualizar", description: error.message, variant: "destructive" });
+  };
+
+  const deleteGame = async (g: Game) => {
+    if (!confirm(`Excluir "${g.label}"?\n(As apostas relacionadas continuarão salvas.)`)) return;
+    const { error } = await supabase.from("bolao_matches").delete().eq("id", g.id);
+    if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
+  };
 
   const confirmResult = async (gid: number) => {
     const inp = inputs[gid];
@@ -72,18 +131,16 @@ export default function AdminCopa() {
     if (error) return toast({ title: "Erro", description: error.message, variant: "destructive" });
     const winners = bets.filter(b => b.game_id === gid && b.score_home === h && b.score_away === a);
     setConfetti(c => c + 1);
-    if (winners.length === 1) toast({ title: `🏆 Parabéns, ${winners[0].username}!`, description: "Você acertou o placar!" });
+    if (winners.length === 1) toast({ title: `🏆 Parabéns, ${winners[0].username}!`, description: "Acertou o placar!" });
     else if (winners.length > 1) toast({ title: "🏆 Prêmio dividido!", description: `Ganhadores: ${winners.map(w => w.username).join(", ")}` });
     else toast({ title: "Nenhum acerto exato neste jogo." });
-    refresh();
   };
 
   const deleteBet = async (bet: Bet) => {
-    if (!confirm(`Remover a aposta de ${bet.username} (${bet.score_home} x ${bet.score_away})?\nA pessoa poderá apostar novamente neste jogo.`)) return;
+    if (!confirm(`Remover a aposta de ${bet.username} (${bet.score_home} x ${bet.score_away})?`)) return;
     const { error } = await supabase.from("bolao_bets").delete().eq("id", bet.id);
     if (error) return toast({ title: "Erro ao remover", description: error.message, variant: "destructive" });
-    toast({ title: "Aposta removida", description: `${bet.username} já pode apostar novamente.` });
-    refresh();
+    toast({ title: "Aposta removida" });
   };
 
   if (!authed) {
@@ -101,31 +158,81 @@ export default function AdminCopa() {
     );
   }
 
+  const inputSt: React.CSSProperties = { padding: 8, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", width: "100%" };
+  const cardSt: React.CSSProperties = { background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 16, border: "1px solid rgba(255,255,255,0.1)" };
+
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#001a2e,#002b1a)", color: "#fff", padding: 24, fontFamily: "Inter, sans-serif" }}>
       <Confetti trigger={confetti} />
       <h1 style={{ textAlign: "center", marginTop: 0 }}>Painel Admin — Bolão da Copa</h1>
-      <div style={{ display: "grid", gap: 16, maxWidth: 900, margin: "20px auto", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))" }}>
-        {GAMES.map(g => {
+
+      {/* Prize + New game */}
+      <div style={{ maxWidth: 1100, margin: "10px auto 20px", display: "grid", gap: 16, gridTemplateColumns: "1fr 1.6fr" }}>
+        <div style={cardSt}>
+          <h2 style={{ margin: "0 0 10px", fontSize: 16 }}>💰 Prêmio total (home)</h2>
+          <div style={{ display: "flex", gap: 8 }}>
+            <input type="number" value={prize} onChange={e => setPrize(parseInt(e.target.value) || 0)} style={inputSt} />
+            <button onClick={savePrize} style={{ padding: "8px 16px", borderRadius: 8, background: "linear-gradient(90deg,#009C3B,#FFDF00)", color: "#002776", fontWeight: 800, border: "none", cursor: "pointer", whiteSpace: "nowrap" }}>Salvar</button>
+          </div>
+          <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 6 }}>Aparece na home de /bolaodacopa</div>
+        </div>
+
+        <div style={cardSt}>
+          <h2 style={{ margin: "0 0 10px", fontSize: 16 }}>➕ Cadastrar novo jogo</h2>
+          <div style={{ display: "grid", gap: 8, gridTemplateColumns: "1fr 1fr 1.6fr" }}>
+            <input placeholder="Time casa (ex: Brasil)" value={ng.home} onChange={e => setNg({ ...ng, home: e.target.value })} style={inputSt} />
+            <input placeholder="Time visitante (ex: Japão)" value={ng.away} onChange={e => setNg({ ...ng, away: e.target.value })} style={inputSt} />
+            <input placeholder="Rótulo (ex: Segunda, 29/06 às 14:00)" value={ng.label} onChange={e => setNg({ ...ng, label: e.target.value })} style={inputSt} />
+          </div>
+          <div style={{ display: "grid", gap: 8, gridTemplateColumns: "1fr 1fr auto", marginTop: 8 }}>
+            <label style={{ fontSize: 11, color: "#cbd5e1" }}>Abre em (Brasília)
+              <input type="datetime-local" value={ng.opens_at} onChange={e => setNg({ ...ng, opens_at: e.target.value })} style={inputSt} />
+            </label>
+            <label style={{ fontSize: 11, color: "#cbd5e1" }}>Fecha em (Brasília)
+              <input type="datetime-local" value={ng.closes_at} onChange={e => setNg({ ...ng, closes_at: e.target.value })} style={inputSt} />
+            </label>
+            <button onClick={addGame} style={{ alignSelf: "end", padding: "8px 16px", borderRadius: 8, background: "linear-gradient(90deg,#009C3B,#FFDF00)", color: "#002776", fontWeight: 800, border: "none", cursor: "pointer" }}>Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Games list with result confirmation + edit */}
+      <div style={{ display: "grid", gap: 16, maxWidth: 1100, margin: "20px auto", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))" }}>
+        {games.map(g => {
           const r = results.find(x => x.game_id === g.id);
           const gameBets = bets.filter(b => b.game_id === g.id);
           const winners = r ? gameBets.filter(b => b.score_home === r.score_home && b.score_away === r.score_away) : [];
           const inp = inputs[g.id] || { h: "", a: "" };
           return (
-            <div key={g.id} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
-              <div style={{ fontWeight: 700, marginBottom: 10 }}>{g.label}</div>
+            <div key={g.id} style={cardSt}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                <input value={g.label} onChange={e => setGames(gs => gs.map(x => x.id === g.id ? { ...x, label: e.target.value } : x))} onBlur={e => updateGame(g.id, { label: e.target.value })} style={{ ...inputSt, fontWeight: 700 }} />
+                <button onClick={() => deleteGame(g)} style={{ background: "rgba(220,38,38,0.85)", color: "#fff", border: "none", padding: "6px 10px", borderRadius: 8, cursor: "pointer", fontSize: 11, whiteSpace: "nowrap" }}>Excluir</button>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 8 }}>
+                <input value={g.home} onChange={e => setGames(gs => gs.map(x => x.id === g.id ? { ...x, home: e.target.value } : x))} onBlur={e => updateGame(g.id, { home: e.target.value })} style={inputSt} />
+                <input value={g.away} onChange={e => setGames(gs => gs.map(x => x.id === g.id ? { ...x, away: e.target.value } : x))} onBlur={e => updateGame(g.id, { away: e.target.value })} style={inputSt} />
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 10 }}>
+                <label style={{ fontSize: 10, color: "#94a3b8" }}>Abre
+                  <input type="datetime-local" defaultValue={toLocalInput(g.opens_at)} onBlur={e => updateGame(g.id, { opens_at: fromLocalInput(e.target.value) })} style={inputSt} />
+                </label>
+                <label style={{ fontSize: 10, color: "#94a3b8" }}>Fecha
+                  <input type="datetime-local" defaultValue={toLocalInput(g.closes_at)} onBlur={e => updateGame(g.id, { closes_at: fromLocalInput(e.target.value) })} style={inputSt} />
+                </label>
+              </div>
               <div style={{ fontSize: 12, color: "#cbd5e1", marginBottom: 6 }}>{gameBets.length} aposta(s)</div>
               {r && <div style={{ background: "rgba(255,223,0,0.15)", padding: 8, borderRadius: 8, marginBottom: 10, fontSize: 13 }}>Resultado: <strong>{g.home} {r.score_home} x {r.score_away} {g.away}</strong></div>}
               <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, textAlign: "center", letterSpacing: "0.05em", textTransform: "uppercase" }}>{g.home}</div>
                   <input type="number" min={0} placeholder="0" value={inp.h} onChange={e => setInputs(s => ({ ...s, [g.id]: { ...inp, h: e.target.value } }))}
-                    style={{ width: "100%", padding: 8, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", textAlign: "center", fontSize: 18, fontWeight: 800 }} />
+                    style={{ ...inputSt, textAlign: "center", fontSize: 18, fontWeight: 800 }} />
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#FFDF00", marginBottom: 4, textAlign: "center", letterSpacing: "0.05em", textTransform: "uppercase" }}>{g.away}</div>
                   <input type="number" min={0} placeholder="0" value={inp.a} onChange={e => setInputs(s => ({ ...s, [g.id]: { ...inp, a: e.target.value } }))}
-                    style={{ width: "100%", padding: 8, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", textAlign: "center", fontSize: 18, fontWeight: 800 }} />
+                    style={{ ...inputSt, textAlign: "center", fontSize: 18, fontWeight: 800 }} />
                 </div>
               </div>
               <button onClick={() => confirmResult(g.id)}
@@ -137,11 +244,11 @@ export default function AdminCopa() {
             </div>
           );
         })}
+        {games.length === 0 && <div style={{ ...cardSt, textAlign: "center", color: "#94a3b8" }}>Nenhum jogo cadastrado. Use o formulário acima.</div>}
       </div>
 
-      <div style={{ display: "grid", gap: 16, maxWidth: 900, margin: "20px auto", gridTemplateColumns: "1fr 1.4fr" }}>
-        {/* Cadastrados */}
-        <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
+      <div style={{ display: "grid", gap: 16, maxWidth: 1100, margin: "20px auto", gridTemplateColumns: "1fr 1.4fr" }}>
+        <div style={cardSt}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
             <h2 style={{ margin: 0, fontSize: 18 }}>👥 Cadastrados</h2>
             <span style={{ fontSize: 12, color: "#94a3b8" }}>{users.length} pessoa(s)</span>
@@ -160,8 +267,7 @@ export default function AdminCopa() {
           </div>
         </div>
 
-        {/* Apostas */}
-        <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
+        <div style={cardSt}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
             <h2 style={{ margin: 0, fontSize: 18 }}>🎯 Apostas registradas</h2>
             <span style={{ fontSize: 12, color: "#94a3b8" }}>{bets.length} total</span>
@@ -169,7 +275,7 @@ export default function AdminCopa() {
           <div style={{ maxHeight: 360, overflow: "auto", display: "flex", flexDirection: "column", gap: 6 }}>
             {bets.length === 0 && <div style={{ fontSize: 13, color: "#94a3b8" }}>Nenhuma aposta ainda.</div>}
             {bets.map(b => {
-              const g = GAMES.find(x => x.id === b.game_id);
+              const g = games.find(x => x.id === b.game_id);
               return (
                 <div key={b.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.04)", padding: "8px 10px", borderRadius: 8, fontSize: 13 }}>
                   <div style={{ minWidth: 0, flex: 1 }}>
