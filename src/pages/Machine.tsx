@@ -413,10 +413,9 @@ const Machine = () => {
             </div>
           </div>
         </div>
-
-        </div>
         {toast && <div className="mc-toast">{toast}</div>}
       </div>
+
     </>
   );
 };
