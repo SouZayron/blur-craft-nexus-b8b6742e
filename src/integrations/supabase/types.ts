@@ -340,6 +340,39 @@ export type Database = {
           },
         ]
       }
+      bolao_matches: {
+        Row: {
+          away: string
+          closes_at: string
+          created_at: string
+          home: string
+          id: number
+          label: string
+          opens_at: string
+          position: number
+        }
+        Insert: {
+          away: string
+          closes_at: string
+          created_at?: string
+          home: string
+          id?: number
+          label: string
+          opens_at?: string
+          position?: number
+        }
+        Update: {
+          away?: string
+          closes_at?: string
+          created_at?: string
+          home?: string
+          id?: number
+          label?: string
+          opens_at?: string
+          position?: number
+        }
+        Relationships: []
+      }
       bolao_results: {
         Row: {
           confirmed_at: string
@@ -358,6 +391,24 @@ export type Database = {
           game_id?: number
           score_away?: number
           score_home?: number
+        }
+        Relationships: []
+      }
+      bolao_settings: {
+        Row: {
+          id: number
+          prize_total: number
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          prize_total?: number
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          prize_total?: number
+          updated_at?: string
         }
         Relationships: []
       }
