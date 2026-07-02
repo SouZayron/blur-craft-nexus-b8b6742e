@@ -6,30 +6,15 @@ type Game = {
   id: number;
   home: string;
   away: string;
-  homeFlag: string;
-  awayFlag: string;
+  homeFlag?: string;
+  awayFlag?: string;
   date: Date;
   label: string;
   openAt?: Date;
   closeAt?: Date;
 };
 
-const GAMES: Game[] = [
-  { id: 1, home: "Brasil", away: "Marrocos", homeFlag: "🇧🇷", awayFlag: "🇲🇦", date: new Date("2026-06-13T19:00:00-03:00"), label: "Sábado, 13/06 às 19:00" },
-  { id: 2, home: "Brasil", away: "Haiti", homeFlag: "🇧🇷", awayFlag: "🇭🇹", date: new Date("2026-06-19T21:30:00-03:00"), label: "Sexta, 19/06 às 21:30" },
-  { id: 3, home: "Escócia", away: "Brasil", homeFlag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", awayFlag: "🇧🇷", date: new Date("2026-06-24T19:00:00-03:00"), label: "Quarta, 24/06 às 19:00" },
-  {
-    id: 4,
-    home: "Brasil",
-    away: "Japão",
-    homeFlag: "🇧🇷",
-    awayFlag: "🇯🇵",
-    date: new Date("2026-06-29T14:00:00-03:00"),
-    label: "Segunda, 29/06 às 14:00",
-    openAt: new Date("2026-06-26T00:00:00-03:00"),
-    closeAt: new Date("2026-06-28T19:00:00-03:00"),
-  },
-];
+
 
 type Bet = { id: string; user_id: string; username: string; game_id: number; score_home: number; score_away: number };
 type Result = { game_id: number; score_home: number; score_away: number };
