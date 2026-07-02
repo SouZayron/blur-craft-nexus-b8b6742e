@@ -121,6 +121,9 @@ export default function BolaoDaCopa() {
   const [session, setSession] = useState<{ id: string; username: string } | null>(null);
   const [bets, setBets] = useState<Bet[]>([]);
   const [results, setResults] = useState<Result[]>([]);
+  const [GAMES, setGAMES] = useState<Game[]>([]);
+  const [prizeTotal, setPrizeTotal] = useState<number>(2000);
+
 
   // Login form
   const [username, setUsername] = useState("");
