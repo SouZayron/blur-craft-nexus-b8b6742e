@@ -146,12 +146,26 @@ export default function BolaoDaCopa() {
   }, []);
 
   const refresh = async () => {
-    const [b, r] = await Promise.all([
+    const [b, r, m, s] = await Promise.all([
       supabase.from("bolao_bets").select("*").order("created_at", { ascending: true }),
       supabase.from("bolao_results").select("*"),
+      supabase.from("bolao_matches").select("*").order("position").order("id"),
+      supabase.from("bolao_settings").select("*").eq("id", 1).maybeSingle(),
     ]);
     if (b.data) setBets(b.data as Bet[]);
     if (r.data) setResults(r.data as Result[]);
+    if (m.data) {
+      setGAMES(m.data.map((row: any) => ({
+        id: row.id,
+        home: row.home,
+        away: row.away,
+        label: row.label,
+        date: new Date(row.closes_at),
+        openAt: new Date(row.opens_at),
+        closeAt: new Date(row.closes_at),
+      })));
+    }
+    if (s.data) setPrizeTotal((s.data as any).prize_total ?? 2000);
   };
 
   useEffect(() => {
@@ -160,9 +174,12 @@ export default function BolaoDaCopa() {
       .channel("bolao")
       .on("postgres_changes", { event: "*", schema: "public", table: "bolao_bets" }, refresh)
       .on("postgres_changes", { event: "*", schema: "public", table: "bolao_results" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "bolao_matches" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "bolao_settings" }, refresh)
       .subscribe();
     return () => { supabase.removeChannel(ch); };
   }, []);
+
 
   const handleLogin = async () => {
     const u = username.trim();
