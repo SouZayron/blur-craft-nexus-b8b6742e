@@ -346,33 +346,14 @@ const Machine = () => {
                 <div><b>{me?.coins ?? 0}</b>Acumulado</div>
               </div>
             </div>
-
-            <div className="mc-panel">
-              <div className="mc-ptitle">📋 Logs</div>
-              <div className="mc-list" style={{ maxHeight: 220 }}>
-                {logs.slice(0, 40).map((p) => {
-                  const d = new Date(p.created_at);
-                  const syms = Array.isArray(p.symbols) ? p.symbols : [];
-                  return (
-                    <div key={p.id} className={`mc-log-row ${p.is_trinca ? "trinca" : ""}`}>
-                      <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.name}</span>
-                      <span className="mc-log-syms">{syms.map((s, i) => <img key={i} src={s.img} alt="" />)}</span>
-                      <span style={{ color: "#bca8d9" }}>{d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</span>
-                      <span className="mc-log-prize">+{p.prize}</span>
-                    </div>
-                  );
-                })}
-                {logs.length === 0 && <div style={{ color: "#8a8f9c", textAlign: "center", padding: "1rem" }}>Nenhum giro ainda.</div>}
-              </div>
-            </div>
           </div>
 
           {/* CENTER: Cassaniquel */}
           <div className="mc-col">
-            <div className="mc-panel">
+            <div className="mc-panel flex">
               <div className="mc-stats">
                 <div className="mc-stat"><div className="mc-stat-lbl">Chances hoje</div><div className="mc-stat-val">{spinsLeft}</div></div>
-                <div className="mc-stat"><div className="mc-stat-lbl">Última</div><div className="mc-stat-val" style={{ fontSize: "1.1rem" }}>{lastPrize}</div></div>
+                <div className="mc-stat"><div className="mc-stat-lbl">Última</div><div className="mc-stat-val" style={{ fontSize: "1rem" }}>{lastPrize}</div></div>
                 <div className="mc-stat"><div className="mc-stat-lbl">Acumulado</div><div className="mc-stat-val">{me?.coins ?? 0}</div></div>
               </div>
               <div className="mc-reels-frame">
@@ -389,17 +370,17 @@ const Machine = () => {
               </div>
               <div className={`mc-message ${messageKind}`}>{message}</div>
               <button className="mc-spin-btn" onClick={spin} disabled={spinning || !me || !settings.is_open || spinsLeft <= 0}>GIRAR</button>
-              <div style={{ textAlign: "center", color: "#8a8f9c", fontSize: ".7rem", letterSpacing: "1.5px", textTransform: "uppercase", marginTop: 6 }}>
+              <div style={{ textAlign: "center", color: "#8a8f9c", fontSize: ".65rem", letterSpacing: "1.5px", textTransform: "uppercase", marginTop: 4 }}>
                 {settings.max_spins_per_day} chances por dia · renova à meia-noite
               </div>
             </div>
           </div>
 
-          {/* RIGHT: Ranking */}
+          {/* RIGHT: Ranking + Logs */}
           <div className="mc-col">
-            <div className="mc-panel" style={{ display: "flex", flexDirection: "column", minHeight: 0 }}>
+            <div className="mc-panel flex" style={{ flex: 1.4 }}>
               <div className="mc-ptitle">🏆 Ranking Top 30</div>
-              <div className="mc-list" style={{ maxHeight: "70vh" }}>
+              <div className="mc-list">
                 {ranking.map((u, i) => (
                   <div key={u.id} className={`mc-rank-row ${i < 3 ? "top" : ""}`}>
                     <div className="mc-rank-pos">{i + 1}</div>
@@ -412,7 +393,27 @@ const Machine = () => {
                 {ranking.length === 0 && <div style={{ color: "#8a8f9c", textAlign: "center", padding: "1rem" }}>Sem jogadores ainda.</div>}
               </div>
             </div>
+            <div className="mc-panel flex" style={{ flex: 1 }}>
+              <div className="mc-ptitle">📋 Logs</div>
+              <div className="mc-list">
+                {logs.slice(0, 60).map((p) => {
+                  const d = new Date(p.created_at);
+                  const syms = Array.isArray(p.symbols) ? p.symbols : [];
+                  return (
+                    <div key={p.id} className={`mc-log-row ${p.is_trinca ? "trinca" : ""}`}>
+                      <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.name}</span>
+                      <span className="mc-log-syms">{syms.map((s, i) => <img key={i} src={s.img} alt="" />)}</span>
+                      <span style={{ color: "#bca8d9" }}>{d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</span>
+                      <span className="mc-log-prize">+{p.prize}</span>
+                    </div>
+                  );
+                })}
+                {logs.length === 0 && <div style={{ color: "#8a8f9c", textAlign: "center", padding: "1rem" }}>Nenhum giro ainda.</div>}
+              </div>
+            </div>
           </div>
+        </div>
+
         </div>
         {toast && <div className="mc-toast">{toast}</div>}
       </div>
