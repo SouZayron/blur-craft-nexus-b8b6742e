@@ -1,0 +1,1 @@
+CREATE POLICY "Anyone can delete bingo cards" ON public.bingo_cards FOR DELETE USING (true);
