@@ -85,8 +85,8 @@ const Index = () => {
             <GlassCard className="p-5 md:p-6 h-full flex flex-col">
               <div className="flex items-start gap-4 mb-5">
                 <img
-                  src="https://s0.xat.com/web_gear/chat/GetStrip8.php?c=a_(dad)_80"
-                  alt="Power Dad do xat"
+                  src="https://s0.xat.com/web_gear/chat/GetStrip8.php?c=a_(astrox)_80"
+                  alt="Power Astrox do xat"
                   width={80}
                   height={80}
                   className="rounded-xl object-contain bg-background/30 shadow-lg p-2 shrink-0"
@@ -100,7 +100,7 @@ const Index = () => {
                     {t("ultimoPower")}
                   </p>
                   <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                    Dad <span className="text-foreground/60 text-base font-normal">(ID: 747)</span>
+                    Astrox <span className="text-foreground/60 text-base font-normal">(ID: 748)</span>
                   </h2>
                   <p className="text-xs text-foreground/60 mt-1 italic"> </p>
                 </div>
@@ -113,23 +113,23 @@ const Index = () => {
                 </div>
                 <div className="bg-labxat-purple/15 border border-labxat-purple/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("group")}</p>
-                  <p className="text-foreground text-sm font-medium">❌</p>
+                  <p className="text-foreground text-sm font-medium">❌ No</p>
                 </div>
                 <div className="bg-labxat-pink/15 border border-labxat-pink/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">Game</p>
-                  <p className="text-foreground text-sm font-medium">❌</p>
+                  <p className="text-foreground text-sm font-medium">❌ No</p>
                 </div>
                 <div className="bg-labxat-green/15 border border-labxat-green/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">Allpowers</p>
-                  <p className="text-foreground text-sm font-medium">❌</p>
+                  <p className="text-foreground text-sm font-medium">❌ No</p>
                 </div>
                 <div className="bg-labxat-lilac/15 border border-labxat-lilac/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">{t("epic")}</p>
-                  <p className="text-foreground text-sm font-medium">❌</p>
+                  <p className="text-foreground text-sm font-medium">❌ No</p>
                 </div>
                 <div className="bg-labxat-blue/15 border border-labxat-blue/25 rounded-lg p-2.5">
                   <p className="text-[10px] text-foreground/70 uppercase tracking-wider mb-0.5">Store</p>
-                  <p className="text-foreground text-sm font-medium">300 xats</p>
+                  <p className="text-foreground text-sm font-medium">365 xats</p>
                 </div>
               </div>
 
@@ -138,7 +138,7 @@ const Index = () => {
                   {t("smiliesOfPower")}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {["(dad)", "(ddbike)", "(ddsoccer)", "(ddcard)", "(ddhands)", "(ddheart)", "(ddhold)", "(ddmug)", "(ddrod)", "(ddsuper)", "(ddtop)", "(ddbeer)"].map((s) => (
+                  {["(astrox)", "(astshine)", "(astice)", "(astsleep)", "(astheart)", "(astlove)", "(astcry)", "(astno)", "(astthink)", "(astback)"].map((s) => (
                     <span key={s} className="bg-labxat-purple/20 text-labxat-purple px-2 py-0.5 rounded-md text-xs font-mono">
                       {s}
                     </span>
