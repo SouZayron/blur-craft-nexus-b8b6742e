@@ -405,6 +405,7 @@ export default function BolaoDaCopa() {
       {(() => {
         // Mostra a tabela do jogo mais recente cujas apostas já encerraram.
         // Se nenhum jogo fechou ainda, mostra o primeiro.
+        if (GAMES.length === 0) return null;
         const closedGames = GAMES.filter(g => now >= getWindow(g).close.getTime());
         const currentGame = closedGames.length > 0 ? closedGames[closedGames.length - 1] : GAMES[0];
         const gameBets = bets.filter(b => b.game_id === currentGame.id);
