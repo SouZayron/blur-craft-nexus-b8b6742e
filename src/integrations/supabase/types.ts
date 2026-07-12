@@ -620,6 +620,7 @@ export type Database = {
       }
       machine_users: {
         Row: {
+          block_top: boolean
           coins: number
           created_at: string
           id: string
@@ -632,6 +633,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          block_top?: boolean
           coins?: number
           created_at?: string
           id?: string
@@ -644,6 +646,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          block_top?: boolean
           coins?: number
           created_at?: string
           id?: string
@@ -966,6 +969,7 @@ export type Database = {
       machine_login: {
         Args: { p_name: string; p_password: string }
         Returns: {
+          block_top: boolean
           coins: number
           created_at: string
           id: string
