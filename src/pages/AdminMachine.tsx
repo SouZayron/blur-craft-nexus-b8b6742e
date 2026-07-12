@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const ADMIN_PASS = "admin2026";
 
-type MUser = { id: string; name: string; coins: number; spins_today: number; last_spin_day: string | null; streak: number; created_at: string };
+type MUser = { id: string; name: string; coins: number; spins_today: number; last_spin_day: string | null; streak: number; created_at: string; block_top: boolean };
 type Play = { id: string; name: string; symbols: unknown; prize: number; is_trinca: boolean; created_at: string; user_id: string | null };
 type Sym = { id: string; symbol_id: string; name: string; img: string; value: number; weight: number; position: number };
 type Settings = { id: number; is_open: boolean; signups_locked: boolean; max_spins_per_day: number; mix_prize: number };
