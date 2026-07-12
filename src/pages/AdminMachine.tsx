@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const ADMIN_PASS = "admin2026";
 
-type MUser = { id: string; name: string; coins: number; spins_today: number; last_spin_day: string | null; streak: number; created_at: string };
+type MUser = { id: string; name: string; coins: number; spins_today: number; last_spin_day: string | null; streak: number; created_at: string; block_top: boolean };
 type Play = { id: string; name: string; symbols: unknown; prize: number; is_trinca: boolean; created_at: string; user_id: string | null };
 type Sym = { id: string; symbol_id: string; name: string; img: string; value: number; weight: number; position: number };
 type Settings = { id: number; is_open: boolean; signups_locked: boolean; max_spins_per_day: number; mix_prize: number };
@@ -176,7 +176,7 @@ const AdminMachine = () => {
             {tab === "users" && (
               <table style={{ width: "100%", fontSize: ".85rem", borderCollapse: "collapse" }}>
                 <thead><tr style={{ textAlign: "left", color: "#bca8d9" }}>
-                  <th style={{ padding: 6 }}>#</th><th>Nome</th><th>Coins</th><th>Giros hoje</th><th>Streak</th><th>Último</th><th>Ações</th>
+                  <th style={{ padding: 6 }}>#</th><th>Nome</th><th>Coins</th><th>Giros hoje</th><th>Streak</th><th>Último</th><th>Bloq. Ruby/Seven</th><th>Ações</th>
                 </tr></thead>
                 <tbody>
                   {users.map((u, i) => (
@@ -187,6 +187,15 @@ const AdminMachine = () => {
                       <td>{u.spins_today}</td>
                       <td>🔥 {u.streak}</td>
                       <td style={{ color: "#8a8f9c" }}>{u.last_spin_day || "—"}</td>
+                      <td>
+                        <label style={{ cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                          <input type="checkbox" checked={!!u.block_top} onChange={async (e) => {
+                            await supabase.from("machine_users").update({ block_top: e.target.checked }).eq("id", u.id);
+                            showToast(e.target.checked ? "🚫 Ruby/Seven bloqueados" : "✅ Liberado");
+                          }} />
+                          {u.block_top ? "🚫" : "—"}
+                        </label>
+                      </td>
                       <td style={{ display: "flex", gap: 6 }}>
                         <button style={btnSt} onClick={() => resetCoins(u.id)}>Zerar</button>
                         <button style={btnDanger} onClick={() => deleteUser(u.id)}>Excluir</button>
