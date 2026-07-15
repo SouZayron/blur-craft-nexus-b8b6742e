@@ -156,6 +156,9 @@ const AdminMachine = () => {
               <label>💰 Prêmio combinação mista (VC)
                 <input type="number" style={inputSt} value={settings.mix_prize} onChange={(e) => updateSettings({ mix_prize: parseInt(e.target.value) || 5 })} />
               </label>
+              <label>🏆 Tela de Resultado
+                <div><input type="checkbox" checked={!!settings.results_active} onChange={(e) => updateSettings({ results_active: e.target.checked } as Partial<Settings>)} /> {settings.results_active ? "ATIVA (top 3 exibidos)" : "Oculta"}</div>
+              </label>
               <div style={{ display: "flex", flexDirection: "column", gap: 6, justifyContent: "flex-end" }}>
                 <button style={btnDanger} onClick={clearLogs}>🧹 Limpar todos os logs</button>
                 <button style={btnDanger} onClick={resetSpinsForAll}>🔄 Devolver giros hoje (todos)</button>
