@@ -437,7 +437,81 @@ const Machine = () => {
           </div>
         </div>
         {toast && <div className="mc-toast">{toast}</div>}
+
+        {settings.results_active && (
+          <div style={{
+            position: "fixed", inset: 0, zIndex: 200,
+            backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+            background: "rgba(15,8,32,0.72)",
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            padding: "2rem 1rem", overflow: "auto",
+          }}>
+            <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+              <div style={{ fontFamily: "Bebas Neue", fontSize: "2.4rem", letterSpacing: 6, background: "linear-gradient(135deg,#e9c879,#c9a24a,#ffd1ec)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                🏆 RESULTADO FINAL
+              </div>
+              <div style={{ fontFamily: "Barlow Condensed", letterSpacing: 3, textTransform: "uppercase", color: "#bca8d9", fontSize: ".85rem" }}>
+                Cassaniquel · Alta Vibe · 01/07 → 15/07
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1rem", maxWidth: 1200, width: "100%" }}>
+              {ranking.slice(0, 3).map((u, i) => {
+                const medal = ["🥇", "🥈", "🥉"][i];
+                const border = ["#e9c879", "#c0c0c0", "#cd7f32"][i];
+                const history = winnersHistory[u.name] || [];
+                return (
+                  <div key={u.id} style={{
+                    background: "rgba(255,255,255,0.08)",
+                    border: `2px solid ${border}`,
+                    borderRadius: 14, padding: "1rem",
+                    boxShadow: `0 0 24px ${border}55`,
+                    color: "#f5ecff",
+                    display: "flex", flexDirection: "column",
+                  }}>
+                    <div style={{ textAlign: "center", marginBottom: ".6rem" }}>
+                      <div style={{ fontSize: "2rem" }}>{medal}</div>
+                      <div style={{ fontFamily: "Bebas Neue", fontSize: "1.6rem", letterSpacing: 2 }}>{u.name}</div>
+                      <div style={{ fontFamily: "Bebas Neue", fontSize: "1.8rem", color: border, letterSpacing: 2 }}>{u.coins} VC</div>
+                      <div style={{ color: "#bca8d9", fontSize: ".72rem", fontFamily: "Barlow Condensed", letterSpacing: 2, textTransform: "uppercase" }}>
+                        🔥 {u.streak} dias · {history.length} giros no total
+                      </div>
+                    </div>
+                    <div style={{
+                      background: "rgba(0,0,0,0.25)", borderRadius: 8, padding: ".4rem",
+                      maxHeight: 320, overflowY: "auto", fontFamily: "Barlow Condensed", fontSize: ".72rem",
+                    }}>
+                      {history.length === 0 && <div style={{ color: "#8a8f9c", textAlign: "center", padding: ".5rem" }}>Sem histórico</div>}
+                      {history.map((p) => {
+                        const d = new Date(p.created_at);
+                        const syms = Array.isArray(p.symbols) ? p.symbols : [];
+                        return (
+                          <div key={p.id} style={{
+                            display: "grid", gridTemplateColumns: "auto 1fr auto auto", gap: 6, alignItems: "center",
+                            padding: "3px 6px", borderBottom: "1px solid rgba(255,255,255,0.05)",
+                            background: p.is_trinca ? "rgba(233,200,121,.12)" : "transparent",
+                          }}>
+                            <span style={{ color: "#bca8d9", fontSize: ".65rem" }}>{d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</span>
+                            <span style={{ color: "#bca8d9", fontSize: ".65rem" }}>{d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</span>
+                            <span style={{ display: "flex", gap: 1 }}>
+                              {syms.map((s, k) => <img key={k} src={s.img} alt="" style={{ width: 14, height: 14 }} />)}
+                            </span>
+                            <span style={{ color: "#e9c879", fontWeight: 700 }}>+{p.prize}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div style={{ textAlign: "center", marginTop: ".5rem", fontFamily: "Barlow Condensed", fontSize: ".7rem", color: "#bca8d9", letterSpacing: 1 }}>
+                      Total acumulado: <b style={{ color: border }}>{history.reduce((a, p) => a + p.prize, 0)} VC</b>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
+
 
     </>
   );
