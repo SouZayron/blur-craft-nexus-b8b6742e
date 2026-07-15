@@ -564,6 +564,7 @@ export type Database = {
           is_open: boolean
           max_spins_per_day: number
           mix_prize: number
+          results_active: boolean
           signups_locked: boolean
           updated_at: string
         }
@@ -572,6 +573,7 @@ export type Database = {
           is_open?: boolean
           max_spins_per_day?: number
           mix_prize?: number
+          results_active?: boolean
           signups_locked?: boolean
           updated_at?: string
         }
@@ -580,6 +582,7 @@ export type Database = {
           is_open?: boolean
           max_spins_per_day?: number
           mix_prize?: number
+          results_active?: boolean
           signups_locked?: boolean
           updated_at?: string
         }

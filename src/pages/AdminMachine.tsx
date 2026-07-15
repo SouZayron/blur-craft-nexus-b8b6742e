@@ -7,7 +7,7 @@ const ADMIN_PASS = "admin2026";
 type MUser = { id: string; name: string; coins: number; spins_today: number; last_spin_day: string | null; streak: number; created_at: string; block_top: boolean };
 type Play = { id: string; name: string; symbols: unknown; prize: number; is_trinca: boolean; created_at: string; user_id: string | null };
 type Sym = { id: string; symbol_id: string; name: string; img: string; value: number; weight: number; position: number };
-type Settings = { id: number; is_open: boolean; signups_locked: boolean; max_spins_per_day: number; mix_prize: number };
+type Settings = { id: number; is_open: boolean; signups_locked: boolean; max_spins_per_day: number; mix_prize: number; results_active?: boolean };
 
 const AdminMachine = () => {
   const [authed, setAuthed] = useState(false);
@@ -155,6 +155,9 @@ const AdminMachine = () => {
               </label>
               <label>💰 Prêmio combinação mista (VC)
                 <input type="number" style={inputSt} value={settings.mix_prize} onChange={(e) => updateSettings({ mix_prize: parseInt(e.target.value) || 5 })} />
+              </label>
+              <label>🏆 Tela de Resultado
+                <div><input type="checkbox" checked={!!settings.results_active} onChange={(e) => updateSettings({ results_active: e.target.checked } as Partial<Settings>)} /> {settings.results_active ? "ATIVA (top 3 exibidos)" : "Oculta"}</div>
               </label>
               <div style={{ display: "flex", flexDirection: "column", gap: 6, justifyContent: "flex-end" }}>
                 <button style={btnDanger} onClick={clearLogs}>🧹 Limpar todos os logs</button>
