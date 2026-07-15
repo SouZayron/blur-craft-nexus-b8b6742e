@@ -90,6 +90,27 @@ const Machine = () => {
     return () => { supabase.removeChannel(ch); };
   }, [loadAll]);
 
+  // Load top 3 winners history when results overlay is active
+  useEffect(() => {
+    if (!settings.results_active || ranking.length === 0) return;
+    const top3 = ranking.slice(0, 3);
+    const names = top3.map((u) => u.name);
+    supabase
+      .from("machine_plays")
+      .select("*")
+      .in("name", names)
+      .order("created_at", { ascending: true })
+      .then(({ data }) => {
+        if (!data) return;
+        const grouped: Record<string, Play[]> = {};
+        (data as unknown as Play[]).forEach((p) => {
+          if (!grouped[p.name]) grouped[p.name] = [];
+          grouped[p.name].push(p);
+        });
+        setWinnersHistory(grouped);
+      });
+  }, [settings.results_active, ranking]);
+
   // auto-login
   useEffect(() => {
     const n = localStorage.getItem(LS_NAME);
