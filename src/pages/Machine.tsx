@@ -59,6 +59,7 @@ const Machine = () => {
   const [spinning, setSpinning] = useState(false);
   const [winCells, setWinCells] = useState<[boolean, boolean, boolean]>([false, false, false]);
   const reelRefs = [useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null)];
+  const [winnersHistory, setWinnersHistory] = useState<Record<string, Play[]>>({});
 
   const showToast = (m: string) => { setToast(m); setTimeout(() => setToast(""), 2600); };
 
