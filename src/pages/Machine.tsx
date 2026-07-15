@@ -38,6 +38,7 @@ type Settings = {
   signups_locked: boolean;
   max_spins_per_day: number;
   mix_prize: number;
+  results_active?: boolean;
 };
 
 const CELL = 88;
