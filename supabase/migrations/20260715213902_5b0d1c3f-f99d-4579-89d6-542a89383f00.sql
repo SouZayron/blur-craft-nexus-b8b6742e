@@ -1,0 +1,1 @@
+ALTER TABLE public.machine_settings ADD COLUMN IF NOT EXISTS results_active boolean NOT NULL DEFAULT false;
