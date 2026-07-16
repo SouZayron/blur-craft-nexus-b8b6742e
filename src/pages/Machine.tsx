@@ -184,6 +184,7 @@ const Machine = () => {
     if (!settings.is_open) return showToast("Game fechado no momento 🔒");
     if (symbols.length === 0) return showToast("Sem símbolos configurados");
     setSpinning(true);
+    playSpinSound();
     setMessage("Girando...");
     setMessageKind("");
     setWinCells([false, false, false]);
