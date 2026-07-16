@@ -339,7 +339,7 @@ const Machine = () => {
               <ul className="mc-rules" style={{ paddingLeft: "1.1rem", margin: 0 }}>
                 <li>Mesmo nome e senha todos os dias para acumular</li>
                 <li>3 giros por dia · vibecoins aleatórios</li>
-                <li>Período: 02/07 → 15/07/2026</li>
+                <li>Período: 16/07 → 31/07/2026</li>
                 <li>Liberado todo dia após 00h</li>
                 <li>🏆 Prêmios: 1º 1500x · 2º 1000x · 3º 500x</li>
                 <li>Cadastros duplicados: vale apenas o maior</li>
