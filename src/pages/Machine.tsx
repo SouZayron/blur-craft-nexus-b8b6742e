@@ -161,6 +161,49 @@ const Machine = () => {
 
   const decorativeSym = () => symbols[Math.floor(Math.random() * symbols.length)];
 
+  const playSpinSound = () => {
+    try {
+      const AC = (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext);
+      const ctx = new AC();
+      const now = ctx.currentTime;
+      // Click inicial
+      const click = ctx.createOscillator();
+      const clickGain = ctx.createGain();
+      click.type = "square";
+      click.frequency.setValueAtTime(880, now);
+      click.frequency.exponentialRampToValueAtTime(220, now + 0.08);
+      clickGain.gain.setValueAtTime(0.18, now);
+      clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+      click.connect(clickGain).connect(ctx.destination);
+      click.start(now); click.stop(now + 0.12);
+      // Reel whir
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(140, now + 0.05);
+      osc.frequency.linearRampToValueAtTime(320, now + 1.5);
+      gain.gain.setValueAtTime(0.0, now + 0.05);
+      gain.gain.linearRampToValueAtTime(0.08, now + 0.15);
+      gain.gain.linearRampToValueAtTime(0.05, now + 1.3);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 1.7);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now + 0.05); osc.stop(now + 1.75);
+      // Ticks
+      for (let i = 0; i < 12; i++) {
+        const t = now + 0.15 + i * 0.12;
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = "triangle";
+        o.frequency.setValueAtTime(1200, t);
+        g.gain.setValueAtTime(0.06, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+        o.connect(g).connect(ctx.destination);
+        o.start(t); o.stop(t + 0.06);
+      }
+      setTimeout(() => ctx.close().catch(() => {}), 2200);
+    } catch { /* silent */ }
+  };
+
   const buildStrip = (el: HTMLDivElement, finalSym: { img: string; name: string }) => {
     el.innerHTML = "";
     el.style.transition = "none";
