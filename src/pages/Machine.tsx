@@ -161,6 +161,49 @@ const Machine = () => {
 
   const decorativeSym = () => symbols[Math.floor(Math.random() * symbols.length)];
 
+  const playSpinSound = () => {
+    try {
+      const AC = (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext);
+      const ctx = new AC();
+      const now = ctx.currentTime;
+      // Click inicial
+      const click = ctx.createOscillator();
+      const clickGain = ctx.createGain();
+      click.type = "square";
+      click.frequency.setValueAtTime(880, now);
+      click.frequency.exponentialRampToValueAtTime(220, now + 0.08);
+      clickGain.gain.setValueAtTime(0.18, now);
+      clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+      click.connect(clickGain).connect(ctx.destination);
+      click.start(now); click.stop(now + 0.12);
+      // Reel whir
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(140, now + 0.05);
+      osc.frequency.linearRampToValueAtTime(320, now + 1.5);
+      gain.gain.setValueAtTime(0.0, now + 0.05);
+      gain.gain.linearRampToValueAtTime(0.08, now + 0.15);
+      gain.gain.linearRampToValueAtTime(0.05, now + 1.3);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 1.7);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now + 0.05); osc.stop(now + 1.75);
+      // Ticks
+      for (let i = 0; i < 12; i++) {
+        const t = now + 0.15 + i * 0.12;
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = "triangle";
+        o.frequency.setValueAtTime(1200, t);
+        g.gain.setValueAtTime(0.06, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+        o.connect(g).connect(ctx.destination);
+        o.start(t); o.stop(t + 0.06);
+      }
+      setTimeout(() => ctx.close().catch(() => {}), 2200);
+    } catch { /* silent */ }
+  };
+
   const buildStrip = (el: HTMLDivElement, finalSym: { img: string; name: string }) => {
     el.innerHTML = "";
     el.style.transition = "none";
@@ -184,6 +227,7 @@ const Machine = () => {
     if (!settings.is_open) return showToast("Game fechado no momento 🔒");
     if (symbols.length === 0) return showToast("Sem símbolos configurados");
     setSpinning(true);
+    playSpinSound();
     setMessage("Girando...");
     setMessageKind("");
     setWinCells([false, false, false]);
@@ -195,8 +239,8 @@ const Machine = () => {
       setSpinning(false);
       const m = error?.message || "";
       if (m.includes("no_spins_left")) { setMessage("Suas chances de hoje acabaram."); setMessageKind("empty"); }
-      else if (m.includes("game_not_started")) showToast("Game começa em 01/07/2026 ⏳");
-      else if (m.includes("game_ended")) showToast("Game encerrado (15/07) 🏁");
+      else if (m.includes("game_not_started")) showToast("Game começa em 16/07/2026 ⏳");
+      else if (m.includes("game_ended")) showToast("Game encerrado (31/07) 🏁");
       else if (m.includes("game_closed")) showToast("Game fechado 🔒");
       else showToast("Erro ao girar");
       return;
@@ -339,7 +383,7 @@ const Machine = () => {
               <ul className="mc-rules" style={{ paddingLeft: "1.1rem", margin: 0 }}>
                 <li>Mesmo nome e senha todos os dias para acumular</li>
                 <li>3 giros por dia · vibecoins aleatórios</li>
-                <li>Período: 02/07 → 15/07/2026</li>
+                <li>Período: 16/07 → 31/07/2026</li>
                 <li>Liberado todo dia após 00h</li>
                 <li>🏆 Prêmios: 1º 1500x · 2º 1000x · 3º 500x</li>
                 <li>Cadastros duplicados: vale apenas o maior</li>
@@ -451,7 +495,7 @@ const Machine = () => {
                 🏆 RESULTADO FINAL
               </div>
               <div style={{ fontFamily: "Barlow Condensed", letterSpacing: 3, textTransform: "uppercase", color: "#bca8d9", fontSize: ".85rem" }}>
-                Cassaniquel · Alta Vibe · 02/07 → 15/07
+                Cassaniquel · Alta Vibe · 16/07 → 31/07
               </div>
             </div>
 
