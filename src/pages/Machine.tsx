@@ -195,8 +195,8 @@ const Machine = () => {
       setSpinning(false);
       const m = error?.message || "";
       if (m.includes("no_spins_left")) { setMessage("Suas chances de hoje acabaram."); setMessageKind("empty"); }
-      else if (m.includes("game_not_started")) showToast("Game começa em 01/07/2026 ⏳");
-      else if (m.includes("game_ended")) showToast("Game encerrado (15/07) 🏁");
+      else if (m.includes("game_not_started")) showToast("Game começa em 16/07/2026 ⏳");
+      else if (m.includes("game_ended")) showToast("Game encerrado (31/07) 🏁");
       else if (m.includes("game_closed")) showToast("Game fechado 🔒");
       else showToast("Erro ao girar");
       return;
