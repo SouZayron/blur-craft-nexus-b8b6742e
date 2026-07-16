@@ -451,7 +451,7 @@ const Machine = () => {
                 🏆 RESULTADO FINAL
               </div>
               <div style={{ fontFamily: "Barlow Condensed", letterSpacing: 3, textTransform: "uppercase", color: "#bca8d9", fontSize: ".85rem" }}>
-                Cassaniquel · Alta Vibe · 02/07 → 15/07
+                Cassaniquel · Alta Vibe · 16/07 → 31/07
               </div>
             </div>
 
