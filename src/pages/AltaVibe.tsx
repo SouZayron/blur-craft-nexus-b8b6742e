@@ -1,27 +1,19 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 
-const PRIZES = [
-  { label: "50", coins: 50, color: "#b59ad6", text: "#1a0d2e" },
-  { label: "100", coins: 100, color: "#7a4bcc", text: "#fff" },
-  { label: "200", coins: 200, color: "#d99ee6", text: "#1a0d2e" },
-  { label: "300", coins: 300, color: "#5a2e9e", text: "#fff" },
-  { label: "400", coins: 400, color: "#c47ad9", text: "#1a0d2e" },
-  { label: "500", coins: 500, color: "#8b3fbf", text: "#fff" },
-  { label: "BOOST", coins: 0, color: "#ffd700", text: "#3a1857" },
-];
-
-
-const SEG = (2 * Math.PI) / PRIZES.length;
 const LS_NAME = "altavibe_current_name";
 const LS_PASS = "altavibe_current_pass";
-const ELIMINATED = new Set<string>([]);
-const isEliminated = (n: string) => ELIMINATED.has((n || "").trim().toLowerCase());
-const EX_WINNERS = new Set(["zaru", "morgan", "café com leite"]);
-const isExWinner = (n: string) => EX_WINNERS.has((n || "").trim().toLowerCase());
-const PRIZE_LABELS = ["1500x", "1000x", "500x"];
-const PRIZE_MEDALS = ["🥇", "🥈", "🥉"];
+const LS_TERMS = "altavibe_terms_ago2026";
+
+const PRIZES = [
+  { pos: "1º", name: "Nameflag", img: "https://xat.com/images/smw/nameflag.png" },
+  { pos: "2º", name: "Angry", img: "https://xat.com/images/smw/angry.png" },
+  { pos: "3º", name: "Romance", img: "https://xat.com/images/smw/romance.png" },
+  { pos: "4º", name: "50 Days", img: "https://xat.com/images/smw/mint.png" },
+  { pos: "5º", name: "20 Days", img: "https://xat.com/images/smw/mint.png" },
+];
+const MEDALS = ["🥇", "🥈", "🥉", "🏅", "🏅"];
 
 type User = {
   id: string;
@@ -30,6 +22,18 @@ type User = {
   streak: number;
   last_spin: string | null;
 };
+
+type Segment = {
+  id: string;
+  label: string;
+  points: number;
+  weight: number;
+  color: string;
+  text_color: string;
+  position: number;
+};
+
+type StreakRule = { id: string; days: number; bonus_pct: number };
 
 type LogRow = {
   id: string;
@@ -49,20 +53,31 @@ const AltaVibe = () => {
   const [passInput, setPassInput] = useState("");
   const [me, setMe] = useState<User | null>(null);
   const [ranking, setRanking] = useState<User[]>([]);
-  const [result, setResult] = useState<{ total: number; bonus: number; prize: number; boost: boolean } | null>(null);
+  const [segments, setSegments] = useState<Segment[]>([]);
+  const [streaks, setStreaks] = useState<StreakRule[]>([]);
+  const [result, setResult] = useState<{ total: number; bonus: number; prize: number; label: string } | null>(null);
   const [toast, setToast] = useState("");
   const [flash, setFlash] = useState(false);
   const [gameOpen, setGameOpen] = useState(true);
   const [signupsLocked, setSignupsLocked] = useState(false);
-  const [extraSpin, setExtraSpin] = useState(false);
+  const [period, setPeriod] = useState({ start: "2026-08-01", end: "2026-08-31" });
   const [logs, setLogs] = useState<LogRow[]>([]);
-  const [winnerLogs, setWinnerLogs] = useState<Record<string, LogRow[]>>({});
-
+  const [termsOk, setTermsOk] = useState(false);
+  const [termsChecked, setTermsChecked] = useState(false);
 
   const showToast = (msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(""), 2600);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem(LS_TERMS) === "1") setTermsOk(true);
+  }, []);
+
+  const totalWeight = useMemo(
+    () => segments.reduce((a, s) => a + (Number(s.weight) > 0 ? Number(s.weight) : 0), 0),
+    [segments],
+  );
 
   const drawWheel = useCallback((angle: number) => {
     const canvas = canvasRef.current;
@@ -71,41 +86,63 @@ const AltaVibe = () => {
     if (!ctx) return;
     const size = canvas.width;
     ctx.clearRect(0, 0, size, size);
-    const cx = size / 2, cy = size / 2, r = size / 2 - 4;
-    PRIZES.forEach((p, i) => {
-      const start = angle + i * SEG - Math.PI / 2;
-      const end = start + SEG;
+    const cx = size / 2, cy = size / 2, r = size / 2 - 10;
+    const list = segments.length ? segments : [];
+    if (!list.length) return;
+    const seg = (2 * Math.PI) / list.length;
+
+    // outer glow ring
+    const ring = ctx.createLinearGradient(0, 0, size, size);
+    ring.addColorStop(0, "#ffd700");
+    ring.addColorStop(0.5, "#c47ad9");
+    ring.addColorStop(1, "#6d28d9");
+    ctx.beginPath();
+    ctx.arc(cx, cy, r + 6, 0, 2 * Math.PI);
+    ctx.strokeStyle = ring;
+    ctx.lineWidth = 7;
+    ctx.stroke();
+
+    list.forEach((p, i) => {
+      const start = angle + i * seg - Math.PI / 2;
+      const end = start + seg;
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.arc(cx, cy, r, start, end);
-      ctx.fillStyle = p.color;
+      ctx.closePath();
+      const g = ctx.createRadialGradient(cx, cy, r * 0.15, cx, cy, r);
+      g.addColorStop(0, p.color);
+      g.addColorStop(1, p.points < 0 ? "#0f3d2a" : "#2a1240");
+      ctx.fillStyle = g;
       ctx.fill();
-      ctx.strokeStyle = "rgba(255,255,255,0.25)";
+      ctx.strokeStyle = "rgba(255,255,255,0.18)";
       ctx.lineWidth = 1.5;
       ctx.stroke();
       ctx.save();
       ctx.translate(cx, cy);
-      ctx.rotate(start + SEG / 2);
+      ctx.rotate(start + seg / 2);
       ctx.textAlign = "right";
-      ctx.fillStyle = p.text;
-      ctx.font = "bold 18px 'Barlow Condensed', sans-serif";
-      ctx.fillText(p.label, r - 10, 5);
+      ctx.fillStyle = "#ffffff";
+      ctx.shadowColor = "rgba(0,0,0,.6)";
+      ctx.shadowBlur = 4;
+      ctx.font = "bold 17px 'Barlow Condensed', sans-serif";
+      ctx.fillText(p.label, r - 14, 6);
       ctx.restore();
     });
-    ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, 2 * Math.PI);
-    ctx.strokeStyle = "rgba(255,255,255,0.25)";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-  }, []);
 
-  useEffect(() => { drawWheel(0); }, [drawWheel]);
+    // inner hub shading
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 0.2, 0, 2 * Math.PI);
+    ctx.fillStyle = "rgba(15,8,32,.9)";
+    ctx.fill();
+  }, [segments]);
+
+  useEffect(() => { drawWheel(angleRef.current); }, [drawWheel]);
 
   const loadRanking = useCallback(async () => {
     const { data } = await supabase
       .from("altavibe_users")
       .select("id,name,coins,streak,last_spin")
-      .order("coins", { ascending: false })
+      .order("coins", { ascending: true })
       .limit(50);
     if (data) setRanking(data as User[]);
   }, []);
@@ -119,17 +156,28 @@ const AltaVibe = () => {
     if (data) setLogs(data as LogRow[]);
   }, []);
 
+  const loadConfig = useCallback(async () => {
+    const [segRes, stRes, setRes] = await Promise.all([
+      supabase.from("altavibe_segments").select("*").order("position"),
+      supabase.from("altavibe_streak_rules").select("*").order("days"),
+      supabase.from("altavibe_settings").select("is_open,signups_locked,start_date,end_date").eq("id", 1).maybeSingle(),
+    ]);
+    if (segRes.data) setSegments(segRes.data as Segment[]);
+    if (stRes.data) setStreaks(stRes.data as StreakRule[]);
+    if (setRes.data) {
+      const d = setRes.data as { is_open: boolean; signups_locked: boolean; start_date: string; end_date: string };
+      setGameOpen(!!d.is_open);
+      setSignupsLocked(!!d.signups_locked);
+      setPeriod({ start: d.start_date, end: d.end_date });
+    }
+  }, []);
+
   useEffect(() => {
     loadRanking();
     loadLogs();
-    supabase.from("altavibe_settings").select("is_open,signups_locked").eq("id", 1).maybeSingle().then(({ data }) => {
-      if (data) {
-        setGameOpen(!!data.is_open);
-        setSignupsLocked(!!(data as { signups_locked?: boolean }).signups_locked);
-      }
-    });
+    loadConfig();
     const ch = supabase
-      .channel("altavibe_users_ch")
+      .channel("altavibe_ch_v2")
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_users" }, (payload) => {
         loadRanking();
         if (payload.eventType === "DELETE") {
@@ -144,35 +192,13 @@ const AltaVibe = () => {
           });
         }
       })
-      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_settings" }, (payload) => {
-        const row = (payload.new || payload.old) as { is_open?: boolean; signups_locked?: boolean } | null;
-        if (row && typeof row.is_open === "boolean") setGameOpen(row.is_open);
-        if (row && typeof row.signups_locked === "boolean") setSignupsLocked(row.signups_locked);
-      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_settings" }, () => loadConfig())
+      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_segments" }, () => loadConfig())
+      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_streak_rules" }, () => loadConfig())
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_logs" }, () => loadLogs())
       .subscribe();
     return () => { supabase.removeChannel(ch); };
-  }, [loadRanking, loadLogs]);
-
-  useEffect(() => {
-    const loadWinnerLogs = async () => {
-      const top = ranking.filter((u) => !isEliminated(u.name)).slice(0, 3);
-      const map: Record<string, LogRow[]> = {};
-      await Promise.all(
-        top.map(async (w) => {
-          const { data } = await supabase
-            .from("altavibe_logs")
-            .select("id,name,prize,bonus,total,is_boost,created_at")
-            .eq("name", w.name)
-            .order("created_at", { ascending: false })
-            .limit(50);
-          if (data) map[w.id] = data as LogRow[];
-        })
-      );
-      setWinnerLogs(map);
-    };
-    if (ranking.length > 0) loadWinnerLogs();
-  }, [ranking]);
+  }, [loadRanking, loadLogs, loadConfig]);
 
   useEffect(() => {
     const savedName = localStorage.getItem(LS_NAME);
@@ -185,7 +211,6 @@ const AltaVibe = () => {
       });
     }
   }, []);
-
 
   const saveProfile = async () => {
     const name = nameInput.trim().slice(0, 20);
@@ -229,49 +254,35 @@ const AltaVibe = () => {
     o.type = "square";
     o.frequency.setValueAtTime(880, t);
     g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.08, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.07, t + 0.005);
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
     o.connect(g).connect(ctx.destination);
     o.start(t); o.stop(t + 0.07);
   };
 
-  const playCoins = () => {
+  const playChime = (good: boolean) => {
     const ctx = getAudio(); if (!ctx) return;
     const base = ctx.currentTime;
-    const notes = [
-      { f: 1320, t: 0 }, { f: 1760, t: 0.07 }, { f: 1480, t: 0.14 },
-      { f: 1980, t: 0.22 }, { f: 2200, t: 0.32 }, { f: 1760, t: 0.42 },
-      { f: 2640, t: 0.52 },
-    ];
-    notes.forEach(({ f, t }) => {
+    const notes = good ? [880, 1180, 1560] : [520, 400, 300];
+    notes.forEach((f, i) => {
       const o = ctx.createOscillator();
       const g = ctx.createGain();
       o.type = "triangle";
-      o.frequency.setValueAtTime(f, base + t);
-      g.gain.setValueAtTime(0.0001, base + t);
-      g.gain.exponentialRampToValueAtTime(0.18, base + t + 0.01);
-      g.gain.exponentialRampToValueAtTime(0.0001, base + t + 0.25);
+      o.frequency.setValueAtTime(f, base + i * 0.1);
+      g.gain.setValueAtTime(0.0001, base + i * 0.1);
+      g.gain.exponentialRampToValueAtTime(0.16, base + i * 0.1 + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, base + i * 0.1 + 0.28);
       o.connect(g).connect(ctx.destination);
-      o.start(base + t); o.stop(base + t + 0.3);
+      o.start(base + i * 0.1); o.stop(base + i * 0.1 + 0.3);
     });
-    // shimmer noise
-    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.5, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 2);
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
-    const ng = ctx.createGain();
-    ng.gain.value = 0.05;
-    const hp = ctx.createBiquadFilter();
-    hp.type = "highpass"; hp.frequency.value = 3000;
-    src.connect(hp).connect(ng).connect(ctx.destination);
-    src.start(base);
   };
 
   const animateTo = (winIdx: number, onDone: () => void) => {
-    const extraRot = 6 * 2 * Math.PI;
-    const target = extraRot + (2 * Math.PI - winIdx * SEG - SEG / 2);
-    const duration = 4000;
+    const count = segments.length || 1;
+    const seg = (2 * Math.PI) / count;
+    const extraRot = 7 * 2 * Math.PI;
+    const target = extraRot + (2 * Math.PI - winIdx * seg - seg / 2);
+    const duration = 4200;
     const start = performance.now();
     const startAngle = angleRef.current;
     const normalized = startAngle % (2 * Math.PI);
@@ -282,7 +293,7 @@ const AltaVibe = () => {
       const progress = Math.min((now - start) / duration, 1);
       angleRef.current = startAngle + delta * ease(progress);
       drawWheel(angleRef.current);
-      const segIdx = Math.floor((angleRef.current / SEG)) % PRIZES.length;
+      const segIdx = Math.floor(angleRef.current / seg) % count;
       if (segIdx !== lastSeg) { lastSeg = segIdx; playTick(); }
       if (progress < 1) requestAnimationFrame(frame);
       else onDone();
@@ -296,369 +307,354 @@ const AltaVibe = () => {
     if (!gameOpen) { showToast("Game fechado no momento 🔒"); return; }
     spinningRef.current = true;
 
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-    const { data, error } = await supabase.rpc("altavibe_spin", { p_name: me.name, p_tz: tz, p_allow_boost: !extraSpin });
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Sao_Paulo";
+    const { data, error } = await supabase.rpc("altavibe_spin_v2", { p_name: me.name, p_tz: tz });
     if (error || !data) {
       spinningRef.current = false;
       const msg = error?.message || "";
       if (msg.includes("already_spun_today")) showToast("Já girou hoje! Volta amanhã 🌙");
-      else if (msg.includes("game_not_started")) showToast("Game ainda não começou (abre 17/06 00:00) ⏳");
-      else if (msg.includes("game_ended")) showToast("Game encerrado (terminou em 30/06) 🏁");
-
+      else if (msg.includes("game_not_started")) showToast("Game ainda não começou ⏳");
+      else if (msg.includes("game_ended")) showToast("Game encerrado 🏁");
       else if (msg.includes("game_closed")) showToast("Game fechado no momento 🔒");
       else showToast("Erro ao girar");
       return;
     }
-    const res = data as { win_index: number; prize: number; bonus: number; total: number; streak: number; coins: number; last_spin: string | null; is_boost: boolean };
+    const res = data as unknown as { win_index: number; label: string; prize: number; bonus: number; total: number; streak: number; coins: number; last_spin: string | null };
     animateTo(res.win_index, () => {
       spinningRef.current = false;
       setMe((prev) => prev ? { ...prev, coins: res.coins, streak: res.streak, last_spin: res.last_spin } : prev);
-      setResult({ total: res.total, bonus: res.bonus, prize: res.prize, boost: !!res.is_boost });
+      setResult({ total: res.total, bonus: res.bonus, prize: res.prize, label: res.label });
       setFlash(true);
       setTimeout(() => setFlash(false), 800);
-      if (res.is_boost) {
-        setExtraSpin(true);
-        playCoins();
-        showToast(`🚀 BOOST! +${res.prize} Vibecoins e um giro extra!`);
-      } else {
-        setExtraSpin(false);
-        playCoins();
-        showToast(res.bonus > 0 ? `🔥 Streak ${res.streak}d! Bônus +${res.bonus} Vibecoins` : `⚡ +${res.prize} Vibecoins!`);
-      }
+      playChime(res.total <= 0);
+      showToast(res.total <= 0 ? `🍀 ${res.total} pontos — isso é bom!` : `⚠️ +${res.total} pontos`);
       loadRanking();
     });
   };
 
-  const today = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD in local tz
-  const alreadySpun = me?.last_spin === today && !extraSpin;
-  const spinDisabled = !me || !gameOpen || (alreadySpun && !extraSpin);
-  const spinLabel = !gameOpen ? "GAME FECHADO" : extraSpin ? "GIRAR (BOOST)" : alreadySpun ? "VOLTA AMANHÃ" : "GIRAR";
+  const today = new Date().toLocaleDateString("en-CA");
+  const alreadySpun = me?.last_spin === today;
+  const spinDisabled = !me || !gameOpen || alreadySpun;
+  const spinLabel = !gameOpen ? "GAME FECHADO" : alreadySpun ? "VOLTA AMANHÃ" : "GIRAR";
+  const fmtDate = (d: string) => d.split("-").reverse().join("/");
 
   return (
     <>
       <Helmet>
-        <title>Alta Vibe — Check-in</title>
+        <title>Alta Vibe — Roleta Invertida</title>
+        <meta name="description" content="Alta Vibe: roleta invertida de agosto. Quem fizer MENOS pontos leva os prêmios." />
         <meta name="robots" content="noindex,nofollow" />
         <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet" />
       </Helmet>
       <style>{`
         html,body,#root{height:100%}
-        .av-root{--text:#f5ecff;color:var(--text);background:radial-gradient(ellipse at top,#3a1857 0%,#1a0d2e 50%,#0f0820 100%);font-family:'Barlow',sans-serif;height:100vh;overflow:hidden;position:relative}
-        .av-root::before{content:"";position:absolute;top:-20%;left:-10%;width:60%;height:80%;background:radial-gradient(circle,rgba(196,122,217,0.25),transparent 70%);pointer-events:none}
-        .av-root::after{content:"";position:absolute;bottom:-20%;right:-10%;width:60%;height:80%;background:radial-gradient(circle,rgba(139,63,191,0.25),transparent 70%);pointer-events:none}
+        .av-root{--text:#f5ecff;color:var(--text);background:radial-gradient(ellipse at top,#3a1857 0%,#1a0d2e 50%,#0f0820 100%);font-family:'Barlow',sans-serif;min-height:100vh;position:relative}
+        .av-root::before{content:"";position:absolute;top:-20%;left:-10%;width:60%;height:80%;background:radial-gradient(circle,rgba(196,122,217,0.22),transparent 70%);pointer-events:none}
+        .av-root::after{content:"";position:absolute;bottom:-20%;right:-10%;width:60%;height:80%;background:radial-gradient(circle,rgba(139,63,191,0.22),transparent 70%);pointer-events:none}
         .av-root *{box-sizing:border-box}
-        .av-container{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:.7rem 1.1rem;height:100vh;display:flex;flex-direction:column;gap:.55rem}
-        .av-header{text-align:center;flex-shrink:0}
-        .av-logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.7rem,3.6vw,2.4rem);letter-spacing:4px;line-height:1;background:linear-gradient(135deg,#d99ee6 0%,#a266d9 50%,#ffd1ec 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .av-sub{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:5px;text-transform:uppercase;color:#bca8d9;margin-top:2px}
-        .av-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:.85rem;flex:1;min-height:0}
-        .av-col{display:flex;flex-direction:column;gap:.55rem;min-height:0}
-        .av-col-left{display:grid;grid-template-rows:auto auto 1fr;gap:.55rem;min-height:0}
-        .av-logs{display:flex;flex-direction:column;min-height:0;padding:.55rem .75rem}
-        .av-logs-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem;flex-shrink:0}
-        .av-logs-list{overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:.2rem;padding-right:.3rem}
-        .av-logs-list::-webkit-scrollbar{width:6px}
-        .av-logs-list::-webkit-scrollbar-thumb{background:rgba(196,122,217,0.4);border-radius:3px}
-        .av-log-row{display:grid;grid-template-columns:1fr auto auto auto;gap:.55rem;align-items:center;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;padding:.25rem .5rem;border-radius:5px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)}
-        .av-log-row.boost{background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.25)}
-        .av-log-name{font-weight:600;color:#f5ecff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .av-log-date,.av-log-time{color:#bca8d9;letter-spacing:.5px}
-        .av-log-pts{color:#ffd700;font-weight:700;letter-spacing:.5px}
-        .av-panel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:.7rem .9rem;backdrop-filter:blur(12px)}
-        .av-ptitle{font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:3px;text-transform:uppercase;color:#bca8d9}
+        .av-container{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:.9rem 1.1rem 1.4rem;display:flex;flex-direction:column;gap:.7rem}
+        .av-header{text-align:center}
+        .av-logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3.8vw,2.6rem);letter-spacing:5px;line-height:1;background:linear-gradient(135deg,#d99ee6 0%,#a266d9 50%,#ffd1ec 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .av-sub{font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:5px;text-transform:uppercase;color:#bca8d9;margin-top:2px}
+        .av-inv{display:inline-block;margin-top:.4rem;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:#7dffb8;background:rgba(45,212,150,.1);border:1px solid rgba(45,212,150,.35);border-radius:50px;padding:.25rem 1rem}
+        .av-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:.9rem;align-items:start}
+        .av-col{display:flex;flex-direction:column;gap:.7rem;min-width:0}
+        .av-panel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:.8rem 1rem;backdrop-filter:blur(12px)}
+        .av-ptitle{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:#bca8d9}
         .av-profile{display:flex;gap:.5rem;align-items:end;flex-wrap:wrap}
         .av-profile-field{flex:1;min-width:120px}
-        .av-profile-field.pw{flex:0 0 90px;min-width:80px}
+        .av-profile-field.pw{flex:0 0 95px;min-width:85px}
         .av-label{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:#bca8d9;margin-bottom:2px;display:block}
         .av-input{width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:.45rem .7rem;color:#f5ecff;font-family:'Barlow',sans-serif;font-size:.9rem;outline:none}
         .av-input:focus{border-color:#c47ad9;background:rgba(255,255,255,0.12)}
-        .av-save{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,#8b3fbf,#c47ad9);color:#fff;border:none;border-radius:8px;padding:.5rem 1rem;cursor:pointer;font-weight:600}
+        .av-save{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,#8b3fbf,#c47ad9);color:#fff;border:none;border-radius:8px;padding:.5rem 1.1rem;cursor:pointer;font-weight:600}
         .av-save:hover{filter:brightness(1.1)}
-        .av-coins-inline{display:flex;align-items:center;gap:.5rem;padding:.35rem .65rem;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);border-radius:10px}
-        .av-camt{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#ffd700;line-height:1;letter-spacing:1.5px}
+        .av-coins-inline{display:flex;align-items:center;gap:.5rem;padding:.35rem .65rem;background:rgba(45,212,150,.08);border:1px solid rgba(45,212,150,.3);border-radius:10px}
+        .av-camt{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;color:#7dffb8;line-height:1;letter-spacing:1.5px}
         .av-ctag{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;color:#bca8d9}
 
-        .av-rules-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.55rem;min-height:0}
-        .av-rules-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:.6rem .75rem;display:flex;flex-direction:column;min-height:0;overflow:hidden}
-        .av-rules-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;color:#d99ee6;margin-bottom:.35rem}
-        .av-rules-list{margin:0;padding-left:1rem;font-family:'Barlow',sans-serif;font-size:.7rem;line-height:1.3;color:#e5d8f5;display:flex;flex-direction:column;gap:.18rem;overflow-y:auto}
-        .av-rules-list strong{color:#ffd700}
-        .av-rules-list li.elim{color:#ffb0b0}
-        .av-odds{display:flex;flex-direction:column;gap:.15rem;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;color:#e5d8f5;overflow-y:auto}
-        .av-odd-row{display:flex;justify-content:space-between;align-items:center;padding:.15rem .35rem;border-radius:5px;background:rgba(255,255,255,0.03)}
-        .av-odd-row.boost{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25)}
-        .av-odd-name{letter-spacing:.5px}
+        .av-boxes{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+        .av-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:.7rem .85rem}
+        .av-box-title{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:2.5px;text-transform:uppercase;color:#d99ee6;margin-bottom:.4rem}
+        .av-list{margin:0;padding-left:1rem;font-size:.74rem;line-height:1.35;color:#e5d8f5;display:flex;flex-direction:column;gap:.2rem}
+        .av-list strong{color:#7dffb8}
+        .av-odd-row{display:flex;justify-content:space-between;align-items:center;padding:.2rem .4rem;border-radius:6px;background:rgba(255,255,255,0.03);font-family:'Barlow Condensed',sans-serif;font-size:.76rem;margin-bottom:.16rem}
+        .av-odd-row.neg{background:rgba(45,212,150,.1);border:1px solid rgba(45,212,150,.25)}
         .av-odd-pct{color:#ffd700;font-weight:600}
 
-        .av-wheel-wrapper{display:flex;flex-direction:column;align-items:center;gap:.45rem;justify-content:center}
-        .av-wrap{position:relative;width:min(260px,34vh);aspect-ratio:1}
-        .av-pointer{position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:18px solid #ffd700;filter:drop-shadow(0 0 8px rgba(255,215,0,.7));z-index:10}
-        .av-wrap canvas{width:100%;height:100%;border-radius:50%;display:block;box-shadow:0 0 40px rgba(196,122,217,0.35),0 0 80px rgba(139,63,191,0.2)}
-        .av-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;background:#1a0d2e;border:3px solid #ffd700;z-index:5}
-        .av-spin{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:3px;background:linear-gradient(135deg,#c47ad9,#8b3fbf);color:#fff;border:none;border-radius:50px;padding:.45rem 2rem;cursor:pointer;box-shadow:0 4px 20px rgba(196,122,217,0.4)}
+        .av-prizes{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}
+        .av-prize{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.55rem .3rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.2rem}
+        .av-prize.p1{border-color:rgba(255,215,0,.5);background:linear-gradient(160deg,rgba(255,215,0,.14),rgba(255,215,0,.03))}
+        .av-prize img{width:36px;height:36px;object-fit:contain}
+        .av-prize-pos{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1px;color:#ffd700}
+        .av-prize-name{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:1px;color:#e5d8f5;text-transform:uppercase}
+
+        .av-wheel-wrapper{display:flex;flex-direction:column;align-items:center;gap:.6rem}
+        .av-wrap{position:relative;width:min(300px,42vh);aspect-ratio:1}
+        .av-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-top:22px solid #ffd700;filter:drop-shadow(0 0 10px rgba(255,215,0,.8));z-index:10}
+        .av-wrap canvas{width:100%;height:100%;border-radius:50%;display:block;box-shadow:0 0 50px rgba(196,122,217,0.35),0 0 100px rgba(139,63,191,0.22),inset 0 0 30px rgba(0,0,0,.5)}
+        .av-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4a2170,#150a26);border:3px solid rgba(255,215,0,.7);z-index:5;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:.72rem;letter-spacing:1px;color:#ffd700;box-shadow:0 0 18px rgba(255,215,0,.35)}
+        .av-spin{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:3px;background:linear-gradient(135deg,#c47ad9,#8b3fbf);color:#fff;border:none;border-radius:50px;padding:.55rem 2.4rem;cursor:pointer;box-shadow:0 4px 24px rgba(196,122,217,0.45)}
         .av-spin:disabled{opacity:.4;cursor:not-allowed}
-        .av-result{text-align:center;padding:.35rem .8rem;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);min-height:36px;display:flex;align-items:center;justify-content:center;gap:.5rem;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:1.3px}
+        .av-result{text-align:center;padding:.4rem .9rem;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);min-height:38px;display:flex;align-items:center;justify-content:center;gap:.5rem;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:1.3px;width:100%}
         .av-result.flash{animation:av-pulse .7s ease}
-        .av-rval{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#ffd700;letter-spacing:1.5px}
+        .av-rval{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:#ffd700;letter-spacing:1.5px}
         @keyframes av-pulse{0%{box-shadow:0 0 0 0 rgba(255,215,0,.6)}70%{box-shadow:0 0 0 18px rgba(255,215,0,0)}100%{box-shadow:0 0 0 0 rgba(255,215,0,0)}}
 
-        .av-rank{display:flex;flex-direction:column;min-height:0;flex:1}
-        .av-rhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;flex-shrink:0}
-        .av-rlist{overflow-y:auto;flex:1;padding-right:.3rem;display:flex;flex-direction:column;gap:.28rem}
+        .av-rlist{max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:.3rem;padding-right:.3rem;margin-top:.5rem}
         .av-rlist::-webkit-scrollbar{width:6px}
         .av-rlist::-webkit-scrollbar-thumb{background:rgba(196,122,217,0.4);border-radius:3px}
-        .av-ritem{display:grid;grid-template-columns:26px 1fr auto auto;align-items:center;gap:.55rem;background:rgba(255,255,255,0.05);border-radius:7px;padding:.38rem .65rem;border:1px solid rgba(255,255,255,0.08)}
+        .av-ritem{display:grid;grid-template-columns:26px 1fr auto auto;align-items:center;gap:.55rem;background:rgba(255,255,255,0.05);border-radius:8px;padding:.4rem .65rem;border:1px solid rgba(255,255,255,0.08)}
         .av-ritem.me{border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.06)}
-        .av-ritem.ex-winner{border-color:rgba(255,215,0,0.25);background:rgba(255,215,0,0.04)}
         .av-rpos{font-family:'Bebas Neue',sans-serif;font-size:1rem;text-align:center;color:#bca8d9}
         .av-rpos.gold{color:#ffd700}.av-rpos.silver{color:#e0d0f0}.av-rpos.bronze{color:#d99e6c}
-        .av-rname{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:600;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .av-rname{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:600;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .av-rstreak{font-size:.65rem;color:#bca8d9;font-family:'Barlow Condensed',sans-serif}
-        .av-rcoins{font-family:'Bebas Neue',sans-serif;font-size:.95rem;color:#ffd700;letter-spacing:.8px;text-align:right}
+        .av-rcoins{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:#7dffb8;letter-spacing:.8px;text-align:right}
         .av-empty{text-align:center;color:#bca8d9;font-family:'Barlow Condensed',sans-serif;padding:1.2rem 0;font-size:.85rem}
-        .av-toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%) translateY(6px);background:#3a1857;border:1px solid #c47ad9;border-radius:50px;padding:.55rem 1.4rem;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;color:#f5ecff;opacity:0;transition:opacity .3s,transform .3s;z-index:100;pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+
+        .av-logs-list{max-height:190px;overflow-y:auto;display:flex;flex-direction:column;gap:.2rem;padding-right:.3rem;margin-top:.4rem}
+        .av-logs-list::-webkit-scrollbar{width:6px}
+        .av-logs-list::-webkit-scrollbar-thumb{background:rgba(196,122,217,0.4);border-radius:3px}
+        .av-log-row{display:grid;grid-template-columns:1fr auto auto auto;gap:.55rem;align-items:center;font-family:'Barlow Condensed',sans-serif;font-size:.74rem;padding:.25rem .5rem;border-radius:5px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)}
+        .av-log-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .av-log-date,.av-log-time{color:#bca8d9}
+        .av-log-pts{color:#ffd700;font-weight:700}
+        .av-log-pts.neg{color:#7dffb8}
+
+        .av-toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%) translateY(6px);background:#3a1857;border:1px solid #c47ad9;border-radius:50px;padding:.55rem 1.4rem;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;color:#f5ecff;opacity:0;transition:opacity .3s,transform .3s;z-index:300;pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.4)}
         .av-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-        @media(max-width:880px){.av-grid{grid-template-columns:1fr;overflow-y:auto}.av-root{overflow-y:auto;height:auto;min-height:100vh}.av-container{height:auto}.av-rules-grid{grid-template-columns:1fr}}
 
-        .av-elim-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;color:#ffb0b0;background:rgba(255,80,80,.12);border:1px solid rgba(255,120,120,.35);border-radius:4px;padding:1px 5px;margin-right:.4rem;vertical-align:middle}
-        .av-ritem.elim{opacity:.55;border-color:rgba(255,120,120,.25)}
+        .av-terms{position:fixed;inset:0;z-index:250;background:rgba(15,8,32,.75);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:1.2rem;overflow-y:auto}
+        .av-terms-card{width:100%;max-width:720px;background:linear-gradient(160deg,rgba(58,24,87,.95),rgba(26,13,46,.95));border:1px solid rgba(196,122,217,.4);border-radius:20px;padding:1.5rem;box-shadow:0 24px 70px rgba(0,0,0,.55);display:flex;flex-direction:column;gap:.9rem;max-height:calc(100vh - 2rem);overflow-y:auto}
+        .av-terms-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:4px;color:#ffd700;text-align:center;line-height:1}
+        .av-terms-sub{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:#bca8d9;text-align:center}
+        .av-check{display:flex;gap:.6rem;align-items:flex-start;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.7rem .9rem;cursor:pointer}
+        .av-check input{margin-top:3px;width:18px;height:18px;accent-color:#c47ad9;cursor:pointer}
+        .av-check span{font-size:.85rem;color:#e5d8f5}
+        .av-accept{width:100%;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:3px;background:linear-gradient(135deg,#8b3fbf,#c47ad9);color:#fff;border:none;border-radius:50px;padding:.65rem;cursor:pointer}
+        .av-accept:disabled{opacity:.35;cursor:not-allowed}
 
-        .av-closed{position:fixed;inset:0;z-index:200;background:rgba(15,8,32,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:1.2rem;overflow-y:auto}
-        .av-closed-card{width:100%;max-width:980px;background:linear-gradient(160deg,rgba(58,24,87,.85),rgba(26,13,46,.85));border:1px solid rgba(255,215,0,.35);border-radius:18px;padding:1.4rem 1.4rem 1.1rem;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 80px rgba(196,122,217,.25);display:flex;flex-direction:column;gap:1rem;max-height:calc(100vh - 2rem)}
-        .av-closed-head{text-align:center}
-        .av-closed-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,3.5vw,2.4rem);letter-spacing:5px;background:linear-gradient(135deg,#ffd700,#d99ee6,#ffd1ec);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-        .av-closed-sub{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:4px;text-transform:uppercase;color:#bca8d9;margin-top:4px}
-        .av-winners{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
-        @media(max-width:680px){.av-winners{grid-template-columns:1fr}}
-        .av-winner{position:relative;border-radius:14px;padding:1rem .9rem;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;gap:.35rem}
-        .av-winner.p1{background:linear-gradient(160deg,rgba(255,215,0,.18),rgba(255,180,0,.06));border-color:rgba(255,215,0,.55);box-shadow:0 0 30px rgba(255,215,0,.2)}
-        .av-winner.p2{background:linear-gradient(160deg,rgba(224,208,240,.15),rgba(180,160,210,.05));border-color:rgba(224,208,240,.4)}
-        .av-winner.p3{background:linear-gradient(160deg,rgba(217,158,108,.15),rgba(180,120,80,.05));border-color:rgba(217,158,108,.4)}
-        .av-winner-medal{font-size:1.8rem;line-height:1}
-        .av-winner-prize{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;color:#bca8d9}
-        .av-winner-prize b{color:#ffd700;font-size:.95rem;letter-spacing:1.5px}
-        .av-winner-name{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:2px;color:#f5ecff;line-height:1}
-        .av-winner-pts{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#ffd700;letter-spacing:1.5px;line-height:1}
-        .av-winner-pts span{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;color:#bca8d9;margin-left:.3rem}
-        .av-winner-logs{margin-top:.5rem;width:100%;display:flex;flex-direction:column;gap:.22rem;max-height:180px;overflow-y:auto;padding-right:.3rem}
-        .av-winner-logs::-webkit-scrollbar{width:5px}
-        .av-winner-logs::-webkit-scrollbar-thumb{background:rgba(196,122,217,.35);border-radius:3px}
-        .av-winner-logs-title{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:#bca8d9;margin-bottom:.15rem;text-align:center}
-        .av-winner-log-row{display:grid;grid-template-columns:1fr auto auto;gap:.45rem;align-items:center;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;padding:.2rem .45rem;border-radius:5px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
-        .av-winner-log-row.boost{background:rgba(255,215,0,.08);border-color:rgba(255,215,0,.25)}
-        .av-winner-log-row .d{color:#bca8d9;letter-spacing:.5px}
-        .av-winner-log-row .t{color:#bca8d9;letter-spacing:.5px}
-        .av-winner-log-row .p{color:#ffd700;font-weight:700;letter-spacing:.5px}
-        .av-winner-logs-empty{text-align:center;color:#bca8d9;font-size:.68rem;padding:.4rem 0}
-
+        @media(max-width:900px){.av-grid{grid-template-columns:1fr}.av-boxes{grid-template-columns:1fr}.av-prizes{grid-template-columns:repeat(2,1fr)}}
       `}</style>
+
       <div className="av-root">
+        {!termsOk && (
+          <div className="av-terms">
+            <div className="av-terms-card">
+              <div>
+                <div className="av-terms-title">ALTA VIBE · TEMPORADA INVERTIDA</div>
+                <div className="av-terms-sub">Regras &amp; Termos de participação</div>
+              </div>
+
+              <div className="av-box">
+                <div className="av-box-title">📋 Regras</div>
+                <ol className="av-list">
+                  <li><strong>Ranking invertido:</strong> quem terminar com MENOS pontos leva os prêmios.</li>
+                  <li>Período: <strong>{fmtDate(period.start)} a {fmtDate(period.end)}</strong>.</li>
+                  <li>Vale apenas <strong>um giro por dia</strong>, liberado após 00h.</li>
+                  <li>Use sempre o mesmo nome e senha de 4 dígitos.</li>
+                  <li>Fatias verdes dão <strong>pontos negativos</strong> — elas te ajudam.</li>
+                  <li>Streaks aplicam bônus percentual sobre a pontuação do giro.</li>
+                  <li>Cadastros duplicados são desclassificados.</li>
+                  <li>É necessário ser ativo no <strong>xat.com/altavibe</strong>.</li>
+                  <li>Fraudar a roleta = eliminação imediata.</li>
+                </ol>
+              </div>
+
+              <div className="av-box">
+                <div className="av-box-title">🏆 Prêmios</div>
+                <div className="av-prizes">
+                  {PRIZES.map((p, i) => (
+                    <div key={p.pos} className={`av-prize${i === 0 ? " p1" : ""}`}>
+                      <span style={{ fontSize: "1.1rem" }}>{MEDALS[i]}</span>
+                      <img src={p.img} alt={`Prêmio ${p.pos}: ${p.name}`} loading="lazy" />
+                      <div className="av-prize-pos">{p.pos}</div>
+                      <div className="av-prize-name">{p.name}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <label className="av-check">
+                <input type="checkbox" checked={termsChecked} onChange={(e) => setTermsChecked(e.target.checked)} />
+                <span>Li e aceito os termos e regras para participação da temporada invertida do Alta Vibe.</span>
+              </label>
+
+              <button
+                className="av-accept"
+                disabled={!termsChecked}
+                onClick={() => { localStorage.setItem(LS_TERMS, "1"); setTermsOk(true); }}
+              >
+                Continuar para o login
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="av-container">
           <header className="av-header">
             <div className="av-logo">ALTA VIBE</div>
-            <div className="av-sub">Check-in Diário · Gira &amp; Ganha Vibecoins</div>
+            <div className="av-sub">Roleta Invertida · {fmtDate(period.start)} → {fmtDate(period.end)}</div>
+            <div className="av-inv">🔻 Menos pontos = melhor colocação</div>
           </header>
 
           <div className="av-grid">
-            {/* LEFT: profile + rules */}
-            <div className="av-col av-col-left">
-              <div className="av-panel" style={{ position: "relative" }}>
+            {/* LEFT */}
+            <div className="av-col">
+              <div className="av-panel">
                 <div className="av-ptitle" style={{ marginBottom: ".4rem" }}>Seu perfil</div>
                 <div className="av-profile">
                   <div className="av-profile-field">
                     <label className="av-label" htmlFor="av-name">Nome</label>
-                    <input
-                      id="av-name"
-                      className="av-input"
-                      type="text"
-                      maxLength={20}
-                      placeholder="Ex: DjVibeKing"
-                      autoComplete="off"
-                      value={nameInput}
-                      onChange={(e) => setNameInput(e.target.value)}
-                    />
+                    <input id="av-name" className="av-input" type="text" maxLength={20} placeholder="Ex: DjVibeKing" autoComplete="off" value={nameInput} onChange={(e) => setNameInput(e.target.value)} />
                   </div>
                   <div className="av-profile-field pw">
                     <label className="av-label" htmlFor="av-pass">Senha (4 dígitos)</label>
-                    <input
-                      id="av-pass"
-                      className="av-input"
-                      type="password"
-                      inputMode="numeric"
-                      pattern="\d{4}"
-                      maxLength={4}
-                      placeholder="••••"
-                      autoComplete="off"
-                      value={passInput}
-                      onChange={(e) => setPassInput(e.target.value.replace(/\D/g, "").slice(0, 4))}
-                    />
+                    <input id="av-pass" className="av-input" type="password" inputMode="numeric" maxLength={4} placeholder="••••" autoComplete="off" value={passInput} onChange={(e) => setPassInput(e.target.value.replace(/\D/g, "").slice(0, 4))} />
                   </div>
                   <button className="av-save" onClick={saveProfile}>Entrar</button>
                   {me && (
                     <div className="av-coins-inline">
-                      <span style={{ fontSize: "1rem" }}>⚡</span>
+                      <span style={{ fontSize: "1rem" }}>🔻</span>
                       <div style={{ display: "flex", flexDirection: "column" }}>
                         <span className="av-camt">{(me.coins || 0).toLocaleString("pt-BR")}</span>
-                        <span className="av-ctag">Vibecoins · {me.streak || 0}🔥</span>
+                        <span className="av-ctag">Pontos · {me.streak || 0}🔥</span>
                       </div>
                     </div>
                   )}
                 </div>
                 {signupsLocked && !me && (
-                  <div style={{
-                    background: "rgba(255,215,0,0.08)",
-                    border: "1px solid rgba(255,215,0,0.25)",
-                    borderRadius: 10,
-                    padding: ".55rem .75rem",
-                    marginTop: ".5rem",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: ".6rem",
-                  }}>
-                    <span style={{ fontSize: "1.2rem", lineHeight: 1 }}>🔒</span>
-                    <div>
-                      <div style={{ color: "#ffd700", fontFamily: "'Barlow Condensed',sans-serif", fontSize: ".78rem", letterSpacing: 1.5, textTransform: "uppercase", fontWeight: 700 }}>
-                        Cadastros encerrados
-                      </div>
-                      <div style={{ color: "#bca8d9", fontSize: ".72rem" }}>
-                        Quem já tem conta pode entrar normalmente. Novos jogadores não são aceitos.
-                      </div>
-                    </div>
+                  <div style={{ background: "rgba(255,215,0,0.08)", border: "1px solid rgba(255,215,0,0.25)", borderRadius: 10, padding: ".55rem .75rem", marginTop: ".5rem" }}>
+                    <div style={{ color: "#ffd700", fontFamily: "'Barlow Condensed',sans-serif", fontSize: ".78rem", letterSpacing: 1.5, textTransform: "uppercase", fontWeight: 700 }}>🔒 Cadastros encerrados</div>
+                    <div style={{ color: "#bca8d9", fontSize: ".72rem" }}>Quem já tem conta pode entrar normalmente.</div>
                   </div>
                 )}
               </div>
 
-
-
-              <div className="av-rules-grid">
-                <div className="av-rules-box">
-                  <div className="av-rules-title">📋 Regras</div>
-                  <ol className="av-rules-list">
-                    <li>Usar o mesmo nome e senha todos os dias para acumular.</li>
-                    <li>Vale apenas <strong>um giro por dia</strong>.</li>
-                    <li>Período: <strong>17/06/2026 a 30/06/2026</strong>.</li>
-                    <li>Liberado todo dia após <strong>00h</strong>.</li>
-                    <li>Prêmios: <strong>1º 1500x</strong> · <strong>2º 1000x</strong> · <strong>3º 500x</strong>.</li>
-                    <li>Cadastros duplicados: vale apenas o de maior valor acumulado.</li>
-                    
-                    <li className="elim">É necessário ser ativo no <strong>xat.com/altavibe</strong> (Eliminatória).</li>
-                    <li className="elim">Fraudar a roleta (Eliminatória).</li>
-
-                  </ol>
-                </div>
-                <div className="av-rules-box">
-                  <div className="av-rules-title">🎯 Peso dos Ganhos</div>
-                  <div className="av-odds">
-                    <div className="av-odd-row boost"><span className="av-odd-name">🚀 BOOST (50–500 VC + giro extra)</span><span className="av-odd-pct">0,5% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">500 Vibecoins</span><span className="av-odd-pct">1% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">400 Vibecoins</span><span className="av-odd-pct">3% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">300 Vibecoins</span><span className="av-odd-pct">5% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">200 Vibecoins</span><span className="av-odd-pct">10% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">100 Vibecoins</span><span className="av-odd-pct">20% de chance</span></div>
-                    <div className="av-odd-row"><span className="av-odd-name">50 Vibecoins</span><span className="av-odd-pct">40% de chance</span></div>
-
-                  </div>
-                </div>
-                <div className="av-rules-box">
-                  <div className="av-rules-title">🔥 Streak &amp; Bônus</div>
-                  <ul className="av-rules-list">
-                    <li>Girar todos os dias aumenta streaks 🔥.</li>
-                    <li>3 dias seguidos: bônus de +20% sobre o prêmio.</li>
-                    <li>7+ dias seguidos: bônus de +50% sobre o prêmio.</li>
-                  </ul>
+              <div className="av-panel">
+                <div className="av-ptitle" style={{ marginBottom: ".5rem" }}>🏆 Prêmios da temporada</div>
+                <div className="av-prizes">
+                  {PRIZES.map((p, i) => (
+                    <div key={p.pos} className={`av-prize${i === 0 ? " p1" : ""}`}>
+                      <span style={{ fontSize: "1.05rem" }}>{MEDALS[i]}</span>
+                      <img src={p.img} alt={`Prêmio ${p.pos}: ${p.name}`} loading="lazy" />
+                      <div className="av-prize-pos">{p.pos}</div>
+                      <div className="av-prize-name">{p.name}</div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="av-panel av-logs">
-                <div className="av-logs-head">
+              <div className="av-boxes">
+                <div className="av-box">
+                  <div className="av-box-title">📋 Regras</div>
+                  <ol className="av-list">
+                    <li><strong>Menos pontos ganha.</strong></li>
+                    <li>Período: <strong>{fmtDate(period.start)} a {fmtDate(period.end)}</strong>.</li>
+                    <li>Um giro por dia, após 00h.</li>
+                    <li>Fatias verdes tiram pontos.</li>
+                    <li>Ativo no <strong>xat.com/altavibe</strong>.</li>
+                    <li>Fraude = eliminação.</li>
+                  </ol>
+                </div>
+                <div className="av-box">
+                  <div className="av-box-title">🎯 Peso das fatias</div>
+                  <div>
+                    {segments.map((s) => (
+                      <div key={s.id} className={`av-odd-row${s.points < 0 ? " neg" : ""}`}>
+                        <span>{s.points < 0 ? "🍀 " : ""}{s.label} {s.points < 0 ? "pontos (bom)" : "pontos"}</span>
+                        <span className="av-odd-pct">{totalWeight ? ((Number(s.weight) / totalWeight) * 100).toFixed(1) : "0"}%</span>
+                      </div>
+                    ))}
+                    {segments.length === 0 && <div className="av-empty">Roleta sendo configurada…</div>}
+                  </div>
+                </div>
+              </div>
+
+              <div className="av-panel">
+                <div className="av-box-title">🔥 Streak &amp; Bônus</div>
+                {streaks.length === 0 ? (
+                  <div className="av-empty">Sem regras de streak.</div>
+                ) : (
+                  streaks.map((r) => (
+                    <div key={r.id} className={`av-odd-row${Number(r.bonus_pct) < 0 ? " neg" : ""}`}>
+                      <span>{r.days}+ dias seguidos</span>
+                      <span className="av-odd-pct">{Number(r.bonus_pct) > 0 ? "+" : ""}{Number(r.bonus_pct)}% nos pontos</span>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <div className="av-panel">
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div className="av-ptitle">📡 Logs (tempo real)</div>
-                  <div className="av-ctag">{logs.length} coleta{logs.length !== 1 ? "s" : ""}</div>
+                  <div className="av-ctag">{logs.length} giro{logs.length !== 1 ? "s" : ""}</div>
                 </div>
                 <div className="av-logs-list">
                   {logs.length === 0 ? (
-                    <div className="av-empty">Sem coletas ainda — gira a roleta! 🎯</div>
-                  ) : (
-                    logs.map((l) => {
-                      const d = new Date(l.created_at);
-                      const date = d.toLocaleDateString("pt-BR");
-                      const time = d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-                      return (
-                        <div key={l.id} className={`av-log-row${l.is_boost ? " boost" : ""}`}>
-                          <span className="av-log-name">{l.name}</span>
-                          <span className="av-log-date">{date}</span>
-                          <span className="av-log-time">{time}</span>
-                          <span className="av-log-pts">{l.is_boost ? `🚀 +${l.total} VC` : `+${l.total} VC`}</span>
-                        </div>
-                      );
-                    })
-                  )}
+                    <div className="av-empty">Sem giros ainda 🎯</div>
+                  ) : logs.map((l) => {
+                    const d = new Date(l.created_at);
+                    return (
+                      <div key={l.id} className="av-log-row">
+                        <span className="av-log-name">{l.name}</span>
+                        <span className="av-log-date">{d.toLocaleDateString("pt-BR")}</span>
+                        <span className="av-log-time">{d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</span>
+                        <span className={`av-log-pts${l.total < 0 ? " neg" : ""}`}>{l.total > 0 ? "+" : ""}{l.total} pts</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
 
-            {/* RIGHT: wheel + ranking */}
+            {/* RIGHT */}
             <div className="av-col">
               <div className="av-panel av-wheel-wrapper">
                 <div className="av-wrap">
                   <div className="av-pointer" aria-hidden="true" />
-                  <canvas ref={canvasRef} width={320} height={320} />
-                  <div className="av-center" aria-hidden="true" />
+                  <canvas ref={canvasRef} width={360} height={360} />
+                  <div className="av-center" aria-hidden="true">VIBE</div>
                 </div>
-                <button className="av-spin" onClick={spinWheel} disabled={spinDisabled}>
-                  {spinLabel}
-                </button>
+                <button className="av-spin" onClick={spinWheel} disabled={spinDisabled}>{spinLabel}</button>
                 <div className={`av-result${flash ? " flash" : ""}`}>
                   {result ? (
-                    result.boost ? (
-                      <><span>🚀 BOOST</span><span className="av-rval">+{result.prize} Vibecoins</span><span style={{ color: "#d99ee6" }}>(+ giro extra)</span></>
-                    ) : (
-                      <>
-                        <span>Ganhou</span>
-                        <span className="av-rval">+{result.total} Vibecoins</span>
-                        {result.bonus > 0 && <span style={{ color: "#d99ee6" }}>(+{result.bonus} streak)</span>}
-                      </>
-                    )
+                    <>
+                      <span>{result.total <= 0 ? "🍀 Boa!" : "Caiu"}</span>
+                      <span className="av-rval">{result.total > 0 ? "+" : ""}{result.total} pontos</span>
+                      {result.bonus !== 0 && <span style={{ color: "#d99ee6" }}>({result.bonus > 0 ? "+" : ""}{result.bonus} streak)</span>}
+                    </>
                   ) : (
-                    <span style={{ color: "#bca8d9" }}>Seu prêmio aparece aqui</span>
+                    <span style={{ color: "#bca8d9" }}>Seu resultado aparece aqui</span>
                   )}
                 </div>
               </div>
 
-              <div className="av-panel av-rank">
-                <div className="av-rhead">
-                  <div className="av-ptitle">⚡ Ranking</div>
+              <div className="av-panel">
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div className="av-ptitle">🔻 Ranking invertido</div>
                   <div className="av-ctag">{ranking.length} player{ranking.length !== 1 ? "s" : ""}</div>
                 </div>
                 <div className="av-rlist">
                   {ranking.length === 0 ? (
                     <div className="av-empty">Ninguém girou ainda — seja o primeiro! 🎯</div>
-                  ) : (
-                    ranking.map((u, i) => {
-                      const cls = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
-                      const elim = isEliminated(u.name);
-                      const exWin = isExWinner(u.name);
-                      return (
-                        <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}${elim ? " elim" : ""}${exWin ? " ex-winner" : ""}`}>
-                          <div className={`av-rpos ${cls}`}>{i + 1}</div>
-                          <div className="av-rname">
-                            {elim && <span className="av-elim-badge">Eliminado por Inatividade no xat.com/altavibe</span>}
-                            {exWin && <span className="av-elim-badge" style={{color:"#ffd700",background:"rgba(255,215,0,0.12)",borderColor:"rgba(255,215,0,0.35)"}}>fora do jogo</span>}
-                            {u.name}
-                          </div>
-                          <div className="av-rstreak">{u.streak || 0}🔥</div>
-                          <div className="av-rcoins">{(u.coins || 0).toLocaleString("pt-BR")}</div>
-                        </div>
-                      );
-                    })
-                  )}
+                  ) : ranking.map((u, i) => {
+                    const cls = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
+                    return (
+                      <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}`}>
+                        <div className={`av-rpos ${cls}`}>{i + 1}</div>
+                        <div className="av-rname">{u.name}</div>
+                        <div className="av-rstreak">{u.streak || 0}🔥</div>
+                        <div className="av-rcoins">{(u.coins || 0).toLocaleString("pt-BR")}</div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-
-
 
         <div className={`av-toast${toast ? " show" : ""}`}>{toast}</div>
       </div>
