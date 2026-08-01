@@ -44,6 +44,16 @@ type Settings = {
 const CELL = 88;
 const STRIP_LEN = 22;
 
+// Pódio final: vencedores válidos (em ordem) e desclassificados
+const WINNERS = ["feeh", "melll", "lila"];
+const DISQUALIFIED: { name: string; reason: string }[] = [
+  { name: "Ruben", reason: "Desclassificado por inatividade no xat.com/altavibe" },
+  { name: "ZARU", reason: "Eliminado (desistiu)" },
+  { name: "web", reason: "Desclassificado por inatividade no xat.com/altavibe" },
+  { name: "Luhh", reason: "Eliminada por inatividade no xat.com/altavibe" },
+  { name: "MARIAH", reason: "Eliminada por inatividade no xat.com/altavibe" },
+];
+
 const Machine = () => {
   const [nameInput, setNameInput] = useState("");
   const [passInput, setPassInput] = useState("");
