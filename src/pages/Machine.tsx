@@ -93,7 +93,7 @@ const Machine = () => {
   // Load top 3 winners history when results overlay is active
   useEffect(() => {
     if (!settings.results_active || ranking.length === 0) return;
-    const top3 = ranking.slice(0, 3);
+    const top3 = ranking.filter((u) => WINNERS.includes(u.name.toLowerCase())).slice(0, 3);
     const names = top3.map((u) => u.name);
     supabase
       .from("machine_plays")
