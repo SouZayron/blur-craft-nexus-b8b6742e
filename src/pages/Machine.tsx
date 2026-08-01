@@ -562,6 +562,18 @@ const Machine = () => {
                 );
               })}
             </div>
+
+            <div style={{ maxWidth: 1200, width: "100%", marginTop: "1.2rem", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "0.8rem 1rem" }}>
+              <div style={{ fontFamily: "Barlow Condensed", letterSpacing: 3, textTransform: "uppercase", color: "#ff9d9d", fontSize: ".8rem", marginBottom: ".4rem" }}>
+                ⚠️ Desclassificados
+              </div>
+              {DISQUALIFIED.map((d) => (
+                <div key={d.name} style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", padding: "3px 0", borderBottom: "1px solid rgba(255,255,255,0.06)", fontFamily: "Barlow Condensed", fontSize: ".8rem", color: "#d8cbe8" }}>
+                  <b style={{ textDecoration: "line-through", opacity: .8 }}>{d.name}</b>
+                  <span style={{ color: "#ff9d9d" }}>{d.reason}</span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
