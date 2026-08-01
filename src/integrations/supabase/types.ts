@@ -47,29 +47,96 @@ export type Database = {
         }
         Relationships: []
       }
+      altavibe_segments: {
+        Row: {
+          color: string
+          created_at: string
+          id: string
+          label: string
+          points: number
+          position: number
+          text_color: string
+          updated_at: string
+          weight: number
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          id?: string
+          label: string
+          points?: number
+          position?: number
+          text_color?: string
+          updated_at?: string
+          weight?: number
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          id?: string
+          label?: string
+          points?: number
+          position?: number
+          text_color?: string
+          updated_at?: string
+          weight?: number
+        }
+        Relationships: []
+      }
       altavibe_settings: {
         Row: {
+          end_date: string
           id: number
+          inverted: boolean
           is_open: boolean
           signups_locked: boolean
+          start_date: string
           updated_at: string
         }
         Insert: {
+          end_date?: string
           id?: number
+          inverted?: boolean
           is_open?: boolean
           signups_locked?: boolean
+          start_date?: string
           updated_at?: string
         }
         Update: {
+          end_date?: string
           id?: number
+          inverted?: boolean
           is_open?: boolean
           signups_locked?: boolean
+          start_date?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      altavibe_streak_rules: {
+        Row: {
+          bonus_pct: number
+          created_at: string
+          days: number
+          id: string
+        }
+        Insert: {
+          bonus_pct?: number
+          created_at?: string
+          days: number
+          id?: string
+        }
+        Update: {
+          bonus_pct?: number
+          created_at?: string
+          days?: number
+          id?: string
         }
         Relationships: []
       }
       altavibe_users: {
         Row: {
+          blocked_segments: string[]
           coins: number
           created_at: string
           id: string
@@ -80,6 +147,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          blocked_segments?: string[]
           coins?: number
           created_at?: string
           id?: string
@@ -90,6 +158,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          blocked_segments?: string[]
           coins?: number
           created_at?: string
           id?: string
@@ -945,6 +1014,7 @@ export type Database = {
       altavibe_login: {
         Args: { p_name: string; p_password: string }
         Returns: {
+          blocked_segments: string[]
           coins: number
           created_at: string
           id: string
@@ -968,6 +1038,10 @@ export type Database = {
             Args: { p_allow_boost?: boolean; p_name: string; p_tz?: string }
             Returns: Json
           }
+      altavibe_spin_v2: {
+        Args: { p_name: string; p_tz?: string }
+        Returns: Json
+      }
       cleanup_expired_bingo_cards: { Args: never; Returns: undefined }
       machine_login: {
         Args: { p_name: string; p_password: string }
