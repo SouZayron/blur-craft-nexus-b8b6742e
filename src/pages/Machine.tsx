@@ -510,7 +510,7 @@ const Machine = () => {
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1rem", maxWidth: 1200, width: "100%" }}>
-              {ranking.slice(0, 3).map((u, i) => {
+              {[...ranking].sort((a, b) => WINNERS.indexOf(a.name.toLowerCase()) - WINNERS.indexOf(b.name.toLowerCase())).filter((u) => WINNERS.includes(u.name.toLowerCase())).slice(0, 3).map((u, i) => {
                 const medal = ["🥇", "🥈", "🥉"][i];
                 const border = ["#e9c879", "#c0c0c0", "#cd7f32"][i];
                 const history = winnersHistory[u.name] || [];
