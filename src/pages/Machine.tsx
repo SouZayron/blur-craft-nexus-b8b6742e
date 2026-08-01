@@ -44,6 +44,16 @@ type Settings = {
 const CELL = 88;
 const STRIP_LEN = 22;
 
+// Pódio final: vencedores válidos (em ordem) e desclassificados
+const WINNERS = ["feeh", "melll", "lila"];
+const DISQUALIFIED: { name: string; reason: string }[] = [
+  { name: "Ruben", reason: "Desclassificado por inatividade no xat.com/altavibe" },
+  { name: "ZARU", reason: "Eliminado (desistiu)" },
+  { name: "web", reason: "Desclassificado por inatividade no xat.com/altavibe" },
+  { name: "Luhh", reason: "Eliminada por inatividade no xat.com/altavibe" },
+  { name: "MARIAH", reason: "Eliminada por inatividade no xat.com/altavibe" },
+];
+
 const Machine = () => {
   const [nameInput, setNameInput] = useState("");
   const [passInput, setPassInput] = useState("");
@@ -93,7 +103,7 @@ const Machine = () => {
   // Load top 3 winners history when results overlay is active
   useEffect(() => {
     if (!settings.results_active || ranking.length === 0) return;
-    const top3 = ranking.slice(0, 3);
+    const top3 = ranking.filter((u) => WINNERS.includes(u.name.toLowerCase())).slice(0, 3);
     const names = top3.map((u) => u.name);
     supabase
       .from("machine_plays")
@@ -500,7 +510,7 @@ const Machine = () => {
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1rem", maxWidth: 1200, width: "100%" }}>
-              {ranking.slice(0, 3).map((u, i) => {
+              {[...ranking].sort((a, b) => WINNERS.indexOf(a.name.toLowerCase()) - WINNERS.indexOf(b.name.toLowerCase())).filter((u) => WINNERS.includes(u.name.toLowerCase())).slice(0, 3).map((u, i) => {
                 const medal = ["🥇", "🥈", "🥉"][i];
                 const border = ["#e9c879", "#c0c0c0", "#cd7f32"][i];
                 const history = winnersHistory[u.name] || [];
@@ -551,6 +561,18 @@ const Machine = () => {
                   </div>
                 );
               })}
+            </div>
+
+            <div style={{ maxWidth: 1200, width: "100%", marginTop: "1.2rem", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "0.8rem 1rem" }}>
+              <div style={{ fontFamily: "Barlow Condensed", letterSpacing: 3, textTransform: "uppercase", color: "#ff9d9d", fontSize: ".8rem", marginBottom: ".4rem" }}>
+                ⚠️ Desclassificados
+              </div>
+              {DISQUALIFIED.map((d) => (
+                <div key={d.name} style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", padding: "3px 0", borderBottom: "1px solid rgba(255,255,255,0.06)", fontFamily: "Barlow Condensed", fontSize: ".8rem", color: "#d8cbe8" }}>
+                  <b style={{ textDecoration: "line-through", opacity: .8 }}>{d.name}</b>
+                  <span style={{ color: "#ff9d9d" }}>{d.reason}</span>
+                </div>
+              ))}
             </div>
           </div>
         )}
