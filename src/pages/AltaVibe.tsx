@@ -614,16 +614,20 @@ const AltaVibe = () => {
                 <div className="av-box">
                   <div className="av-box-title">📋 Regras</div>
                   <ol className="av-list">
-                    <li><strong>Menos pontos ganha.</strong></li>
+                    <li><strong>Ranking invertido:</strong> quem terminar com MENOS pontos leva os prêmios.</li>
                     <li>Período: <strong>{fmtDate(period.start)} a {fmtDate(period.end)}</strong>.</li>
-                    <li>{maxSpins} giros por dia, após 00h.</li>
-                    <li><strong>Obrigatório girar os {maxSpins}</strong> — se não, (eliminado - Não girou).</li>
-                    <li>Nos 3 primeiros dias não sai <strong>-50 / -100</strong>.</li>
-                    <li>Cadastros até <strong>05/08</strong> (fecha dia 06).</li>
-                    <li>Fatias verdes tiram pontos.</li>
-                    <li>Ativo no <strong>xat.com/altavibe</strong>.</li>
-                    <li>Fraude = eliminação.</li>
+                    <li>Você tem <strong>{maxSpins} giros por dia</strong>, renovados após 00h.</li>
+                    <li><strong>É obrigatório usar os {maxSpins} giros todos os dias</strong> — quem não girar fica marcado como <strong>(eliminado - Não girou)</strong>.</li>
+                    <li>Nos <strong>3 primeiros dias</strong> a roleta não cai em <strong>-50 / -100</strong> pontos.</li>
+                    <li><strong>Cadastros encerram em 06/08/2026</strong> — depois só quem já tem conta pode entrar.</li>
+                    <li>Use sempre o mesmo nome e senha de 4 dígitos.</li>
+                    <li>Fatias verdes dão <strong>pontos negativos</strong> — elas te ajudam.</li>
+                    <li>Streaks aplicam bônus percentual sobre a pontuação do giro.</li>
+                    <li>Cadastros duplicados são desclassificados.</li>
+                    <li>É necessário ser ativo no <strong>xat.com/altavibe</strong>.</li>
+                    <li>Fraudar a roleta = eliminação imediata.</li>
                   </ol>
+
                 </div>
                 <div className="av-box">
                   <div className="av-box-title">🎯 Peso das fatias</div>
