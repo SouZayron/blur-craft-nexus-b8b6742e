@@ -458,7 +458,8 @@ const AltaVibe = () => {
                 <ol className="av-list">
                   <li><strong>Ranking invertido:</strong> quem terminar com MENOS pontos leva os prêmios.</li>
                   <li>Período: <strong>{fmtDate(period.start)} a {fmtDate(period.end)}</strong>.</li>
-                  <li>Vale apenas <strong>um giro por dia</strong>, liberado após 00h.</li>
+                  <li>Você tem <strong>{maxSpins} giros por dia</strong>, renovados após 00h.</li>
+                  <li><strong>Cadastros encerram em 06/08/2026</strong> — depois dessa data só quem já tem conta pode entrar.</li>
                   <li>Use sempre o mesmo nome e senha de 4 dígitos.</li>
                   <li>Fatias verdes dão <strong>pontos negativos</strong> — elas te ajudam.</li>
                   <li>Streaks aplicam bônus percentual sobre a pontuação do giro.</li>
