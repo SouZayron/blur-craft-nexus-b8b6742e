@@ -21,6 +21,7 @@ type User = {
   coins: number;
   streak: number;
   last_spin: string | null;
+  spins_today?: number;
 };
 
 type Segment = {
