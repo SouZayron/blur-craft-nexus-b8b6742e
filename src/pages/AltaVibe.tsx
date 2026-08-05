@@ -685,18 +685,29 @@ const AltaVibe = () => {
                 <div className="av-rlist">
                   {ranking.length === 0 ? (
                     <div className="av-empty">Ninguém girou ainda — seja o primeiro! 🎯</div>
-                  ) : ranking.map((u, i) => {
-                    const cls = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
-                    return (
-                      <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}`}>
-                        <div className={`av-rpos ${cls}`}>{i + 1}</div>
-                        <div className="av-rname">{u.name}</div>
-                        <div className="av-rstreak">{u.streak || 0}🔥</div>
-                        <div className="av-rcoins">{(u.coins || 0).toLocaleString("pt-BR")}</div>
-                      </div>
-                    );
-                  })}
+                  ) : (() => {
+                    const isOut = (u: User) => eliminated.has(u.name.trim().toLowerCase());
+                    const ordered = [...ranking.filter((u) => !isOut(u)), ...ranking.filter(isOut)];
+                    let pos = 0;
+                    return ordered.map((u) => {
+                      const out = isOut(u);
+                      if (!out) pos += 1;
+                      const cls = pos === 1 && !out ? "gold" : pos === 2 && !out ? "silver" : pos === 3 && !out ? "bronze" : "";
+                      return (
+                        <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}`} style={out ? { opacity: .5 } : undefined}>
+                          <div className={`av-rpos ${cls}`}>{out ? "—" : pos}</div>
+                          <div className="av-rname">
+                            {u.name}
+                            {out && <span style={{ color: "#ff8a8a", fontSize: ".68rem", marginLeft: ".35rem" }}>(eliminado - Não girou)</span>}
+                          </div>
+                          <div className="av-rstreak">{u.streak || 0}🔥</div>
+                          <div className="av-rcoins">{(u.coins || 0).toLocaleString("pt-BR")}</div>
+                        </div>
+                      );
+                    });
+                  })()}
                 </div>
+
               </div>
             </div>
           </div>
