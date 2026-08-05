@@ -162,14 +162,16 @@ const AltaVibe = () => {
     const [segRes, stRes, setRes] = await Promise.all([
       supabase.from("altavibe_segments").select("*").order("position"),
       supabase.from("altavibe_streak_rules").select("*").order("days"),
-      supabase.from("altavibe_settings").select("is_open,signups_locked,start_date,end_date").eq("id", 1).maybeSingle(),
+      supabase.from("altavibe_settings").select("is_open,signups_locked,start_date,end_date,max_spins_per_day,signup_deadline").eq("id", 1).maybeSingle(),
     ]);
     if (segRes.data) setSegments(segRes.data as Segment[]);
     if (stRes.data) setStreaks(stRes.data as StreakRule[]);
     if (setRes.data) {
-      const d = setRes.data as { is_open: boolean; signups_locked: boolean; start_date: string; end_date: string };
+      const d = setRes.data as { is_open: boolean; signups_locked: boolean; start_date: string; end_date: string; max_spins_per_day: number; signup_deadline: string };
+      const todayLocal = new Date().toLocaleDateString("en-CA");
       setGameOpen(!!d.is_open);
-      setSignupsLocked(!!d.signups_locked);
+      setSignupsLocked(!!d.signups_locked || (!!d.signup_deadline && todayLocal >= d.signup_deadline));
+      setMaxSpins(d.max_spins_per_day || 3);
       setPeriod({ start: d.start_date, end: d.end_date });
     }
   }, []);
