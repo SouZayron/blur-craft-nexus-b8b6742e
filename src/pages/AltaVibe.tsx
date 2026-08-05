@@ -276,6 +276,19 @@ const AltaVibe = () => {
     loadRanking();
   };
 
+  // Sempre busca o estado real do jogador no servidor (giros do dia, pontos, streak)
+  const refreshMe = useCallback(async () => {
+    const name = localStorage.getItem(LS_NAME);
+    if (!name) return;
+    const { data } = await supabase
+      .from("altavibe_users")
+      .select("id,name,coins,streak,last_spin,spins_today")
+      .ilike("name", name.trim())
+      .maybeSingle();
+    if (data) setMe(data as User);
+  }, []);
+
+
   const audioCtxRef = useRef<AudioContext | null>(null);
   const getAudio = () => {
     if (typeof window === "undefined") return null;
