@@ -316,7 +316,7 @@ const AltaVibe = () => {
     if (error || !data) {
       spinningRef.current = false;
       const msg = error?.message || "";
-      if (msg.includes("already_spun_today")) showToast("Já girou hoje! Volta amanhã 🌙");
+      if (msg.includes("already_spun_today")) showToast(`Você já usou seus ${maxSpins} giros de hoje! Volta amanhã 🌙`);
       else if (msg.includes("game_not_started")) showToast("Game ainda não começou ⏳");
       else if (msg.includes("game_ended")) showToast("Game encerrado 🏁");
       else if (msg.includes("game_closed")) showToast("Game fechado no momento 🔒");
