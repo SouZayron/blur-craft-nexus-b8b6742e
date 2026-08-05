@@ -150,6 +150,41 @@ const AltaVibe = () => {
     if (data) setRanking(data as User[]);
   }, []);
 
+  // Quem não usou TODOS os giros em algum dia já encerrado é eliminado
+  const loadEliminated = useCallback(async () => {
+    const { data } = await supabase
+      .from("altavibe_logs")
+      .select("name,created_at")
+      .order("created_at", { ascending: false })
+      .limit(5000);
+    if (!data) return;
+    const counts = new Map<string, Map<string, number>>();
+    (data as { name: string; created_at: string }[]).forEach((l) => {
+      const day = new Date(l.created_at).toLocaleDateString("en-CA");
+      const key = l.name.trim().toLowerCase();
+      if (!counts.has(key)) counts.set(key, new Map());
+      const m = counts.get(key)!;
+      m.set(day, (m.get(day) || 0) + 1);
+    });
+    const today = new Date().toLocaleDateString("en-CA");
+    const days: string[] = [];
+    const d = new Date(`${period.start}T12:00:00`);
+    while (true) {
+      const iso = d.toLocaleDateString("en-CA");
+      if (iso >= today || iso > period.end) break;
+      days.push(iso);
+      d.setDate(d.getDate() + 1);
+    }
+    const out = new Set<string>();
+    counts.forEach((m, key) => {
+      const firstDay = Array.from(m.keys()).sort()[0];
+      const missed = days.some((day) => day >= firstDay && (m.get(day) || 0) < maxSpins);
+      if (missed) out.add(key);
+    });
+    setEliminated(out);
+  }, [period.start, period.end, maxSpins]);
+
+
   const loadLogs = useCallback(async () => {
     const { data } = await supabase
       .from("altavibe_logs")
