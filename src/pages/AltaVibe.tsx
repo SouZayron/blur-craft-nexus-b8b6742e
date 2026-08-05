@@ -66,6 +66,7 @@ const AltaVibe = () => {
   const [logs, setLogs] = useState<LogRow[]>([]);
   const [termsOk, setTermsOk] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
+  const [eliminated, setEliminated] = useState<Set<string>>(new Set());
 
   const showToast = (msg: string) => {
     setToast(msg);
