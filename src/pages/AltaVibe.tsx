@@ -289,6 +289,31 @@ const AltaVibe = () => {
     if (data) setMe(data as User);
   }, []);
 
+  // Fallback: se o socket realtime cair, mantém tudo atualizado por polling
+  // e ao voltar o foco/aba. Não altera nenhum dado, só re-lê do servidor.
+  useEffect(() => {
+    const syncAll = () => {
+      if (spinningRef.current) return;
+      loadRanking();
+      loadLogs();
+      loadConfig();
+      loadEliminated();
+      refreshMe();
+    };
+    const id = window.setInterval(syncAll, 5000);
+    const onFocus = () => syncAll();
+    const onVis = () => { if (document.visibilityState === "visible") syncAll(); };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      window.clearInterval(id);
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [loadRanking, loadLogs, loadConfig, loadEliminated, refreshMe]);
+
+
+
 
   const audioCtxRef = useRef<AudioContext | null>(null);
   const getAudio = () => {
