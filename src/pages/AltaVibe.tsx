@@ -323,10 +323,10 @@ const AltaVibe = () => {
       else showToast("Erro ao girar");
       return;
     }
-    const res = data as unknown as { win_index: number; label: string; prize: number; bonus: number; total: number; streak: number; coins: number; last_spin: string | null };
+    const res = data as unknown as { win_index: number; label: string; prize: number; bonus: number; total: number; streak: number; coins: number; last_spin: string | null; spins_today: number; spins_left: number };
     animateTo(res.win_index, () => {
       spinningRef.current = false;
-      setMe((prev) => prev ? { ...prev, coins: res.coins, streak: res.streak, last_spin: res.last_spin } : prev);
+      setMe((prev) => prev ? { ...prev, coins: res.coins, streak: res.streak, last_spin: res.last_spin, spins_today: res.spins_today } : prev);
       setResult({ total: res.total, bonus: res.bonus, prize: res.prize, label: res.label });
       setFlash(true);
       setTimeout(() => setFlash(false), 800);
@@ -337,9 +337,11 @@ const AltaVibe = () => {
   };
 
   const today = new Date().toLocaleDateString("en-CA");
-  const alreadySpun = me?.last_spin === today;
+  const usedToday = me?.last_spin === today ? (me?.spins_today || 0) : 0;
+  const spinsLeft = Math.max(maxSpins - usedToday, 0);
+  const alreadySpun = !!me && spinsLeft <= 0;
   const spinDisabled = !me || !gameOpen || alreadySpun;
-  const spinLabel = !gameOpen ? "GAME FECHADO" : alreadySpun ? "VOLTA AMANHÃ" : "GIRAR";
+  const spinLabel = !gameOpen ? "GAME FECHADO" : alreadySpun ? "VOLTA AMANHÃ" : `GIRAR (${spinsLeft})`;
   const fmtDate = (d: string) => d.split("-").reverse().join("/");
 
   return (
