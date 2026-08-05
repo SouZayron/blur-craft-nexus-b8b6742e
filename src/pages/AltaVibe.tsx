@@ -235,7 +235,7 @@ const AltaVibe = () => {
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_settings" }, () => loadConfig())
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_segments" }, () => loadConfig())
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_streak_rules" }, () => loadConfig())
-      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_logs" }, () => loadLogs())
+      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_logs" }, () => { loadLogs(); loadEliminated(); })
       .subscribe();
     return () => { supabase.removeChannel(ch); };
   }, [loadRanking, loadLogs, loadConfig]);
