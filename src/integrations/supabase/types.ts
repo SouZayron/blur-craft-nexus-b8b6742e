@@ -89,6 +89,8 @@ export type Database = {
           id: number
           inverted: boolean
           is_open: boolean
+          max_spins_per_day: number
+          signup_deadline: string
           signups_locked: boolean
           start_date: string
           updated_at: string
@@ -98,6 +100,8 @@ export type Database = {
           id?: number
           inverted?: boolean
           is_open?: boolean
+          max_spins_per_day?: number
+          signup_deadline?: string
           signups_locked?: boolean
           start_date?: string
           updated_at?: string
@@ -107,6 +111,8 @@ export type Database = {
           id?: number
           inverted?: boolean
           is_open?: boolean
+          max_spins_per_day?: number
+          signup_deadline?: string
           signups_locked?: boolean
           start_date?: string
           updated_at?: string
@@ -143,6 +149,7 @@ export type Database = {
           last_spin: string | null
           name: string
           password: string | null
+          spins_today: number
           streak: number
           updated_at: string
         }
@@ -154,6 +161,7 @@ export type Database = {
           last_spin?: string | null
           name: string
           password?: string | null
+          spins_today?: number
           streak?: number
           updated_at?: string
         }
@@ -165,6 +173,7 @@ export type Database = {
           last_spin?: string | null
           name?: string
           password?: string | null
+          spins_today?: number
           streak?: number
           updated_at?: string
         }
@@ -1021,6 +1030,7 @@ export type Database = {
           last_spin: string | null
           name: string
           password: string | null
+          spins_today: number
           streak: number
           updated_at: string
         }

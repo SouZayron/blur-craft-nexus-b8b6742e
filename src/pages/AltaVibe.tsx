@@ -21,6 +21,7 @@ type User = {
   coins: number;
   streak: number;
   last_spin: string | null;
+  spins_today?: number;
 };
 
 type Segment = {
@@ -61,6 +62,7 @@ const AltaVibe = () => {
   const [gameOpen, setGameOpen] = useState(true);
   const [signupsLocked, setSignupsLocked] = useState(false);
   const [period, setPeriod] = useState({ start: "2026-08-05", end: "2026-08-31" });
+  const [maxSpins, setMaxSpins] = useState(3);
   const [logs, setLogs] = useState<LogRow[]>([]);
   const [termsOk, setTermsOk] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
@@ -160,14 +162,16 @@ const AltaVibe = () => {
     const [segRes, stRes, setRes] = await Promise.all([
       supabase.from("altavibe_segments").select("*").order("position"),
       supabase.from("altavibe_streak_rules").select("*").order("days"),
-      supabase.from("altavibe_settings").select("is_open,signups_locked,start_date,end_date").eq("id", 1).maybeSingle(),
+      supabase.from("altavibe_settings").select("is_open,signups_locked,start_date,end_date,max_spins_per_day,signup_deadline").eq("id", 1).maybeSingle(),
     ]);
     if (segRes.data) setSegments(segRes.data as Segment[]);
     if (stRes.data) setStreaks(stRes.data as StreakRule[]);
     if (setRes.data) {
-      const d = setRes.data as { is_open: boolean; signups_locked: boolean; start_date: string; end_date: string };
+      const d = setRes.data as { is_open: boolean; signups_locked: boolean; start_date: string; end_date: string; max_spins_per_day: number; signup_deadline: string };
+      const todayLocal = new Date().toLocaleDateString("en-CA");
       setGameOpen(!!d.is_open);
-      setSignupsLocked(!!d.signups_locked);
+      setSignupsLocked(!!d.signups_locked || (!!d.signup_deadline && todayLocal >= d.signup_deadline));
+      setMaxSpins(d.max_spins_per_day || 3);
       setPeriod({ start: d.start_date, end: d.end_date });
     }
   }, []);
@@ -312,17 +316,17 @@ const AltaVibe = () => {
     if (error || !data) {
       spinningRef.current = false;
       const msg = error?.message || "";
-      if (msg.includes("already_spun_today")) showToast("Já girou hoje! Volta amanhã 🌙");
+      if (msg.includes("already_spun_today")) showToast(`Você já usou seus ${maxSpins} giros de hoje! Volta amanhã 🌙`);
       else if (msg.includes("game_not_started")) showToast("Game ainda não começou ⏳");
       else if (msg.includes("game_ended")) showToast("Game encerrado 🏁");
       else if (msg.includes("game_closed")) showToast("Game fechado no momento 🔒");
       else showToast("Erro ao girar");
       return;
     }
-    const res = data as unknown as { win_index: number; label: string; prize: number; bonus: number; total: number; streak: number; coins: number; last_spin: string | null };
+    const res = data as unknown as { win_index: number; label: string; prize: number; bonus: number; total: number; streak: number; coins: number; last_spin: string | null; spins_today: number; spins_left: number };
     animateTo(res.win_index, () => {
       spinningRef.current = false;
-      setMe((prev) => prev ? { ...prev, coins: res.coins, streak: res.streak, last_spin: res.last_spin } : prev);
+      setMe((prev) => prev ? { ...prev, coins: res.coins, streak: res.streak, last_spin: res.last_spin, spins_today: res.spins_today } : prev);
       setResult({ total: res.total, bonus: res.bonus, prize: res.prize, label: res.label });
       setFlash(true);
       setTimeout(() => setFlash(false), 800);
@@ -333,9 +337,11 @@ const AltaVibe = () => {
   };
 
   const today = new Date().toLocaleDateString("en-CA");
-  const alreadySpun = me?.last_spin === today;
+  const usedToday = me?.last_spin === today ? (me?.spins_today || 0) : 0;
+  const spinsLeft = Math.max(maxSpins - usedToday, 0);
+  const alreadySpun = !!me && spinsLeft <= 0;
   const spinDisabled = !me || !gameOpen || alreadySpun;
-  const spinLabel = !gameOpen ? "GAME FECHADO" : alreadySpun ? "VOLTA AMANHÃ" : "GIRAR";
+  const spinLabel = !gameOpen ? "GAME FECHADO" : alreadySpun ? "VOLTA AMANHÃ" : `GIRAR (${spinsLeft})`;
   const fmtDate = (d: string) => d.split("-").reverse().join("/");
 
   return (
@@ -452,7 +458,8 @@ const AltaVibe = () => {
                 <ol className="av-list">
                   <li><strong>Ranking invertido:</strong> quem terminar com MENOS pontos leva os prêmios.</li>
                   <li>Período: <strong>{fmtDate(period.start)} a {fmtDate(period.end)}</strong>.</li>
-                  <li>Vale apenas <strong>um giro por dia</strong>, liberado após 00h.</li>
+                  <li>Você tem <strong>{maxSpins} giros por dia</strong>, renovados após 00h.</li>
+                  <li><strong>Cadastros encerram em 06/08/2026</strong> — depois dessa data só quem já tem conta pode entrar.</li>
                   <li>Use sempre o mesmo nome e senha de 4 dígitos.</li>
                   <li>Fatias verdes dão <strong>pontos negativos</strong> — elas te ajudam.</li>
                   <li>Streaks aplicam bônus percentual sobre a pontuação do giro.</li>
@@ -552,7 +559,8 @@ const AltaVibe = () => {
                   <ol className="av-list">
                     <li><strong>Menos pontos ganha.</strong></li>
                     <li>Período: <strong>{fmtDate(period.start)} a {fmtDate(period.end)}</strong>.</li>
-                    <li>Um giro por dia, após 00h.</li>
+                    <li>{maxSpins} giros por dia, após 00h.</li>
+                    <li>Cadastros até <strong>05/08</strong> (fecha dia 06).</li>
                     <li>Fatias verdes tiram pontos.</li>
                     <li>Ativo no <strong>xat.com/altavibe</strong>.</li>
                     <li>Fraude = eliminação.</li>
