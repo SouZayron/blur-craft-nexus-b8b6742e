@@ -1,0 +1,1 @@
+UPDATE public.altavibe_settings SET start_date = '2026-08-05', end_date = '2026-08-31', updated_at = now() WHERE id = 1;
