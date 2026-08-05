@@ -66,6 +66,7 @@ const AltaVibe = () => {
   const [logs, setLogs] = useState<LogRow[]>([]);
   const [termsOk, setTermsOk] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
+  const [eliminated, setEliminated] = useState<Set<string>>(new Set());
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -149,6 +150,41 @@ const AltaVibe = () => {
     if (data) setRanking(data as User[]);
   }, []);
 
+  // Quem não usou TODOS os giros em algum dia já encerrado é eliminado
+  const loadEliminated = useCallback(async () => {
+    const { data } = await supabase
+      .from("altavibe_logs")
+      .select("name,created_at")
+      .order("created_at", { ascending: false })
+      .limit(5000);
+    if (!data) return;
+    const counts = new Map<string, Map<string, number>>();
+    (data as { name: string; created_at: string }[]).forEach((l) => {
+      const day = new Date(l.created_at).toLocaleDateString("en-CA");
+      const key = l.name.trim().toLowerCase();
+      if (!counts.has(key)) counts.set(key, new Map());
+      const m = counts.get(key)!;
+      m.set(day, (m.get(day) || 0) + 1);
+    });
+    const today = new Date().toLocaleDateString("en-CA");
+    const days: string[] = [];
+    const d = new Date(`${period.start}T12:00:00`);
+    while (true) {
+      const iso = d.toLocaleDateString("en-CA");
+      if (iso >= today || iso > period.end) break;
+      days.push(iso);
+      d.setDate(d.getDate() + 1);
+    }
+    const out = new Set<string>();
+    counts.forEach((m, key) => {
+      const firstDay = Array.from(m.keys()).sort()[0];
+      const missed = days.some((day) => day >= firstDay && (m.get(day) || 0) < maxSpins);
+      if (missed) out.add(key);
+    });
+    setEliminated(out);
+  }, [period.start, period.end, maxSpins]);
+
+
   const loadLogs = useCallback(async () => {
     const { data } = await supabase
       .from("altavibe_logs")
@@ -199,10 +235,12 @@ const AltaVibe = () => {
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_settings" }, () => loadConfig())
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_segments" }, () => loadConfig())
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_streak_rules" }, () => loadConfig())
-      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_logs" }, () => loadLogs())
+      .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_logs" }, () => { loadLogs(); loadEliminated(); })
       .subscribe();
     return () => { supabase.removeChannel(ch); };
-  }, [loadRanking, loadLogs, loadConfig]);
+  }, [loadRanking, loadLogs, loadConfig, loadEliminated]);
+
+  useEffect(() => { loadEliminated(); }, [loadEliminated]);
 
   useEffect(() => {
     const savedName = localStorage.getItem(LS_NAME);
@@ -459,6 +497,8 @@ const AltaVibe = () => {
                   <li><strong>Ranking invertido:</strong> quem terminar com MENOS pontos leva os prêmios.</li>
                   <li>Período: <strong>{fmtDate(period.start)} a {fmtDate(period.end)}</strong>.</li>
                   <li>Você tem <strong>{maxSpins} giros por dia</strong>, renovados após 00h.</li>
+                  <li><strong>É obrigatório usar os {maxSpins} giros todos os dias</strong> — quem não girar fica marcado como <strong>(eliminado - Não girou)</strong>.</li>
+                  <li>Nos <strong>3 primeiros dias</strong> a roleta não cai em <strong>-50 / -100</strong> pontos.</li>
                   <li><strong>Cadastros encerram em 06/08/2026</strong> — depois dessa data só quem já tem conta pode entrar.</li>
                   <li>Use sempre o mesmo nome e senha de 4 dígitos.</li>
                   <li>Fatias verdes dão <strong>pontos negativos</strong> — elas te ajudam.</li>
@@ -560,6 +600,8 @@ const AltaVibe = () => {
                     <li><strong>Menos pontos ganha.</strong></li>
                     <li>Período: <strong>{fmtDate(period.start)} a {fmtDate(period.end)}</strong>.</li>
                     <li>{maxSpins} giros por dia, após 00h.</li>
+                    <li><strong>Obrigatório girar os {maxSpins}</strong> — se não, (eliminado - Não girou).</li>
+                    <li>Nos 3 primeiros dias não sai <strong>-50 / -100</strong>.</li>
                     <li>Cadastros até <strong>05/08</strong> (fecha dia 06).</li>
                     <li>Fatias verdes tiram pontos.</li>
                     <li>Ativo no <strong>xat.com/altavibe</strong>.</li>
@@ -647,18 +689,29 @@ const AltaVibe = () => {
                 <div className="av-rlist">
                   {ranking.length === 0 ? (
                     <div className="av-empty">Ninguém girou ainda — seja o primeiro! 🎯</div>
-                  ) : ranking.map((u, i) => {
-                    const cls = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
-                    return (
-                      <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}`}>
-                        <div className={`av-rpos ${cls}`}>{i + 1}</div>
-                        <div className="av-rname">{u.name}</div>
-                        <div className="av-rstreak">{u.streak || 0}🔥</div>
-                        <div className="av-rcoins">{(u.coins || 0).toLocaleString("pt-BR")}</div>
-                      </div>
-                    );
-                  })}
+                  ) : (() => {
+                    const isOut = (u: User) => eliminated.has(u.name.trim().toLowerCase());
+                    const ordered = [...ranking.filter((u) => !isOut(u)), ...ranking.filter(isOut)];
+                    let pos = 0;
+                    return ordered.map((u) => {
+                      const out = isOut(u);
+                      if (!out) pos += 1;
+                      const cls = pos === 1 && !out ? "gold" : pos === 2 && !out ? "silver" : pos === 3 && !out ? "bronze" : "";
+                      return (
+                        <div key={u.id} className={`av-ritem${me && u.id === me.id ? " me" : ""}`} style={out ? { opacity: .5 } : undefined}>
+                          <div className={`av-rpos ${cls}`}>{out ? "—" : pos}</div>
+                          <div className="av-rname">
+                            {u.name}
+                            {out && <span style={{ color: "#ff8a8a", fontSize: ".68rem", marginLeft: ".35rem" }}>(eliminado - Não girou)</span>}
+                          </div>
+                          <div className="av-rstreak">{u.streak || 0}🔥</div>
+                          <div className="av-rcoins">{(u.coins || 0).toLocaleString("pt-BR")}</div>
+                        </div>
+                      );
+                    });
+                  })()}
                 </div>
+
               </div>
             </div>
           </div>
