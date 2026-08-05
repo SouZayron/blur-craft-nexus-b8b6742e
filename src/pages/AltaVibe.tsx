@@ -559,7 +559,8 @@ const AltaVibe = () => {
                   <ol className="av-list">
                     <li><strong>Menos pontos ganha.</strong></li>
                     <li>Período: <strong>{fmtDate(period.start)} a {fmtDate(period.end)}</strong>.</li>
-                    <li>Um giro por dia, após 00h.</li>
+                    <li>{maxSpins} giros por dia, após 00h.</li>
+                    <li>Cadastros até <strong>05/08</strong> (fecha dia 06).</li>
                     <li>Fatias verdes tiram pontos.</li>
                     <li>Ativo no <strong>xat.com/altavibe</strong>.</li>
                     <li>Fraude = eliminação.</li>
