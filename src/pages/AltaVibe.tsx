@@ -412,7 +412,10 @@ const AltaVibe = () => {
       const left = Math.max(Number(res.spins_left ?? 0), 0);
       showToast(`${res.total <= 0 ? `🍀 ${res.total} pontos — isso é bom!` : `⚠️ +${res.total} pontos`} · ${left} giro${left !== 1 ? "s" : ""} restante${left !== 1 ? "s" : ""} hoje`);
       loadRanking();
+      loadLogs();
+      loadEliminated();
       refreshMe();
+
     });
   };
 
