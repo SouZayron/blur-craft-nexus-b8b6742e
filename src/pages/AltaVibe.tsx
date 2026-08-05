@@ -60,7 +60,7 @@ const AltaVibe = () => {
   const [flash, setFlash] = useState(false);
   const [gameOpen, setGameOpen] = useState(true);
   const [signupsLocked, setSignupsLocked] = useState(false);
-  const [period, setPeriod] = useState({ start: "2026-08-01", end: "2026-08-31" });
+  const [period, setPeriod] = useState({ start: "2026-08-05", end: "2026-08-31" });
   const [logs, setLogs] = useState<LogRow[]>([]);
   const [termsOk, setTermsOk] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
