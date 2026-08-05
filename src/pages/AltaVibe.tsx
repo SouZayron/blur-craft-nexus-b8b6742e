@@ -242,6 +242,7 @@ const AltaVibe = () => {
 
   useEffect(() => { loadEliminated(); }, [loadEliminated]);
 
+
   useEffect(() => {
     const savedName = localStorage.getItem(LS_NAME);
     const savedPass = localStorage.getItem(LS_PASS);
