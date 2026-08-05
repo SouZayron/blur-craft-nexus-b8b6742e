@@ -238,7 +238,9 @@ const AltaVibe = () => {
       .on("postgres_changes", { event: "*", schema: "public", table: "altavibe_logs" }, () => { loadLogs(); loadEliminated(); })
       .subscribe();
     return () => { supabase.removeChannel(ch); };
-  }, [loadRanking, loadLogs, loadConfig]);
+  }, [loadRanking, loadLogs, loadConfig, loadEliminated]);
+
+  useEffect(() => { loadEliminated(); }, [loadEliminated]);
 
   useEffect(() => {
     const savedName = localStorage.getItem(LS_NAME);
