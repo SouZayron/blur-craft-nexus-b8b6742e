@@ -497,6 +497,8 @@ const AltaVibe = () => {
                   <li><strong>Ranking invertido:</strong> quem terminar com MENOS pontos leva os prêmios.</li>
                   <li>Período: <strong>{fmtDate(period.start)} a {fmtDate(period.end)}</strong>.</li>
                   <li>Você tem <strong>{maxSpins} giros por dia</strong>, renovados após 00h.</li>
+                  <li><strong>É obrigatório usar os {maxSpins} giros todos os dias</strong> — quem não girar fica marcado como <strong>(eliminado - Não girou)</strong>.</li>
+                  <li>Nos <strong>3 primeiros dias</strong> a roleta não cai em <strong>-50 / -100</strong> pontos.</li>
                   <li><strong>Cadastros encerram em 06/08/2026</strong> — depois dessa data só quem já tem conta pode entrar.</li>
                   <li>Use sempre o mesmo nome e senha de 4 dígitos.</li>
                   <li>Fatias verdes dão <strong>pontos negativos</strong> — elas te ajudam.</li>
