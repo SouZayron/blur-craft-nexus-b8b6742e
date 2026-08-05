@@ -372,6 +372,7 @@ const AltaVibe = () => {
       else if (msg.includes("game_ended")) showToast("Game encerrado 🏁");
       else if (msg.includes("game_closed")) showToast("Game fechado no momento 🔒");
       else showToast("Erro ao girar");
+      refreshMe();
       return;
     }
     const res = data as unknown as { win_index: number; label: string; prize: number; bonus: number; total: number; streak: number; coins: number; last_spin: string | null; spins_today: number; spins_left: number };
@@ -382,8 +383,10 @@ const AltaVibe = () => {
       setFlash(true);
       setTimeout(() => setFlash(false), 800);
       playChime(res.total <= 0);
-      showToast(res.total <= 0 ? `🍀 ${res.total} pontos — isso é bom!` : `⚠️ +${res.total} pontos`);
+      const left = Math.max(Number(res.spins_left ?? 0), 0);
+      showToast(`${res.total <= 0 ? `🍀 ${res.total} pontos — isso é bom!` : `⚠️ +${res.total} pontos`} · ${left} giro${left !== 1 ? "s" : ""} restante${left !== 1 ? "s" : ""} hoje`);
       loadRanking();
+      refreshMe();
     });
   };
 
@@ -392,7 +395,8 @@ const AltaVibe = () => {
   const spinsLeft = Math.max(maxSpins - usedToday, 0);
   const alreadySpun = !!me && spinsLeft <= 0;
   const spinDisabled = !me || !gameOpen || alreadySpun;
-  const spinLabel = !gameOpen ? "GAME FECHADO" : alreadySpun ? "VOLTA AMANHÃ" : `GIRAR (${spinsLeft})`;
+  const spinLabel = !gameOpen ? "GAME FECHADO" : alreadySpun ? "VOLTA AMANHÃ" : `GIRAR (${spinsLeft} de ${maxSpins})`;
+
   const fmtDate = (d: string) => d.split("-").reverse().join("/");
 
   return (
