@@ -6,6 +6,19 @@ const LS_NAME = "altavibe_current_name";
 const LS_PASS = "altavibe_current_pass";
 const LS_TERMS = "altavibe_terms_ago2026";
 
+// Alguns navegadores mobile (modo privado / cookies bloqueados) lançam erro ao
+// acessar localStorage, o que deixava a página em branco. Fallback em memória.
+const memStore: Record<string, string> = {};
+const lsGet = (k: string): string | null => {
+  try { return window.localStorage.getItem(k); } catch { return k in memStore ? memStore[k] : null; }
+};
+const lsSet = (k: string, v: string) => {
+  try { window.localStorage.setItem(k, v); } catch { memStore[k] = v; }
+};
+const lsRemove = (k: string) => {
+  try { window.localStorage.removeItem(k); } catch { delete memStore[k]; }
+};
+
 const PRIZES = [
   { pos: "1º", name: "Nameflag", img: "https://xat.com/images/smw/nameflag.png" },
   { pos: "2º", name: "Angry", img: "https://xat.com/images/smw/angry.png" },
@@ -74,7 +87,7 @@ const AltaVibe = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem(LS_TERMS) === "1") setTermsOk(true);
+    if (lsGet(LS_TERMS) === "1") setTermsOk(true);
   }, []);
 
   const totalWeight = useMemo(
@@ -224,8 +237,8 @@ const AltaVibe = () => {
           const oldRow = payload.old as { id?: string } | null;
           setMe((curr) => {
             if (curr && oldRow?.id && curr.id === oldRow.id) {
-              localStorage.removeItem(LS_NAME);
-              localStorage.removeItem(LS_PASS);
+              lsRemove(LS_NAME);
+              lsRemove(LS_PASS);
               return null;
             }
             return curr;
@@ -244,8 +257,8 @@ const AltaVibe = () => {
 
 
   useEffect(() => {
-    const savedName = localStorage.getItem(LS_NAME);
-    const savedPass = localStorage.getItem(LS_PASS);
+    const savedName = lsGet(LS_NAME);
+    const savedPass = lsGet(LS_PASS);
     if (savedName) setNameInput(savedName);
     if (savedPass) setPassInput(savedPass);
     if (savedName && savedPass) {
@@ -271,15 +284,15 @@ const AltaVibe = () => {
       return;
     }
     setMe(data as User);
-    localStorage.setItem(LS_NAME, name);
-    localStorage.setItem(LS_PASS, pass);
+    lsSet(LS_NAME, name);
+    lsSet(LS_PASS, pass);
     showToast(`Bem-vindo, ${name}! 🎉`);
     loadRanking();
   };
 
   // Sempre busca o estado real do jogador no servidor (giros do dia, pontos, streak)
   const refreshMe = useCallback(async () => {
-    const name = localStorage.getItem(LS_NAME);
+    const name = lsGet(LS_NAME);
     if (!name) return;
     const { data } = await supabase
       .from("altavibe_users")
@@ -577,7 +590,7 @@ const AltaVibe = () => {
               <button
                 className="av-accept"
                 disabled={!termsChecked}
-                onClick={() => { localStorage.setItem(LS_TERMS, "1"); setTermsOk(true); }}
+                onClick={() => { lsSet(LS_TERMS, "1"); setTermsOk(true); }}
               >
                 Continuar para o login
               </button>
