@@ -10,13 +10,13 @@ const LS_TERMS = "altavibe_terms_ago2026";
 // acessar localStorage, o que deixava a página em branco. Fallback em memória.
 const memStore: Record<string, string> = {};
 const lsGet = (k: string): string | null => {
-  try { return window.lsGet(k); } catch { return k in memStore ? memStore[k] : null; }
+  try { return window.localStorage.getItem(k); } catch { return k in memStore ? memStore[k] : null; }
 };
 const lsSet = (k: string, v: string) => {
   try { window.localStorage.setItem(k, v); } catch { memStore[k] = v; }
 };
 const lsRemove = (k: string) => {
-  try { window.lsRemove(k); } catch { delete memStore[k]; }
+  try { window.localStorage.removeItem(k); } catch { delete memStore[k]; }
 };
 
 const PRIZES = [
