@@ -171,23 +171,26 @@ const AltaVibe = () => {
       .order("created_at", { ascending: false })
       .limit(5000);
     if (!data) return;
+    const GAME_TZ = "America/Sao_Paulo";
+    const dayOf = (d: Date) => d.toLocaleDateString("en-CA", { timeZone: GAME_TZ });
     const counts = new Map<string, Map<string, number>>();
     (data as { name: string; created_at: string }[]).forEach((l) => {
-      const day = new Date(l.created_at).toLocaleDateString("en-CA");
+      const day = dayOf(new Date(l.created_at));
       const key = l.name.trim().toLowerCase();
       if (!counts.has(key)) counts.set(key, new Map());
       const m = counts.get(key)!;
       m.set(day, (m.get(day) || 0) + 1);
     });
-    const today = new Date().toLocaleDateString("en-CA");
+    const today = dayOf(new Date());
     const days: string[] = [];
-    const d = new Date(`${period.start}T12:00:00`);
+    const d = new Date(`${period.start}T12:00:00-03:00`);
     while (true) {
-      const iso = d.toLocaleDateString("en-CA");
+      const iso = dayOf(d);
       if (iso >= today || iso > period.end) break;
       days.push(iso);
       d.setDate(d.getDate() + 1);
     }
+
     const out = new Set<string>();
     counts.forEach((m, key) => {
       const firstDay = Array.from(m.keys()).sort()[0];
