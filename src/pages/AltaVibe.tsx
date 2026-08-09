@@ -404,7 +404,7 @@ const AltaVibe = () => {
     if (!gameOpen) { showToast("Game fechado no momento 🔒"); return; }
     spinningRef.current = true;
 
-    const tz = "America/Sao_Paulo";
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Sao_Paulo";
     const { data, error } = await supabase.rpc("altavibe_spin_v2", { p_name: me.name, p_tz: tz });
     if (error || !data) {
       spinningRef.current = false;
@@ -435,7 +435,7 @@ const AltaVibe = () => {
     });
   };
 
-  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Sao_Paulo" });
   const usedToday = me?.last_spin === today ? (me?.spins_today || 0) : 0;
   const spinsLeft = Math.max(maxSpins - usedToday, 0);
   const alreadySpun = !!me && spinsLeft <= 0;
