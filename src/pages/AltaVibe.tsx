@@ -171,23 +171,26 @@ const AltaVibe = () => {
       .order("created_at", { ascending: false })
       .limit(5000);
     if (!data) return;
+    const GAME_TZ = "America/Sao_Paulo";
+    const dayOf = (d: Date) => d.toLocaleDateString("en-CA", { timeZone: GAME_TZ });
     const counts = new Map<string, Map<string, number>>();
     (data as { name: string; created_at: string }[]).forEach((l) => {
-      const day = new Date(l.created_at).toLocaleDateString("en-CA");
+      const day = dayOf(new Date(l.created_at));
       const key = l.name.trim().toLowerCase();
       if (!counts.has(key)) counts.set(key, new Map());
       const m = counts.get(key)!;
       m.set(day, (m.get(day) || 0) + 1);
     });
-    const today = new Date().toLocaleDateString("en-CA");
+    const today = dayOf(new Date());
     const days: string[] = [];
-    const d = new Date(`${period.start}T12:00:00`);
+    const d = new Date(`${period.start}T12:00:00-03:00`);
     while (true) {
-      const iso = d.toLocaleDateString("en-CA");
+      const iso = dayOf(d);
       if (iso >= today || iso > period.end) break;
       days.push(iso);
       d.setDate(d.getDate() + 1);
     }
+
     const out = new Set<string>();
     counts.forEach((m, key) => {
       const firstDay = Array.from(m.keys()).sort()[0];
@@ -217,7 +220,7 @@ const AltaVibe = () => {
     if (stRes.data) setStreaks(stRes.data as StreakRule[]);
     if (setRes.data) {
       const d = setRes.data as { is_open: boolean; signups_locked: boolean; start_date: string; end_date: string; max_spins_per_day: number; signup_deadline: string };
-      const todayLocal = new Date().toLocaleDateString("en-CA");
+      const todayLocal = new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
       setGameOpen(!!d.is_open);
       setSignupsLocked(!!d.signups_locked || (!!d.signup_deadline && todayLocal >= d.signup_deadline));
       setMaxSpins(d.max_spins_per_day || 3);
@@ -401,7 +404,7 @@ const AltaVibe = () => {
     if (!gameOpen) { showToast("Game fechado no momento 🔒"); return; }
     spinningRef.current = true;
 
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Sao_Paulo";
+    const tz = "America/Sao_Paulo";
     const { data, error } = await supabase.rpc("altavibe_spin_v2", { p_name: me.name, p_tz: tz });
     if (error || !data) {
       spinningRef.current = false;
@@ -432,7 +435,7 @@ const AltaVibe = () => {
     });
   };
 
-  const today = new Date().toLocaleDateString("en-CA");
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
   const usedToday = me?.last_spin === today ? (me?.spins_today || 0) : 0;
   const spinsLeft = Math.max(maxSpins - usedToday, 0);
   const alreadySpun = !!me && spinsLeft <= 0;
