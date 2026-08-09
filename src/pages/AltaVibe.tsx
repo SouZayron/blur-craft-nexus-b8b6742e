@@ -220,7 +220,7 @@ const AltaVibe = () => {
     if (stRes.data) setStreaks(stRes.data as StreakRule[]);
     if (setRes.data) {
       const d = setRes.data as { is_open: boolean; signups_locked: boolean; start_date: string; end_date: string; max_spins_per_day: number; signup_deadline: string };
-      const todayLocal = new Date().toLocaleDateString("en-CA");
+      const todayLocal = new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
       setGameOpen(!!d.is_open);
       setSignupsLocked(!!d.signups_locked || (!!d.signup_deadline && todayLocal >= d.signup_deadline));
       setMaxSpins(d.max_spins_per_day || 3);
@@ -404,7 +404,7 @@ const AltaVibe = () => {
     if (!gameOpen) { showToast("Game fechado no momento 🔒"); return; }
     spinningRef.current = true;
 
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Sao_Paulo";
+    const tz = "America/Sao_Paulo";
     const { data, error } = await supabase.rpc("altavibe_spin_v2", { p_name: me.name, p_tz: tz });
     if (error || !data) {
       spinningRef.current = false;
@@ -435,7 +435,7 @@ const AltaVibe = () => {
     });
   };
 
-  const today = new Date().toLocaleDateString("en-CA");
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
   const usedToday = me?.last_spin === today ? (me?.spins_today || 0) : 0;
   const spinsLeft = Math.max(maxSpins - usedToday, 0);
   const alreadySpun = !!me && spinsLeft <= 0;
