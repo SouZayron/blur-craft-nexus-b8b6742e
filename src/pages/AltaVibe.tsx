@@ -164,41 +164,54 @@ const AltaVibe = () => {
   }, []);
 
   // Quem não usou TODOS os giros em algum dia já encerrado é eliminado
+  // (cada jogador é avaliado no SEU próprio fuso horário)
   const loadEliminated = useCallback(async () => {
-    const { data } = await supabase
-      .from("altavibe_logs")
-      .select("name,created_at")
-      .order("created_at", { ascending: false })
-      .limit(5000);
+    const [logsRes, usersRes] = await Promise.all([
+      supabase.from("altavibe_logs").select("name,created_at").order("created_at", { ascending: false }).limit(5000),
+      supabase.from("altavibe_users").select("name,tz").limit(500),
+    ]);
+    const data = logsRes.data;
     if (!data) return;
-    const GAME_TZ = "America/Sao_Paulo";
-    const dayOf = (d: Date) => d.toLocaleDateString("en-CA", { timeZone: GAME_TZ });
+
+    const DEFAULT_TZ = "America/Sao_Paulo";
+    const tzByUser = new Map<string, string>();
+    ((usersRes.data || []) as { name: string; tz: string | null }[]).forEach((u) => {
+      tzByUser.set(u.name.trim().toLowerCase(), u.tz || DEFAULT_TZ);
+    });
+    const dayIn = (d: Date, tz: string) => {
+      try { return d.toLocaleDateString("en-CA", { timeZone: tz }); }
+      catch { return d.toLocaleDateString("en-CA", { timeZone: DEFAULT_TZ }); }
+    };
+
     const counts = new Map<string, Map<string, number>>();
     (data as { name: string; created_at: string }[]).forEach((l) => {
-      const day = dayOf(new Date(l.created_at));
       const key = l.name.trim().toLowerCase();
+      const tz = tzByUser.get(key) || DEFAULT_TZ;
+      const day = dayIn(new Date(l.created_at), tz);
       if (!counts.has(key)) counts.set(key, new Map());
       const m = counts.get(key)!;
       m.set(day, (m.get(day) || 0) + 1);
     });
-    const today = dayOf(new Date());
-    const days: string[] = [];
-    const d = new Date(`${period.start}T12:00:00-03:00`);
-    while (true) {
-      const iso = dayOf(d);
-      if (iso >= today || iso > period.end) break;
-      days.push(iso);
-      d.setDate(d.getDate() + 1);
-    }
 
     const out = new Set<string>();
     counts.forEach((m, key) => {
+      const tz = tzByUser.get(key) || DEFAULT_TZ;
+      const today = dayIn(new Date(), tz);
+      const days: string[] = [];
+      const d = new Date(`${period.start}T12:00:00-03:00`);
+      while (true) {
+        const iso = dayIn(d, tz);
+        if (iso >= today || iso > period.end) break;
+        days.push(iso);
+        d.setDate(d.getDate() + 1);
+      }
       const firstDay = Array.from(m.keys()).sort()[0];
       const missed = days.some((day) => day >= firstDay && (m.get(day) || 0) < maxSpins);
       if (missed) out.add(key);
     });
     setEliminated(out);
   }, [period.start, period.end, maxSpins]);
+
 
 
   const loadLogs = useCallback(async () => {
