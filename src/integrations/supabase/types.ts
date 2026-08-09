@@ -151,6 +151,7 @@ export type Database = {
           password: string | null
           spins_today: number
           streak: number
+          tz: string
           updated_at: string
         }
         Insert: {
@@ -163,6 +164,7 @@ export type Database = {
           password?: string | null
           spins_today?: number
           streak?: number
+          tz?: string
           updated_at?: string
         }
         Update: {
@@ -175,6 +177,7 @@ export type Database = {
           password?: string | null
           spins_today?: number
           streak?: number
+          tz?: string
           updated_at?: string
         }
         Relationships: []
@@ -1032,6 +1035,7 @@ export type Database = {
           password: string | null
           spins_today: number
           streak: number
+          tz: string
           updated_at: string
         }
         SetofOptions: {
