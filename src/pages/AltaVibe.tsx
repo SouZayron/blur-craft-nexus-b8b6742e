@@ -414,6 +414,7 @@ const AltaVibe = () => {
   const spinWheel = async () => {
     if (spinningRef.current) return;
     if (!me) { showToast("Faça login primeiro! 👆"); return; }
+    if (eliminated.has(me.name.trim().toLowerCase())) { showToast("Você foi eliminado — giros bloqueados ❌"); return; }
     if (!gameOpen) { showToast("Game fechado no momento 🔒"); return; }
     spinningRef.current = true;
 
