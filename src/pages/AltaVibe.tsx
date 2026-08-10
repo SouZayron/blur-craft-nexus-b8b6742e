@@ -453,8 +453,9 @@ const AltaVibe = () => {
   const usedToday = me?.last_spin === today ? (me?.spins_today || 0) : 0;
   const spinsLeft = Math.max(maxSpins - usedToday, 0);
   const alreadySpun = !!me && spinsLeft <= 0;
-  const spinDisabled = !me || !gameOpen || alreadySpun;
-  const spinLabel = !gameOpen ? "GAME FECHADO" : alreadySpun ? "VOLTA AMANHÃ" : `GIRAR (${spinsLeft} de ${maxSpins})`;
+  const meEliminated = !!me && eliminated.has(me.name.trim().toLowerCase());
+  const spinDisabled = !me || !gameOpen || alreadySpun || meEliminated;
+  const spinLabel = !gameOpen ? "GAME FECHADO" : meEliminated ? "ELIMINADO" : alreadySpun ? "VOLTA AMANHÃ" : `GIRAR (${spinsLeft} de ${maxSpins})`;
 
   const fmtDate = (d: string) => d.split("-").reverse().join("/");
 
