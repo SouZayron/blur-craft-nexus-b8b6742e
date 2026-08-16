@@ -294,7 +294,7 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
               })}
             </div>
           ) : (
-            <div className="grid grid-cols-10 gap-1 content-start">
+            <div className="grid gap-1.5 content-start grid-cols-[repeat(auto-fill,minmax(46px,1fr))]">
 
               {Array.from({ length: TOTAL_NUMBERS }, (_, i) => i + 1).map((num) => {
                 const numStr = String(num);
@@ -307,7 +307,7 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
                   <div
                     key={num}
                     className={cn(
-                      "aspect-square rounded-md flex items-center justify-center text-[11px] font-semibold transition-all",
+                      "min-h-[42px] rounded-lg flex items-center justify-center text-sm font-bold transition-all",
                       isCurrent
                         ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
                         : isDrawn && winnerColor
