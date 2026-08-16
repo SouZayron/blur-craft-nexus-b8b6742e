@@ -28,7 +28,6 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy").then(m => ({ de
 const TermsOfService = lazy(() => import("./pages/TermsOfService").then(m => ({ default: m.TermsOfService })));
 const Games = lazy(() => import("./pages/Games").then(m => ({ default: m.Games })));
 const Control = lazy(() => import("./pages/Control").then(m => ({ default: m.Control })));
-const Bingo2 = lazy(() => import("./pages/Bingo2"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -89,7 +88,6 @@ const App = () => (
               <Route path="/termos" element={<TermsOfService />} />
               <Route path="/games" element={<Games />} />
               <Route path="/control" element={<Control />} />
-              <Route path="/bingo2" element={<Bingo2 />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/altavibe" element={<AltaVibe />} />

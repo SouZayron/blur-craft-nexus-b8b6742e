@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
 import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, RHYTHMS, RHYTHM_EMOJIS, BRANDS, BRAND_EMOJIS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
 import { Lock, Power, PowerOff, UserCheck, Trash2, Users, RefreshCw } from "lucide-react";
+import { BingoDrawPanel } from "@/components/BingoDrawPanel";
 
 interface GameRoom {
   id: string;
@@ -33,6 +34,7 @@ export const Control = () => {
   const [rooms, setRooms] = useState<GameRoom[]>([]);
   const [players, setPlayers] = useState<GamePlayer[]>([]);
   const [picks, setPicks] = useState<GamePick[]>([]);
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const { toast } = useToast();
 
   const fetchData = useCallback(async () => {
@@ -161,9 +163,19 @@ export const Control = () => {
   const pendingPlayers = players.filter(p => !p.is_approved);
   const approvedPlayers = players.filter(p => p.is_approved);
 
+  const activeRoom =
+    rooms.find(r => r.id === selectedRoomId) ||
+    [...rooms].sort((a, b) => {
+      const pa = picks.filter(p => p.room_id === a.id).length;
+      const pb = picks.filter(p => p.room_id === b.id).length;
+      if (pb !== pa) return pb - pa;
+      if (a.is_open !== b.is_open) return a.is_open ? -1 : 1;
+      return 0;
+    })[0] || null;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-4">
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="max-w-[1700px] mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
@@ -174,6 +186,8 @@ export const Control = () => {
           </p>
         </div>
 
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px] items-start">
+        <div className="space-y-6 min-w-0">
         {/* Pending Players */}
         {pendingPlayers.length > 0 && (
           <div className="backdrop-blur-xl bg-white/5 border border-yellow-500/30 rounded-2xl p-6 shadow-xl">
@@ -363,6 +377,28 @@ export const Control = () => {
             <Trash2 className="w-4 h-4 mr-1" /> Resetar Tudo
           </Button>
         </div>
+        </div>
+
+        {/* Right column: draw wheel */}
+        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 shadow-xl lg:sticky lg:top-4">
+          <div className="flex flex-wrap gap-2 mb-4">
+            {rooms.map(room => (
+              <button
+                key={room.id}
+                onClick={() => setSelectedRoomId(room.id)}
+                className={`text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                  activeRoom?.id === room.id
+                    ? "bg-purple-500/30 border-purple-400/60 text-foreground"
+                    : "bg-white/5 border-white/10 text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {GAME_ICONS[room.game_type] || "🎮"} {GAME_NAMES[room.game_type] || room.game_type}
+              </button>
+            ))}
+          </div>
+          <BingoDrawPanel activeRoom={activeRoom} players={players} picks={picks} />
+        </div>
+      </div>
       </div>
     </div>
   );
