@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
 import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, RHYTHMS, RHYTHM_EMOJIS, BRANDS, BRAND_EMOJIS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
 import { Lock, Power, PowerOff, UserCheck, Trash2, Users, RefreshCw } from "lucide-react";
+import { BingoDrawPanel } from "@/components/BingoDrawPanel";
 
 interface GameRoom {
   id: string;
