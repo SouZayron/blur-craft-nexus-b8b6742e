@@ -341,7 +341,7 @@ export const Control = () => {
                     </div>
 
                     {roomPicks.length > 0 && (
-                      <div className="mt-4 space-y-1 max-h-56 overflow-y-auto">
+                      <div className="mt-3 space-y-1 max-h-28 overflow-y-auto pr-1">
                         {isItemGame(room.game_type) ? (
                           Array.from(new Set(roomPicks.map(p => p.player_id))).map(playerId => {
                             const player = players.find(pl => pl.id === playerId);
