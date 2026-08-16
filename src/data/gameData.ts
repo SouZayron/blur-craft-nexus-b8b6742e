@@ -237,3 +237,178 @@ export const GAME_ICONS: Record<string, string> = {
   rhythms: "🎵",
   brands: "™️"
 };
+
+// ===== NOVOS JOGOS (escolha de 2 itens) =====
+
+export const COUNTRIES = [
+  "Brasil","Argentina","Chile","Uruguai","Paraguai","Bolívia","Peru","Equador","Suriname","Panamá",
+  "Belize","Guatemala","Honduras","Canadá","Jamaica","Bahamas","Barbados","Dominica","Granada","Portugal",
+  "Espanha","França","Itália","Alemanha","Bélgica","Luxemburgo","Suíça","Áustria","Irlanda","Islândia",
+  "Noruega","Suécia","Finlândia","Dinamarca","Estônia","Letônia","Lituânia","Polônia","Tchéquia","Eslováquia",
+  "Hungria","Eslovênia","Croácia","Albânia","Grécia","Bulgária","Romênia","Malta","Chipre","Andorra",
+  "Mônaco","Liechtenstein","Vaticano","Montenegro","Sérvia","Gana","Senegal","Gâmbia","Libéria","Botsuana",
+  "Namíbia","Zâmbia","Malawi","Maurício","Seychelles","Madagascar","Japão","Mongólia","Austrália","Fiji"
+];
+
+export const COLORS = [
+  "Vermelho","Azul","Verde","Amarelo","Roxo","Rosa","Preto","Branco","Cinza","Laranja",
+  "Marrom","Bege","Violeta","Lilás","Magenta","Ciano","Turquesa","Coral","Salmão","Dourado",
+  "Prateado","Bronze","Cobre","Caramelo","Mostarda","Oliva","Esmeralda","Jade","Menta","Lavanda",
+  "Âmbar","Ametista","Rubi","Safira","Pérola","Marfim","Creme","Chocolate","Café","Canela",
+  "Mel","Pêssego","Damasco","Cereja","Vinho","Bordô","Carmim","Escarlate","Carmesim","Grená",
+  "Fúcsia","Índigo","Anil","Celeste","Marinho","Petróleo","Grafite","Chumbo","Areia","Caqui",
+  "Terracota","Ocre","Sépia","Ferrugem","Açafrão","Limão","Lima","Pistache","Musgo","Malva"
+];
+
+export const POWERS = [
+  "subhide","zoom","invert","mirror","nopc","hat","red","green","blue","light",
+  "animate","cycle","nameglow","clear","boot","pink","purple","diamond","hands","fade",
+  "pstyle","six","angel","astrox","anime","status","valentine","blueman","party","bump",
+  "silly","beanie","single","namecolor","angry","music","handy","candy","flower","gold",
+  "starry","dunce","fuzzy","aliens","burningheart","romance","kangel","lovebeat","statuscolor","pcback",
+  "jump","size","offset","supercycle","statusfx","reaper","big","maus","namegrad","fools",
+  "namewave","nameflag","boo","ruby","toad","firefx","opacity","yellegg","selfcare","miedo"
+];
+
+export const OLYMPICS = [
+  "Atletismo","Natação","Judô","Boxe","Surfe","Skate","Golfe","Tênis","Triatlo","Pentatlo",
+  "Ciclismo","Esgrima","Remo","Vela","Canoagem","Ginástica","Taekwondo","Badminton","Basquete","Handebol",
+  "Voleibol","Futebol","Hóquei","Rugby","Escalada","Hipismo","Tiro","Arco","Maratona","Decatlo",
+  "Heptatlo","Marcha","Revezamento","Saltos","Trampolim","BMX","Velocidade","Perseguição","Keirin","Madison",
+  "Slalom","Sprint","Freestyle","Cross","Snowboard","Biatlo","Curling","Skeleton","Luge","Bobsleigh",
+  "Esqui","Patinação","Moguls","Halfpipe","Aerials","Combinado","Skicross","Snowcross","Downhill","Supergigante",
+  "Salto","Dressage","Adestramento","Enduro","Kata","Kumite","Greco","Livre","Florete","Sabre"
+];
+
+export const CARTOONS = [
+  "Pokémon","Naruto","Digimon","Beyblade","YuGiOh","Inuyasha","Hamtaro","Doraemon","Bluey","Pocoyo",
+  "Garfield","Futurama","Rugrats","Doug","Arthur","Caillou","Popeye","Tintim","Thundercats","Transformers",
+  "Animaniacs","Dexter","Daria","CatDog","Winx","Bakugan","Avatar","Gumball","Clarence","Hilda",
+  "Simpsons","Jetsons","Flintstones","Smurfs","Snoopy","HeMan","SheRa","Sakura","SailorMoon","Evangelion",
+  "Bleach","OnePiece","Shrek","Frozen","Moana","Mulan","Tarzan","Hércules","Aladdin","Pinóquio",
+  "Dumbo","Bambi","Encanto","Luca","Carros","Valente","Bolt","Soul","Elementos","Trolls",
+  "Minions","Madagascar","Ratatouille","WallE","Up","Zootopia","Megamente","Coraline","Anastasia","Nimona"
+];
+
+export const MOVIES = [
+  "Titanic","Avatar","Gladiador","Coringa","Barbie","Oppenheimer","Frozen","Moana","Aladdin","Encanto",
+  "Mulan","Tarzan","Hércules","Pinóquio","Dumbo","Bambi","Shrek","Madagascar","Ratatouille","Up",
+  "Soul","Luca","Valente","Bolt","Zootopia","Elementos","Minions","Megamente","Coraline","Anastasia",
+  "Nimona","Rocky","Creed","Rambo","Scarface","Psicose","Alien","Predador","Matrix","Interestelar",
+  "Gravidade","Náufrago","Twister","Armageddon","Ghost","It","Carrie","Scream","Halloween","Jumanji",
+  "Godzilla","KingKong","Venom","Logan","Deadpool","Aquaman","Superman","Batman","Watchmen","Blade",
+  "Spawn","Hulk","Thor","Pantera","Joker","Hancock","Constantine","Memento","Casablanca","Duna"
+];
+
+export const FRUITS = [
+  "Banana","Maçã","Pera","Uva","Manga","Melancia","Melão","Abacaxi","Mamão","Laranja",
+  "Limão","Tangerina","Mexerica","Morango","Amora","Framboesa","Mirtilo","Cereja","Pêssego","Ameixa",
+  "Damasco","Nectarina","Caqui","Kiwi","Goiaba","Jabuticaba","Acerola","Pitanga","Caju","Maracujá",
+  "Graviola","Cupuaçu","Açaí","Carambola","Jaca","Figo","Romã","Coco","Abacate","Tamarindo",
+  "Lichia","Pitaya","Physalis","Sapoti","Seriguela","Umbu","Jenipapo","Pequi","Mangaba","Cambuci",
+  "Araçá","Bacuri","Buriti","Murici","Uxi","Rambutan","Longan","Durian","Mangostão","Pomelo",
+  "Cidra","Toranja","Groselha","Guaraná","Cajá","Nêspera","Marmelo","Pinha","Tâmara","Fruta-pão"
+];
+
+export const OBJECTS = [
+  "Mesa","Cadeira","Sofá","Cama","Armário","Estante","Espelho","Relógio","Telefone","Celular",
+  "Computador","Teclado","Mouse","Monitor","Televisão","Rádio","Câmera","Fone","Caixa","Garrafa",
+  "Copo","Caneca","Prato","Garfo","Faca","Colher","Panela","Frigideira","Chaleira","Peneira",
+  "Toalha","Travesseiro","Cobertor","Lençol","Tapete","Cortina","Vassoura","Rodo","Balde","Escova",
+  "Pente","Sabonete","Mochila","Bolsa","Carteira","Mala","Caderno","Livro","Lápis","Caneta",
+  "Borracha","Régua","Tesoura","Grampeador","Envelope","Chave","Cadeado","Martelo","Alicate","Serra",
+  "Parafuso","Prego","Lanterna","Lâmpada","Vela","Guarda-chuva","Capacete","Bola","Boneca","Carrinho"
+];
+
+Object.assign(GAME_NAMES, {
+  countries: "Jogo dos Países",
+  colors: "Jogo das Cores",
+  powers: "Jogo dos Powers",
+  olympics: "Jogo das Olimpíadas",
+  cartoons: "Jogo dos Desenhos",
+  movies: "Jogo dos Filmes",
+  fruits: "Jogo das Frutas",
+  objects: "Jogo dos Objetos",
+});
+
+Object.assign(GAME_ICONS, {
+  countries: "🌎",
+  colors: "🎨",
+  powers: "⚡",
+  olympics: "🏅",
+  cartoons: "📺",
+  movies: "🎬",
+  fruits: "🍓",
+  objects: "🧰",
+});
+
+/** Jogos baseados em itens (texto) — todos exceto os numéricos. */
+export const ITEM_GAMES: Record<string, string[]> = {
+  animals: ANIMALS,
+  rhythms: RHYTHMS,
+  brands: BRANDS,
+  countries: COUNTRIES,
+  colors: COLORS,
+  powers: POWERS,
+  olympics: OLYMPICS,
+  cartoons: CARTOONS,
+  movies: MOVIES,
+  fruits: FRUITS,
+  objects: OBJECTS,
+};
+
+export const GAME_ITEM_LABEL: Record<string, string> = {
+  animals: "animais",
+  rhythms: "ritmos",
+  brands: "marcas",
+  countries: "países",
+  colors: "cores",
+  powers: "powers",
+  olympics: "modalidades",
+  cartoons: "desenhos",
+  movies: "filmes",
+  fruits: "frutas",
+  objects: "objetos",
+};
+
+export const isItemGame = (type?: string | null) => !!type && type in ITEM_GAMES;
+
+export const getGameItems = (type?: string | null): string[] => {
+  if (!type) return [];
+  if (ITEM_GAMES[type]) return ITEM_GAMES[type];
+  if (type === "invertidos") return INVERTIDOS_BLOCKS;
+  return SEQUENCES_BLOCKS;
+};
+
+export const getItemEmoji = (type: string, item: string): string | null => {
+  if (type === "animals") return ANIMAL_EMOJIS[item] || "🐾";
+  if (type === "rhythms") return RHYTHM_EMOJIS[item] || "🎵";
+  if (type === "brands") return BRAND_EMOJIS[item] || "™️";
+  return null;
+};
+
+export const getItemGradient = (type: string, item: string, index: number): string => {
+  if (type === "rhythms") return RHYTHM_GRADIENTS[item] || "from-slate-700 to-slate-300";
+  if (type === "brands") return BRAND_GRADIENTS[item] || "from-slate-700 to-slate-300";
+  return BLOCK_GRADIENTS[index % BLOCK_GRADIENTS.length];
+};
+
+export const BLOCK_GRADIENTS = [
+  "from-rose-800 to-rose-400",
+  "from-pink-800 to-pink-400",
+  "from-fuchsia-800 to-fuchsia-400",
+  "from-purple-800 to-purple-400",
+  "from-violet-800 to-violet-400",
+  "from-indigo-800 to-indigo-400",
+  "from-blue-800 to-blue-400",
+  "from-sky-800 to-sky-400",
+  "from-cyan-800 to-cyan-400",
+  "from-teal-800 to-teal-400",
+  "from-emerald-800 to-emerald-400",
+  "from-green-800 to-green-400",
+  "from-lime-800 to-lime-400",
+  "from-yellow-800 to-yellow-400",
+  "from-amber-800 to-amber-400",
+  "from-orange-800 to-orange-400",
+  "from-red-800 to-red-400",
+];
