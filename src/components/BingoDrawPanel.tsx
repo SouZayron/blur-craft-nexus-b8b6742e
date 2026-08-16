@@ -261,54 +261,41 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
             {drawnItems.length}/{allItems.length} sorteados • {remaining} restantes
           </span>
         </div>
-        <div className="flex-1 min-h-0 overflow-hidden backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-3">
+        <div className="flex-1 min-h-0 overflow-y-auto backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-3">
           {isItemBased ? (
-            <div className="grid grid-cols-6 gap-1.5 h-full content-start">
-              {(isAnimalsGame ? ANIMALS : isRhythmsGame ? RHYTHMS : BRANDS).map((item) => {
+            <div className="grid gap-1.5 content-start grid-cols-[repeat(auto-fill,minmax(58px,1fr))]">
+              {allItems.map((item, idx) => {
                 const isDrawn = drawnItems.includes(item);
                 const isCurrent = item === currentItem;
                 const inPick = pickItemSet.has(item);
                 const winnerIdx = itemToWinnerIdx.get(item);
                 const winnerColor = winnerIdx !== undefined ? WINNER_COLORS[winnerIdx % WINNER_COLORS.length] : null;
-                const emoji = isAnimalsGame ? (ANIMAL_EMOJIS[item] || "🐾") : isRhythmsGame ? (RHYTHM_EMOJIS[item] || "🎵") : (BRAND_EMOJIS[item] || "™️");
-
-                if (isGradientGame) {
-                  const gradMap = isRhythmsGame ? RHYTHM_GRADIENTS : BRAND_GRADIENTS;
-                  const grad = gradMap[item] || "from-slate-700 to-slate-300";
-                  return (
-                    <div key={item} className={cn("rounded-md flex flex-col items-center justify-center px-0.5 py-1 text-center bg-gradient-to-br text-white transition-opacity", grad, !isDrawn && "opacity-40 grayscale")}>
-                      <span className="text-base leading-none drop-shadow">{emoji}</span>
-                      <span className="text-[8px] font-bold leading-tight mt-0.5 truncate max-w-full drop-shadow">{item}</span>
-                    </div>
-                  );
-                }
+                const emoji = getItemEmoji(gameType, item);
+                const grad = getItemGradient(gameType, item, idx);
 
                 return (
                   <div
                     key={item}
+                    title={item}
                     className={cn(
-                      "rounded-md flex flex-col items-center justify-center px-0.5 py-1 transition-all text-center",
-                      isCurrent
-                        ? "bg-labxat-pink text-white scale-105 shadow-md shadow-labxat-pink/40"
-                        : isDrawn && winnerColor
-                          ? `${winnerColor.bg} text-white shadow-md`
-                          : isDrawn && inPick
-                            ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/40"
-                            : isDrawn
-                              ? "bg-labxat-purple/70 text-white"
-                              : inPick
-                                ? "bg-background/60 text-foreground border-2 border-emerald-500/40"
-                                : "bg-background/60 text-foreground/60 border border-white/10"
+                      "relative min-h-[42px] rounded-lg flex flex-col items-center justify-center px-1 py-1 text-center text-white bg-gradient-to-br transition-all duration-300 shadow-sm",
+                      grad,
+                      !isDrawn && "opacity-40 grayscale",
+                      isDrawn && "shadow-md",
+                      isCurrent && "ring-2 ring-white scale-105 opacity-100 grayscale-0",
+                      isDrawn && inPick && !winnerColor && "ring-2 ring-emerald-400",
+                      winnerColor && `ring-2 ${winnerColor.border}`
                     )}
                   >
-                    <span className="text-base leading-none">{emoji}</span>
-                    <span className="text-[8px] font-semibold leading-tight mt-0.5 truncate max-w-full">{item}</span>
+                    {emoji && <span className="text-sm leading-none drop-shadow">{emoji}</span>}
+                    <span className="text-[9px] font-bold leading-tight mt-0.5 truncate max-w-full drop-shadow">{item}</span>
                   </div>
                 );
               })}
             </div>
           ) : (
-            <div className="grid grid-cols-10 gap-1 h-full content-start">
+            <div className="grid grid-cols-10 gap-1 content-start">
+
               {Array.from({ length: TOTAL_NUMBERS }, (_, i) => i + 1).map((num) => {
                 const numStr = String(num);
                 const isDrawn = drawnItems.includes(numStr);
