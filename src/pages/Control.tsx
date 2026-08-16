@@ -250,86 +250,12 @@ export const Control = () => {
 
           {/* ===== GAMES ===== */}
           <TabsContent value="games" className="mt-6 space-y-6">
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {rooms.map(room => {
-                const roomPicks = picks.filter(p => p.room_id === room.id);
-                const gameName = GAME_NAMES[room.game_type] || room.game_type;
-                const gameIcon = GAME_ICONS[room.game_type] || "🎮";
-                const maxSlots = getGameItems(room.game_type).length;
-
-                return (
-                  <div key={room.id} className={`backdrop-blur-xl bg-white/5 rounded-2xl p-6 shadow-xl border ${room.is_open ? 'border-green-500/50' : 'border-white/10'}`}>
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-bold text-foreground">{gameIcon} {gameName}</h3>
-                      <span className={`text-xs px-2 py-1 rounded-full ${room.is_open ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
-                        {room.is_open ? 'Aberto' : 'Fechado'}
-                      </span>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {roomPicks.length}/{maxSlots} seleções
-                    </p>
-
-                    <div className="space-y-2">
-                      {room.is_open ? (
-                        <Button onClick={() => handleCloseGame(room.id)} size="sm" variant="outline" className="w-full border-red-500/50 text-red-400 hover:bg-red-500/20">
-                          <PowerOff className="w-4 h-4 mr-1" /> Fechar Inscrições
-                        </Button>
-                      ) : (
-                        <Button onClick={() => handleOpenGame(room.id)} size="sm" className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:opacity-90">
-                          <Power className="w-4 h-4 mr-1" /> Abrir Jogo
-                        </Button>
-                      )}
-                      {roomPicks.length > 0 && (
-                        <Button onClick={() => handleResetPicks(room.id)} size="sm" variant="outline" className="w-full border-yellow-500/50 text-yellow-400 hover:bg-yellow-500/20">
-                          <RefreshCw className="w-4 h-4 mr-1" /> Resetar ({roomPicks.length})
-                        </Button>
-                      )}
-                    </div>
-
-                    {roomPicks.length > 0 && (
-                      <div className="mt-4 space-y-1 max-h-56 overflow-y-auto">
-                        {isItemGame(room.game_type) ? (
-                          Array.from(new Set(roomPicks.map(p => p.player_id))).map(playerId => {
-                            const player = players.find(pl => pl.id === playerId);
-                            const playerPicks = roomPicks.filter(p => p.player_id === playerId);
-                            const combo = playerPicks.map(p => p.pick_value).join(' - ');
-                            return (
-                              <div key={playerId} className="flex items-center justify-between text-xs backdrop-blur-md bg-white/5 px-2 py-1.5 border border-white/5 rounded-lg gap-2">
-                                <span className="text-foreground truncate font-semibold">{player?.name || '?'}{player?.xat_id ? ` (${player.xat_id})` : ''}</span>
-                                <span className="text-muted-foreground ml-2 truncate">{combo}</span>
-                                <Button onClick={() => handleRemovePlayerPicksInRoom(playerId, room.id)} size="sm" variant="ghost" className="h-5 w-5 p-0 text-red-400 hover:text-red-300 shrink-0">
-                                  <Trash2 className="w-3 h-3" />
-                                </Button>
-                              </div>
-                            );
-                          })
-                        ) : (
-                          roomPicks.map(pick => {
-                            const player = players.find(pl => pl.id === pick.player_id);
-                            return (
-                              <div key={pick.id} className="flex items-center justify-between text-xs backdrop-blur-md bg-white/5 px-2 py-1.5 border border-white/5 rounded-lg gap-2">
-                                <span className="text-foreground truncate">{player?.name || '?'}{player?.xat_id ? ` (${player.xat_id})` : ''}</span>
-                                <span className="text-muted-foreground font-mono ml-2">{pick.pick_value}</span>
-                                <Button onClick={() => handleRemovePick(pick.id)} size="sm" variant="ghost" className="h-5 w-5 p-0 text-red-400 hover:text-red-300 shrink-0">
-                                  <Trash2 className="w-3 h-3" />
-                                </Button>
-                              </div>
-                            );
-                          })
-                        )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
             {picks.length > 0 && (
-              <div className="backdrop-blur-xl bg-white/5 border border-purple-500/30 rounded-2xl p-6 shadow-xl">
-                <h2 className="text-lg font-bold text-purple-400 mb-3 flex items-center gap-2">
+              <div className="backdrop-blur-xl bg-white/5 border border-purple-500/30 rounded-2xl p-4 shadow-xl">
+                <h2 className="text-base font-bold text-purple-400 mb-3 flex items-center gap-2">
                   🎯 Jogadores que Selecionaram ({picks.length})
                 </h2>
-                <div className="space-y-2">
+                <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
                   {rooms.filter(r => picks.some(p => p.room_id === r.id)).map(room => {
                     const roomPicks = picks.filter(p => p.room_id === room.id);
                     const gameName = GAME_NAMES[room.game_type] || room.game_type;
@@ -374,6 +300,86 @@ export const Control = () => {
                 </div>
               </div>
             )}
+
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+
+              {rooms.map(room => {
+                const roomPicks = picks.filter(p => p.room_id === room.id);
+                const gameName = GAME_NAMES[room.game_type] || room.game_type;
+                const gameIcon = GAME_ICONS[room.game_type] || "🎮";
+                const maxSlots = getGameItems(room.game_type).length;
+
+                return (
+                  <div key={room.id} className={`backdrop-blur-xl bg-white/5 rounded-2xl p-4 shadow-xl border flex flex-col ${room.is_open ? 'border-green-500/50 shadow-green-500/10' : 'border-white/10'}`}>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <h3 className="font-bold text-sm text-foreground truncate">{gameIcon} {gameName}</h3>
+                      <span className={`shrink-0 text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 ${room.is_open ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                        {room.is_open && <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_2px_rgba(74,222,128,0.8)]" />}
+                        {room.is_open ? 'Ativo' : 'Fechado'}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mb-3">
+                      {roomPicks.length}/{maxSlots} seleções
+                    </p>
+
+
+                    <div className="space-y-2">
+                      {room.is_open ? (
+                        <Button onClick={() => handleCloseGame(room.id)} size="sm" variant="outline" className="w-full border-red-500/50 text-red-400 hover:bg-red-500/20">
+                          <PowerOff className="w-4 h-4 mr-1" /> Fechar Inscrições
+                        </Button>
+                      ) : (
+                        <Button onClick={() => handleOpenGame(room.id)} size="sm" className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:opacity-90">
+                          <Power className="w-4 h-4 mr-1" /> Abrir Jogo
+                        </Button>
+                      )}
+                      {roomPicks.length > 0 && (
+                        <Button onClick={() => handleResetPicks(room.id)} size="sm" variant="outline" className="w-full border-yellow-500/50 text-yellow-400 hover:bg-yellow-500/20">
+                          <RefreshCw className="w-4 h-4 mr-1" /> Resetar ({roomPicks.length})
+                        </Button>
+                      )}
+                    </div>
+
+                    {roomPicks.length > 0 && (
+                      <div className="mt-3 space-y-1 max-h-28 overflow-y-auto pr-1">
+                        {isItemGame(room.game_type) ? (
+                          Array.from(new Set(roomPicks.map(p => p.player_id))).map(playerId => {
+                            const player = players.find(pl => pl.id === playerId);
+                            const playerPicks = roomPicks.filter(p => p.player_id === playerId);
+                            const combo = playerPicks.map(p => p.pick_value).join(' - ');
+                            return (
+                              <div key={playerId} className="flex items-center justify-between text-xs backdrop-blur-md bg-white/5 px-2 py-1.5 border border-white/5 rounded-lg gap-2">
+                                <span className="text-foreground truncate font-semibold">{player?.name || '?'}{player?.xat_id ? ` (${player.xat_id})` : ''}</span>
+                                <span className="text-muted-foreground ml-2 truncate">{combo}</span>
+                                <Button onClick={() => handleRemovePlayerPicksInRoom(playerId, room.id)} size="sm" variant="ghost" className="h-5 w-5 p-0 text-red-400 hover:text-red-300 shrink-0">
+                                  <Trash2 className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            );
+                          })
+                        ) : (
+                          roomPicks.map(pick => {
+                            const player = players.find(pl => pl.id === pick.player_id);
+                            return (
+                              <div key={pick.id} className="flex items-center justify-between text-xs backdrop-blur-md bg-white/5 px-2 py-1.5 border border-white/5 rounded-lg gap-2">
+                                <span className="text-foreground truncate">{player?.name || '?'}{player?.xat_id ? ` (${player.xat_id})` : ''}</span>
+                                <span className="text-muted-foreground font-mono ml-2">{pick.pick_value}</span>
+                                <Button onClick={() => handleRemovePick(pick.id)} size="sm" variant="ghost" className="h-5 w-5 p-0 text-red-400 hover:text-red-300 shrink-0">
+                                  <Trash2 className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            );
+                          })
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+
+
 
             <div className="flex flex-wrap justify-center gap-3">
               <Button onClick={handleCloseAll} variant="outline" className="border-red-500/50 text-red-400 hover:bg-red-500/20">
