@@ -375,6 +375,28 @@ export const Control = () => {
             <Trash2 className="w-4 h-4 mr-1" /> Resetar Tudo
           </Button>
         </div>
+        </div>
+
+        {/* Right column: draw wheel */}
+        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 shadow-xl lg:sticky lg:top-4">
+          <div className="flex flex-wrap gap-2 mb-4">
+            {rooms.map(room => (
+              <button
+                key={room.id}
+                onClick={() => setSelectedRoomId(room.id)}
+                className={`text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                  activeRoom?.id === room.id
+                    ? "bg-purple-500/30 border-purple-400/60 text-foreground"
+                    : "bg-white/5 border-white/10 text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {GAME_ICONS[room.game_type] || "🎮"} {GAME_NAMES[room.game_type] || room.game_type}
+              </button>
+            ))}
+          </div>
+          <BingoDrawPanel activeRoom={activeRoom} players={players} picks={picks} />
+        </div>
+      </div>
       </div>
     </div>
   );
