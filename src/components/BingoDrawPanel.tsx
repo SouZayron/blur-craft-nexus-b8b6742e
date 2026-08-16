@@ -115,7 +115,6 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
     return Array.from({ length: TOTAL_NUMBERS }, (_, i) => String(i + 1));
   }, [isAnimalsGame, isRhythmsGame, isBrandsGame]);
 
-  // Reset ao trocar de sala/jogo
   const lastRoomRef = useRef<string | null>(null);
   useEffect(() => {
     const key = activeRoom ? `${activeRoom.id}:${activeRoom.game_type}` : null;
@@ -248,202 +247,218 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
   const gameLabel = activeRoom ? (GAME_NAMES[activeRoom.game_type] || activeRoom.game_type) : "Aguardando jogo";
   const gameIcon = activeRoom ? (GAME_ICONS[activeRoom.game_type] || "🎮") : "⏳";
 
+  const currentEmoji = useMemo(() => {
+    if (!currentItem || !isItemBased) return null;
+    if (isAnimalsGame) return ANIMAL_EMOJIS[currentItem] || "🐾";
+    if (isRhythmsGame) return RHYTHM_EMOJIS[currentItem] || "🎵";
+    return BRAND_EMOJIS[currentItem] || "™️";
+  }, [currentItem, isItemBased, isAnimalsGame, isRhythmsGame]);
+
+  const currentGradient = useMemo(() => {
+    if (!currentItem || !isGradientGame) return null;
+    const map = isRhythmsGame ? RHYTHM_GRADIENTS : BRAND_GRADIENTS;
+    return map[currentItem] || "from-slate-700 to-slate-300";
+  }, [currentItem, isGradientGame, isRhythmsGame]);
+
   return (
-    <div className="space-y-4">
-      <div className="text-center">
-        <h2 className="text-lg font-bold text-foreground">🎡 Roleta de Sorteio</h2>
-        <p className="text-xs text-muted-foreground mt-1">
-          {gameIcon} {gameLabel} • {roomPicks.length} seleções • {remaining} restantes
-        </p>
-      </div>
-
-      {/* Current item */}
-      <div className="flex flex-col items-center">
-        <div
-          className={cn(
-            "w-40 h-40 rounded-2xl text-white flex flex-col items-center justify-center font-black shadow-lg transition-all duration-500 px-2 text-center",
-            isGradientGame && currentItem
-              ? cn("bg-gradient-to-br shadow-black/20", (isRhythmsGame ? RHYTHM_GRADIENTS : BRAND_GRADIENTS)[currentItem] || "from-slate-700 to-slate-300")
-              : "bg-labxat-pink/90 shadow-labxat-pink/30",
-            isAnimating && !isGradientGame && "scale-110"
-          )}
-        >
-          {isItemBased && currentItem ? (
-            <>
-              <span className="text-6xl leading-none">
-                {isAnimalsGame ? (ANIMAL_EMOJIS[currentItem] || "🐾") : isRhythmsGame ? (RHYTHM_EMOJIS[currentItem] || "🎵") : (BRAND_EMOJIS[currentItem] || "™️")}
-              </span>
-              <span className="text-base mt-2 leading-tight">{currentItem}</span>
-            </>
-          ) : (
-            <span className="text-7xl">{currentItem ?? "—"}</span>
-          )}
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-full min-h-0">
+      {/* LEFT: all items board */}
+      <div className="lg:col-span-7 flex flex-col min-h-0">
+        <div className="flex items-center justify-between mb-2 shrink-0">
+          <h3 className="text-sm font-semibold text-muted-foreground">
+            Painel de Verificação — {gameIcon} {gameLabel}
+          </h3>
+          <span className="text-xs text-muted-foreground">
+            {drawnItems.length}/{allItems.length} sorteados • {remaining} restantes
+          </span>
         </div>
-      </div>
+        <div className="flex-1 min-h-0 overflow-hidden backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-3">
+          {isItemBased ? (
+            <div className="grid grid-cols-6 gap-1.5 h-full content-start">
+              {(isAnimalsGame ? ANIMALS : isRhythmsGame ? RHYTHMS : BRANDS).map((item) => {
+                const isDrawn = drawnItems.includes(item);
+                const isCurrent = item === currentItem;
+                const inPick = pickItemSet.has(item);
+                const winnerIdx = itemToWinnerIdx.get(item);
+                const winnerColor = winnerIdx !== undefined ? WINNER_COLORS[winnerIdx % WINNER_COLORS.length] : null;
+                const emoji = isAnimalsGame ? (ANIMAL_EMOJIS[item] || "🐾") : isRhythmsGame ? (RHYTHM_EMOJIS[item] || "🎵") : (BRAND_EMOJIS[item] || "™️");
 
-      {isItemBased && currentItem && (
-        <Button onClick={() => copyText(currentItem)} className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 text-white font-bold h-9 text-sm">
-          <Copy className="w-3.5 h-3.5 mr-2" /> Copiar: {currentItem}
-        </Button>
-      )}
+                if (isGradientGame) {
+                  const gradMap = isRhythmsGame ? RHYTHM_GRADIENTS : BRAND_GRADIENTS;
+                  const grad = gradMap[item] || "from-slate-700 to-slate-300";
+                  return (
+                    <div key={item} className={cn("rounded-md flex flex-col items-center justify-center px-0.5 py-1 text-center bg-gradient-to-br text-white transition-opacity", grad, !isDrawn && "opacity-40 grayscale")}>
+                      <span className="text-base leading-none drop-shadow">{emoji}</span>
+                      <span className="text-[8px] font-bold leading-tight mt-0.5 truncate max-w-full drop-shadow">{item}</span>
+                    </div>
+                  );
+                }
 
-      {/* Controls */}
-      <div className="flex gap-3">
-        {!isPlaying ? (
-          <Button onClick={() => setIsPlaying(true)} disabled={!activeRoom} className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:opacity-90 text-white font-bold py-5">
-            <Play className="w-5 h-5 mr-2" /> INICIAR
-          </Button>
-        ) : (
-          <Button onClick={() => setIsPlaying(false)} className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:opacity-90 text-white font-bold py-5">
-            <Pause className="w-5 h-5 mr-2" /> PAUSAR
-          </Button>
-        )}
-        <Button onClick={handleReset} variant="outline" className="flex-1 border-2 font-bold py-5">
-          <RotateCcw className="w-5 h-5 mr-2" /> RESET
-        </Button>
-      </div>
-
-      <Button onClick={() => setAudioEnabled(!audioEnabled)} variant="ghost" className="w-full text-muted-foreground hover:text-foreground">
-        {audioEnabled ? (<><Volume2 className="w-4 h-4 mr-2" />Áudio Ligado</>) : (<><VolumeX className="w-4 h-4 mr-2" />Áudio Desligado</>)}
-      </Button>
-
-      {/* Winners */}
-      <div>
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <Trophy className="w-4 h-4 text-yellow-400" />
-          <h3 className="text-sm font-bold text-foreground">Ganhadores</h3>
-        </div>
-        {winners.length === 0 ? (
-          <div className="text-center p-3 bg-background/30 rounded-lg border border-white/10">
-            <p className="text-xs text-muted-foreground">Nenhum ganhador ainda</p>
-          </div>
-        ) : (
-          <div className="space-y-2 max-h-48 overflow-y-auto">
-            {winners.map((w, idx) => {
-              const c = WINNER_COLORS[idx % WINNER_COLORS.length];
-              return (
-                <div key={w.playerId} className={cn("bg-gradient-to-r to-yellow-500/10 border rounded-lg p-2.5", c.from, c.border, idx === 0 && "animate-pulse")}>
-                  <div className="flex items-center gap-1.5 mb-1">
-                    <span className={cn("inline-flex items-center justify-center min-w-[28px] h-6 px-1.5 rounded-md text-[11px] font-black text-white shrink-0", c.bg)}>
-                      {idx + 1}º
-                    </span>
-                    <Trophy className="w-3.5 h-3.5 text-yellow-300 shrink-0" />
-                    <p className="text-sm font-bold text-foreground truncate">
-                      {w.name}{w.xatId ? ` (${w.xatId})` : ""}
-                    </p>
-                  </div>
-                  <p className={cn("text-xs font-mono truncate", c.text)}>{w.values.join(" | ")}</p>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
-      {/* Last ten */}
-      <div>
-        <h3 className="text-sm font-semibold text-muted-foreground mb-2 text-center">Últimos 10</h3>
-        <div className="grid grid-cols-5 gap-2">
-          {[...Array(10)].map((_, i) => {
-            const item = lastTen[lastTen.length - 1 - i];
-            const inPick = item ? pickItemSet.has(item) : false;
-            return (
-              <div
-                key={i}
-                className={cn(
-                  "h-10 px-1 rounded-lg flex items-center justify-center font-bold text-center",
-                  item ? (inPick ? "bg-green-500 text-white shadow-md" : "bg-labxat-purple/70 text-white shadow-md") : "bg-muted/30 text-muted-foreground/50 border border-white/10"
-                )}
-                title={item || ""}
-              >
-                <span className={cn("leading-tight truncate max-w-full", isItemBased ? "text-[10px]" : "text-sm")}>{item || "-"}</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Verification board */}
-      <div>
-        <h3 className="text-sm font-semibold text-muted-foreground mb-2 text-center">Painel de Verificação</h3>
-        {isItemBased ? (
-          <div className="grid grid-cols-6 gap-1.5 bg-background p-3 rounded-lg">
-            {(isAnimalsGame ? ANIMALS : isRhythmsGame ? RHYTHMS : BRANDS).map((item) => {
-              const isDrawn = drawnItems.includes(item);
-              const isCurrent = item === currentItem;
-              const inPick = pickItemSet.has(item);
-              const winnerIdx = itemToWinnerIdx.get(item);
-              const winnerColor = winnerIdx !== undefined ? WINNER_COLORS[winnerIdx % WINNER_COLORS.length] : null;
-              const emoji = isAnimalsGame ? (ANIMAL_EMOJIS[item] || "🐾") : isRhythmsGame ? (RHYTHM_EMOJIS[item] || "🎵") : (BRAND_EMOJIS[item] || "™️");
-
-              if (isGradientGame) {
-                const gradMap = isRhythmsGame ? RHYTHM_GRADIENTS : BRAND_GRADIENTS;
-                const grad = gradMap[item] || "from-slate-700 to-slate-300";
                 return (
-                  <div key={item} className={cn("aspect-square rounded-md flex flex-col items-center justify-center px-0.5 py-1 text-center bg-gradient-to-br text-white transition-opacity", grad, !isDrawn && "opacity-40 grayscale")}>
-                    <span className="text-base leading-none drop-shadow">{emoji}</span>
-                    <span className="text-[8px] font-bold leading-tight mt-0.5 truncate max-w-full drop-shadow">{item}</span>
+                  <div
+                    key={item}
+                    className={cn(
+                      "rounded-md flex flex-col items-center justify-center px-0.5 py-1 transition-all text-center",
+                      isCurrent
+                        ? "bg-labxat-pink text-white scale-105 shadow-md shadow-labxat-pink/40"
+                        : isDrawn && winnerColor
+                          ? `${winnerColor.bg} text-white shadow-md`
+                          : isDrawn && inPick
+                            ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/40"
+                            : isDrawn
+                              ? "bg-labxat-purple/70 text-white"
+                              : inPick
+                                ? "bg-background/60 text-foreground border-2 border-emerald-500/40"
+                                : "bg-background/60 text-foreground/60 border border-white/10"
+                    )}
+                  >
+                    <span className="text-base leading-none">{emoji}</span>
+                    <span className="text-[8px] font-semibold leading-tight mt-0.5 truncate max-w-full">{item}</span>
                   </div>
                 );
-              }
+              })}
+            </div>
+          ) : (
+            <div className="grid grid-cols-10 gap-1 h-full content-start">
+              {Array.from({ length: TOTAL_NUMBERS }, (_, i) => i + 1).map((num) => {
+                const numStr = String(num);
+                const isDrawn = drawnItems.includes(numStr);
+                const isCurrent = numStr === currentItem;
+                const inPick = pickItemSet.has(numStr);
+                const winnerIdx = itemToWinnerIdx.get(numStr);
+                const winnerColor = winnerIdx !== undefined ? WINNER_COLORS[winnerIdx % WINNER_COLORS.length] : null;
+                return (
+                  <div
+                    key={num}
+                    className={cn(
+                      "aspect-square rounded-md flex items-center justify-center text-[11px] font-semibold transition-all",
+                      isCurrent
+                        ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
+                        : isDrawn && winnerColor
+                          ? `${winnerColor.bg} text-white shadow-md`
+                          : isDrawn && inPick
+                            ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/40"
+                            : isDrawn
+                              ? "bg-labxat-purple/70 text-white"
+                              : inPick
+                                ? "bg-background/60 text-foreground border-2 border-emerald-500/40"
+                                : "bg-background/60 text-foreground/60 border border-white/10"
+                    )}
+                  >
+                    {num}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
 
+      {/* RIGHT: draw panel */}
+      <div className="lg:col-span-5 flex flex-col gap-3 min-h-0">
+        {/* Current item */}
+        <div className="shrink-0 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-3 flex flex-col items-center">
+          <p className="text-xs text-muted-foreground mb-1">
+            {gameIcon} {gameLabel} • {roomPicks.length} seleções
+          </p>
+          <div
+            className={cn(
+              "w-28 h-28 rounded-2xl text-white flex flex-col items-center justify-center font-black shadow-lg transition-all duration-500 px-2 text-center",
+              currentGradient ? cn("bg-gradient-to-br shadow-black/20", currentGradient) : "bg-labxat-pink/90 shadow-labxat-pink/30",
+              isAnimating && !currentGradient && "scale-110"
+            )}
+          >
+            {isItemBased && currentItem ? (
+              <>
+                <span className="text-4xl leading-none">{currentEmoji}</span>
+                <span className="text-xs mt-1 leading-tight">{currentItem}</span>
+              </>
+            ) : (
+              <span className="text-5xl">{currentItem ?? "—"}</span>
+            )}
+          </div>
+          {isItemBased && currentItem && (
+            <Button onClick={() => copyText(currentItem)} className="mt-2 w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 text-white font-bold h-7 text-xs">
+              <Copy className="w-3.5 h-3.5 mr-2" /> Copiar: {currentItem}
+            </Button>
+          )}
+        </div>
+
+        {/* Controls */}
+        <div className="shrink-0 grid grid-cols-2 gap-2">
+          {!isPlaying ? (
+            <Button onClick={() => setIsPlaying(true)} disabled={!activeRoom} className="col-span-1 bg-gradient-to-r from-green-500 to-green-600 hover:opacity-90 text-white font-bold h-10">
+              <Play className="w-5 h-5 mr-2" /> INICIAR
+            </Button>
+          ) : (
+            <Button onClick={() => setIsPlaying(false)} className="col-span-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:opacity-90 text-white font-bold h-10">
+              <Pause className="w-5 h-5 mr-2" /> PAUSAR
+            </Button>
+          )}
+          <Button onClick={handleReset} variant="outline" className="col-span-1 border-2 font-bold h-10">
+            <RotateCcw className="w-5 h-5 mr-2" /> RESET
+          </Button>
+        </div>
+
+        <Button onClick={() => setAudioEnabled(!audioEnabled)} variant="ghost" className="shrink-0 w-full text-muted-foreground hover:text-foreground h-8 text-sm">
+          {audioEnabled ? (<><Volume2 className="w-4 h-4 mr-2" />Áudio Ligado</>) : (<><VolumeX className="w-4 h-4 mr-2" />Áudio Desligado</>)}
+        </Button>
+
+        {/* Last 10 */}
+        <div className="shrink-0 backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-3">
+          <h3 className="text-xs font-bold text-muted-foreground mb-2 text-center">Últimos 10 sorteados</h3>
+          <div className="grid grid-cols-5 gap-2">
+            {[...Array(10)].map((_, i) => {
+              const item = lastTen[lastTen.length - 1 - i];
+              const inPick = item ? pickItemSet.has(item) : false;
               return (
                 <div
-                  key={item}
+                  key={i}
                   className={cn(
-                    "aspect-square rounded-md flex flex-col items-center justify-center px-0.5 py-1 transition-all text-center",
-                    isCurrent
-                      ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
-                      : isDrawn && winnerColor
-                        ? `${winnerColor.bg} text-white shadow-md`
-                        : isDrawn && inPick
-                          ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/40"
-                          : isDrawn
-                            ? "bg-labxat-purple/70 text-white"
-                            : inPick
-                              ? "bg-background/60 text-foreground border-2 border-emerald-500/40"
-                              : "bg-background/60 text-foreground/60 border border-white/10"
+                    "h-9 px-1 rounded-lg flex items-center justify-center font-bold text-center",
+                    item ? (inPick ? "bg-green-500 text-white shadow-md" : "bg-labxat-purple/70 text-white shadow-md") : "bg-muted/30 text-muted-foreground/50 border border-white/10"
                   )}
+                  title={item || ""}
                 >
-                  <span className="text-base leading-none">{emoji}</span>
-                  <span className="text-[8px] font-semibold leading-tight mt-0.5 truncate max-w-full">{item}</span>
+                  <span className={cn("leading-tight truncate max-w-full", isItemBased ? "text-[9px]" : "text-xs")}>{item || "-"}</span>
                 </div>
               );
             })}
           </div>
-        ) : (
-          <div className="grid grid-cols-10 gap-1 bg-background p-3 rounded-lg">
-            {Array.from({ length: TOTAL_NUMBERS }, (_, i) => i + 1).map((num) => {
-              const numStr = String(num);
-              const isDrawn = drawnItems.includes(numStr);
-              const isCurrent = numStr === currentItem;
-              const inPick = pickItemSet.has(numStr);
-              const winnerIdx = itemToWinnerIdx.get(numStr);
-              const winnerColor = winnerIdx !== undefined ? WINNER_COLORS[winnerIdx % WINNER_COLORS.length] : null;
-              return (
-                <div
-                  key={num}
-                  className={cn(
-                    "aspect-square rounded-md flex items-center justify-center text-[11px] font-semibold transition-all",
-                    isCurrent
-                      ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
-                      : isDrawn && winnerColor
-                        ? `${winnerColor.bg} text-white shadow-md`
-                        : isDrawn && inPick
-                          ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/40"
-                          : isDrawn
-                            ? "bg-labxat-purple/70 text-white"
-                            : inPick
-                              ? "bg-background/60 text-foreground border-2 border-emerald-500/40"
-                              : "bg-background/60 text-foreground/60 border border-white/10"
-                  )}
-                >
-                  {num}
-                </div>
-              );
-            })}
+        </div>
+
+        {/* Winners */}
+        <div className="flex-1 min-h-0 backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-3 flex flex-col">
+          <div className="flex items-center justify-center gap-2 mb-2 shrink-0">
+            <Trophy className="w-4 h-4 text-yellow-400" />
+            <h3 className="text-sm font-bold text-foreground">Ganhadores</h3>
           </div>
-        )}
+          {winners.length === 0 ? (
+            <div className="flex-1 flex items-center justify-center bg-background/30 rounded-lg border border-white/10">
+              <p className="text-xs text-muted-foreground">Nenhum ganhador ainda</p>
+            </div>
+          ) : (
+            <div className="flex-1 min-h-0 overflow-y-auto space-y-1.5 pr-1">
+              {winners.map((w, idx) => {
+                const c = WINNER_COLORS[idx % WINNER_COLORS.length];
+                return (
+                  <div key={w.playerId} className={cn("bg-gradient-to-r to-yellow-500/10 border rounded-lg p-2", c.from, c.border, idx === 0 && "animate-pulse")}>
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className={cn("inline-flex items-center justify-center min-w-[26px] h-5 px-1 rounded-md text-[10px] font-black text-white shrink-0", c.bg)}>
+                        {idx + 1}º
+                      </span>
+                      <Trophy className="w-3.5 h-3.5 text-yellow-300 shrink-0" />
+                      <p className="text-sm font-bold text-foreground truncate">
+                        {w.name}{w.xatId ? ` (${w.xatId})` : ""}
+                      </p>
+                    </div>
+                    <p className={cn("text-xs font-mono truncate", c.text)}>{w.values.join(" | ")}</p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
