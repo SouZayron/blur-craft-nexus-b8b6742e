@@ -35,7 +35,6 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const AltaVibe = lazy(() => import("./pages/AltaVibe"));
 const AdminAltaVibe = lazy(() => import("./pages/AdminAltaVibe"));
 const BolaoDaCopa = lazy(() => import("./pages/BolaoDaCopa"));
-const AdminCopa = lazy(() => import("./pages/AdminCopa"));
 const Machine = lazy(() => import("./pages/Machine"));
 const AdminMachine = lazy(() => import("./pages/AdminMachine"));
 const Xat = lazy(() => import("./pages/Xat"));
@@ -51,7 +50,7 @@ const RouteFallback = () => (
   <div className="min-h-screen bg-background" aria-hidden="true" />
 );
 
-const HIDE_FLOATERS_ON = ["/bolaodacopa", "/admincopa", "/machine", "/adminmachine", "/xat"];
+const HIDE_FLOATERS_ON = ["/bolaodacopa", "/machine", "/adminmachine", "/xat"];
 const FloatingChrome = () => {
   const { pathname } = useLocation();
   if (HIDE_FLOATERS_ON.some(p => pathname.toLowerCase().startsWith(p))) return null;
@@ -96,7 +95,6 @@ const App = () => (
               <Route path="/altavibe" element={<AltaVibe />} />
               <Route path="/adminaltavibe" element={<AdminAltaVibe />} />
               <Route path="/bolaodacopa" element={<BolaoDaCopa />} />
-              <Route path="/admincopa" element={<AdminCopa />} />
               <Route path="/machine" element={<Machine />} />
               <Route path="/adminmachine" element={<AdminMachine />} />
               <Route path="/xat" element={<Xat />} />
