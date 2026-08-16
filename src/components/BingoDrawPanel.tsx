@@ -6,14 +6,10 @@ import { cn } from "@/lib/utils";
 import {
   GAME_NAMES,
   GAME_ICONS,
-  ANIMALS,
-  ANIMAL_EMOJIS,
-  RHYTHMS,
-  RHYTHM_EMOJIS,
-  RHYTHM_GRADIENTS,
-  BRANDS,
-  BRAND_EMOJIS,
-  BRAND_GRADIENTS,
+  getGameItems,
+  isItemGame,
+  getItemEmoji,
+  getItemGradient,
 } from "@/data/gameData";
 
 const TOTAL_NUMBERS = 90;
@@ -102,18 +98,13 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
     }
   }, [toast]);
 
-  const isAnimalsGame = activeRoom?.game_type === "animals";
-  const isRhythmsGame = activeRoom?.game_type === "rhythms";
-  const isBrandsGame = activeRoom?.game_type === "brands";
-  const isItemBased = isAnimalsGame || isRhythmsGame || isBrandsGame;
-  const isGradientGame = isRhythmsGame || isBrandsGame;
+  const gameType = activeRoom?.game_type ?? "";
+  const isItemBased = isItemGame(gameType);
 
   const allItems = useMemo<string[]>(() => {
-    if (isAnimalsGame) return ANIMALS;
-    if (isRhythmsGame) return RHYTHMS;
-    if (isBrandsGame) return BRANDS;
+    if (isItemBased) return getGameItems(gameType);
     return Array.from({ length: TOTAL_NUMBERS }, (_, i) => String(i + 1));
-  }, [isAnimalsGame, isRhythmsGame, isBrandsGame]);
+  }, [isItemBased, gameType]);
 
   const lastRoomRef = useRef<string | null>(null);
   useEffect(() => {
@@ -249,16 +240,14 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
 
   const currentEmoji = useMemo(() => {
     if (!currentItem || !isItemBased) return null;
-    if (isAnimalsGame) return ANIMAL_EMOJIS[currentItem] || "🐾";
-    if (isRhythmsGame) return RHYTHM_EMOJIS[currentItem] || "🎵";
-    return BRAND_EMOJIS[currentItem] || "™️";
-  }, [currentItem, isItemBased, isAnimalsGame, isRhythmsGame]);
+    return getItemEmoji(gameType, currentItem);
+  }, [currentItem, isItemBased, gameType]);
 
   const currentGradient = useMemo(() => {
-    if (!currentItem || !isGradientGame) return null;
-    const map = isRhythmsGame ? RHYTHM_GRADIENTS : BRAND_GRADIENTS;
-    return map[currentItem] || "from-slate-700 to-slate-300";
-  }, [currentItem, isGradientGame, isRhythmsGame]);
+    if (!currentItem || !isItemBased) return null;
+    const idx = allItems.indexOf(currentItem);
+    return getItemGradient(gameType, currentItem, idx < 0 ? 0 : idx);
+  }, [currentItem, isItemBased, gameType, allItems]);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-full min-h-0">

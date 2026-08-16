@@ -35,7 +35,6 @@ export const Control = () => {
   const [rooms, setRooms] = useState<GameRoom[]>([]);
   const [players, setPlayers] = useState<GamePlayer[]>([]);
   const [picks, setPicks] = useState<GamePick[]>([]);
-  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const { toast } = useToast();
 
   const fetchData = useCallback(async () => {
@@ -165,7 +164,7 @@ export const Control = () => {
   const approvedPlayers = players.filter(p => p.is_approved);
 
   const openRoom = rooms.find(r => r.is_open) || null;
-  const activeRoom = openRoom || rooms.find(r => r.id === selectedRoomId) || null;
+  const activeRoom = openRoom;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-4">
