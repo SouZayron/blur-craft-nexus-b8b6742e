@@ -295,7 +295,7 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
               })}
             </div>
           ) : (
-            <div className="grid gap-1.5 content-start grid-cols-[repeat(auto-fill,minmax(46px,1fr))]">
+            <div className="grid gap-1.5 h-full auto-rows-fr grid-cols-[repeat(auto-fill,minmax(46px,1fr))]">
 
               {Array.from({ length: TOTAL_NUMBERS }, (_, i) => i + 1).map((num) => {
                 const numStr = String(num);
