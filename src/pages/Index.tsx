@@ -3,7 +3,7 @@ import { FloatingBlob } from "@/components/FloatingBlob";
 import { GlassCard } from "@/components/GlassCard";
 import { ToolButton } from "@/components/ToolButton";
 import { AdSenseVertical } from "@/components/AdSenseVertical";
-import { Palette, Sparkles, Dices, Download, Smile, UserCircle } from "lucide-react";
+import { Palette, Sparkles, Dices, Smile, UserCircle } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useMemo } from "react";
@@ -30,12 +30,6 @@ const Index = () => {
       icon: Dices,
       onClick: () => navigate("/bingo"),
       gradient: "pink" as const,
-    },
-    {
-      name: t("graphicsFree"),
-      icon: Download,
-      onClick: () => navigate("/graphics"),
-      gradient: "green" as const,
     },
     {
       name: "Emojis",
