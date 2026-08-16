@@ -279,7 +279,7 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
                     key={item}
                     title={item}
                     className={cn(
-                      "relative min-h-[42px] rounded-lg flex flex-col items-center justify-center px-1 py-1 text-center text-white bg-gradient-to-br transition-all duration-300 shadow-sm",
+                      "relative h-full min-h-0 rounded-lg flex flex-col items-center justify-center px-1 py-1 text-center text-white bg-gradient-to-br transition-all duration-300 shadow-sm",
                       grad,
                       !isDrawn && "opacity-40 grayscale",
                       isDrawn && "shadow-md",
