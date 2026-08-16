@@ -398,9 +398,9 @@ export const Control = () => {
           </TabsContent>
 
           {/* ===== ROLETAS ===== */}
-          <TabsContent value="roletas" className="mt-6">
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 shadow-xl">
-              <div className="flex flex-wrap gap-2 mb-5">
+          <TabsContent value="roletas" className="mt-6 h-[calc(100vh-220px)] min-h-0">
+            <div className="h-full flex flex-col min-h-0 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 shadow-xl">
+              <div className="flex flex-wrap gap-2 mb-3 shrink-0">
                 {rooms.map(room => (
                   <button
                     key={room.id}
@@ -416,7 +416,7 @@ export const Control = () => {
                   </button>
                 ))}
               </div>
-              <div className="max-w-3xl mx-auto">
+              <div className="flex-1 min-h-0">
                 <BingoDrawPanel activeRoom={activeRoom} players={players} picks={picks} />
               </div>
             </div>
