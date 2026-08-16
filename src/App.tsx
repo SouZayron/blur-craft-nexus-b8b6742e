@@ -16,7 +16,6 @@ const ColorGenerator = lazy(() => import("./pages/ColorGenerator"));
 const NickGenerator = lazy(() => import("./pages/NickGenerator").then(m => ({ default: m.NickGenerator })));
 const Bingo = lazy(() => import("./pages/Bingo").then(m => ({ default: m.Bingo })));
 const BingoAnimais = lazy(() => import("./pages/BingoAnimais").then(m => ({ default: m.BingoAnimais })));
-const GraphicsFree = lazy(() => import("./pages/GraphicsFree").then(m => ({ default: m.GraphicsFree })));
 const Emojis = lazy(() => import("./pages/Emojis").then(m => ({ default: m.Emojis })));
 const BingoCards = lazy(() => import("./pages/BingoCards").then(m => ({ default: m.BingoCards })));
 const AvatarEditor = lazy(() => import("./pages/AvatarEditor").then(m => ({ default: m.AvatarEditor })));
@@ -27,8 +26,6 @@ const BingoPanel = lazy(() => import("./pages/BingoPanel").then(m => ({ default:
 const About = lazy(() => import("./pages/About").then(m => ({ default: m.About })));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy").then(m => ({ default: m.PrivacyPolicy })));
 const TermsOfService = lazy(() => import("./pages/TermsOfService").then(m => ({ default: m.TermsOfService })));
-const Works = lazy(() => import("./pages/Works").then(m => ({ default: m.Works })));
-const MixHits = lazy(() => import("./pages/MixHits").then(m => ({ default: m.MixHits })));
 const Games = lazy(() => import("./pages/Games").then(m => ({ default: m.Games })));
 const Control = lazy(() => import("./pages/Control").then(m => ({ default: m.Control })));
 const Bingo2 = lazy(() => import("./pages/Bingo2"));
@@ -39,9 +36,6 @@ const AltaVibe = lazy(() => import("./pages/AltaVibe"));
 const AdminAltaVibe = lazy(() => import("./pages/AdminAltaVibe"));
 const BolaoDaCopa = lazy(() => import("./pages/BolaoDaCopa"));
 const AdminCopa = lazy(() => import("./pages/AdminCopa"));
-const PlinkoBoard = lazy(() => import("./pages/PlinkoBoard"));
-const AdminPlinko = lazy(() => import("./pages/AdminPlinko"));
-const EstouraBalao = lazy(() => import("./pages/EstouraBalao"));
 const Machine = lazy(() => import("./pages/Machine"));
 const AdminMachine = lazy(() => import("./pages/AdminMachine"));
 const Xat = lazy(() => import("./pages/Xat"));
@@ -57,7 +51,7 @@ const RouteFallback = () => (
   <div className="min-h-screen bg-background" aria-hidden="true" />
 );
 
-const HIDE_FLOATERS_ON = ["/bolaodacopa", "/admincopa", "/plinkoboard", "/adminplinko", "/estourabalao", "/adminbalao", "/machine", "/adminmachine", "/xat"];
+const HIDE_FLOATERS_ON = ["/bolaodacopa", "/admincopa", "/machine", "/adminmachine", "/xat"];
 const FloatingChrome = () => {
   const { pathname } = useLocation();
   if (HIDE_FLOATERS_ON.some(p => pathname.toLowerCase().startsWith(p))) return null;
@@ -84,7 +78,6 @@ const App = () => (
               <Route path="/nicks" element={<NickGenerator />} />
               <Route path="/bingo" element={<Bingo />} />
               <Route path="/bingoanimais" element={<BingoAnimais />} />
-              <Route path="/graphics" element={<GraphicsFree />} />
               <Route path="/emojis" element={<Emojis />} />
               <Route path="/avatar-editor" element={<AvatarEditor />} />
               <Route path="/cartelas" element={<BingoCards />} />
@@ -95,8 +88,6 @@ const App = () => (
               <Route path="/sobre" element={<About />} />
               <Route path="/privacidade" element={<PrivacyPolicy />} />
               <Route path="/termos" element={<TermsOfService />} />
-              <Route path="/works" element={<Works />} />
-              <Route path="/mixhits" element={<MixHits />} />
               <Route path="/games" element={<Games />} />
               <Route path="/control" element={<Control />} />
               <Route path="/bingo2" element={<Bingo2 />} />
@@ -106,10 +97,6 @@ const App = () => (
               <Route path="/adminaltavibe" element={<AdminAltaVibe />} />
               <Route path="/bolaodacopa" element={<BolaoDaCopa />} />
               <Route path="/admincopa" element={<AdminCopa />} />
-              <Route path="/plinkoboard" element={<PlinkoBoard />} />
-              <Route path="/adminplinko" element={<AdminPlinko />} />
-              <Route path="/estourabalao" element={<EstouraBalao />} />
-              <Route path="/adminbalao" element={<EstouraBalao admin />} />
               <Route path="/machine" element={<Machine />} />
               <Route path="/adminmachine" element={<AdminMachine />} />
               <Route path="/xat" element={<Xat />} />
