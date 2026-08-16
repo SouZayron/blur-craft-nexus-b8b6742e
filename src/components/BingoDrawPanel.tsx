@@ -357,28 +357,28 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
       {/* RIGHT: draw panel */}
       <div className="lg:col-span-5 flex flex-col gap-3 min-h-0">
         {/* Current item */}
-        <div className="shrink-0 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col items-center">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="shrink-0 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-3 flex flex-col items-center">
+          <p className="text-xs text-muted-foreground mb-1">
             {gameIcon} {gameLabel} • {roomPicks.length} seleções
           </p>
           <div
             className={cn(
-              "w-32 h-32 rounded-2xl text-white flex flex-col items-center justify-center font-black shadow-lg transition-all duration-500 px-2 text-center",
+              "w-28 h-28 rounded-2xl text-white flex flex-col items-center justify-center font-black shadow-lg transition-all duration-500 px-2 text-center",
               currentGradient ? cn("bg-gradient-to-br shadow-black/20", currentGradient) : "bg-labxat-pink/90 shadow-labxat-pink/30",
               isAnimating && !currentGradient && "scale-110"
             )}
           >
             {isItemBased && currentItem ? (
               <>
-                <span className="text-5xl leading-none">{currentEmoji}</span>
-                <span className="text-sm mt-1 leading-tight">{currentItem}</span>
+                <span className="text-4xl leading-none">{currentEmoji}</span>
+                <span className="text-xs mt-1 leading-tight">{currentItem}</span>
               </>
             ) : (
-              <span className="text-6xl">{currentItem ?? "—"}</span>
+              <span className="text-5xl">{currentItem ?? "—"}</span>
             )}
           </div>
           {isItemBased && currentItem && (
-            <Button onClick={() => copyText(currentItem)} className="mt-3 w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 text-white font-bold h-8 text-xs">
+            <Button onClick={() => copyText(currentItem)} className="mt-2 w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 text-white font-bold h-7 text-xs">
               <Copy className="w-3.5 h-3.5 mr-2" /> Copiar: {currentItem}
             </Button>
           )}
@@ -387,20 +387,20 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
         {/* Controls */}
         <div className="shrink-0 grid grid-cols-2 gap-2">
           {!isPlaying ? (
-            <Button onClick={() => setIsPlaying(true)} disabled={!activeRoom} className="col-span-1 bg-gradient-to-r from-green-500 to-green-600 hover:opacity-90 text-white font-bold h-11">
+            <Button onClick={() => setIsPlaying(true)} disabled={!activeRoom} className="col-span-1 bg-gradient-to-r from-green-500 to-green-600 hover:opacity-90 text-white font-bold h-10">
               <Play className="w-5 h-5 mr-2" /> INICIAR
             </Button>
           ) : (
-            <Button onClick={() => setIsPlaying(false)} className="col-span-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:opacity-90 text-white font-bold h-11">
+            <Button onClick={() => setIsPlaying(false)} className="col-span-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:opacity-90 text-white font-bold h-10">
               <Pause className="w-5 h-5 mr-2" /> PAUSAR
             </Button>
           )}
-          <Button onClick={handleReset} variant="outline" className="col-span-1 border-2 font-bold h-11">
+          <Button onClick={handleReset} variant="outline" className="col-span-1 border-2 font-bold h-10">
             <RotateCcw className="w-5 h-5 mr-2" /> RESET
           </Button>
         </div>
 
-        <Button onClick={() => setAudioEnabled(!audioEnabled)} variant="ghost" className="shrink-0 w-full text-muted-foreground hover:text-foreground h-9">
+        <Button onClick={() => setAudioEnabled(!audioEnabled)} variant="ghost" className="shrink-0 w-full text-muted-foreground hover:text-foreground h-8 text-sm">
           {audioEnabled ? (<><Volume2 className="w-4 h-4 mr-2" />Áudio Ligado</>) : (<><VolumeX className="w-4 h-4 mr-2" />Áudio Desligado</>)}
         </Button>
 
