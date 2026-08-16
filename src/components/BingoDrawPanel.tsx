@@ -261,9 +261,10 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
             {drawnItems.length}/{allItems.length} sorteados • {remaining} restantes
           </span>
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-3">
+        <div className="flex-1 min-h-0 overflow-hidden backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-3">
           {isItemBased ? (
-            <div className="grid gap-1.5 content-start grid-cols-[repeat(auto-fill,minmax(58px,1fr))]">
+            <div className="grid gap-1.5 h-full auto-rows-fr grid-cols-[repeat(auto-fill,minmax(58px,1fr))]">
+
               {allItems.map((item, idx) => {
                 const isDrawn = drawnItems.includes(item);
                 const isCurrent = item === currentItem;
