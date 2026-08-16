@@ -310,16 +310,18 @@ export const Control = () => {
                 const maxSlots = getGameItems(room.game_type).length;
 
                 return (
-                  <div key={room.id} className={`backdrop-blur-xl bg-white/5 rounded-2xl p-6 shadow-xl border ${room.is_open ? 'border-green-500/50' : 'border-white/10'}`}>
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-bold text-foreground">{gameIcon} {gameName}</h3>
-                      <span className={`text-xs px-2 py-1 rounded-full ${room.is_open ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
-                        {room.is_open ? 'Aberto' : 'Fechado'}
+                  <div key={room.id} className={`backdrop-blur-xl bg-white/5 rounded-2xl p-4 shadow-xl border flex flex-col ${room.is_open ? 'border-green-500/50 shadow-green-500/10' : 'border-white/10'}`}>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <h3 className="font-bold text-sm text-foreground truncate">{gameIcon} {gameName}</h3>
+                      <span className={`shrink-0 text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 ${room.is_open ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                        {room.is_open && <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_2px_rgba(74,222,128,0.8)]" />}
+                        {room.is_open ? 'Ativo' : 'Fechado'}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-3">
+                    <p className="text-xs text-muted-foreground mb-3">
                       {roomPicks.length}/{maxSlots} seleções
                     </p>
+
 
                     <div className="space-y-2">
                       {room.is_open ? (
