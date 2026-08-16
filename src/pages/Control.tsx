@@ -376,56 +376,8 @@ export const Control = () => {
               })}
             </div>
 
-            {picks.length > 0 && (
-              <div className="backdrop-blur-xl bg-white/5 border border-purple-500/30 rounded-2xl p-6 shadow-xl">
-                <h2 className="text-lg font-bold text-purple-400 mb-3 flex items-center gap-2">
-                  🎯 Jogadores que Selecionaram ({picks.length})
-                </h2>
-                <div className="space-y-2">
-                  {rooms.filter(r => picks.some(p => p.room_id === r.id)).map(room => {
-                    const roomPicks = picks.filter(p => p.room_id === room.id);
-                    const gameName = GAME_NAMES[room.game_type] || room.game_type;
-                    const gameIcon = GAME_ICONS[room.game_type] || "🎮";
-                    return (
-                      <div key={room.id} className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-3">
-                        <p className="text-sm font-semibold text-foreground mb-2">{gameIcon} {gameName} <span className="text-muted-foreground font-normal">({roomPicks.length})</span></p>
-                        <div className="flex flex-wrap gap-2">
-                          {isItemGame(room.game_type) ? (
-                            Array.from(new Set(roomPicks.map(p => p.player_id))).map(playerId => {
-                              const player = players.find(pl => pl.id === playerId);
-                              const playerPicks = roomPicks.filter(p => p.player_id === playerId);
-                              const combo = playerPicks.map(p => p.pick_value).join(' - ');
-                              return (
-                                <div key={playerId} className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-lg text-xs">
-                                  <span className="text-foreground font-semibold">{player?.name || '?'}{player?.xat_id ? ` (${player.xat_id})` : ''}</span>
-                                  <span className="text-purple-300">→ {combo}</span>
-                                  <Button onClick={() => handleRemovePlayerPicksInRoom(playerId, room.id)} size="sm" variant="ghost" className="h-5 w-5 p-0 text-red-400 hover:text-red-300">
-                                    <Trash2 className="w-3 h-3" />
-                                  </Button>
-                                </div>
-                              );
-                            })
-                          ) : (
-                            roomPicks.map(pick => {
-                              const player = players.find(pl => pl.id === pick.player_id);
-                              return (
-                                <div key={pick.id} className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-lg text-xs">
-                                  <span className="text-foreground font-semibold">{player?.name || '?'}{player?.xat_id ? ` (${player.xat_id})` : ''}</span>
-                                  <span className="text-purple-300 font-mono">→ {pick.pick_value}</span>
-                                  <Button onClick={() => handleRemovePick(pick.id)} size="sm" variant="ghost" className="h-5 w-5 p-0 text-red-400 hover:text-red-300">
-                                    <Trash2 className="w-3 h-3" />
-                                  </Button>
-                                </div>
-                              );
-                            })
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+
+
 
             <div className="flex flex-wrap justify-center gap-3">
               <Button onClick={handleCloseAll} variant="outline" className="border-red-500/50 text-red-400 hover:bg-red-500/20">
