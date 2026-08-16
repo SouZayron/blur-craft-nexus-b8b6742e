@@ -161,9 +161,19 @@ export const Control = () => {
   const pendingPlayers = players.filter(p => !p.is_approved);
   const approvedPlayers = players.filter(p => p.is_approved);
 
+  const activeRoom =
+    rooms.find(r => r.id === selectedRoomId) ||
+    [...rooms].sort((a, b) => {
+      const pa = picks.filter(p => p.room_id === a.id).length;
+      const pb = picks.filter(p => p.room_id === b.id).length;
+      if (pb !== pa) return pb - pa;
+      if (a.is_open !== b.is_open) return a.is_open ? -1 : 1;
+      return 0;
+    })[0] || null;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-4">
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="max-w-[1700px] mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
@@ -174,6 +184,8 @@ export const Control = () => {
           </p>
         </div>
 
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px] items-start">
+        <div className="space-y-6 min-w-0">
         {/* Pending Players */}
         {pendingPlayers.length > 0 && (
           <div className="backdrop-blur-xl bg-white/5 border border-yellow-500/30 rounded-2xl p-6 shadow-xl">
