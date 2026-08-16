@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, RHYTHMS, RHYTHM_EMOJIS, BRANDS, BRAND_EMOJIS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
+import { GAME_NAMES, GAME_ICONS, getGameItems, isItemGame } from "@/data/gameData";
 import { Lock, Power, PowerOff, UserCheck, Trash2, Users, RefreshCw } from "lucide-react";
 import { BingoDrawPanel } from "@/components/BingoDrawPanel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -35,7 +35,6 @@ export const Control = () => {
   const [rooms, setRooms] = useState<GameRoom[]>([]);
   const [players, setPlayers] = useState<GamePlayer[]>([]);
   const [picks, setPicks] = useState<GamePick[]>([]);
-  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const { toast } = useToast();
 
   const fetchData = useCallback(async () => {
@@ -164,15 +163,8 @@ export const Control = () => {
   const pendingPlayers = players.filter(p => !p.is_approved);
   const approvedPlayers = players.filter(p => p.is_approved);
 
-  const activeRoom =
-    rooms.find(r => r.id === selectedRoomId) ||
-    [...rooms].sort((a, b) => {
-      const pa = picks.filter(p => p.room_id === a.id).length;
-      const pb = picks.filter(p => p.room_id === b.id).length;
-      if (pb !== pa) return pb - pa;
-      if (a.is_open !== b.is_open) return a.is_open ? -1 : 1;
-      return 0;
-    })[0] || null;
+  const openRoom = rooms.find(r => r.is_open) || null;
+  const activeRoom = openRoom;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-4">
@@ -263,11 +255,7 @@ export const Control = () => {
                 const roomPicks = picks.filter(p => p.room_id === room.id);
                 const gameName = GAME_NAMES[room.game_type] || room.game_type;
                 const gameIcon = GAME_ICONS[room.game_type] || "🎮";
-                const maxSlots = room.game_type === 'animals' ? ANIMALS.length
-                  : room.game_type === 'invertidos' ? INVERTIDOS_BLOCKS.length
-                  : room.game_type === 'rhythms' ? RHYTHMS.length
-                  : room.game_type === 'brands' ? BRANDS.length
-                  : SEQUENCES_BLOCKS.length;
+                const maxSlots = getGameItems(room.game_type).length;
 
                 return (
                   <div key={room.id} className={`backdrop-blur-xl bg-white/5 rounded-2xl p-6 shadow-xl border ${room.is_open ? 'border-green-500/50' : 'border-white/10'}`}>
@@ -300,7 +288,7 @@ export const Control = () => {
 
                     {roomPicks.length > 0 && (
                       <div className="mt-4 space-y-1 max-h-56 overflow-y-auto">
-                        {(room.game_type === 'animals' || room.game_type === 'rhythms' || room.game_type === 'brands') ? (
+                        {isItemGame(room.game_type) ? (
                           Array.from(new Set(roomPicks.map(p => p.player_id))).map(playerId => {
                             const player = players.find(pl => pl.id === playerId);
                             const playerPicks = roomPicks.filter(p => p.player_id === playerId);
@@ -350,7 +338,7 @@ export const Control = () => {
                       <div key={room.id} className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-3">
                         <p className="text-sm font-semibold text-foreground mb-2">{gameIcon} {gameName} <span className="text-muted-foreground font-normal">({roomPicks.length})</span></p>
                         <div className="flex flex-wrap gap-2">
-                          {(room.game_type === 'animals' || room.game_type === 'rhythms' || room.game_type === 'brands') ? (
+                          {isItemGame(room.game_type) ? (
                             Array.from(new Set(roomPicks.map(p => p.player_id))).map(playerId => {
                               const player = players.find(pl => pl.id === playerId);
                               const playerPicks = roomPicks.filter(p => p.player_id === playerId);
@@ -398,27 +386,20 @@ export const Control = () => {
           </TabsContent>
 
           {/* ===== ROLETAS ===== */}
-          <TabsContent value="roletas" className="mt-6 h-[calc(100vh-220px)] min-h-0">
+          <TabsContent value="roletas" className="mt-6 h-[calc(100vh-190px)] min-h-0">
             <div className="h-full flex flex-col min-h-0 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 shadow-xl">
-              <div className="flex flex-wrap gap-2 mb-3 shrink-0">
-                {rooms.map(room => (
-                  <button
-                    key={room.id}
-                    onClick={() => setSelectedRoomId(room.id)}
-                    className={`text-xs px-3 py-2 rounded-lg border transition-colors ${
-                      activeRoom?.id === room.id
-                        ? "bg-purple-500/30 border-purple-400/60 text-foreground"
-                        : "bg-white/5 border-white/10 text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {GAME_ICONS[room.game_type] || "🎮"} {GAME_NAMES[room.game_type] || room.game_type}
-                    {room.is_open && <span className="ml-1.5 text-green-400">•</span>}
-                  </button>
-                ))}
-              </div>
-              <div className="flex-1 min-h-0">
-                <BingoDrawPanel activeRoom={activeRoom} players={players} picks={picks} />
-              </div>
+              {activeRoom ? (
+                <div className="flex-1 min-h-0">
+                  <BingoDrawPanel activeRoom={activeRoom} players={players} picks={picks} />
+                </div>
+              ) : (
+                <div className="flex-1 flex flex-col items-center justify-center text-center gap-2">
+                  <span className="text-4xl">🎡</span>
+                  <p className="text-sm text-muted-foreground">
+                    Nenhum jogo ativo. Abra um jogo na aba <span className="text-foreground font-semibold">Games</span> para a roleta aparecer aqui.
+                  </p>
+                </div>
+              )}
             </div>
           </TabsContent>
         </Tabs>

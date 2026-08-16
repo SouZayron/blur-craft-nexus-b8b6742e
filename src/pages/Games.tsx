@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { ANIMALS, ANIMAL_EMOJIS, INVERTIDOS_BLOCKS, SEQUENCES_BLOCKS, RHYTHMS, RHYTHM_EMOJIS, BRANDS, BRAND_EMOJIS, GAME_NAMES, GAME_ICONS } from "@/data/gameData";
+import { GAME_NAMES, GAME_ICONS, GAME_ITEM_LABEL, getGameItems, isItemGame, BLOCK_GRADIENTS } from "@/data/gameData";
 import { Copy, Check, Clock, Gamepad2, LogIn } from "lucide-react";
 
 interface GameRoom {
@@ -127,7 +127,7 @@ export const Games = () => {
   };
 
   const myPicks = currentPlayer ? picks.filter(p => p.player_id === currentPlayer.id) : [];
-  const maxPicks = (activeRoom?.game_type === 'animals' || activeRoom?.game_type === 'rhythms' || activeRoom?.game_type === 'brands') ? 2 : 1;
+  const maxPicks = isItemGame(activeRoom?.game_type) ? 2 : 1;
   const reachedLimit = myPicks.length >= maxPicks;
 
   const handleSelectBlock = async (block: string) => {
@@ -206,14 +206,7 @@ export const Games = () => {
     toast({ title: ok ? "Copiado!" : "Erro ao copiar", variant: ok ? "default" : "destructive" });
   };
 
-  const getMaxSlots = () => {
-    if (!activeRoom) return 0;
-    if (activeRoom.game_type === 'animals') return ANIMALS.length;
-    if (activeRoom.game_type === 'invertidos') return INVERTIDOS_BLOCKS.length;
-    if (activeRoom.game_type === 'rhythms') return RHYTHMS.length;
-    if (activeRoom.game_type === 'brands') return BRANDS.length;
-    return SEQUENCES_BLOCKS.length;
-  };
+  const getMaxSlots = () => (activeRoom ? getGameItems(activeRoom.game_type).length : 0);
 
   // --- RENDER STATES ---
 
@@ -288,42 +281,11 @@ export const Games = () => {
   const gameIcon = GAME_ICONS[activeRoom.game_type] || "🎮";
   const takenValues = picks.map(p => p.pick_value);
 
-  const renderItems = activeRoom.game_type === 'animals'
-    ? ANIMALS
-    : activeRoom.game_type === 'invertidos'
-      ? INVERTIDOS_BLOCKS
-      : activeRoom.game_type === 'rhythms'
-        ? RHYTHMS
-        : activeRoom.game_type === 'brands'
-          ? BRANDS
-          : SEQUENCES_BLOCKS;
+  const renderItems = getGameItems(activeRoom.game_type);
 
-  const isAnimalsGame = activeRoom.game_type === 'animals';
-  const isRhythmsGame = activeRoom.game_type === 'rhythms';
-  const isBrandsGame = activeRoom.game_type === 'brands';
-  const isMultiPickGame = isAnimalsGame || isRhythmsGame || isBrandsGame;
-  const itemLabel = isAnimalsGame ? 'animais' : isRhythmsGame ? 'ritmos' : isBrandsGame ? 'marcas' : 'blocos';
+  const isMultiPickGame = isItemGame(activeRoom.game_type);
+  const itemLabel = GAME_ITEM_LABEL[activeRoom.game_type] || 'blocos';
 
-  // Paleta de gradientes (escuro → claro) para variar cor por bloco
-  const BLOCK_GRADIENTS = [
-    'from-rose-800 to-rose-400',
-    'from-pink-800 to-pink-400',
-    'from-fuchsia-800 to-fuchsia-400',
-    'from-purple-800 to-purple-400',
-    'from-violet-800 to-violet-400',
-    'from-indigo-800 to-indigo-400',
-    'from-blue-800 to-blue-400',
-    'from-sky-800 to-sky-400',
-    'from-cyan-800 to-cyan-400',
-    'from-teal-800 to-teal-400',
-    'from-emerald-800 to-emerald-400',
-    'from-green-800 to-green-400',
-    'from-lime-800 to-lime-400',
-    'from-yellow-800 to-yellow-400',
-    'from-amber-800 to-amber-400',
-    'from-orange-800 to-orange-400',
-    'from-red-800 to-red-400',
-  ];
 
   return (
     <div className={`${isMultiPickGame ? 'h-screen overflow-hidden flex flex-col' : 'min-h-screen'} bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-2`}>

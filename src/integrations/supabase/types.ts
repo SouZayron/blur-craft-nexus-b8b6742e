@@ -1105,6 +1105,14 @@ export type Database = {
         | "sequences"
         | "rhythms"
         | "brands"
+        | "countries"
+        | "colors"
+        | "powers"
+        | "olympics"
+        | "cartoons"
+        | "movies"
+        | "fruits"
+        | "objects"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1240,6 +1248,14 @@ export const Constants = {
         "sequences",
         "rhythms",
         "brands",
+        "countries",
+        "colors",
+        "powers",
+        "olympics",
+        "cartoons",
+        "movies",
+        "fruits",
+        "objects",
       ],
     },
   },
