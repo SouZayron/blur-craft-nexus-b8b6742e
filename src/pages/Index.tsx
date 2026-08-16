@@ -32,12 +32,6 @@ const Index = () => {
       gradient: "pink" as const,
     },
     {
-      name: t("graphicsFree"),
-      icon: Download,
-      onClick: () => navigate("/graphics"),
-      gradient: "green" as const,
-    },
-    {
       name: "Emojis",
       icon: Smile,
       onClick: () => navigate("/emojis"),
