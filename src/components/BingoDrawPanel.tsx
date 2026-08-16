@@ -308,7 +308,7 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
                   <div
                     key={num}
                     className={cn(
-                      "min-h-[42px] rounded-lg flex items-center justify-center text-sm font-bold transition-all",
+                      "h-full min-h-0 rounded-lg flex items-center justify-center text-sm font-bold transition-all",
                       isCurrent
                         ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
                         : isDrawn && winnerColor
