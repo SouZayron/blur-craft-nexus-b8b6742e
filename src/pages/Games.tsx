@@ -308,13 +308,12 @@ export const Games = () => {
         </div>
 
         <div className={`grid ${isMultiPickGame ? 'gap-1 flex-1 min-h-0 h-full grid-cols-5 grid-rows-[repeat(14,minmax(0,1fr))] sm:grid-cols-7 sm:grid-rows-[repeat(10,minmax(0,1fr))] lg:grid-cols-10 lg:grid-rows-[repeat(7,minmax(0,1fr))]' : 'gap-3 grid-cols-3 sm:grid-cols-5 md:grid-cols-6'}`}>
-          {renderItems.map((item, idx) => {
+          {renderItems.map((item) => {
             const taken = takenValues.includes(item);
             const owner = getPickOwner(item);
             const isMine = owner?.playerId === currentPlayer.id;
             const isCopied = copiedKey === item;
             const isDisabled = taken || loading || reachedLimit;
-            const grad = BLOCK_GRADIENTS[idx % BLOCK_GRADIENTS.length];
             const handleClick = () => {
               if (isDisabled || isMine) return;
               handleSelectBlock(item);
@@ -328,26 +327,27 @@ export const Games = () => {
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } }}
                 aria-disabled={isDisabled}
                 className={`
-                  relative flex h-full min-h-0 flex-col items-center justify-center select-none overflow-hidden transition-all duration-300 text-white
+                  relative flex h-full min-h-0 flex-col items-center justify-center select-none overflow-hidden transition-all duration-300
                   ${isMultiPickGame ? 'rounded-md p-1' : 'rounded-xl p-3 min-h-[80px]'}
-                  bg-gradient-to-br ${grad}
+                  bg-white/10 backdrop-blur-md border border-purple-300/20
+                  hover:border-purple-300/40
                   ${isMine
-                    ? 'ring-2 ring-green-400 cursor-default'
+                    ? 'ring-2 ring-green-400 cursor-default bg-green-500/15 border-green-400/40'
                     : taken
-                      ? 'opacity-50 grayscale cursor-not-allowed'
+                      ? 'opacity-60 grayscale cursor-not-allowed bg-white/5'
                       : reachedLimit
-                        ? 'opacity-50 cursor-not-allowed'
-                        : 'cursor-pointer hover:brightness-110'
+                        ? 'opacity-60 cursor-not-allowed bg-white/5'
+                        : 'cursor-pointer hover:bg-white/15'
                   }
                 `}
               >
                 {isMultiPickGame ? (
-                  <span className="text-xs sm:text-sm lg:text-base font-bold text-white text-center leading-tight drop-shadow">{item}</span>
+                  <span className="text-xs sm:text-sm lg:text-base font-bold text-foreground text-center leading-tight drop-shadow">{item}</span>
                 ) : (
-                  <span className="text-2xl font-bold font-mono text-white drop-shadow">{item}</span>
+                  <span className="text-2xl font-bold font-mono text-foreground drop-shadow">{item}</span>
                 )}
                 {owner && (
-                  <span className={`${isMultiPickGame ? 'text-[7px] mt-0.5 leading-none' : 'text-[10px] mt-1'} truncate max-w-full font-semibold ${isMine ? 'text-green-200' : 'text-white/90'}`}>
+                  <span className={`${isMultiPickGame ? 'text-xs mt-0.5 leading-none' : 'text-sm mt-1'} truncate max-w-full font-semibold ${isMine ? 'text-green-400' : 'text-muted-foreground'}`}>
                     {owner.name}
                   </span>
                 )}
