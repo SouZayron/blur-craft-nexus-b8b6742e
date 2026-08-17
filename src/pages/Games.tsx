@@ -342,9 +342,9 @@ export const Games = () => {
                 `}
               >
                 {isMultiPickGame ? (
-                  <span className="text-xs sm:text-sm lg:text-base font-bold text-foreground text-center leading-tight drop-shadow">{item}</span>
+                  <span className={`text-xs sm:text-sm lg:text-base font-bold text-center leading-tight ${isMine ? 'bg-gradient-to-r from-purple-400 via-pink-300 to-purple-400 bg-clip-text text-transparent bg-[length:200%_100%] animate-gradient-x' : 'text-foreground drop-shadow'}`}>{item}</span>
                 ) : (
-                  <span className="text-2xl font-bold font-mono text-foreground drop-shadow">{item}</span>
+                  <span className={`text-2xl font-bold font-mono ${isMine ? 'bg-gradient-to-r from-purple-400 via-pink-300 to-purple-400 bg-clip-text text-transparent bg-[length:200%_100%] animate-gradient-x' : 'text-foreground drop-shadow'}`}>{item}</span>
                 )}
                 {owner && (
                   <span className={`${isMultiPickGame ? 'text-xs mt-0.5 leading-none' : 'text-sm mt-1'} truncate max-w-full font-semibold ${isMine ? 'text-green-400' : 'text-muted-foreground'}`}>
