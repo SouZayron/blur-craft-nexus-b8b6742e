@@ -168,7 +168,9 @@ export const Control = () => {
   const approvedPlayers = players.filter(p => p.is_approved);
 
   const openRoom = rooms.find(r => r.is_open) || null;
-  const activeRoom = openRoom;
+  // A roleta continua no último jogo selecionado mesmo após fechar as inscrições
+  const activeRoom = (selectedRoomId ? rooms.find(r => r.id === selectedRoomId) : null) || openRoom;
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-4">
