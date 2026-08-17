@@ -288,7 +288,7 @@ export const Games = () => {
 
 
   return (
-    <div className={`${isMultiPickGame ? 'h-screen overflow-hidden flex flex-col' : 'min-h-screen'} bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-2`}>
+    <div className={`${isMultiPickGame ? 'h-screen overflow-hidden flex flex-col' : 'min-h-screen'} bg-cover bg-center bg-no-repeat bg-fixed p-2`} style={{ backgroundImage: 'linear-gradient(to bottom right, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("https://xatimg.com/image/hGrh1zvn96VL.png")' }}>
       <div className={`${isMultiPickGame ? 'flex-1 min-h-0 flex flex-col gap-2 max-w-[98vw]' : 'max-w-6xl'} mx-auto w-full`}>
         <div className={`text-center ${isMultiPickGame ? 'mb-1 flex-shrink-0' : 'mb-6'}`}>
           <h1 className={`${isMultiPickGame ? 'text-lg md:text-xl' : 'text-3xl'} font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent ${isMultiPickGame ? 'mb-0.5' : 'mb-2'}`}>
