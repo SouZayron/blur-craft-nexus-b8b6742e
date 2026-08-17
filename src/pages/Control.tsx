@@ -256,13 +256,14 @@ export const Control = () => {
 
           {/* ===== GAMES ===== */}
           <TabsContent value="games" className="mt-6 space-y-6">
-            {picks.length > 0 && (
+            {openRoom && picks.some(p => p.room_id === openRoom.id) && (
               <div className="backdrop-blur-xl bg-white/5 border border-purple-500/30 rounded-2xl p-4 shadow-xl">
                 <h2 className="text-base font-bold text-purple-400 mb-3 flex items-center gap-2">
-                  🎯 Jogadores que Selecionaram ({picks.length})
+                  🎯 Jogadores que Selecionaram ({picks.filter(p => p.room_id === openRoom.id).length})
                 </h2>
                 <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-                  {rooms.filter(r => picks.some(p => p.room_id === r.id)).map(room => {
+                  {rooms.filter(r => r.id === openRoom.id).map(room => {
+
                     const roomPicks = picks.filter(p => p.room_id === room.id);
                     const gameName = GAME_NAMES[room.game_type] || room.game_type;
                     const gameIcon = GAME_ICONS[room.game_type] || "🎮";
