@@ -4,10 +4,29 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { GAME_NAMES, GAME_ICONS, getGameItems, isItemGame } from "@/data/gameData";
+import { GAME_NAMES, GAME_ICONS, getGameItems, isItemGame, getPowerIconUrl } from "@/data/gameData";
 import { Lock, Power, PowerOff, UserCheck, Trash2, Users, RefreshCw } from "lucide-react";
 import { BingoDrawPanel } from "@/components/BingoDrawPanel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+const PowerCombo = ({ values }: { values: string[] }) => (
+  <span className="inline-flex items-center gap-1.5 flex-wrap">
+    {values.map((v, i) => (
+      <span key={`${v}-${i}`} className="inline-flex items-center gap-1">
+        <img
+          src={getPowerIconUrl(v)}
+          alt={`Power ${v}`}
+          width={30}
+          height={30}
+          loading="lazy"
+          className="w-[30px] h-[30px] object-contain"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+        />
+        <span>{v}</span>
+      </span>
+    ))}
+  </span>
+);
 
 interface GameRoom {
   id: string;
@@ -287,7 +306,7 @@ export const Control = () => {
                               return (
                                 <div key={playerId} className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-lg text-xs">
                                   <span className="text-foreground font-semibold">{player?.name || '?'}{player?.xat_id ? ` (${player.xat_id})` : ''}</span>
-                                  <span className="text-purple-300">→ {combo}</span>
+                                  <span className="text-purple-300 flex items-center gap-1">→ {room.game_type === 'powers' ? <PowerCombo values={playerPicks.map(p => p.pick_value)} /> : combo}</span>
                                   <Button onClick={() => handleRemovePlayerPicksInRoom(playerId, room.id)} size="sm" variant="ghost" className="h-5 w-5 p-0 text-red-400 hover:text-red-300">
                                     <Trash2 className="w-3 h-3" />
                                   </Button>
@@ -365,7 +384,7 @@ export const Control = () => {
                             return (
                               <div key={playerId} className="flex items-center justify-between text-xs backdrop-blur-md bg-white/5 px-2 py-1.5 border border-white/5 rounded-lg gap-2">
                                 <span className="text-foreground truncate font-semibold">{player?.name || '?'}{player?.xat_id ? ` (${player.xat_id})` : ''}</span>
-                                <span className="text-muted-foreground ml-2 truncate">{combo}</span>
+                                <span className="text-muted-foreground ml-2 truncate flex items-center gap-1">{room.game_type === 'powers' ? <PowerCombo values={playerPicks.map(p => p.pick_value)} /> : combo}</span>
                                 <Button onClick={() => handleRemovePlayerPicksInRoom(playerId, room.id)} size="sm" variant="ghost" className="h-5 w-5 p-0 text-red-400 hover:text-red-300 shrink-0">
                                   <Trash2 className="w-3 h-3" />
                                 </Button>

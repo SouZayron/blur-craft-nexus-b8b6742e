@@ -412,3 +412,7 @@ export const BLOCK_GRADIENTS = [
   "from-orange-800 to-orange-400",
   "from-red-800 to-red-400",
 ];
+
+// URL da imagem do power (xat smilies)
+export const getPowerIconUrl = (name: string): string =>
+  `https://xat.com/images/smw/${name.toLowerCase().replace(/\s+/g, "")}.png`;
