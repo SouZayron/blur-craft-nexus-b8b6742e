@@ -341,6 +341,17 @@ export const Games = () => {
                   }
                 `}
               >
+                {activeRoom.game_type === 'powers' && (
+                  <img
+                    src={getPowerIconUrl(item)}
+                    alt={`Power ${item}`}
+                    width={30}
+                    height={30}
+                    loading="lazy"
+                    className="w-[30px] h-[30px] object-contain mb-0.5"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                  />
+                )}
                 {isMultiPickGame ? (
                   <span className={`text-xs sm:text-sm lg:text-base font-bold text-center leading-tight ${isMine ? 'bg-gradient-to-r from-purple-400 via-pink-300 to-purple-400 bg-clip-text text-transparent bg-[length:200%_100%] animate-gradient-x' : 'text-foreground drop-shadow'}`}>{item}</span>
                 ) : (
