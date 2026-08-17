@@ -57,6 +57,14 @@ export const Control = () => {
     tables: ["game_rooms", "game_picks", "game_players"],
   });
 
+  // Mantém a roleta no jogo aberto mais recente (só troca quando outro jogo é aberto)
+  useEffect(() => {
+    const open = rooms.find(r => r.is_open);
+    if (open && open.id !== selectedRoomId) setSelectedRoomId(open.id);
+  }, [rooms, selectedRoomId]);
+
+
+
   const handleLogin = () => {
     if (password === "7845") {
       setIsAuthenticated(true);
