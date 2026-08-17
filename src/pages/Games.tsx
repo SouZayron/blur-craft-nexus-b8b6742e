@@ -212,7 +212,7 @@ export const Games = () => {
 
   if (!currentPlayer) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed flex items-center justify-center p-4" style={{ backgroundImage: 'linear-gradient(to bottom right, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("https://xatimg.com/image/hGrh1zvn96VL.png")' }}>
         <div className="w-full max-w-md backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl">
           <div className="text-center mb-6">
             <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4 shadow-lg shadow-purple-500/25">
@@ -247,7 +247,7 @@ export const Games = () => {
 
   if (!currentPlayer.is_approved) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed flex items-center justify-center p-4" style={{ backgroundImage: 'linear-gradient(to bottom right, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("https://xatimg.com/image/hGrh1zvn96VL.png")' }}>
         <div className="w-full max-w-md backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl text-center">
           <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center mb-4 animate-pulse shadow-lg shadow-yellow-500/25">
             <Clock className="w-8 h-8 text-white" />
@@ -264,7 +264,7 @@ export const Games = () => {
 
   if (!activeRoom || !activeRoom.is_open) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed flex items-center justify-center p-4" style={{ backgroundImage: 'linear-gradient(to bottom right, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("https://xatimg.com/image/hGrh1zvn96VL.png")' }}>
         <div className="w-full max-w-md backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl text-center">
           <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center mb-4">
             <Clock className="w-8 h-8 text-white" />
@@ -288,7 +288,7 @@ export const Games = () => {
 
 
   return (
-    <div className={`${isMultiPickGame ? 'h-screen overflow-hidden flex flex-col' : 'min-h-screen'} bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-2`}>
+    <div className={`${isMultiPickGame ? 'h-screen overflow-hidden flex flex-col' : 'min-h-screen'} bg-cover bg-center bg-no-repeat bg-fixed p-2`} style={{ backgroundImage: 'linear-gradient(to bottom right, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("https://xatimg.com/image/hGrh1zvn96VL.png")' }}>
       <div className={`${isMultiPickGame ? 'flex-1 min-h-0 flex flex-col gap-2 max-w-[98vw]' : 'max-w-6xl'} mx-auto w-full`}>
         <div className={`text-center ${isMultiPickGame ? 'mb-1 flex-shrink-0' : 'mb-6'}`}>
           <h1 className={`${isMultiPickGame ? 'text-lg md:text-xl' : 'text-3xl'} font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent ${isMultiPickGame ? 'mb-0.5' : 'mb-2'}`}>
