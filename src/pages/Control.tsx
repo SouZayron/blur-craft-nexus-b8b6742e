@@ -68,9 +68,11 @@ export const Control = () => {
   const handleOpenGame = async (roomId: string) => {
     await supabase.from("game_rooms").update({ is_open: false }).eq("is_open", true);
     await supabase.from("game_rooms").update({ is_open: true }).eq("id", roomId);
+    setSelectedRoomId(roomId);
     await fetchData();
     toast({ title: "Jogo aberto!" });
   };
+
 
   const handleCloseGame = async (roomId: string) => {
     await supabase.from("game_rooms").update({ is_open: false }).eq("id", roomId);
