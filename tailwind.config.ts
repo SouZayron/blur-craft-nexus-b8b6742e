@@ -100,12 +100,17 @@ export default {
           "0%, 100%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(0, 166, 147, 0.4)" },
           "50%": { transform: "scale(1.03)", boxShadow: "0 0 20px 5px rgba(0, 166, 147, 0.3)" },
         },
+        "gradient-x": {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-scale": "pulse-scale 2s ease-in-out infinite",
         "pulse-slow": "pulse-slow 2.5s ease-in-out infinite",
+        "gradient-x": "gradient-x 3s ease-in-out infinite",
       },
       boxShadow: {
         'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
