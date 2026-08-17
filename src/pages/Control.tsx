@@ -35,7 +35,9 @@ export const Control = () => {
   const [rooms, setRooms] = useState<GameRoom[]>([]);
   const [players, setPlayers] = useState<GamePlayer[]>([]);
   const [picks, setPicks] = useState<GamePick[]>([]);
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const { toast } = useToast();
+
 
   const fetchData = useCallback(async () => {
     const [roomsRes, playersRes, picksRes] = await Promise.all([
