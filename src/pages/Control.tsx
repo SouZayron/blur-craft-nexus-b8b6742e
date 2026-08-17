@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +35,9 @@ export const Control = () => {
   const [rooms, setRooms] = useState<GameRoom[]>([]);
   const [players, setPlayers] = useState<GamePlayer[]>([]);
   const [picks, setPicks] = useState<GamePick[]>([]);
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const { toast } = useToast();
+
 
   const fetchData = useCallback(async () => {
     const [roomsRes, playersRes, picksRes] = await Promise.all([
@@ -55,6 +57,14 @@ export const Control = () => {
     tables: ["game_rooms", "game_picks", "game_players"],
   });
 
+  // Mantém a roleta no jogo aberto mais recente (só troca quando outro jogo é aberto)
+  useEffect(() => {
+    const open = rooms.find(r => r.is_open);
+    if (open && open.id !== selectedRoomId) setSelectedRoomId(open.id);
+  }, [rooms, selectedRoomId]);
+
+
+
   const handleLogin = () => {
     if (password === "7845") {
       setIsAuthenticated(true);
@@ -66,9 +76,11 @@ export const Control = () => {
   const handleOpenGame = async (roomId: string) => {
     await supabase.from("game_rooms").update({ is_open: false }).eq("is_open", true);
     await supabase.from("game_rooms").update({ is_open: true }).eq("id", roomId);
+    setSelectedRoomId(roomId);
     await fetchData();
     toast({ title: "Jogo aberto!" });
   };
+
 
   const handleCloseGame = async (roomId: string) => {
     await supabase.from("game_rooms").update({ is_open: false }).eq("id", roomId);
@@ -164,7 +176,9 @@ export const Control = () => {
   const approvedPlayers = players.filter(p => p.is_approved);
 
   const openRoom = rooms.find(r => r.is_open) || null;
-  const activeRoom = openRoom;
+  // A roleta continua no último jogo selecionado mesmo após fechar as inscrições
+  const activeRoom = (selectedRoomId ? rooms.find(r => r.id === selectedRoomId) : null) || openRoom;
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-4">
@@ -250,13 +264,14 @@ export const Control = () => {
 
           {/* ===== GAMES ===== */}
           <TabsContent value="games" className="mt-6 space-y-6">
-            {picks.length > 0 && (
+            {openRoom && picks.some(p => p.room_id === openRoom.id) && (
               <div className="backdrop-blur-xl bg-white/5 border border-purple-500/30 rounded-2xl p-4 shadow-xl">
                 <h2 className="text-base font-bold text-purple-400 mb-3 flex items-center gap-2">
-                  🎯 Jogadores que Selecionaram ({picks.length})
+                  🎯 Jogadores que Selecionaram ({picks.filter(p => p.room_id === openRoom.id).length})
                 </h2>
                 <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-                  {rooms.filter(r => picks.some(p => p.room_id === r.id)).map(room => {
+                  {rooms.filter(r => r.id === openRoom.id).map(room => {
+
                     const roomPicks = picks.filter(p => p.room_id === room.id);
                     const gameName = GAME_NAMES[room.game_type] || room.game_type;
                     const gameIcon = GAME_ICONS[room.game_type] || "🎮";
