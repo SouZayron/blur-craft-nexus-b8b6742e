@@ -110,6 +110,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-scale": "pulse-scale 2s ease-in-out infinite",
         "pulse-slow": "pulse-slow 2.5s ease-in-out infinite",
+        "gradient-x": "gradient-x 3s ease-in-out infinite",
       },
       boxShadow: {
         'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
