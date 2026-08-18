@@ -238,6 +238,8 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
   const remaining = allItems.length - drawnItems.length;
   const gameLabel = activeRoom ? (GAME_NAMES[activeRoom.game_type] || activeRoom.game_type) : "Aguardando jogo";
   const gameIcon = activeRoom ? (GAME_ICONS[activeRoom.game_type] || "🎮") : "⏳";
+  const isPowers = gameType === "powers";
+  const displayItem = (item: string) => (isPowers ? formatPowerCode(item) : item);
 
   const currentEmoji = useMemo(() => {
     if (!currentItem || !isItemBased) return null;
