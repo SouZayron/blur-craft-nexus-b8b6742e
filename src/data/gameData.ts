@@ -416,3 +416,63 @@ export const BLOCK_GRADIENTS = [
 // URL da imagem do power (xat smilies)
 export const getPowerIconUrl = (name: string): string =>
   `https://xat.com/images/smw/${name.toLowerCase().replace(/\s+/g, "")}.png`;
+
+// ===== JOGOS: COMIDAS, SNACKS, CANTORES/BANDAS =====
+
+export const FOODS = [
+  "Feijoada","Moqueca","Vatapá","Caruru","Acarajé","Abará","Sarapatel","Buchada","Panelada","Dobradinha",
+  "Galinhada","Canjiquinha","Tutu","Angu","Virado","Barreado","Entrevero","Rubacão","Arrumadinho","Baião",
+  "Cuscuz","Tacacá","Maniçoba","Damurida","Caldeirada","Peixada","Pirão","Escondidinho","Picadinho","Ensopado",
+  "Cozido","Churrasco","Costelada","Rabada","Matambre","Quibebe","Mojica","Sarravulho","Sobá","Paçoca",
+  "Fricassê","Estrogonofe","Lasanha","Nhoque","Panqueca","Risoto","Polenta","Omelete","Quiche","Empadão",
+  "Esfiha","Quibe","Coxinha","Pastel","Parmegiana","Milanesa","Escabeche","Carneirada","Vacaolada","Leitoa",
+  "Pernil","Lombo","Linguiçada","Calabresada","Feijão-tropeiro","Arrozcarreteiro","Arrozmaluco","Macarronada","Maionese","Salpicão"
+];
+
+export const SNACKS = [
+  "Doritos","Ruffles","Cheetos","Fandangos","Cebolitos","Baconzitos","Torcida","Fofura","PingoD'Ouro","Stiksy",
+  "Skiny","Pippo's","Yokitos","PopCorners","Pringles","Takis","Lay's","Tostitos","Sensações","Bolitos",
+  "eQlibri","Micos","Crony","Refinata","Peticitos","Anelitos","Sullper","Kró","Fabito's","Presuntinho",
+  "Queijinho","Crocantíssimo","Crokíssimo","Mendorato","Pettiz","Brazitos","Piraquê","Visconti","Yoki","Dori",
+  "KiKrocantes","Valentina","LongChips","NutsClub","FitFood","Crunchy","Dippas","Zambinos","Stax","Poffets",
+  "Opa","Pegaditos","Becão","Bicão","Lanchinhos","Patas","Lua","Onda","Bola","TiraOnda",
+  "SweetChili","CoolRanch","Nacho","Picanha","Churrasco","Requeijão","Presunto","Cheddar","Barbecue","SourCream"
+];
+
+export const SINGERS = [
+  "Adele","Anitta","Beyoncé","Rihanna","Madonna","Shakira","Sia","Lorde","Cher","Sting",
+  "Seal","Mika","Pitbull","Drake","Eminem","Ludmilla","Iza","Gloria","Pabllo","Jão",
+  "Djavan","Alcione","Baco","Criolo","Projota","Ferrugem","Dilsinho","Belo","Pericles","Thiaguinho",
+  "Ivete","Lexa","Luan","Mumuzinho","Zeca","Nando","Fafá","Diogo","Skank","JotaQuest",
+  "RoupaNova","Titãs","Paralamas","CapitalInicial","Natiruts","Maneva","Melim","Lagum","Fresno","Scalene",
+  "Pitty","Sepultura","Angra","Korn","Muse","Queen","Rush","Kiss","Oasis","Blur",
+  "Keane","Coldplay","Radiohead","Slipknot","Metallica","Nirvana","Paramore","Evanescence","Roxette","ABBA"
+];
+
+Object.assign(GAME_NAMES, {
+  foods: "Jogo das Comidas",
+  snacks: "Jogo dos Snacks",
+  singers: "Jogo dos Cantores e Bandas",
+});
+
+Object.assign(GAME_ICONS, {
+  foods: "🍲",
+  snacks: "🍿",
+  singers: "🎤",
+});
+
+Object.assign(ITEM_GAMES, {
+  foods: FOODS,
+  snacks: SNACKS,
+  singers: SINGERS,
+});
+
+Object.assign(GAME_ITEM_LABEL, {
+  foods: "comidas",
+  snacks: "snacks",
+  singers: "cantores/bandas",
+});
+
+/** Formato de exibição do power sorteado: (nomedopower#) */
+export const formatPowerCode = (name: string): string =>
+  `(${name.toLowerCase().replace(/\s+/g, "")}#)`;
