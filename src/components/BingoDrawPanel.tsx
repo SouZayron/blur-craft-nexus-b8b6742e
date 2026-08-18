@@ -336,36 +336,41 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
 
       {/* RIGHT: draw panel */}
       <div className="lg:col-span-5 flex flex-col gap-3 min-h-0">
-        {/* Current item */}
+        {/* Current item + copy */}
         <div className="shrink-0 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-3 flex flex-col items-center">
-          <p className="text-xs text-muted-foreground mb-1">
+          <p className="text-xs text-muted-foreground mb-2">
             {gameIcon} {gameLabel} • {roomPicks.length} seleções
           </p>
-          <div
-            className={cn(
-              "w-28 h-28 rounded-2xl text-white flex flex-col items-center justify-center font-black shadow-lg transition-all duration-500 px-2 text-center",
-              currentGradient ? cn("bg-gradient-to-br shadow-black/20", currentGradient) : "bg-labxat-pink/90 shadow-labxat-pink/30",
-              isAnimating && !currentGradient && "scale-110"
-            )}
-          >
-            {isItemBased && currentItem ? (
-              <>
-                {isPowers ? (
-                  <img src={`https://xat.com/images/smw/${currentItem.toLowerCase().replace(/\s+/g, "")}.png`} alt={currentItem} className="w-8 h-8 object-contain drop-shadow" loading="lazy" />
-                ) : (
-                  <span className="text-4xl leading-none">{currentEmoji}</span>
-                )}
-                <span className="text-xs mt-1 leading-tight break-all">{displayItem(currentItem)}</span>
-              </>
-            ) : (
-              <span className="text-5xl">{currentItem ?? "—"}</span>
-            )}
-          </div>
-          {isItemBased && currentItem && (
-            <Button onClick={() => copyText(displayItem(currentItem))} className="mt-2 w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 text-white font-bold h-7 text-xs">
-              <Copy className="w-3.5 h-3.5 mr-2" /> Copiar: {displayItem(currentItem)}
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={() => copyText(currentItem ? displayItem(currentItem) : "—")}
+              className="w-28 h-28 rounded-2xl p-0 flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 hover:opacity-90 text-white font-bold shadow-lg shadow-blue-500/30"
+              title="Copiar sorteado"
+            >
+              <Copy className="w-10 h-10" />
+              <span className="text-[10px] mt-1">Copiar</span>
             </Button>
-          )}
+            <div
+              className={cn(
+                "w-28 h-28 rounded-2xl text-white flex flex-col items-center justify-center font-black shadow-lg transition-all duration-500 px-2 text-center",
+                currentGradient ? cn("bg-gradient-to-br shadow-black/20", currentGradient) : "bg-labxat-pink/90 shadow-labxat-pink/30",
+                isAnimating && !currentGradient && "scale-110"
+              )}
+            >
+              {isItemBased && currentItem ? (
+                <>
+                  {isPowers ? (
+                    <img src={`https://xat.com/images/smw/${currentItem.toLowerCase().replace(/\s+/g, "")}.png`} alt={currentItem} className="w-8 h-8 object-contain drop-shadow" loading="lazy" />
+                  ) : (
+                    <span className="text-4xl leading-none">{currentEmoji}</span>
+                  )}
+                  <span className="text-xs mt-1 leading-tight break-all">{displayItem(currentItem)}</span>
+                </>
+              ) : (
+                <span className="text-5xl">{currentItem ?? "—"}</span>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Controls */}
