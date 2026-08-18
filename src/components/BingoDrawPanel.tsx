@@ -350,16 +350,20 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
           >
             {isItemBased && currentItem ? (
               <>
-                <span className="text-4xl leading-none">{currentEmoji}</span>
-                <span className="text-xs mt-1 leading-tight">{currentItem}</span>
+                {isPowers ? (
+                  <img src={`https://xat.com/images/smw/${currentItem.toLowerCase().replace(/\s+/g, "")}.png`} alt={currentItem} className="w-8 h-8 object-contain drop-shadow" loading="lazy" />
+                ) : (
+                  <span className="text-4xl leading-none">{currentEmoji}</span>
+                )}
+                <span className="text-xs mt-1 leading-tight break-all">{displayItem(currentItem)}</span>
               </>
             ) : (
               <span className="text-5xl">{currentItem ?? "—"}</span>
             )}
           </div>
           {isItemBased && currentItem && (
-            <Button onClick={() => copyText(currentItem)} className="mt-2 w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 text-white font-bold h-7 text-xs">
-              <Copy className="w-3.5 h-3.5 mr-2" /> Copiar: {currentItem}
+            <Button onClick={() => copyText(displayItem(currentItem))} className="mt-2 w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 text-white font-bold h-7 text-xs">
+              <Copy className="w-3.5 h-3.5 mr-2" /> Copiar: {displayItem(currentItem)}
             </Button>
           )}
         </div>
