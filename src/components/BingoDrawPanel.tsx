@@ -10,6 +10,7 @@ import {
   isItemGame,
   getItemEmoji,
   getItemGradient,
+  formatPowerCode,
 } from "@/data/gameData";
 
 const TOTAL_NUMBERS = 90;
@@ -237,6 +238,8 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
   const remaining = allItems.length - drawnItems.length;
   const gameLabel = activeRoom ? (GAME_NAMES[activeRoom.game_type] || activeRoom.game_type) : "Aguardando jogo";
   const gameIcon = activeRoom ? (GAME_ICONS[activeRoom.game_type] || "🎮") : "⏳";
+  const isPowers = gameType === "powers";
+  const displayItem = (item: string) => (isPowers ? formatPowerCode(item) : item);
 
   const currentEmoji = useMemo(() => {
     if (!currentItem || !isItemBased) return null;
@@ -347,16 +350,20 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
           >
             {isItemBased && currentItem ? (
               <>
-                <span className="text-4xl leading-none">{currentEmoji}</span>
-                <span className="text-xs mt-1 leading-tight">{currentItem}</span>
+                {isPowers ? (
+                  <img src={`https://xat.com/images/smw/${currentItem.toLowerCase().replace(/\s+/g, "")}.png`} alt={currentItem} className="w-8 h-8 object-contain drop-shadow" loading="lazy" />
+                ) : (
+                  <span className="text-4xl leading-none">{currentEmoji}</span>
+                )}
+                <span className="text-xs mt-1 leading-tight break-all">{displayItem(currentItem)}</span>
               </>
             ) : (
               <span className="text-5xl">{currentItem ?? "—"}</span>
             )}
           </div>
           {isItemBased && currentItem && (
-            <Button onClick={() => copyText(currentItem)} className="mt-2 w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 text-white font-bold h-7 text-xs">
-              <Copy className="w-3.5 h-3.5 mr-2" /> Copiar: {currentItem}
+            <Button onClick={() => copyText(displayItem(currentItem))} className="mt-2 w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 text-white font-bold h-7 text-xs">
+              <Copy className="w-3.5 h-3.5 mr-2" /> Copiar: {displayItem(currentItem)}
             </Button>
           )}
         </div>
@@ -397,7 +404,7 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
                   )}
                   title={item || ""}
                 >
-                  <span className={cn("leading-tight truncate max-w-full", isItemBased ? "text-[9px]" : "text-xs")}>{item || "-"}</span>
+                  <span className={cn("leading-tight truncate max-w-full", isItemBased ? "text-[9px]" : "text-xs")}>{item ? displayItem(item) : "-"}</span>
                 </div>
               );
             })}
