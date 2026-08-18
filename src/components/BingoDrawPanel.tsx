@@ -404,7 +404,7 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
                   )}
                   title={item || ""}
                 >
-                  <span className={cn("leading-tight truncate max-w-full", isItemBased ? "text-[9px]" : "text-xs")}>{item || "-"}</span>
+                  <span className={cn("leading-tight truncate max-w-full", isItemBased ? "text-[9px]" : "text-xs")}>{item ? displayItem(item) : "-"}</span>
                 </div>
               );
             })}
