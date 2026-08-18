@@ -10,6 +10,7 @@ import {
   isItemGame,
   getItemEmoji,
   getItemGradient,
+  formatPowerCode,
 } from "@/data/gameData";
 
 const TOTAL_NUMBERS = 90;
