@@ -226,7 +226,11 @@ export const Control = () => {
             </TabsTrigger>
             <TabsTrigger value="games" className="flex-1">🎮 Games</TabsTrigger>
             <TabsTrigger value="roletas" className="flex-1">🎡 Roletas</TabsTrigger>
+            <TabsTrigger value="bomba" className="flex-1">
+              <Bomb className="w-4 h-4 mr-1.5 text-orange-400" /> Bomba
+            </TabsTrigger>
           </TabsList>
+
 
           {/* ===== CADASTROS ===== */}
           <TabsContent value="cadastros" className="mt-6 space-y-6">
