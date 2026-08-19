@@ -101,12 +101,12 @@ export const BombaAdminPanel = () => {
     setRolling(true);
     const pick = remaining[Math.floor(Math.random() * remaining.length)];
     const nextDrawn = [...drawn, pick];
-    const someoneWon = picks.some((p) => bombaAlive(p.numbers, nextDrawn).length === 1);
+    const allDrawn = BOMBA_NUMBERS.length - nextDrawn.length === 0;
     setTimeout(async () => {
       await patch({
         drawn: nextDrawn,
         last_drawn: pick,
-        status: someoneWon ? "finished" : "running",
+        status: allDrawn ? "finished" : "running",
       });
       setRolling(false);
     }, 900);
