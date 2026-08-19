@@ -194,6 +194,46 @@ export const BombaPlayerPanel = ({ playerId, playerName }: Props) => {
           </div>
         </div>
       </div>
+
+      {/* Todos os jogadores */}
+      <div className="lg:col-span-12 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 shadow-xl">
+        <h3 className="text-sm font-bold text-foreground mb-3">👥 Jogadores na partida ({picks.length})</h3>
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {picks.length === 0 && <p className="text-xs text-muted-foreground">Ninguém registrou sua bomba ainda.</p>}
+          {picks.map((p) => {
+            const pAlive = bombaAlive(p.numbers, drawn);
+            const isDead = pAlive.length === 0;
+            const isWinner = state?.status === "finished" && pAlive.length === 1;
+            return (
+              <div
+                key={p.id}
+                className={`flex items-center justify-between gap-2 rounded-xl px-3 py-2 border backdrop-blur-md ${
+                  isWinner ? "bg-yellow-500/10 border-yellow-400/50" : isDead ? "bg-white/5 border-red-500/30 opacity-60" : "bg-white/5 border-white/10"
+                }`}
+              >
+                <span className="text-xs font-bold text-foreground truncate">
+                  {isWinner ? "🏆 " : isDead ? "💀 " : ""}{p.player_name}
+                  {p.player_id === playerId && <span className="text-[10px] text-purple-300"> (você)</span>}
+                </span>
+                <div className="flex gap-1 shrink-0">
+                  {p.numbers.map((n) => (
+                    <span
+                      key={n}
+                      className={`w-6 h-6 rounded-md font-mono text-[10px] flex items-center justify-center border ${
+                        drawn.includes(n)
+                          ? "bg-red-500/25 text-red-300 border-red-500/40 line-through"
+                          : "bg-green-500/15 text-green-300 border-green-400/40"
+                      }`}
+                    >
+                      {pad(n)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };
