@@ -58,6 +58,16 @@ export const BombaAdminPanel = () => {
     [picks, lastDrawn],
   );
 
+  const rounds = useMemo(
+    () =>
+      drawn.map((n, i) => ({
+        round: i + 1,
+        number: n,
+        hits: picks.filter((p) => p.numbers.includes(n)).map((p) => p.player_name),
+      })),
+    [drawn, picks],
+  );
+
   const winners = useMemo(
     () => (state?.status === "finished" ? picks.filter((p) => bombaAlive(p.numbers, drawn).length === 1) : []),
     [picks, drawn, state?.status],
