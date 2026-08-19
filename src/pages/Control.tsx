@@ -448,7 +448,15 @@ export const Control = () => {
               )}
             </div>
           </TabsContent>
+
+          {/* ===== BOMBA ===== */}
+          <TabsContent value="bomba" className="mt-6 h-[calc(100vh-190px)] min-h-0">
+            <div className="h-full min-h-0">
+              <BombaAdminPanel />
+            </div>
+          </TabsContent>
         </Tabs>
+
       </div>
     </div>
   );
