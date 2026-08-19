@@ -67,6 +67,13 @@ export const Games = () => {
       .select("*");
     setAllPlayers((playersData || []) as GamePlayer[]);
 
+    const { data: bombaData } = await supabase
+      .from("bomba_state")
+      .select("is_open, status")
+      .eq("id", 1)
+      .maybeSingle();
+    setBombaState(bombaData as { is_open: boolean; status: string } | null);
+
     const savedId = localStorage.getItem("game_player_id");
     if (savedId) {
       const { data: playerData } = await supabase
@@ -86,8 +93,9 @@ export const Games = () => {
   useRealtimeTables({
     channelName: "games-page-realtime",
     onSync: fetchData,
-    tables: ["game_rooms", "game_picks", "game_players"],
+    tables: ["game_rooms", "game_picks", "game_players", "bomba_state"],
   });
+
 
   const handleJoin = async () => {
     if (!playerName.trim()) {
