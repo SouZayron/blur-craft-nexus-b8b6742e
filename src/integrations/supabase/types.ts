@@ -514,6 +514,65 @@ export type Database = {
         }
         Relationships: []
       }
+      bomba_picks: {
+        Row: {
+          created_at: string
+          id: string
+          numbers: number[]
+          player_id: string
+          player_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          numbers: number[]
+          player_id: string
+          player_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          numbers?: number[]
+          player_id?: string
+          player_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bomba_picks_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: true
+            referencedRelation: "game_players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bomba_state: {
+        Row: {
+          drawn: number[]
+          id: number
+          is_open: boolean
+          last_drawn: number | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          drawn?: number[]
+          id?: number
+          is_open?: boolean
+          last_drawn?: number | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          drawn?: number[]
+          id?: number
+          is_open?: boolean
+          last_drawn?: number | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       game_picks: {
         Row: {
           created_at: string
