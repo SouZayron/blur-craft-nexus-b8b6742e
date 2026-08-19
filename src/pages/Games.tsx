@@ -5,7 +5,9 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
 import { GAME_NAMES, GAME_ICONS, GAME_ITEM_LABEL, getGameItems, isItemGame, getPowerIconUrl } from "@/data/gameData";
+import { BombaPlayerPanel } from "@/components/BombaPlayerPanel";
 import { Copy, Check, Clock, Gamepad2, LogIn } from "lucide-react";
+
 
 interface GameRoom {
   id: string;
@@ -33,10 +35,12 @@ export const Games = () => {
   const [activeRoom, setActiveRoom] = useState<GameRoom | null>(null);
   const [picks, setPicks] = useState<GamePick[]>([]);
   const [allPlayers, setAllPlayers] = useState<GamePlayer[]>([]);
+  const [bombaState, setBombaState] = useState<{ is_open: boolean; status: string } | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const submittingRef = useRef(false);
   const { toast } = useToast();
+
 
   const fetchData = useCallback(async () => {
     const { data: roomData } = await supabase
@@ -63,6 +67,13 @@ export const Games = () => {
       .select("*");
     setAllPlayers((playersData || []) as GamePlayer[]);
 
+    const { data: bombaData } = await supabase
+      .from("bomba_state")
+      .select("is_open, status")
+      .eq("id", 1)
+      .maybeSingle();
+    setBombaState(bombaData as { is_open: boolean; status: string } | null);
+
     const savedId = localStorage.getItem("game_player_id");
     if (savedId) {
       const { data: playerData } = await supabase
@@ -82,8 +93,9 @@ export const Games = () => {
   useRealtimeTables({
     channelName: "games-page-realtime",
     onSync: fetchData,
-    tables: ["game_rooms", "game_picks", "game_players"],
+    tables: ["game_rooms", "game_picks", "game_players", "bomba_state"],
   });
+
 
   const handleJoin = async () => {
     if (!playerName.trim()) {
@@ -263,6 +275,18 @@ export const Games = () => {
   }
 
   if (!activeRoom || !activeRoom.is_open) {
+    // Se o Bomba Atômica estiver ativo, renderiza o painel do jogo
+    const isBombaActive = bombaState?.is_open || bombaState?.status === "running" || bombaState?.status === "finished";
+    if (isBombaActive && currentPlayer) {
+      return (
+        <div className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed p-2" style={{ backgroundImage: 'linear-gradient(to bottom right, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("https://xatimg.com/image/hGrh1zvn96VL.png")' }}>
+          <div className="max-w-6xl mx-auto w-full py-4">
+            <BombaPlayerPanel playerId={currentPlayer.id} playerName={currentPlayer.name} />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed flex items-center justify-center p-4" style={{ backgroundImage: 'linear-gradient(to bottom right, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("https://xatimg.com/image/hGrh1zvn96VL.png")' }}>
         <div className="w-full max-w-md backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl text-center">
@@ -275,6 +299,7 @@ export const Games = () => {
       </div>
     );
   }
+
 
   // --- GAME BOARD ---
   const gameName = GAME_NAMES[activeRoom.game_type] || activeRoom.game_type;

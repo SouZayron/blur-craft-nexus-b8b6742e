@@ -5,9 +5,11 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
 import { GAME_NAMES, GAME_ICONS, getGameItems, isItemGame, getPowerIconUrl } from "@/data/gameData";
-import { Lock, Power, PowerOff, UserCheck, Trash2, Users, RefreshCw } from "lucide-react";
+import { Lock, Power, PowerOff, UserCheck, Trash2, Users, RefreshCw, Bomb } from "lucide-react";
 import { BingoDrawPanel } from "@/components/BingoDrawPanel";
+import { BombaAdminPanel } from "@/components/BombaAdminPanel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 const PowerCombo = ({ values }: { values: string[] }) => (
   <span className="inline-flex items-center gap-1.5 flex-wrap">
@@ -224,7 +226,11 @@ export const Control = () => {
             </TabsTrigger>
             <TabsTrigger value="games" className="flex-1">🎮 Games</TabsTrigger>
             <TabsTrigger value="roletas" className="flex-1">🎡 Roletas</TabsTrigger>
+            <TabsTrigger value="bomba" className="flex-1">
+              <Bomb className="w-4 h-4 mr-1.5 text-orange-400" /> Bomba
+            </TabsTrigger>
           </TabsList>
+
 
           {/* ===== CADASTROS ===== */}
           <TabsContent value="cadastros" className="mt-6 space-y-6">
@@ -442,7 +448,15 @@ export const Control = () => {
               )}
             </div>
           </TabsContent>
+
+          {/* ===== BOMBA ===== */}
+          <TabsContent value="bomba" className="mt-6 h-[calc(100vh-190px)] min-h-0">
+            <div className="h-full min-h-0">
+              <BombaAdminPanel />
+            </div>
+          </TabsContent>
         </Tabs>
+
       </div>
     </div>
   );
