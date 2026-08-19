@@ -69,8 +69,8 @@ export const BombaAdminPanel = () => {
   );
 
   const winners = useMemo(
-    () => (state?.status === "finished" ? picks.filter((p) => bombaAlive(p.numbers, drawn).length === 1) : []),
-    [picks, drawn, state?.status],
+    () => picks.filter((p) => bombaAlive(p.numbers, drawn).length === 1),
+    [picks, drawn],
   );
 
   const patch = async (values: Partial<BombaState>) => {
