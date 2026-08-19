@@ -69,8 +69,8 @@ export const BombaAdminPanel = () => {
   );
 
   const winners = useMemo(
-    () => (state?.status === "finished" ? picks.filter((p) => bombaAlive(p.numbers, drawn).length === 1) : []),
-    [picks, drawn, state?.status],
+    () => picks.filter((p) => bombaAlive(p.numbers, drawn).length === 1),
+    [picks, drawn],
   );
 
   const patch = async (values: Partial<BombaState>) => {
@@ -101,12 +101,12 @@ export const BombaAdminPanel = () => {
     setRolling(true);
     const pick = remaining[Math.floor(Math.random() * remaining.length)];
     const nextDrawn = [...drawn, pick];
-    const someoneWon = picks.some((p) => bombaAlive(p.numbers, nextDrawn).length === 1);
+    const allDrawn = BOMBA_NUMBERS.length - nextDrawn.length === 0;
     setTimeout(async () => {
       await patch({
         drawn: nextDrawn,
         last_drawn: pick,
-        status: someoneWon ? "finished" : "running",
+        status: allDrawn ? "finished" : "running",
       });
       setRolling(false);
     }, 900);
@@ -283,7 +283,7 @@ export const BombaAdminPanel = () => {
             {picks.map((p) => {
               const alive = bombaAlive(p.numbers, drawn);
               const dead = p.numbers.filter((n) => drawn.includes(n));
-              const isWinner = state?.status === "finished" && alive.length === 1;
+              const isWinner = alive.length === 1;
               return (
                 <div key={p.id} className={`rounded-xl p-3 border backdrop-blur-md ${
                   isWinner ? "bg-yellow-500/10 border-yellow-400/50" : alive.length === 0 ? "bg-white/5 border-red-500/30 opacity-70" : "bg-white/5 border-white/10"}`}>
