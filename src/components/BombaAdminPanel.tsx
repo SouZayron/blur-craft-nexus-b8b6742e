@@ -312,6 +312,25 @@ export const BombaAdminPanel = () => {
             })}
           </div>
         </div>
+
+        {/* Histórico por rodada */}
+        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 shadow-xl max-h-64 flex flex-col">
+          <h4 className="text-sm font-bold text-foreground mb-2">📜 Histórico de rodadas</h4>
+          <div className="flex-1 min-h-0 overflow-y-auto pr-1 space-y-1.5">
+            {rounds.length === 0 && <p className="text-xs text-muted-foreground">Nenhuma rodada sorteada ainda.</p>}
+            {[...rounds].reverse().map((r) => (
+              <div key={r.round} className="flex items-start gap-2 rounded-lg bg-white/5 border border-white/10 px-2 py-1.5">
+                <span className="text-[10px] font-bold text-muted-foreground w-10 shrink-0 pt-1">#{r.round}</span>
+                <span className="w-8 h-8 shrink-0 rounded-lg bg-red-500/20 border border-red-500/40 text-red-300 font-mono text-sm flex items-center justify-center">
+                  {pad(r.number)}
+                </span>
+                <p className="text-[11px] text-foreground break-words flex-1 pt-1">
+                  {r.hits.length > 0 ? r.hits.join(" / ") : <span className="text-muted-foreground">Nenhum jogador atingido</span>}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
