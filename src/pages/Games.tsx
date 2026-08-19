@@ -275,6 +275,18 @@ export const Games = () => {
   }
 
   if (!activeRoom || !activeRoom.is_open) {
+    // Se o Bomba Atômica estiver ativo, renderiza o painel do jogo
+    const isBombaActive = bombaState?.is_open || bombaState?.status === "running" || bombaState?.status === "finished";
+    if (isBombaActive && currentPlayer) {
+      return (
+        <div className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed p-2" style={{ backgroundImage: 'linear-gradient(to bottom right, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("https://xatimg.com/image/hGrh1zvn96VL.png")' }}>
+          <div className="max-w-6xl mx-auto w-full py-4">
+            <BombaPlayerPanel playerId={currentPlayer.id} playerName={currentPlayer.name} />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed flex items-center justify-center p-4" style={{ backgroundImage: 'linear-gradient(to bottom right, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("https://xatimg.com/image/hGrh1zvn96VL.png")' }}>
         <div className="w-full max-w-md backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl text-center">
@@ -287,6 +299,7 @@ export const Games = () => {
       </div>
     );
   }
+
 
   // --- GAME BOARD ---
   const gameName = GAME_NAMES[activeRoom.game_type] || activeRoom.game_type;
