@@ -50,7 +50,7 @@ export const BombaPlayerPanel = ({ playerId, playerName }: Props) => {
   const drawn = state?.drawn || [];
   const myPick = picks.find((p) => p.player_id === playerId) || null;
   const alive = myPick ? bombaAlive(myPick.numbers, drawn) : [];
-  const winners = state?.status === "finished" ? picks.filter((p) => bombaAlive(p.numbers, drawn).length === 1) : [];
+  const winners = picks.filter((p) => bombaAlive(p.numbers, drawn).length === 1);
   const iWon = !!myPick && winners.some((w) => w.player_id === playerId);
 
   const toggle = (n: number) => {
@@ -175,7 +175,7 @@ export const BombaPlayerPanel = ({ playerId, playerName }: Props) => {
           </div>
         )}
 
-        {state?.status === "finished" && !iWon && winners.length > 0 && (
+        {!iWon && winners.length > 0 && (
           <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
             <p className="text-sm font-bold text-foreground">🏆 Vencedor{winners.length > 1 ? "es" : ""}</p>
             <p className="text-xs text-muted-foreground mt-1">{winners.map((w) => w.player_name).join(" / ")}</p>
@@ -203,7 +203,7 @@ export const BombaPlayerPanel = ({ playerId, playerName }: Props) => {
           {picks.map((p) => {
             const pAlive = bombaAlive(p.numbers, drawn);
             const isDead = pAlive.length === 0;
-            const isWinner = state?.status === "finished" && pAlive.length === 1;
+            const isWinner = pAlive.length === 1;
             return (
               <div
                 key={p.id}
