@@ -5,7 +5,9 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
 import { GAME_NAMES, GAME_ICONS, GAME_ITEM_LABEL, getGameItems, isItemGame, getPowerIconUrl } from "@/data/gameData";
+import { BombaPlayerPanel } from "@/components/BombaPlayerPanel";
 import { Copy, Check, Clock, Gamepad2, LogIn } from "lucide-react";
+
 
 interface GameRoom {
   id: string;
