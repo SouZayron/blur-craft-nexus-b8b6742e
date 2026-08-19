@@ -5,9 +5,11 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
 import { GAME_NAMES, GAME_ICONS, getGameItems, isItemGame, getPowerIconUrl } from "@/data/gameData";
-import { Lock, Power, PowerOff, UserCheck, Trash2, Users, RefreshCw } from "lucide-react";
+import { Lock, Power, PowerOff, UserCheck, Trash2, Users, RefreshCw, Bomb } from "lucide-react";
 import { BingoDrawPanel } from "@/components/BingoDrawPanel";
+import { BombaAdminPanel } from "@/components/BombaAdminPanel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 const PowerCombo = ({ values }: { values: string[] }) => (
   <span className="inline-flex items-center gap-1.5 flex-wrap">
