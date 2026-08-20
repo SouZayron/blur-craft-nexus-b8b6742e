@@ -282,35 +282,44 @@ export const BombaAdminPanel = () => {
           <h4 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
             <Users className="w-4 h-4 text-purple-400" /> Jogadores ({picks.length})
           </h4>
-          <div className="flex-1 min-h-0 overflow-y-auto pr-1 grid gap-2 sm:grid-cols-2">
+          <div className="flex-1 min-h-0 overflow-y-auto pr-1 grid gap-2 sm:grid-cols-2 lg:grid-cols-3 auto-rows-min">
             {picks.length === 0 && <p className="text-xs text-muted-foreground">Nenhum jogador registrou sua bomba ainda.</p>}
             {picks.map((p) => {
-              const alive = bombaAlive(p.numbers, drawn);
-              const dead = p.numbers.filter((n) => drawn.includes(n));
-              const isWinner = alive.length === 1;
+              const pAlive = bombaAlive(p.numbers, drawn);
+              const isDead = pAlive.length === 0;
+              const isWinner = finished && pAlive.length === 1;
               return (
-                <div key={p.id} className={`rounded-xl p-3 border backdrop-blur-md ${
-                  isWinner ? "bg-yellow-500/10 border-yellow-400/50" : alive.length === 0 ? "bg-white/5 border-red-500/30 opacity-70" : "bg-white/5 border-white/10"}`}>
-                  <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className="text-sm font-bold text-foreground truncate">{isWinner ? "🏆 " : ""}{p.player_name}</span>
-                    <Button onClick={() => handleRemovePick(p.id)} size="sm" variant="ghost" className="h-5 w-5 p-0 text-red-400 hover:text-red-300">
+                <div
+                  key={p.id}
+                  className={`flex items-center justify-between gap-2 rounded-xl px-3 py-2 border backdrop-blur-md ${
+                    isWinner ? "bg-yellow-500/10 border-yellow-400/50" : isDead ? "bg-white/5 border-red-500/30 opacity-60" : "bg-white/5 border-white/10"
+                  }`}
+                >
+                  <span className="text-xs font-bold text-foreground truncate flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => handleRemovePick(p.id)}
+                      className="text-red-400 hover:text-red-300 shrink-0"
+                      title="Remover jogador"
+                    >
                       <Trash2 className="w-3 h-3" />
-                    </Button>
-                  </div>
-                  <div className="flex flex-wrap gap-1 mb-1.5">
+                    </button>
+                    {isWinner ? "🏆 " : isDead ? "💀 " : ""}{p.player_name}
+                  </span>
+                  <div className="flex gap-1 shrink-0">
                     {p.numbers.map((n) => (
-                      <span key={n} className={`w-7 h-7 rounded-md font-mono text-xs flex items-center justify-center border ${
-                        drawn.includes(n) ? "bg-red-500/25 text-red-300 border-red-500/40 line-through" : "bg-green-500/15 text-green-300 border-green-400/40"}`}>
+                      <span
+                        key={n}
+                        className={`w-6 h-6 rounded-md font-mono text-[10px] flex items-center justify-center border ${
+                          drawn.includes(n)
+                            ? "bg-red-500/25 text-red-300 border-red-500/40 line-through"
+                            : "bg-green-500/15 text-green-300 border-green-400/40"
+                        }`}
+                      >
                         {pad(n)}
                       </span>
                     ))}
                   </div>
-                  <p className="text-[11px] text-muted-foreground">
-                    Eliminados: {dead.length ? dead.map(pad).join(" • ") : "—"} · Vivos: {alive.length ? alive.map(pad).join(" • ") : "—"}
-                  </p>
-                  <p className={`text-[11px] font-semibold ${alive.length === 1 ? "text-yellow-300" : alive.length === 0 ? "text-red-400" : "text-green-400"}`}>
-                    Status: {alive.length === 0 ? "Explodiu" : `${alive.length} número${alive.length > 1 ? "s" : ""} vivo${alive.length > 1 ? "s" : ""}`}
-                  </p>
                 </div>
               );
             })}
