@@ -105,7 +105,7 @@ export const BombaAdminPanel = () => {
     setRolling(true);
     const pick = remaining[Math.floor(Math.random() * remaining.length)];
     const nextDrawn = [...drawn, pick];
-    const allDrawn = BOMBA_NUMBERS.length - nextDrawn.length === 0;
+    const allDrawn = bombaFinished(nextDrawn);
     setTimeout(async () => {
       await patch({
         drawn: nextDrawn,
