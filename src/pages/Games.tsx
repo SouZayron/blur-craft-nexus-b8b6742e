@@ -275,9 +275,9 @@ export const Games = () => {
   }
 
   if (!activeRoom || !activeRoom.is_open) {
-    // Se o Bomba Atômica estiver ativo, renderiza o painel do jogo
-    const isBombaActive = bombaState?.is_open || bombaState?.status === "running" || bombaState?.status === "finished";
-    if (isBombaActive && currentPlayer) {
+    // Se o Bomba Atômica estiver com inscrições abertas, renderiza o painel do jogo
+    const isBombaOpen = bombaState?.is_open === true;
+    if (isBombaOpen && currentPlayer) {
       return (
         <div className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed p-2" style={{ backgroundImage: 'linear-gradient(to bottom right, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("https://xatimg.com/image/hGrh1zvn96VL.png")' }}>
           <div className="max-w-6xl mx-auto w-full py-4">
@@ -293,8 +293,8 @@ export const Games = () => {
           <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center mb-4">
             <Clock className="w-8 h-8 text-white" />
           </div>
-          <h2 className="text-xl font-bold text-foreground mb-2">Aguarde a Próxima Rodada</h2>
-          <p className="text-muted-foreground text-sm">Nenhum jogo ativo no momento. Fique atento!</p>
+          <h2 className="text-xl font-bold text-foreground mb-2">Aguarde o Próximo Jogo</h2>
+          <p className="text-muted-foreground text-sm">As inscrições estão fechadas. Aguarde o próximo jogo!</p>
         </div>
       </div>
     );
