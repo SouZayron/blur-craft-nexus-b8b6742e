@@ -291,35 +291,40 @@ export const BombaAdminPanel = () => {
               return (
                 <div
                   key={p.id}
-                  className={`flex items-center justify-between gap-2 rounded-xl px-3 py-2 border backdrop-blur-md ${
+                  className={`flex flex-col gap-1 rounded-xl px-3 py-2 border backdrop-blur-md ${
                     isWinner ? "bg-yellow-500/10 border-yellow-400/50" : isDead ? "bg-white/5 border-red-500/30 opacity-60" : "bg-white/5 border-white/10"
                   }`}
                 >
-                  <span className="text-xs font-bold text-foreground truncate flex items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePick(p.id)}
-                      className="text-red-400 hover:text-red-300 shrink-0"
-                      title="Remover jogador"
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </button>
-                    {isWinner ? "🏆 " : isDead ? "💀 " : ""}{p.player_name}
-                  </span>
-                  <div className="flex gap-1 shrink-0">
-                    {p.numbers.map((n) => (
-                      <span
-                        key={n}
-                        className={`w-6 h-6 rounded-md font-mono text-[10px] flex items-center justify-center border ${
-                          drawn.includes(n)
-                            ? "bg-red-500/25 text-red-300 border-red-500/40 line-through"
-                            : "bg-green-500/15 text-green-300 border-green-400/40"
-                        }`}
+                  <div className="flex items-center justify-between gap-2 w-full">
+                    <span className="text-xs font-bold text-foreground truncate flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleRemovePick(p.id)}
+                        className="text-red-400 hover:text-red-300 shrink-0"
+                        title="Remover jogador"
                       >
-                        {pad(n)}
-                      </span>
-                    ))}
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                      {isWinner ? "🏆 " : isDead ? "💀 " : ""}{p.player_name}
+                    </span>
+                    <div className="flex gap-1 shrink-0">
+                      {p.numbers.map((n) => (
+                        <span
+                          key={n}
+                          className={`w-6 h-6 rounded-md font-mono text-[10px] flex items-center justify-center border ${
+                            drawn.includes(n)
+                              ? "bg-red-500/25 text-red-300 border-red-500/40 line-through"
+                              : "bg-green-500/15 text-green-300 border-green-400/40"
+                          }`}
+                        >
+                          {pad(n)}
+                        </span>
+                      ))}
+                    </div>
                   </div>
+                  <p className="text-[10px] text-muted-foreground">
+                    Números Vivos: <span className={`font-semibold ${isDead ? "text-red-400" : "text-green-400"}`}>{pAlive.length}</span>
+                  </p>
                 </div>
               );
             })}
