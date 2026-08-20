@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeTables } from "@/hooks/useRealtimeTables";
-import { BOMBA_NUMBERS, BombaPick, BombaState, bombaAlive } from "@/components/BombaAdminPanel";
+import { BOMBA_NUMBERS, BombaPick, BombaState, bombaAlive, bombaFinished, bombaWinners } from "@/components/BombaAdminPanel";
 import { Bomb } from "lucide-react";
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -50,7 +50,8 @@ export const BombaPlayerPanel = ({ playerId, playerName }: Props) => {
   const drawn = state?.drawn || [];
   const myPick = picks.find((p) => p.player_id === playerId) || null;
   const alive = myPick ? bombaAlive(myPick.numbers, drawn) : [];
-  const winners = picks.filter((p) => bombaAlive(p.numbers, drawn).length === 1);
+  const finished = bombaFinished(drawn);
+  const winners = bombaWinners(picks, drawn);
   const iWon = !!myPick && winners.some((w) => w.player_id === playerId);
 
   const toggle = (n: number) => {
@@ -203,7 +204,7 @@ export const BombaPlayerPanel = ({ playerId, playerName }: Props) => {
           {picks.map((p) => {
             const pAlive = bombaAlive(p.numbers, drawn);
             const isDead = pAlive.length === 0;
-            const isWinner = pAlive.length === 1;
+            const isWinner = finished && pAlive.length === 1;
             return (
               <div
                 key={p.id}
