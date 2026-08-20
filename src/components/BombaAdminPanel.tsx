@@ -25,6 +25,12 @@ export interface BombaPick {
 export const bombaAlive = (numbers: number[], drawn: number[]) =>
   numbers.filter((n) => !drawn.includes(n));
 
+// A partida só termina quando restar 1 número não sorteado (14 sorteados).
+export const bombaFinished = (drawn: number[]) => drawn.length >= BOMBA_NUMBERS.length - 1;
+
+export const bombaWinners = (picks: { numbers: number[] }[], drawn: number[]) =>
+  bombaFinished(drawn) ? picks.filter((p) => bombaAlive(p.numbers, drawn).length === 1) : [];
+
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export const BombaAdminPanel = () => {
