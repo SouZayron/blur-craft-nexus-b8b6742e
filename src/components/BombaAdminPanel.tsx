@@ -74,10 +74,8 @@ export const BombaAdminPanel = () => {
     [drawn, picks],
   );
 
-  const winners = useMemo(
-    () => picks.filter((p) => bombaAlive(p.numbers, drawn).length === 1),
-    [picks, drawn],
-  );
+  const winners = useMemo(() => bombaWinners(picks, drawn), [picks, drawn]);
+  const finished = bombaFinished(drawn);
 
   const patch = async (values: Partial<BombaState>) => {
     await supabase.from("bomba_state").update({ ...values, updated_at: new Date().toISOString() }).eq("id", 1);
