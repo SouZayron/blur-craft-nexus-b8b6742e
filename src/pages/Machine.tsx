@@ -303,7 +303,7 @@ const Machine = () => {
       </Helmet>
       <style>{`
         html,body,#root{height:100%}
-        .mc-root{--text:#f5ecff;color:var(--text);background:radial-gradient(ellipse at top,#3a1857 0%,#1a0d2e 50%,#0f0820 100%);font-family:'Barlow',sans-serif;height:100vh;padding:.6rem;overflow:hidden}
+        .mc-root{--text:#f5ecff;color:var(--text);background:radial-gradient(circle at 12% 18%,hsl(var(--primary) / .18),transparent 28rem),radial-gradient(circle at 88% 28%,hsl(var(--zgames-cyan) / .12),transparent 30rem),linear-gradient(135deg,hsl(268 93% 5%),hsl(273 100% 7%));font-family:'Inter',sans-serif;height:100vh;padding:.6rem;overflow:hidden}
         .mc-wrap{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:.7rem;align-items:stretch;height:calc(100vh - 1.2rem)}
         @media (max-width:1100px){.mc-root{height:auto;overflow:auto}.mc-wrap{grid-template-columns:1fr;height:auto}}
         .mc-header{grid-column:1/-1;text-align:center;margin:0}

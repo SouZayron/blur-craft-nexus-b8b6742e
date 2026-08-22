@@ -102,8 +102,8 @@ export const NickGenerator = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background overflow-hidden relative">
-      <div className="fixed inset-0 gradient-bg opacity-30" />
+    <div className="zgames-shell overflow-hidden relative">
+      <div className="fixed inset-0 zgames-grid-line opacity-30" />
       <FloatingBlob color="blue" size="xl" position={{ top: "-10%", right: "-5%" }} animation="float" />
       <FloatingBlob color="purple" size="lg" position={{ bottom: "10%", left: "-10%" }} animation="float-delayed" />
       <FloatingBlob color="pink" size="md" position={{ top: "40%", right: "5%" }} animation="float-slow" />
@@ -116,7 +116,7 @@ export const NickGenerator = () => {
             <p className="text-xs uppercase tracking-[0.2em] text-zgames-green font-semibold mb-2">
               Conversor de texto
             </p>
-            <h1 className="text-4xl md:text-5xl font-black text-gradient mb-2">
+            <h1 className="zgames-page-title text-4xl md:text-5xl mb-2">
               Gerador de fontes <span className="text-zgames-purple">estilizadas</span>
             </h1>
             <p className="text-foreground/60 text-sm md:text-base">

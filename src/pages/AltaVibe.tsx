@@ -469,7 +469,7 @@ const AltaVibe = () => {
       </Helmet>
       <style>{`
         html,body,#root{height:100%}
-        .av-root{--text:#f5ecff;color:var(--text);background:radial-gradient(ellipse at top,#3a1857 0%,#1a0d2e 50%,#0f0820 100%);font-family:'Barlow',sans-serif;min-height:100vh;position:relative}
+        .av-root{--text:#f5ecff;color:var(--text);background:radial-gradient(circle at 12% 18%,hsl(var(--primary) / .18),transparent 28rem),radial-gradient(circle at 88% 28%,hsl(var(--zgames-cyan) / .12),transparent 30rem),linear-gradient(135deg,hsl(268 93% 5%),hsl(273 100% 7%));font-family:'Inter',sans-serif;min-height:100vh;position:relative}
         .av-root::before{content:"";position:absolute;top:-20%;left:-10%;width:60%;height:80%;background:radial-gradient(circle,rgba(196,122,217,0.22),transparent 70%);pointer-events:none}
         .av-root::after{content:"";position:absolute;bottom:-20%;right:-10%;width:60%;height:80%;background:radial-gradient(circle,rgba(139,63,191,0.22),transparent 70%);pointer-events:none}
         .av-root *{box-sizing:border-box}
