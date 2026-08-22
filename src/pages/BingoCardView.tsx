@@ -144,15 +144,15 @@ export function BingoCardView() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-labxat-purple" />
+      <div className="min-h-screen zgames-page zgames-grid-line flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-zgames-purple" />
       </div>
     );
   }
 
   if (notFound || isExpired) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden flex items-center justify-center">
+      <div className="min-h-screen zgames-page zgames-grid-line relative overflow-x-hidden flex items-center justify-center">
         <FloatingBlob color="blue" size="lg" position={{ top: "-10%", left: "-5%" }} animation="float" />
         <FloatingBlob color="purple" size="md" position={{ top: "30%", right: "-10%" }} animation="float-delayed" />
         
@@ -190,7 +190,7 @@ export function BingoCardView() {
   const theme = cardThemes[cardData.theme] || cardThemes.purple;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen zgames-page zgames-grid-line relative overflow-x-hidden flex flex-col items-center justify-center p-4">
       <FloatingBlob color="blue" size="lg" position={{ top: "-10%", left: "-5%" }} animation="float" />
       <FloatingBlob color="purple" size="md" position={{ top: "30%", right: "-10%" }} animation="float-delayed" />
       <FloatingBlob color="pink" size="sm" position={{ bottom: "20%", left: "10%" }} animation="float-slow" />

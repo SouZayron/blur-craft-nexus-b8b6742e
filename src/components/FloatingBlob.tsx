@@ -10,11 +10,11 @@ interface FloatingBlobProps {
 }
 
 const colorClasses = {
-  blue: "bg-labxat-blue",
-  purple: "bg-labxat-purple",
-  pink: "bg-labxat-pink",
-  green: "bg-labxat-green",
-  lilac: "bg-labxat-lilac",
+  blue: "bg-zgames-blue",
+  purple: "bg-zgames-purple",
+  pink: "bg-zgames-pink",
+  green: "bg-zgames-green",
+  lilac: "bg-zgames-lilac",
 };
 
 const sizeClasses = {

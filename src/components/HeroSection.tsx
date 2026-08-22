@@ -52,7 +52,7 @@ export const HeroSection = () => {
               className="w-20 h-20 rounded-xl object-contain bg-background/30 shadow-lg"
             />
             <div className="flex-1">
-              <p className="text-sm uppercase tracking-wider text-labxat-purple font-semibold mb-1">
+              <p className="text-sm uppercase tracking-wider text-zgames-purple font-semibold mb-1">
                 Ultimo Power
               </p>
               <h2 className="text-2xl md:text-3xl font-bold text-foreground">
@@ -99,7 +99,7 @@ export const HeroSection = () => {
               {smilies.map((smiley, index) => (
                 <span 
                   key={index}
-                  className="bg-labxat-purple/20 text-labxat-purple px-2 py-1 rounded-md text-sm font-mono"
+                  className="bg-zgames-purple/20 text-zgames-purple px-2 py-1 rounded-md text-sm font-mono"
                 >
                   {smiley}
                 </span>
@@ -110,9 +110,9 @@ export const HeroSection = () => {
       </div>
 
       {/* Additional floating circles */}
-      <div className="absolute top-1/4 left-1/4 w-4 h-4 rounded-full bg-labxat-blue/50 float" />
-      <div className="absolute top-3/4 right-1/4 w-6 h-6 rounded-full bg-labxat-pink/50 float-delayed" />
-      <div className="absolute top-1/2 right-1/3 w-3 h-3 rounded-full bg-labxat-purple/50 float-slow" />
+      <div className="absolute top-1/4 left-1/4 w-4 h-4 rounded-full bg-zgames-blue/50 float" />
+      <div className="absolute top-3/4 right-1/4 w-6 h-6 rounded-full bg-zgames-pink/50 float-delayed" />
+      <div className="absolute top-1/2 right-1/3 w-3 h-3 rounded-full bg-zgames-purple/50 float-slow" />
     </section>
   );
 };

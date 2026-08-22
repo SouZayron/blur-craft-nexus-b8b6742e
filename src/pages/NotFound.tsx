@@ -11,9 +11,10 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
+    <div className="zgames-page zgames-grid-line flex min-h-screen items-center justify-center px-4">
+      <div className="zgames-card max-w-md p-10 text-center">
+        <p className="zgames-heading mb-2 text-sm font-bold uppercase text-cyan">ZGames</p>
+        <h1 className="zgames-heading mb-4 text-5xl font-extrabold zgames-text-gradient">404</h1>
         <p className="mb-4 text-xl text-muted-foreground">{t("notFoundDesc")}</p>
         <a href="/" className="text-primary underline hover:text-primary/90">
           {t("returnHome")}

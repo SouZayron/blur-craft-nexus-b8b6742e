@@ -123,7 +123,7 @@ const ColorGenerator = () => {
     .filter((p): p is ParsedPalette => p !== null);
 
   return (
-    <div className="h-screen overflow-hidden animated-gradient-bg flex flex-col">
+    <div className="h-screen overflow-hidden zgames-page zgames-grid-line flex flex-col">
       <Header />
 
       <FloatingBlob color="blue" size="xl" position={{ top: "10%", left: "-10%" }} animation="float" />

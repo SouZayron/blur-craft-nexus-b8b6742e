@@ -109,14 +109,14 @@ export function BingoCardsAccess() {
 
   if (!userName) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 flex items-center justify-center">
+      <div className="min-h-screen zgames-page zgames-grid-line flex items-center justify-center">
         <p className="text-muted-foreground">Usuário não encontrado</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden">
+    <div className="min-h-screen zgames-page zgames-grid-line relative overflow-x-hidden">
       <FloatingBlob color="blue" size="lg" position={{ top: "-10%", left: "-5%" }} animation="float" />
       <FloatingBlob color="purple" size="md" position={{ top: "30%", right: "-10%" }} animation="float-delayed" />
       <FloatingBlob color="pink" size="sm" position={{ bottom: "20%", left: "10%" }} animation="float-slow" />
@@ -137,10 +137,10 @@ export function BingoCardsAccess() {
           // Login Form
           <div className="max-w-md mx-auto">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-labxat-purple to-labxat-pink flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-zgames-purple to-zgames-pink flex items-center justify-center">
                 <Lock className="w-8 h-8 text-white" />
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-labxat-blue via-labxat-purple to-labxat-pink bg-clip-text text-transparent mb-2">
+              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-zgames-blue via-zgames-purple to-zgames-pink bg-clip-text text-transparent mb-2">
                 Acessar Cartelas
               </h1>
               <p className="text-muted-foreground">
@@ -166,7 +166,7 @@ export function BingoCardsAccess() {
                 <Button
                   onClick={handleLogin}
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-labxat-blue to-labxat-purple hover:brightness-110 text-white font-semibold py-5"
+                  className="w-full bg-gradient-to-r from-zgames-blue to-zgames-purple hover:brightness-110 text-white font-semibold py-5"
                 >
                   {isLoading ? (
                     <>
@@ -187,7 +187,7 @@ export function BingoCardsAccess() {
           // Cards List
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-labxat-blue via-labxat-purple to-labxat-pink bg-clip-text text-transparent mb-2">
+              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-zgames-blue via-zgames-purple to-zgames-pink bg-clip-text text-transparent mb-2">
                 Minhas Cartelas
               </h1>
               <p className="text-muted-foreground">

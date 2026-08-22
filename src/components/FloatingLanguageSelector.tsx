@@ -41,7 +41,7 @@ export const FloatingLanguageSelector = () => {
       <DropdownMenu>
         <DropdownMenuTrigger
           aria-label={`${t("changeLanguage")} — ${currentLang?.name ?? "Português"}`}
-          className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110 bg-background/80 backdrop-blur-md border border-white/20 text-foreground/70 hover:text-foreground"
+          className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-neon hover:scale-110 bg-card/70 backdrop-blur-xl border border-border text-muted-foreground hover:border-cyan/60 hover:text-cyan"
           title={t("changeLanguage")}
         >
           <Globe className="w-5 h-5" aria-hidden="true" />
@@ -50,7 +50,7 @@ export const FloatingLanguageSelector = () => {
         <DropdownMenuContent
           align="start"
           side="top"
-          className="glass-card border-white/20 max-h-[60vh] overflow-y-auto"
+          className="zgames-card border-border max-h-[60vh] overflow-y-auto"
         >
           {languages.map((lang) => (
             <DropdownMenuItem

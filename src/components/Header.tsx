@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Palette, Sparkles, Dices, Home, Info, Newspaper } from "lucide-react";
+import { Palette, Sparkles, Dices, Home, Info, Newspaper, Gamepad2 } from "lucide-react";
 import { LanguageSelector } from "./LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -17,34 +17,26 @@ export const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 py-3">
-      <div className="max-w-6xl mx-auto">
-        <div className="glass-card px-6 py-3 flex items-center justify-between">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/50 bg-background/65 backdrop-blur-2xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
-          <Link to="/" aria-label="Labxat - Página inicial" className="flex items-center gap-2 group">
-            <img
-              src="/labxat-logo-new.png"
-              alt="Logotipo Labxat"
-              width={32}
-              height={32}
-              className="block shrink-0"
-              style={{ width: 32, height: 32, aspectRatio: "1 / 1" }}
-              fetchPriority="high"
-              decoding="async"
-            />
-            <span className="text-2xl font-black text-gradient">Labxat</span>
+          <Link to="/" aria-label="ZGames - Página inicial" className="flex items-center gap-2 group">
+            <span className="grid size-9 place-items-center rounded-lg border border-primary/30 bg-primary/10 text-primary shadow-neon">
+              <Gamepad2 className="size-5" aria-hidden="true" />
+            </span>
+            <span className="zgames-heading text-2xl font-extrabold zgames-text-gradient">ZGames</span>
           </Link>
 
           {/* Navigation */}
-          <nav className="flex items-center gap-1 md:gap-2">
+          <nav className="flex items-center gap-1 md:gap-2" aria-label="Navegação principal">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`flex items-center gap-1 px-2 md:px-3 py-2 rounded-xl text-xs md:text-sm font-medium transition-all duration-300 ${
+                className={`flex items-center gap-1 px-2 md:px-3 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-300 ${
                   location.pathname === link.path
                     ? "bg-primary/20 text-primary"
-                    : "hover:bg-white/20 text-foreground/70 hover:text-foreground"
+                    : "hover:bg-card/70 text-muted-foreground hover:text-cyan"
                 }`}
               >
                 <link.icon className="w-4 h-4" />
@@ -55,7 +47,6 @@ export const Header = () => {
             {/* Language Selector */}
             <LanguageSelector />
           </nav>
-        </div>
       </div>
     </header>
   );

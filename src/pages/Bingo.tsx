@@ -278,7 +278,7 @@ export const Bingo = () => {
   ];
 
   return (
-    <div className="min-h-screen animated-gradient-bg relative overflow-hidden">
+    <div className="min-h-screen zgames-page zgames-grid-line relative overflow-hidden">
       <FloatingBlob color="purple" size="xl" position={{ top: "10%", left: "-10%" }} />
       <FloatingBlob color="blue" size="lg" position={{ bottom: "20%", right: "-5%" }} animation="float-delayed" />
       
@@ -320,9 +320,9 @@ export const Bingo = () => {
                     className={cn(
                       "aspect-square rounded-md flex items-center justify-center text-xs md:text-sm font-semibold transition-all",
                       isCurrent
-                        ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
+                        ? "bg-zgames-pink text-white scale-110 shadow-md shadow-zgames-pink/40"
                         : isDrawn
-                          ? "bg-labxat-purple/70 text-white"
+                          ? "bg-zgames-purple/70 text-white"
                           : "bg-background/60 text-foreground/60 border border-white/10"
                     )}
                   >
@@ -394,7 +394,7 @@ export const Bingo = () => {
               </div>
               <div
                 className={cn(
-                  "w-40 h-40 md:w-48 md:h-48 rounded-2xl bg-labxat-pink/90 text-white flex items-center justify-center text-7xl md:text-8xl font-black shadow-lg shadow-labxat-pink/30 transition-all duration-500",
+                  "w-40 h-40 md:w-48 md:h-48 rounded-2xl bg-zgames-pink/90 text-white flex items-center justify-center text-7xl md:text-8xl font-black shadow-lg shadow-zgames-pink/30 transition-all duration-500",
                   isAnimating && "scale-110"
                 )}
               >
@@ -416,7 +416,7 @@ export const Bingo = () => {
                       className={cn(
                         "w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center text-sm font-bold transition-all mx-auto",
                         ball
-                          ? "bg-labxat-purple/70 text-white shadow-md"
+                          ? "bg-zgames-purple/70 text-white shadow-md"
                           : "bg-muted/30 text-muted-foreground/50 border border-white/10"
                       )}
                     >

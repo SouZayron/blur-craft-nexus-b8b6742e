@@ -102,8 +102,8 @@ export const NickGenerator = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background overflow-hidden relative">
-      <div className="fixed inset-0 gradient-bg opacity-30" />
+    <div className="zgames-shell overflow-hidden relative">
+      <div className="fixed inset-0 zgames-grid-line opacity-30" />
       <FloatingBlob color="blue" size="xl" position={{ top: "-10%", right: "-5%" }} animation="float" />
       <FloatingBlob color="purple" size="lg" position={{ bottom: "10%", left: "-10%" }} animation="float-delayed" />
       <FloatingBlob color="pink" size="md" position={{ top: "40%", right: "5%" }} animation="float-slow" />
@@ -113,11 +113,11 @@ export const NickGenerator = () => {
       <main className="relative z-10 pt-24 pb-12 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-6">
-            <p className="text-xs uppercase tracking-[0.2em] text-labxat-green font-semibold mb-2">
+            <p className="text-xs uppercase tracking-[0.2em] text-zgames-green font-semibold mb-2">
               Conversor de texto
             </p>
-            <h1 className="text-4xl md:text-5xl font-black text-gradient mb-2">
-              Gerador de fontes <span className="text-labxat-purple">estilizadas</span>
+            <h1 className="zgames-page-title text-4xl md:text-5xl mb-2">
+              Gerador de fontes <span className="text-zgames-purple">estilizadas</span>
             </h1>
             <p className="text-foreground/60 text-sm md:text-base">
               Digite um texto e veja em vários estilos Unicode. Clique em copiar para usar em bio, status, nick, etc.
@@ -152,16 +152,16 @@ export const NickGenerator = () => {
                   key={key}
                   onClick={() => handleCopy(out, key)}
                   className={`p-4 md:p-5 flex items-center gap-4 group ${
-                    isFeatured ? "ring-2 ring-labxat-purple/60" : ""
+                    isFeatured ? "ring-2 ring-zgames-purple/60" : ""
                   }`}
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-[10px] uppercase tracking-[0.1em] font-bold text-labxat-green">
+                      <span className="text-[10px] uppercase tracking-[0.1em] font-bold text-zgames-green">
                         {FONT_LABELS[key]}
                       </span>
                       {isFeatured && (
-                        <span className="bg-labxat-purple text-white text-[9px] px-2 py-0.5 rounded-full font-bold">
+                        <span className="bg-zgames-purple text-white text-[9px] px-2 py-0.5 rounded-full font-bold">
                           DESTAQUE
                         </span>
                       )}
