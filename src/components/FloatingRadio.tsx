@@ -34,12 +34,12 @@ export const FloatingRadio = () => {
     <button
       onClick={togglePlay}
       type="button"
-      aria-label={isPlaying ? `${t("pauseRadio")} Labxat` : `${t("playRadio")} Labxat`}
+      aria-label={isPlaying ? `${t("pauseRadio")} ZGames` : `${t("playRadio")} ZGames`}
       aria-pressed={isPlaying}
       className={`fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110 ${
         isPlaying
-          ? "bg-gradient-to-r from-labxat-purple to-labxat-pink text-white"
-          : "bg-background/80 backdrop-blur-md border border-white/20 text-foreground/70 hover:text-foreground"
+          ? "bg-primary text-primary-foreground shadow-neon"
+          : "bg-card/70 backdrop-blur-xl border border-border text-muted-foreground hover:border-cyan/60 hover:text-cyan"
       }`}
       title={isPlaying ? t("pauseRadio") : t("playRadio")}
     >
@@ -50,7 +50,7 @@ export const FloatingRadio = () => {
       )}
 
       {isPlaying && (
-        <span aria-hidden="true" className="absolute inset-0 rounded-full bg-labxat-purple/30 animate-ping" />
+        <span aria-hidden="true" className="absolute inset-0 rounded-full bg-primary/30 animate-ping" />
       )}
     </button>
   );

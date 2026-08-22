@@ -39,7 +39,7 @@ export const CookieConsent = () => {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-slide-up">
       <div className="max-w-4xl mx-auto">
-        <div className="glass-card p-4 md:p-6 flex flex-col md:flex-row items-center gap-4">
+        <div className="zgames-card p-4 md:p-6 flex flex-col md:flex-row items-center gap-4">
           <Cookie className="w-8 h-8 text-primary flex-shrink-0" />
           <div className="flex-1 text-center md:text-left">
             <p className="text-foreground/80 text-sm md:text-base">
@@ -52,7 +52,8 @@ export const CookieConsent = () => {
           </div>
           <Button 
             onClick={handleAccept}
-            className="bg-primary hover:bg-primary/80 text-primary-foreground font-bold whitespace-nowrap"
+            variant="neon"
+            className="font-bold whitespace-nowrap"
           >
             {t("acceptCookies")}
           </Button>
