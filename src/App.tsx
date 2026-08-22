@@ -15,7 +15,7 @@ import Index from "./pages/Index";
 const ColorGenerator = lazy(() => import("./pages/ColorGenerator"));
 const NickGenerator = lazy(() => import("./pages/NickGenerator").then(m => ({ default: m.NickGenerator })));
 const Bingo = lazy(() => import("./pages/Bingo").then(m => ({ default: m.Bingo })));
-const BingoAnimais = lazy(() => import("./pages/BingoAnimais").then(m => ({ default: m.BingoAnimais })));
+
 const Emojis = lazy(() => import("./pages/Emojis").then(m => ({ default: m.Emojis })));
 const BingoCards = lazy(() => import("./pages/BingoCards").then(m => ({ default: m.BingoCards })));
 const AvatarEditor = lazy(() => import("./pages/AvatarEditor").then(m => ({ default: m.AvatarEditor })));
@@ -33,7 +33,7 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AltaVibe = lazy(() => import("./pages/AltaVibe"));
 const AdminAltaVibe = lazy(() => import("./pages/AdminAltaVibe"));
-const BolaoDaCopa = lazy(() => import("./pages/BolaoDaCopa"));
+
 const Machine = lazy(() => import("./pages/Machine"));
 const AdminMachine = lazy(() => import("./pages/AdminMachine"));
 const Xat = lazy(() => import("./pages/Xat"));
@@ -49,7 +49,7 @@ const RouteFallback = () => (
   <div className="min-h-screen bg-background" aria-hidden="true" />
 );
 
-const HIDE_FLOATERS_ON = ["/bolaodacopa", "/machine", "/adminmachine", "/xat"];
+const HIDE_FLOATERS_ON = ["/machine", "/adminmachine", "/xat"];
 const FloatingChrome = () => {
   const { pathname } = useLocation();
   if (HIDE_FLOATERS_ON.some(p => pathname.toLowerCase().startsWith(p))) return null;
@@ -75,7 +75,7 @@ const App = () => (
               <Route path="/cores" element={<ColorGenerator />} />
               <Route path="/nicks" element={<NickGenerator />} />
               <Route path="/bingo" element={<Bingo />} />
-              <Route path="/bingoanimais" element={<BingoAnimais />} />
+              
               <Route path="/emojis" element={<Emojis />} />
               <Route path="/avatar-editor" element={<AvatarEditor />} />
               <Route path="/cartelas" element={<BingoCards />} />
@@ -92,7 +92,7 @@ const App = () => (
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/altavibe" element={<AltaVibe />} />
               <Route path="/adminaltavibe" element={<AdminAltaVibe />} />
-              <Route path="/bolaodacopa" element={<BolaoDaCopa />} />
+              
               <Route path="/machine" element={<Machine />} />
               <Route path="/adminmachine" element={<AdminMachine />} />
               <Route path="/xat" element={<Xat />} />
