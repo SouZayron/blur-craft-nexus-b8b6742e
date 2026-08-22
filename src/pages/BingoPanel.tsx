@@ -261,13 +261,13 @@ export const BingoPanel = () => {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-labxat-purple/10 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md glass-card border-labxat-purple/30">
+      <div className="min-h-screen zgames-page zgames-grid-line flex items-center justify-center p-4">
+        <Card className="w-full max-w-md glass-card border-zgames-purple/30">
           <CardHeader className="text-center">
-            <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-labxat-purple to-labxat-pink flex items-center justify-center mb-4">
+            <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-zgames-purple to-zgames-pink flex items-center justify-center mb-4">
               <Shield className="w-8 h-8 text-white" />
             </div>
-            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-labxat-purple to-labxat-pink bg-clip-text text-transparent">
+            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-zgames-purple to-zgames-pink bg-clip-text text-transparent">
               Painel Admin
             </CardTitle>
             <p className="text-muted-foreground text-sm mt-2">
@@ -294,7 +294,7 @@ export const BingoPanel = () => {
             <Button
               onClick={handleLogin}
               disabled={loading}
-              className="w-full bg-gradient-to-r from-labxat-purple to-labxat-pink hover:opacity-90"
+              className="w-full bg-gradient-to-r from-zgames-purple to-zgames-pink hover:opacity-90"
             >
               <LogIn className="w-4 h-4 mr-2" />
               {loading ? "Entrando..." : "Entrar"}
@@ -306,12 +306,12 @@ export const BingoPanel = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-labxat-purple/10 p-4">
+    <div className="min-h-screen zgames-page zgames-grid-line p-4">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-labxat-purple to-labxat-pink bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-zgames-purple to-zgames-pink bg-clip-text text-transparent">
               Painel Administrador
             </h1>
             <p className="text-muted-foreground">
@@ -345,7 +345,7 @@ export const BingoPanel = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card className="glass-card">
             <CardContent className="p-4 text-center">
-              <div className="text-3xl font-bold text-labxat-purple">{players.length}</div>
+              <div className="text-3xl font-bold text-zgames-purple">{players.length}</div>
               <div className="text-sm text-muted-foreground">Jogadores</div>
             </CardContent>
           </Card>
@@ -376,7 +376,7 @@ export const BingoPanel = () => {
           <Card className="glass-card">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-labxat-purple" />
+                <Users className="w-5 h-5 text-zgames-purple" />
                 Jogadores Cadastrados
               </CardTitle>
             </CardHeader>
@@ -447,7 +447,7 @@ export const BingoPanel = () => {
           <Card className="glass-card">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Gamepad2 className="w-5 h-5 text-labxat-purple" />
+                <Gamepad2 className="w-5 h-5 text-zgames-purple" />
                 Blocos ({selectedCount}/{blocks.length})
               </CardTitle>
             </CardHeader>
@@ -462,7 +462,7 @@ export const BingoPanel = () => {
                         p-2 rounded-lg text-center text-xs transition-all
                         ${ownerInfo 
                           ? 'bg-gradient-to-br from-green-500/30 to-emerald-500/30 border border-green-500/50' 
-                          : 'bg-gradient-to-br from-labxat-purple/20 to-labxat-pink/20 border border-labxat-purple/30'
+                          : 'bg-gradient-to-br from-zgames-purple/20 to-zgames-pink/20 border border-zgames-purple/30'
                         }
                       `}
                       title={ownerInfo?.player?.username || 'Disponível'}

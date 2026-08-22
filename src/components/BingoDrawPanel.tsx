@@ -313,13 +313,13 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
                     className={cn(
                       "aspect-square rounded-lg flex items-center justify-center text-sm font-bold transition-all",
                       isCurrent
-                        ? "bg-labxat-pink text-white scale-110 shadow-md shadow-labxat-pink/40"
+                        ? "bg-zgames-pink text-white scale-110 shadow-md shadow-zgames-pink/40"
                         : isDrawn && winnerColor
                           ? `${winnerColor.bg} text-white shadow-md`
                           : isDrawn && inPick
                             ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/40"
                             : isDrawn
-                              ? "bg-labxat-purple/70 text-white"
+                              ? "bg-zgames-purple/70 text-white"
                               : inPick
                                 ? "bg-background/60 text-foreground border-2 border-emerald-500/40"
                                 : "bg-background/60 text-foreground/60 border border-white/10"
@@ -353,7 +353,7 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
             <div
               className={cn(
                 "w-28 h-28 rounded-2xl text-white flex flex-col items-center justify-center font-black shadow-lg transition-all duration-500 px-2 text-center",
-                currentGradient ? cn("bg-gradient-to-br shadow-black/20", currentGradient) : "bg-labxat-pink/90 shadow-labxat-pink/30",
+                currentGradient ? cn("bg-gradient-to-br shadow-black/20", currentGradient) : "bg-zgames-pink/90 shadow-zgames-pink/30",
                 isAnimating && !currentGradient && "scale-110"
               )}
             >
@@ -405,7 +405,7 @@ export const BingoDrawPanel = ({ activeRoom, players, picks }: Props) => {
                   key={i}
                   className={cn(
                     "h-9 px-1 rounded-lg flex items-center justify-center font-bold text-center",
-                    item ? (inPick ? "bg-green-500 text-white shadow-md" : "bg-labxat-purple/70 text-white shadow-md") : "bg-muted/30 text-muted-foreground/50 border border-white/10"
+                    item ? (inPick ? "bg-green-500 text-white shadow-md" : "bg-zgames-purple/70 text-white shadow-md") : "bg-muted/30 text-muted-foreground/50 border border-white/10"
                   )}
                   title={item || ""}
                 >

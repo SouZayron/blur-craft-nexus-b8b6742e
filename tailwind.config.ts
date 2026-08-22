@@ -55,12 +55,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        labxat: {
-          blue: "hsl(var(--labxat-blue))",
-          purple: "hsl(var(--labxat-purple))",
-          pink: "hsl(var(--labxat-pink))",
-          green: "hsl(var(--labxat-green))",
-          lilac: "hsl(var(--labxat-lilac))",
+        zgames: {
+          blue: "hsl(var(--zgames-blue))",
+          purple: "hsl(var(--zgames-purple))",
+          pink: "hsl(var(--zgames-pink))",
+          green: "hsl(var(--zgames-green))",
+          lilac: "hsl(var(--zgames-lilac))",
         },
         cyan: {
           DEFAULT: "hsl(var(--zgames-cyan))",

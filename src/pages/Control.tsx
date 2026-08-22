@@ -167,7 +167,7 @@ export const Control = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 flex items-center justify-center p-4">
+      <div className="min-h-screen zgames-page zgames-grid-line flex items-center justify-center p-4">
         <div className="w-full max-w-md backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl">
           <div className="text-center mb-6">
             <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center mb-4 shadow-lg shadow-red-500/25">
@@ -202,7 +202,7 @@ export const Control = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-background to-pink-900/20 p-4">
+    <div className="min-h-screen zgames-page zgames-grid-line p-4">
       <div className="max-w-[1700px] mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">

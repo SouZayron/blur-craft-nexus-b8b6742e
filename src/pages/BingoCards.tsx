@@ -29,10 +29,10 @@ interface GeneratedCard {
 export const cardThemes = {
   purple: {
     name: "Roxo",
-    cardBg: "from-labxat-purple/10 via-labxat-pink/10 to-labxat-blue/10",
-    numberBg: "from-labxat-blue/20 to-labxat-purple/20",
-    numberHover: "hover:from-labxat-blue/30 hover:to-labxat-purple/30",
-    markedBg: "from-labxat-purple/80 to-labxat-pink/80",
+    cardBg: "from-zgames-purple/10 via-zgames-pink/10 to-zgames-blue/10",
+    numberBg: "from-zgames-blue/20 to-zgames-purple/20",
+    numberHover: "hover:from-zgames-blue/30 hover:to-zgames-purple/30",
+    markedBg: "from-zgames-purple/80 to-zgames-pink/80",
     preview: "from-purple-500 to-pink-500",
   },
   blue: {
@@ -253,7 +253,7 @@ export function BingoCards() {
   // Lock screen
   if (!isUnlocked) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden">
+      <div className="min-h-screen zgames-page zgames-grid-line relative overflow-x-hidden">
         <FloatingBlob color="blue" size="lg" position={{ top: "-10%", left: "-5%" }} animation="float" />
         <FloatingBlob color="purple" size="md" position={{ top: "30%", right: "-10%" }} animation="float-delayed" />
         <FloatingBlob color="pink" size="sm" position={{ bottom: "20%", left: "10%" }} animation="float-slow" />
@@ -272,10 +272,10 @@ export function BingoCards() {
 
           <GlassCard className="p-8 text-center">
             <div className="mb-6">
-              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-labxat-purple/20 to-labxat-pink/20 flex items-center justify-center">
-                <Lock className="w-10 h-10 text-labxat-purple" />
+              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-zgames-purple/20 to-zgames-pink/20 flex items-center justify-center">
+                <Lock className="w-10 h-10 text-zgames-purple" />
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-labxat-blue via-labxat-purple to-labxat-pink bg-clip-text text-transparent mb-2">
+              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-zgames-blue via-zgames-purple to-zgames-pink bg-clip-text text-transparent mb-2">
                 Gerador de Cartelas Online
               </h1>
               <p className="text-xl font-semibold text-foreground mb-4">
@@ -283,13 +283,13 @@ export function BingoCards() {
               </p>
               <p className="text-muted-foreground mb-6">
                 Para comprar o Gerador entre em contato com{" "}
-                <span className="font-semibold text-labxat-purple">Zayron (208112318)</span>
+                <span className="font-semibold text-zgames-purple">Zayron (208112318)</span>
               </p>
               <a
                 href="https://xat.com/mixhits"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-labxat-blue to-labxat-purple text-white font-semibold hover:brightness-110 transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-zgames-blue to-zgames-purple text-white font-semibold hover:brightness-110 transition-all"
               >
                 <ExternalLink className="w-4 h-4" />
                 Ir para xat.com/mixhits
@@ -322,7 +322,7 @@ export function BingoCards() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95 relative overflow-x-hidden">
+    <div className="min-h-screen zgames-page zgames-grid-line relative overflow-x-hidden">
       <FloatingBlob color="blue" size="lg" position={{ top: "-10%", left: "-5%" }} animation="float" />
       <FloatingBlob color="purple" size="md" position={{ top: "30%", right: "-10%" }} animation="float-delayed" />
       <FloatingBlob color="pink" size="sm" position={{ bottom: "20%", left: "10%" }} animation="float-slow" />
@@ -340,7 +340,7 @@ export function BingoCards() {
         </Button>
 
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-labxat-blue via-labxat-purple to-labxat-pink bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-zgames-blue via-zgames-purple to-zgames-pink bg-clip-text text-transparent mb-2">
             Gerador de Cartelas
           </h1>
           <p className="text-muted-foreground">
@@ -349,7 +349,7 @@ export function BingoCards() {
         </div>
 
         {/* Access existing cards */}
-        <GlassCard className="p-4 mb-6 bg-gradient-to-r from-labxat-purple/5 to-labxat-pink/5">
+        <GlassCard className="p-4 mb-6 bg-gradient-to-r from-zgames-purple/5 to-zgames-pink/5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Lock className="w-4 h-4" />
@@ -488,7 +488,7 @@ export function BingoCards() {
             <div className="grid gap-4">
               <div className="flex items-center justify-between">
                 <Label className="text-foreground">Quantidade de cartelas</Label>
-                <span className="text-lg font-bold text-labxat-purple">{quantity}</span>
+                <span className="text-lg font-bold text-zgames-purple">{quantity}</span>
               </div>
               <Slider
                 value={[quantity]}
@@ -507,7 +507,7 @@ export function BingoCards() {
             <Button
               onClick={handleGenerate}
               disabled={isGenerating}
-              className="w-full bg-gradient-to-r from-labxat-blue to-labxat-purple hover:brightness-110 text-white font-semibold py-6"
+              className="w-full bg-gradient-to-r from-zgames-blue to-zgames-purple hover:brightness-110 text-white font-semibold py-6"
             >
               {isGenerating ? (
                 <>
@@ -527,7 +527,7 @@ export function BingoCards() {
         {generatedCards.length > 0 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-foreground flex items-center gap-2">
-              <LayoutGrid className="w-5 h-5 text-labxat-purple" />
+              <LayoutGrid className="w-5 h-5 text-zgames-purple" />
               Cartelas Geradas ({generatedCards.length})
             </h2>
 

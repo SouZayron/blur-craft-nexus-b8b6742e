@@ -31,7 +31,7 @@ export const PrivacyPolicy = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+    <div className="min-h-screen zgames-page zgames-grid-line relative overflow-hidden">
       <Header />
       
       <FloatingBlob 

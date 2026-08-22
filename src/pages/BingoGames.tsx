@@ -242,13 +242,13 @@ export const BingoGames = () => {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-labxat-purple/10 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md glass-card border-labxat-purple/30">
+      <div className="min-h-screen zgames-page zgames-grid-line flex items-center justify-center p-4">
+        <Card className="w-full max-w-md glass-card border-zgames-purple/30">
           <CardHeader className="text-center">
-            <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-labxat-purple to-labxat-pink flex items-center justify-center mb-4">
+            <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-zgames-purple to-zgames-pink flex items-center justify-center mb-4">
               <Gamepad2 className="w-8 h-8 text-white" />
             </div>
-            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-labxat-purple to-labxat-pink bg-clip-text text-transparent">
+            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-zgames-purple to-zgames-pink bg-clip-text text-transparent">
               Bingo Games
             </CardTitle>
             <p className="text-muted-foreground text-sm mt-2">
@@ -277,7 +277,7 @@ export const BingoGames = () => {
                 <Button
                   onClick={handleRegister}
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-labxat-purple to-labxat-pink hover:opacity-90"
+                  className="w-full bg-gradient-to-r from-zgames-purple to-zgames-pink hover:opacity-90"
                 >
                   <UserPlus className="w-4 h-4 mr-2" />
                   {loading ? "Cadastrando..." : "Cadastrar"}
@@ -295,7 +295,7 @@ export const BingoGames = () => {
                 <Button
                   onClick={handleLogin}
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-labxat-purple to-labxat-pink hover:opacity-90"
+                  className="w-full bg-gradient-to-r from-zgames-purple to-zgames-pink hover:opacity-90"
                 >
                   <LogIn className="w-4 h-4 mr-2" />
                   {loading ? "Entrando..." : "Entrar"}
@@ -317,8 +317,8 @@ export const BingoGames = () => {
 
   if (!game?.is_open) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-labxat-purple/10 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md glass-card border-labxat-purple/30">
+      <div className="min-h-screen zgames-page zgames-grid-line flex items-center justify-center p-4">
+        <Card className="w-full max-w-md glass-card border-zgames-purple/30">
           <CardHeader className="text-center">
             <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center mb-4">
               <Lock className="w-8 h-8 text-white" />
@@ -338,15 +338,15 @@ export const BingoGames = () => {
   const hasPlayerSelected = currentPlayer ? selections.some(s => s.player_id === currentPlayer.id) : false;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-labxat-purple/10 p-4">
+    <div className="min-h-screen zgames-page zgames-grid-line p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-labxat-purple to-labxat-pink bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-zgames-purple to-zgames-pink bg-clip-text text-transparent mb-2">
             {game?.game_type === 'sequences' ? 'Bingo das Sequências' : 'Bingo 2 Números'}
           </h1>
           <p className="text-muted-foreground">
-            Olá, <span className="text-labxat-purple font-semibold">{currentPlayer?.username}</span>! 
+            Olá, <span className="text-zgames-purple font-semibold">{currentPlayer?.username}</span>! 
             {hasPlayerSelected 
               ? ' Você já selecionou seu bloco.' 
               : ' Selecione seu bloco.'}
@@ -376,8 +376,8 @@ export const BingoGames = () => {
                     : owner
                       ? 'bg-gradient-to-br from-red-500/20 to-orange-500/20 cursor-not-allowed opacity-70'
                       : hasPlayerSelected
-                        ? 'bg-gradient-to-br from-labxat-purple/10 to-labxat-pink/10 cursor-not-allowed opacity-50'
-                        : 'bg-gradient-to-br from-labxat-purple/20 to-labxat-pink/20 hover:from-labxat-purple/40 hover:to-labxat-pink/40 cursor-pointer hover:scale-105'
+                        ? 'bg-gradient-to-br from-zgames-purple/10 to-zgames-pink/10 cursor-not-allowed opacity-50'
+                        : 'bg-gradient-to-br from-zgames-purple/20 to-zgames-pink/20 hover:from-zgames-purple/40 hover:to-zgames-pink/40 cursor-pointer hover:scale-105'
                   }
                   ${canSelect ? 'animate-border-glow' : ''}
                 `}
@@ -396,7 +396,7 @@ export const BingoGames = () => {
         {/* Legend */}
         <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-gradient-to-br from-labxat-purple/40 to-labxat-pink/40" />
+            <div className="w-4 h-4 rounded bg-gradient-to-br from-zgames-purple/40 to-zgames-pink/40" />
             <span className="text-muted-foreground">Disponível</span>
           </div>
           <div className="flex items-center gap-2">

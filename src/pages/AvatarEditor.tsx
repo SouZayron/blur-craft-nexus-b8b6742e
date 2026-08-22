@@ -192,7 +192,7 @@ export const AvatarEditor = () => {
   ];
 
   return (
-    <div className="min-h-screen animated-gradient-bg">
+    <div className="min-h-screen zgames-page zgames-grid-line">
       <Header />
       <FloatingBlob color="purple" size="xl" position={{ top: "5%", left: "-5%" }} animation="float" />
       <FloatingBlob color="pink" size="lg" position={{ bottom: "10%", right: "-5%" }} animation="float-delayed" />
@@ -233,7 +233,7 @@ export const AvatarEditor = () => {
               </label>
               <Button
                 onClick={onDownload}
-                className="flex-1 bg-labxat-purple hover:bg-labxat-purple/80 text-white font-bold py-3 rounded-xl"
+                className="flex-1 bg-zgames-purple hover:bg-zgames-purple/80 text-white font-bold py-3 rounded-xl"
               >
                 <Download className="w-4 h-4 mr-2" /> Download PNG
               </Button>
@@ -252,7 +252,7 @@ export const AvatarEditor = () => {
                     onClick={() => setShape(key)}
                     className={`flex flex-col items-center gap-1 p-2 rounded-lg border transition-all ${
                       shape === key
-                        ? "bg-labxat-purple/30 border-labxat-purple text-foreground"
+                        ? "bg-zgames-purple/30 border-zgames-purple text-foreground"
                         : "bg-background/30 border-white/10 text-foreground/70 hover:bg-background/50"
                     }`}
                     title={label}
@@ -272,7 +272,7 @@ export const AvatarEditor = () => {
                   onClick={() => setBorderType("solid")}
                   className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-all ${
                     borderType === "solid"
-                      ? "bg-labxat-purple/30 border-labxat-purple"
+                      ? "bg-zgames-purple/30 border-zgames-purple"
                       : "bg-background/30 border-white/10 text-foreground/70"
                   }`}
                 >
@@ -282,7 +282,7 @@ export const AvatarEditor = () => {
                   onClick={() => setBorderType("gradient")}
                   className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-all ${
                     borderType === "gradient"
-                      ? "bg-labxat-purple/30 border-labxat-purple"
+                      ? "bg-zgames-purple/30 border-zgames-purple"
                       : "bg-background/30 border-white/10 text-foreground/70"
                   }`}
                 >
@@ -298,7 +298,7 @@ export const AvatarEditor = () => {
                         key={c}
                         onClick={() => setBorderColor(c)}
                         className={`aspect-square rounded-lg border-2 transition-all ${
-                          borderColor === c ? "border-labxat-purple scale-110" : "border-white/20"
+                          borderColor === c ? "border-zgames-purple scale-110" : "border-white/20"
                         }`}
                         style={{ background: c }}
                         aria-label={c}
@@ -325,7 +325,7 @@ export const AvatarEditor = () => {
                           key={i}
                           onClick={() => setGradColors([g[0], g[1]])}
                           className={`h-10 rounded-lg border-2 transition-all ${
-                            active ? "border-labxat-purple scale-105" : "border-white/20"
+                            active ? "border-zgames-purple scale-105" : "border-white/20"
                           }`}
                           style={{ background: `linear-gradient(135deg, ${g[0]}, ${g[1]})` }}
                         />

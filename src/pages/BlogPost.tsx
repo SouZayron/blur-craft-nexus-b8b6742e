@@ -87,7 +87,7 @@ const BlogPost = () => {
 
   if (loading || !post) {
     return (
-      <div className="min-h-screen animated-gradient-bg">
+      <div className="min-h-screen zgames-page zgames-grid-line">
         <Header />
         <div className="flex justify-center items-center min-h-[60vh]">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -96,7 +96,7 @@ const BlogPost = () => {
     );
   }
 
-  const canonical = `https://labxat.com/blog/${post.slug}`;
+  const canonical = `https://zgames.com/blog/${post.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -105,20 +105,20 @@ const BlogPost = () => {
     image: post.cover_image_url ? [post.cover_image_url] : undefined,
     datePublished: post.published_at,
     dateModified: post.published_at,
-    author: { "@type": "Organization", name: "Labxat" },
+    author: { "@type": "Organization", name: "ZGames" },
     publisher: {
       "@type": "Organization",
-      name: "Labxat",
+      name: "ZGames",
       logo: {
         "@type": "ImageObject",
-        url: "https://labxat.com/labxat-logo-64.png",
+        url: "https://zgames.com/zgames-logo-64.png",
       },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
   };
 
   return (
-    <div className="min-h-screen animated-gradient-bg">
+    <div className="min-h-screen zgames-page zgames-grid-line">
       <Helmet>
         <title>{post.meta_title}</title>
         <meta name="description" content={post.meta_description} />

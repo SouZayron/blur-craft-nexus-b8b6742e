@@ -62,15 +62,15 @@ const Blog = () => {
     filter === "all" ? posts : posts.filter((p) => p.category === filter);
 
   return (
-    <div className="min-h-screen animated-gradient-bg">
+    <div className="min-h-screen zgames-page zgames-grid-line">
       <Helmet>
-        <title>Blog Labxat — Tech, Curiosidades & Comunicação</title>
+        <title>Blog ZGames — Tech, Curiosidades & Comunicação</title>
         <meta
           name="description"
-          content="Artigos diários sobre tecnologia, curiosidades e comunicação. Conteúdo fresco todos os dias no Blog Labxat."
+          content="Artigos diários sobre tecnologia, curiosidades e comunicação. Conteúdo fresco todos os dias no Blog ZGames."
         />
-        <link rel="canonical" href="https://labxat.com/blog" />
-        <meta property="og:title" content="Blog Labxat" />
+        <link rel="canonical" href="https://zgames.com/blog" />
+        <meta property="og:title" content="Blog ZGames" />
         <meta
           property="og:description"
           content="Artigos diários sobre tech, curiosidades e comunicação."
@@ -87,7 +87,7 @@ const Blog = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10 fade-in-up">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gradient mb-4">
-              Blog Labxat
+              Blog ZGames
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Tech, curiosidades e comunicação — um artigo novo todos os dias.
