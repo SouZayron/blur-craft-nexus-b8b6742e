@@ -62,6 +62,11 @@ export default {
           green: "hsl(var(--labxat-green))",
           lilac: "hsl(var(--labxat-lilac))",
         },
+        cyan: {
+          DEFAULT: "hsl(var(--zgames-cyan))",
+          foreground: "hsl(var(--zgames-cyan-foreground))",
+        },
+        ember: "hsl(var(--zgames-ember))",
         tiffany: {
           50: "hsl(174, 60%, 96%)",
           100: "hsl(174, 55%, 90%)",
@@ -117,6 +122,8 @@ export default {
         'glass-lg': '0 12px 48px 0 rgba(31, 38, 135, 0.2)',
         'glow': '0 0 40px rgba(139, 92, 246, 0.3)',
         'glow-lg': '0 0 60px rgba(139, 92, 246, 0.4)',
+        'neon': '0 0 24px hsl(var(--primary) / 0.34)',
+        'neon-strong': '0 0 34px hsl(var(--primary) / 0.52)',
       },
       backdropBlur: {
         'xs': '2px',
